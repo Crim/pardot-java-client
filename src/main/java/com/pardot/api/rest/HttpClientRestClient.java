@@ -1,6 +1,8 @@
 package com.pardot.api.rest;
 
 import com.pardot.api.Configuration;
+import com.pardot.api.request.Request;
+import com.pardot.api.request.user.UserAbilitiesRequest;
 import com.pardot.api.request.user.UserQueryRequest;
 import com.pardot.api.rest.handlers.LoginResponseHandler;
 import com.pardot.api.rest.handlers.StringResponseHandler;
@@ -162,6 +164,11 @@ public class HttpClientRestClient implements RestClient {
         return post(url, postParams, new StringResponseHandler());
     }
 
+    <T> T post(final Request request, final ResponseHandler<T> responseHandler) throws IOException {
+        final String url = constructApiUrl(request.getApiEndpoint());
+        return post(url, request.getRequestParameters(), responseHandler);
+    }
+
     /**
      * Internal POST method.
      * @param url Url to POST to.
@@ -254,15 +261,11 @@ public class HttpClientRestClient implements RestClient {
     }
 
     public UserQueryResponse.Result userQuery(final UserQueryRequest userQueryRequest) throws IOException {
-        final String url = constructApiUrl(userQueryRequest.getApiEndpoint());
+        return post(userQueryRequest, new UserQueryResponseHandler());
+    }
 
-        // Generate parameters
-        Map<String, String> params = new HashMap<>();
-        for (Map.Entry<String, Object> entry : userQueryRequest.getRequestParameters().entrySet()) {
-            params.put(entry.getKey(), entry.getValue().toString());
-        }
-
-        return post(url, params, new UserQueryResponseHandler());
+    public String userAbilities(final UserAbilitiesRequest userAbilitiesRequest) throws IOException {
+        return post(userAbilitiesRequest, new StringResponseHandler());
     }
 
     /**
@@ -276,5 +279,4 @@ public class HttpClientRestClient implements RestClient {
             + "/version/"
             + configuration.getPardotApiVersion();
     }
-
 }

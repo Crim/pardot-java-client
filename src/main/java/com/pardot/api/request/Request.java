@@ -15,5 +15,5 @@ public interface Request {
     /**
      * @return correctly formatted request parameters.
      */
-    Map<String, Object> getRequestParameters();
+    Map<String, String> getRequestParameters();
 }

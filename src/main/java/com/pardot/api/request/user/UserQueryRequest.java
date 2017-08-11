@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Used to generate a User request.
+ * Used to generate a User Query request.
  */
 public class UserQueryRequest extends BaseRequest<UserQueryRequest> {
     private static final Logger logger = LoggerFactory.getLogger(UserQueryRequest.class);

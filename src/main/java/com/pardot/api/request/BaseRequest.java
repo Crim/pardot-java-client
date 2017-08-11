@@ -79,7 +79,12 @@ public abstract class BaseRequest<T> implements Request {
     }
 
     @Override
-    public Map<String, Object> getRequestParameters() {
-        return params;
+    public Map<String, String> getRequestParameters() {
+        // Clone the params and cast to string
+        Map<String, String> requestParams = new HashMap<>();
+        for (Map.Entry<String, Object> entry : params.entrySet()) {
+            requestParams.put(entry.getKey(), entry.getValue().toString());
+        }
+        return requestParams;
     }
 }

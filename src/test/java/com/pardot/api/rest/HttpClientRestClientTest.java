@@ -2,6 +2,7 @@ package com.pardot.api.rest;
 
 import com.pardot.api.Configuration;
 import com.pardot.api.request.DateParameter;
+import com.pardot.api.request.user.UserAbilitiesRequest;
 import com.pardot.api.request.user.UserQueryRequest;
 import com.pardot.api.rest.responses.LoginResponse;
 import com.pardot.api.rest.responses.UserQueryResponse;
@@ -79,7 +80,7 @@ public class HttpClientRestClientTest {
      * Attempt to retrieve users.
      */
     @Test
-    public void usersTest() throws IOException {
+    public void userQueryTest() throws IOException {
         UserQueryRequest userQueryRequest = new UserQueryRequest()
             .withIdGreaterThan(10)
             .withLimit(1)
@@ -88,6 +89,18 @@ public class HttpClientRestClientTest {
             .withSortOrderAscending();
 
         final UserQueryResponse.Result response = restClient.userQuery(userQueryRequest);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Attempt to retrieve current user's abilities.
+     */
+    @Test
+    public void userAbilitiesTest() throws IOException {
+        UserAbilitiesRequest userAbilitiesRequest = new UserAbilitiesRequest();
+
+        final String response = restClient.userAbilities(userAbilitiesRequest);
         assertNotNull("Should not be null", response);
         logger.info("Response: {}", response);
     }
