@@ -4,7 +4,9 @@ import com.pardot.api.Configuration;
 import com.pardot.api.request.user.UserQueryRequest;
 import com.pardot.api.rest.handlers.LoginResponseHandler;
 import com.pardot.api.rest.handlers.StringResponseHandler;
+import com.pardot.api.rest.handlers.UserQueryResponseHandler;
 import com.pardot.api.rest.responses.LoginResponse;
+import com.pardot.api.rest.responses.UserQueryResponse;
 import org.apache.http.HttpHost;
 import org.apache.http.NameValuePair;
 import org.apache.http.auth.AuthScope;
@@ -251,7 +253,7 @@ public class HttpClientRestClient implements RestClient {
         return null;
     }
 
-    public String userRequest(final UserQueryRequest userQueryRequest) throws IOException {
+    public UserQueryResponse.Result userQuery(final UserQueryRequest userQueryRequest) throws IOException {
         final String url = constructApiUrl(userQueryRequest.getApiEndpoint());
 
         // Generate parameters
@@ -260,7 +262,7 @@ public class HttpClientRestClient implements RestClient {
             params.put(entry.getKey(), entry.getValue().toString());
         }
 
-        return post(url, params);
+        return post(url, params, new UserQueryResponseHandler());
     }
 
     /**

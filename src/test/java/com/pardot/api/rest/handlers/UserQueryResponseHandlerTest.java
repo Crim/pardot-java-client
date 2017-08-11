@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
 /**
  *
  */
-public class UserQueryResponseHandlerTest {
+public class UserQueryResponseHandlerTest extends BaseResponseHandlerTest {
     private static final Logger logger = LoggerFactory.getLogger(UserQueryResponseHandlerTest.class);
 
     /**
@@ -25,8 +25,7 @@ public class UserQueryResponseHandlerTest {
      */
     @Test
     public void testMultpleUsers() throws IOException {
-        final URL inputFile = getClass().getClassLoader().getResource("mockResponses/userQuery.xml");
-        final String input = IOUtils.toString(inputFile, Charsets.UTF_8);
+        final String input = readFile("userQuery.xml");
         final UserQueryResponse.Result response = new UserQueryResponseHandler().parseResponse(input);
         logger.info("Result: {}", response);
 
@@ -41,8 +40,7 @@ public class UserQueryResponseHandlerTest {
      */
     @Test
     public void testSingleUser() throws IOException {
-        final URL inputFile = getClass().getClassLoader().getResource("mockResponses/userQuery2.xml");
-        final String input = IOUtils.toString(inputFile, Charsets.UTF_8);
+        final String input = readFile("userQuery2.xml");
         final UserQueryResponse.Result response = new UserQueryResponseHandler().parseResponse(input);
         logger.info("Result: {}", response);
 
@@ -60,8 +58,8 @@ public class UserQueryResponseHandlerTest {
         assertEquals("Has correct email", "apitest@gmail.com", user.getEmail());
         assertEquals("Has correct jobTitle", "Engineer", user.getJobTitle());
         assertEquals("Has correct role", "Administrator", user.getRole());
-        assertEquals("Has correct createdAt", "2017-08-11 01:20:15", user.getCreatedAt());
-        assertEquals("Has correct updatedAt", "2017-08-11 21:20:15", user.getUpdatedAt());
+        assertEquals("Has correct createdAt", "2017-08-11T01:20:15.000", user.getCreatedAt().toString());
+        assertEquals("Has correct updatedAt", "2017-08-11T21:20:15.000", user.getUpdatedAt().toString());
     }
 
     private void validateUser2(final User user) {
@@ -72,8 +70,8 @@ public class UserQueryResponseHandlerTest {
         assertEquals("Has correct email", "apitest+1@gmail.com", user.getEmail());
         assertNull("Has null jobTitle", user.getJobTitle());
         assertEquals("Has correct role", "Sales", user.getRole());
-        assertEquals("Has correct createdAt", "2016-01-04 10:39:29", user.getCreatedAt());
-        assertEquals("Has correct updatedAt", "2017-08-09 18:28:24", user.getUpdatedAt());
+        assertEquals("Has correct createdAt", "2016-01-04T10:39:29.000", user.getCreatedAt().toString());
+        assertEquals("Has correct updatedAt", "2017-08-09T18:28:24.000", user.getUpdatedAt().toString());
     }
 
 }

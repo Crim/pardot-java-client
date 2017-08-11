@@ -14,8 +14,6 @@ import java.util.List;
  * Represents the result from a User Query API call.
  */
 public class UserQueryResponse {
-
-    @JacksonXmlProperty(localName = "result")
     private UserQueryResponse.Result result;
 
     public Result getResult() {
@@ -23,7 +21,6 @@ public class UserQueryResponse {
     }
 
     public static class Result {
-        @JacksonXmlProperty(localName = "total_results")
         private Integer totalResults = 0;
 
         @JacksonXmlProperty(localName = "user")

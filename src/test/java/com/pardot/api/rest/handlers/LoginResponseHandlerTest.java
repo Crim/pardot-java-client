@@ -12,10 +12,7 @@ import java.net.URL;
 
 import static org.junit.Assert.*;
 
-/**
- *
- */
-public class LoginResponseHandlerTest {
+public class LoginResponseHandlerTest extends BaseResponseHandlerTest {
     private static final Logger logger = LoggerFactory.getLogger(LoginResponseHandlerTest.class);
 
     /**
@@ -23,8 +20,7 @@ public class LoginResponseHandlerTest {
      */
     @Test
     public void test() throws IOException {
-        final URL inputFile = getClass().getClassLoader().getResource("mockResponses/login.xml");
-        final String input = IOUtils.toString(inputFile, Charsets.UTF_8);
+        final String input = readFile("login.xml");
 
         final LoginResponse loginResponse = new LoginResponseHandler().parseResponse(input);
         assertNotNull("Should not be null", loginResponse);

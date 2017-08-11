@@ -3,6 +3,7 @@ package com.pardot.api.rest;
 import com.pardot.api.Configuration;
 import com.pardot.api.request.user.UserQueryRequest;
 import com.pardot.api.rest.responses.LoginResponse;
+import com.pardot.api.rest.responses.UserQueryResponse;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -66,10 +67,11 @@ public class HttpClientRestClientTest {
      */
     @Test
     public void loginTest() throws IOException {
-        final LoginResponse loginResponse = restClient.authenticate();
+        final LoginResponse response = restClient.authenticate();
 
-        assertNotNull("Should not be null", loginResponse);
-        assertNotNull("Should have non-null property", loginResponse.getApiKey());
+        logger.info("Response: {}", response);
+        assertNotNull("Should not be null", response);
+        assertNotNull("Should have non-null property", response.getApiKey());
     }
 
     /**
@@ -80,7 +82,8 @@ public class HttpClientRestClientTest {
         UserQueryRequest userQueryRequest = new UserQueryRequest()
             .withIdGreaterThan(10);
 
-        final String userResponse = restClient.userRequest(userQueryRequest);
-        logger.info("Response: {}", userResponse);
+        final UserQueryResponse.Result response = restClient.userQuery(userQueryRequest);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
     }
 }
