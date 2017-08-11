@@ -1,11 +1,10 @@
 package com.pardot.api.rest;
 
 import com.pardot.api.Configuration;
+import com.pardot.api.request.user.UserQueryRequest;
 import com.pardot.api.rest.responses.LoginResponse;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,5 +70,17 @@ public class HttpClientRestClientTest {
 
         assertNotNull("Should not be null", loginResponse);
         assertNotNull("Should have non-null property", loginResponse.getApiKey());
+    }
+
+    /**
+     * Attempt to retrieve users.
+     */
+    @Test
+    public void usersTest() throws IOException {
+        UserQueryRequest userQueryRequest = new UserQueryRequest()
+            .withIdGreaterThan(10);
+
+        final String userResponse = restClient.userRequest(userQueryRequest);
+        logger.info("Response: {}", userResponse);
     }
 }

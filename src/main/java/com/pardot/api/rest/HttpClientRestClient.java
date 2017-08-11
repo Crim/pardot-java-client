@@ -1,7 +1,7 @@
 package com.pardot.api.rest;
 
 import com.pardot.api.Configuration;
-import com.pardot.api.rest.handlers.BaseResponseHandler;
+import com.pardot.api.request.user.UserQueryRequest;
 import com.pardot.api.rest.handlers.LoginResponseHandler;
 import com.pardot.api.rest.handlers.StringResponseHandler;
 import com.pardot.api.rest.responses.LoginResponse;
@@ -169,19 +169,29 @@ public class HttpClientRestClient implements RestClient {
      * @return Parsed response.
      */
     <T> T post(final String url, Map<String, String> postParams, final ResponseHandler<T> responseHandler) throws IOException {
+        // Ensure we're authenticated.
+        if (!(responseHandler instanceof LoginResponseHandler)) {
+            // Attempt to login
+            loginCheck();
+        }
+
         try {
             final HttpPost post = new HttpPost(url);
 
-            // Attach post params
-            if (!postParams.isEmpty()) {
-                final List<NameValuePair> params = new ArrayList<NameValuePair>();
-                for (Map.Entry<String, String> entry : postParams.entrySet()) {
-                    params.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
-                }
-                post.setEntity(new UrlEncodedFormEntity(params));
+            // Define required auth params
+            final List<NameValuePair> params = new ArrayList<>();
+            params.add(new BasicNameValuePair("user_key", configuration.getUserKey()));
+            if (apiKey != null) {
+                params.add(new BasicNameValuePair("api_key", apiKey));
             }
 
-            logger.info("Executing request {}", post.getRequestLine());
+            // Attach post params
+            for (Map.Entry<String, String> entry : postParams.entrySet()) {
+                params.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
+            }
+            post.setEntity(new UrlEncodedFormEntity(params));
+
+            logger.info("Executing request {} with {}", post.getRequestLine(), params);
 
             // Execute
             final T response = httpClient.execute(post, responseHandler);
@@ -194,9 +204,27 @@ public class HttpClientRestClient implements RestClient {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            httpClient.close();
+            // Only close at end
+            //httpClient.close();
         }
         return null;
+    }
+
+    private void loginCheck() {
+        // If we have an api key
+        if (apiKey != null) {
+            // All good
+            return;
+        }
+
+        // Otherwise auth
+        authenticate();
+
+        // If we still have no api key
+        if (apiKey == null) {
+            // Toss exception
+            throw new RuntimeException("Unable to authenticate!");
+        }
     }
 
     /**
@@ -208,20 +236,31 @@ public class HttpClientRestClient implements RestClient {
         Map<String, String> params = new HashMap<>();
         params.put("email", configuration.getEmail());
         params.put("password", configuration.getPassword());
-        params.put("user_key", configuration.getUserKey());
 
         try {
             final LoginResponse loginResponse = post(url, params, new LoginResponseHandler());
 
             if (loginResponse != null) {
                 // Save apiKey
+                apiKey = loginResponse.getApiKey();
             }
-
-
+            return loginResponse;
         } catch (Exception e) {
             logger.error("Failed to Authenticate: {}", e.getMessage(), e);
         }
         return null;
+    }
+
+    public String userRequest(final UserQueryRequest userQueryRequest) throws IOException {
+        final String url = constructApiUrl(userQueryRequest.getApiEndpoint());
+
+        // Generate parameters
+        Map<String, String> params = new HashMap<>();
+        for (Map.Entry<String, Object> entry : userQueryRequest.getRequestParameters().entrySet()) {
+            params.put(entry.getKey(), entry.getValue().toString());
+        }
+
+        return post(url, params);
     }
 
     /**
