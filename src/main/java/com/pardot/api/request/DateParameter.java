@@ -1,7 +1,5 @@
 package com.pardot.api.request;
 
-import java.util.Date;
-
 /**
  * Builder for a Date constraint.
  */

@@ -1,6 +1,5 @@
 package com.pardot.api.rest.handlers;
 
-import com.fasterxml.jackson.databind.ObjectReader;
 import com.pardot.api.rest.responses.UserQueryResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -3,46 +3,71 @@ package com.pardot.api.request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Base Request Properties.
  */
-abstract class BaseRequest {
-    private static final Logger logger = LoggerFactory.getLogger(BaseRequest.class);
-
-    private Integer limit = 200;
-    private Integer offset = null;
-    private String sortBy = "id";
-    private String sortOrder = "ascending";
+public abstract class BaseRequest<T> implements Request {
+    // Param holder
+    private Map<String, Object> params = new HashMap<>();
 
     public Integer getLimit() {
-        return limit;
+        return getParam("limit");
     }
 
-    public void withLimit(final Integer limit) {
-        this.limit = limit;
+    public T withLimit(final Integer limit) {
+        return setParam("limit", limit);
     }
 
     public Integer getOffset() {
-        return offset;
+        return getParam("offset");
     }
 
-    public void withOffset(final Integer offset) {
-        this.offset = offset;
+    public T withOffset(final Integer offset) {
+        return setParam("offset", offset);
     }
 
     public String getSortBy() {
-        return sortBy;
+        return getParam("sort_by");
     }
 
-    public void withSortBy(final String sortBy) {
-        this.sortBy = sortBy;
+    public T withSortBy(final String sortBy) {
+        return setParam("sort_by", sortBy);
     }
 
     public String getSortOrder() {
-        return sortOrder;
+        return getParam("sort_order");
     }
 
-    public void withSortOrder(final String sortOrder) {
-        this.sortOrder = sortOrder;
+    public T withSortOrder(final String sortOrder) {
+        return setParam("sort_order", sortOrder);
+    }
+
+    public T withSortOrderDescending() {
+        return withSortOrder("descending");
+    }
+
+    public T withSortOrderAscending() {
+        return withSortOrder("ascending");
+    }
+
+    protected <T> T getParam(final String name) {
+        return (T) params.getOrDefault(name, null);
+    }
+
+    protected <T> T setParam(final String name, Object value) {
+        if (value == null) {
+            params.remove(name);
+        } else {
+            params.put(name, value);
+        }
+        return (T) this;
+    }
+
+    @Override
+    public Map<String, Object> getRequestParameters() {
+        return params;
     }
 }

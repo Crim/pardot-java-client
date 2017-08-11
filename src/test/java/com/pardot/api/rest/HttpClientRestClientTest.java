@@ -1,6 +1,7 @@
 package com.pardot.api.rest;
 
 import com.pardot.api.Configuration;
+import com.pardot.api.request.DateParameter;
 import com.pardot.api.request.user.UserQueryRequest;
 import com.pardot.api.rest.responses.LoginResponse;
 import com.pardot.api.rest.responses.UserQueryResponse;
@@ -14,7 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Integration test over HttpClientRestClient.
@@ -80,7 +81,11 @@ public class HttpClientRestClientTest {
     @Test
     public void usersTest() throws IOException {
         UserQueryRequest userQueryRequest = new UserQueryRequest()
-            .withIdGreaterThan(10);
+            .withIdGreaterThan(10)
+            .withLimit(1)
+            .withArchivedUsersOnly(true)
+            .withSortByCreatedAt()
+            .withSortOrderAscending();
 
         final UserQueryResponse.Result response = restClient.userQuery(userQueryRequest);
         assertNotNull("Should not be null", response);

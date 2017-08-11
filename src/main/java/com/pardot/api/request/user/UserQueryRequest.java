@@ -1,78 +1,66 @@
 package com.pardot.api.request.user;
 
 import com.pardot.api.request.DateParameter;
-import com.pardot.api.request.Request;
+import com.pardot.api.request.BaseRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Used to generate a User request.
  */
-public class UserQueryRequest implements Request {
+public class UserQueryRequest extends BaseRequest<UserQueryRequest> {
     private static final Logger logger = LoggerFactory.getLogger(UserQueryRequest.class);
 
-    // User specific
-    private DateParameter createdAfter = null;
-    private DateParameter createdBefore = null;
-    private Integer idGreaterThan = null;
-    private Integer idLessThan = null;
-
-    private Map<String, Object> params = new HashMap<>();
-
-    public UserQueryRequest() {
-    }
-
     public DateParameter getCreatedAfter() {
-        return (DateParameter) params.getOrDefault("created_after", null);
+        return getParam("created_after");
     }
 
     public UserQueryRequest withCreatedAfter(DateParameter dateParameter) {
-        createdAfter = dateParameter;
-        params.put("created_after", dateParameter);
-        return this;
+        return setParam("created_after", dateParameter);
     }
 
     public DateParameter getCreatedBefore() {
-        return (DateParameter) params.getOrDefault("created_before", null);
+        return getParam("created_before");
     }
 
     public UserQueryRequest withCreatedBefore(final DateParameter createdBefore) {
-        this.createdBefore = createdBefore;
-        params.put("created_before", createdBefore);
-        return this;
+        return setParam("created_before", createdBefore);
     }
 
     public Integer getIdGreaterThan() {
-        return idGreaterThan;
+        return getParam("id_greater_than");
     }
 
     public UserQueryRequest withIdGreaterThan(final Integer idGreaterThan) {
-        this.idGreaterThan = idGreaterThan;
-        params.put("id_greater_than", idGreaterThan);
-        return this;
+        return setParam("id_greater_than", idGreaterThan);
     }
 
     public Integer getIdLessThan() {
-        return (Integer) params.getOrDefault("id_less_than", null);
+        return getParam("id_less_than");
     }
 
     public UserQueryRequest withIdLessThan(final Integer idLessThan) {
-        this.idLessThan = idLessThan;
-        params.put("id_less_than", idLessThan);
-        return this;
+        return setParam("id_less_than", idLessThan);
+    }
+
+    public UserQueryRequest withSortByCreatedAt() {
+        return withSortBy("created_at");
+    }
+
+    public UserQueryRequest withSortById() {
+        return withSortBy("id");
+    }
+
+    public UserQueryRequest withArchivedUsersOnly(final boolean archivedUsersOnly) {
+        String archivedOnly = "false";
+        if (archivedUsersOnly) {
+            archivedOnly = "true";
+        }
+        return super.setParam("deleted", archivedOnly);
     }
 
     @Override
     public String getApiEndpoint() {
         return "user/do/query";
-    }
-
-
-    @Override
-    public Map<String, Object> getRequestParameters() {
-        return params;
     }
 }

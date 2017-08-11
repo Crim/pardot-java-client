@@ -1,16 +1,14 @@
 package com.pardot.api.rest.handlers;
 
 import com.pardot.api.rest.responses.LoginResponse;
-import org.apache.commons.codec.Charsets;
-import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.net.URL;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class LoginResponseHandlerTest extends BaseResponseHandlerTest {
     private static final Logger logger = LoggerFactory.getLogger(LoginResponseHandlerTest.class);

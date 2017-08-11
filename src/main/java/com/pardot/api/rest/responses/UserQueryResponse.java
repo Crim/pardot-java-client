@@ -1,13 +1,8 @@
 package com.pardot.api.rest.responses;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import com.pardot.api.request.user.User;
-import com.sun.xml.internal.bind.annotation.XmlLocation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
 /**
