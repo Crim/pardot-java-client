@@ -52,11 +52,7 @@ public class UserQueryRequest extends BaseRequest<UserQueryRequest> {
     }
 
     public UserQueryRequest withArchivedUsersOnly(final boolean archivedUsersOnly) {
-        String archivedOnly = "false";
-        if (archivedUsersOnly) {
-            archivedOnly = "true";
-        }
-        return super.setParam("deleted", archivedOnly);
+        return super.withArchivedOnly(archivedUsersOnly);
     }
 
     @Override
