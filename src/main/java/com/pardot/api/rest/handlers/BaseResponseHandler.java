@@ -2,6 +2,8 @@ package com.pardot.api.rest.handlers;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -31,11 +33,14 @@ public abstract class BaseResponseHandler<T> implements ResponseHandler<T> {
      */
     public BaseResponseHandler() {
         // Create new mapper
-        mapper = new XmlMapper();
+        final JacksonXmlModule module = new JacksonXmlModule();
+        module.setDefaultUseWrapper(false);
+        mapper = new XmlMapper(module);
 
         // Configure it
         mapper
-            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+            .setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
     }
 
     @Override

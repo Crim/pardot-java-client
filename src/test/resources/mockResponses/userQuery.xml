@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rsp stat="ok" version="1.0">
+    <result>
+        <total_results>2</total_results>
+        <user>
+            <id>1212</id>
+            <email>apitest@gmail.com</email>
+            <first_name>Api</first_name>
+            <last_name>Test</last_name>
+            <job_title>Engineer</job_title>
+            <role>Administrator</role>
+            <account>1</account>
+            <created_at>2017-08-11 01:20:15</created_at>
+            <updated_at>2017-08-11 21:20:15</updated_at>
+        </user>
+        <user>
+            <id>1214</id>
+            <email>apitest+1@gmail.com</email>
+            <first_name>Random</first_name>
+            <last_name>User</last_name>
+            <job_title/>
+            <role>Sales</role>
+            <account>2</account>
+            <created_at>2016-01-04 10:39:29</created_at>
+            <updated_at>2017-08-09 18:28:24</updated_at>
+        </user>
+    </result>
+</rsp>
