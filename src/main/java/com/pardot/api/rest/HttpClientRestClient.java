@@ -4,11 +4,16 @@ import com.pardot.api.Configuration;
 import com.pardot.api.request.Request;
 import com.pardot.api.request.user.UserAbilitiesRequest;
 import com.pardot.api.request.user.UserQueryRequest;
+import com.pardot.api.request.user.UserReadRequest;
 import com.pardot.api.rest.handlers.LoginResponseHandler;
 import com.pardot.api.rest.handlers.StringResponseHandler;
+import com.pardot.api.rest.handlers.UserAbilitiesHandler;
 import com.pardot.api.rest.handlers.UserQueryResponseHandler;
+import com.pardot.api.rest.handlers.UserReadResponseHandler;
 import com.pardot.api.rest.responses.LoginResponse;
-import com.pardot.api.rest.responses.UserQueryResponse;
+import com.pardot.api.rest.responses.user.User;
+import com.pardot.api.rest.responses.user.UserAbilitiesResponse;
+import com.pardot.api.rest.responses.user.UserQueryResponse;
 import org.apache.http.HttpHost;
 import org.apache.http.NameValuePair;
 import org.apache.http.auth.AuthScope;
@@ -264,8 +269,12 @@ public class HttpClientRestClient implements RestClient {
         return post(userQueryRequest, new UserQueryResponseHandler());
     }
 
-    public String userAbilities(final UserAbilitiesRequest userAbilitiesRequest) throws IOException {
-        return post(userAbilitiesRequest, new StringResponseHandler());
+    public UserAbilitiesResponse.Result userAbilities(final UserAbilitiesRequest userAbilitiesRequest) throws IOException {
+        return post(userAbilitiesRequest, new UserAbilitiesHandler());
+    }
+
+    public User userRead(final UserReadRequest readRequest) throws IOException {
+        return post(readRequest, new UserReadResponseHandler());
     }
 
     /**
@@ -279,4 +288,5 @@ public class HttpClientRestClient implements RestClient {
             + "/version/"
             + configuration.getPardotApiVersion();
     }
+
 }

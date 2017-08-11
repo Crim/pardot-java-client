@@ -1,7 +1,6 @@
-package com.pardot.api.rest.responses;
+package com.pardot.api.rest.responses.user;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.pardot.api.request.user.User;
 
 import java.util.List;
 

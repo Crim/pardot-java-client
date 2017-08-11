@@ -1,11 +1,13 @@
 package com.pardot.api.rest;
 
 import com.pardot.api.Configuration;
-import com.pardot.api.request.DateParameter;
 import com.pardot.api.request.user.UserAbilitiesRequest;
 import com.pardot.api.request.user.UserQueryRequest;
+import com.pardot.api.request.user.UserReadRequest;
 import com.pardot.api.rest.responses.LoginResponse;
-import com.pardot.api.rest.responses.UserQueryResponse;
+import com.pardot.api.rest.responses.user.User;
+import com.pardot.api.rest.responses.user.UserAbilitiesResponse;
+import com.pardot.api.rest.responses.user.UserQueryResponse;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -100,7 +102,20 @@ public class HttpClientRestClientTest {
     public void userAbilitiesTest() throws IOException {
         UserAbilitiesRequest userAbilitiesRequest = new UserAbilitiesRequest();
 
-        final String response = restClient.userAbilities(userAbilitiesRequest);
+        final UserAbilitiesResponse.Result response = restClient.userAbilities(userAbilitiesRequest);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Attempt to retrieve a user.
+     */
+    @Test
+    public void userReadTest() throws IOException {
+        UserReadRequest readRequest = new UserReadRequest()
+            .selectByEmail("stephen.powis@gmail.com");
+
+        final User response = restClient.userRead(readRequest);
         assertNotNull("Should not be null", response);
         logger.info("Response: {}", response);
     }

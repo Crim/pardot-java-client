@@ -1,5 +1,6 @@
 package com.pardot.api.request.user;
 
+import com.pardot.api.request.BaseQueryRequest;
 import com.pardot.api.request.DateParameter;
 import com.pardot.api.request.BaseRequest;
 import org.slf4j.Logger;
@@ -8,7 +9,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Used to generate a User Query request.
  */
-public class UserQueryRequest extends BaseRequest<UserQueryRequest> {
+public class UserQueryRequest extends BaseQueryRequest<UserQueryRequest> {
     private static final Logger logger = LoggerFactory.getLogger(UserQueryRequest.class);
 
     public DateParameter getCreatedAfter() {
