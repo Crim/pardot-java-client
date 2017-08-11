@@ -1,0 +1,6 @@
+target/
+.idea/
+*.iml
+
+## Ignore credentials for running integration tests
+src/test/resources/test_credentials.properties
