@@ -1,7 +1,7 @@
-package com.pardot.api.request.campaign;
+package com.darksci.pardot.api.request.campaign;
 
-import com.pardot.api.request.BaseQueryRequest;
-import com.pardot.api.request.DateParameter;
+import com.darksci.pardot.api.request.BaseQueryRequest;
+import com.darksci.pardot.api.request.DateParameter;
 
 /**
  * Used to query Campaigns over the Pardot API.

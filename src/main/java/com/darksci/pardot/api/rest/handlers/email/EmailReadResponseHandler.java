@@ -1,8 +1,8 @@
-package com.pardot.api.rest.handlers.email;
+package com.darksci.pardot.api.rest.handlers.email;
 
-import com.pardot.api.response.email.Email;
-import com.pardot.api.response.email.EmailReadResponse;
-import com.pardot.api.rest.handlers.BaseResponseHandler;
+import com.darksci.pardot.api.response.email.Email;
+import com.darksci.pardot.api.response.email.EmailReadResponse;
+import com.darksci.pardot.api.rest.handlers.BaseResponseHandler;
 
 import java.io.IOException;
 

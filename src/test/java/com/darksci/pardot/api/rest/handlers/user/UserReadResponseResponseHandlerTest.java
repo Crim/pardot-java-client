@@ -1,7 +1,7 @@
-package com.pardot.api.rest.handlers.user;
+package com.darksci.pardot.api.rest.handlers.user;
 
-import com.pardot.api.response.user.User;
-import com.pardot.api.rest.handlers.BaseResponseHandlerTest;
+import com.darksci.pardot.api.response.user.User;
+import com.darksci.pardot.api.rest.handlers.BaseResponseHandlerTest;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,11 +11,8 @@ import java.io.IOException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-/**
- *
- */
 public class UserReadResponseResponseHandlerTest extends BaseResponseHandlerTest {
-    private static final Logger logger = LoggerFactory.getLogger(UserQueryResponseHandlerTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserReadResponseResponseHandlerTest.class);
 
     /**
      * Validates we can parse a User Read

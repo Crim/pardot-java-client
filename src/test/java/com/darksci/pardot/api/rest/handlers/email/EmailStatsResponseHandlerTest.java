@@ -1,7 +1,7 @@
-package com.pardot.api.rest.handlers.email;
+package com.darksci.pardot.api.rest.handlers.email;
 
-import com.pardot.api.response.email.EmailStatsResponse;
-import com.pardot.api.rest.handlers.BaseResponseHandlerTest;
+import com.darksci.pardot.api.response.email.EmailStatsResponse;
+import com.darksci.pardot.api.rest.handlers.BaseResponseHandlerTest;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

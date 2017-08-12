@@ -1,4 +1,4 @@
-package com.pardot.api.rest.handlers;
+package com.darksci.pardot.api.rest.handlers;
 
 import org.apache.commons.codec.Charsets;
 import org.apache.commons.io.IOUtils;

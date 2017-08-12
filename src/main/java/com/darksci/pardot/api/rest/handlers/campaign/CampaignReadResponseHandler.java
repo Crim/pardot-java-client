@@ -1,8 +1,8 @@
-package com.pardot.api.rest.handlers.campaign;
+package com.darksci.pardot.api.rest.handlers.campaign;
 
-import com.pardot.api.response.campaign.Campaign;
-import com.pardot.api.response.campaign.CampaignReadResponse;
-import com.pardot.api.rest.handlers.BaseResponseHandler;
+import com.darksci.pardot.api.response.campaign.Campaign;
+import com.darksci.pardot.api.response.campaign.CampaignReadResponse;
+import com.darksci.pardot.api.rest.handlers.BaseResponseHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

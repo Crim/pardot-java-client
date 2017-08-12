@@ -1,4 +1,4 @@
-package com.pardot.api.request;
+package com.darksci.pardot.api.request;
 
 import java.util.Map;
 

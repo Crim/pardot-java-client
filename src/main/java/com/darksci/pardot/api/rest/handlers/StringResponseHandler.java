@@ -1,4 +1,4 @@
-package com.pardot.api.rest.handlers;
+package com.darksci.pardot.api.rest.handlers;
 
 /**
  * Returns response as a string.

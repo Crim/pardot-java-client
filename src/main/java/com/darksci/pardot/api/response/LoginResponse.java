@@ -1,4 +1,4 @@
-package com.pardot.api.response;
+package com.darksci.pardot.api.response;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 

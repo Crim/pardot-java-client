@@ -1,7 +1,7 @@
-package com.pardot.api.request.campaign;
+package com.darksci.pardot.api.request.campaign;
 
-import com.pardot.api.request.BaseRequest;
-import com.pardot.api.response.campaign.Campaign;
+import com.darksci.pardot.api.request.BaseRequest;
+import com.darksci.pardot.api.response.campaign.Campaign;
 
 /**
  * For Updating existing Campaigns using Pardot's API.

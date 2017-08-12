@@ -1,8 +1,8 @@
-package com.pardot.api.rest.handlers.email;
+package com.darksci.pardot.api.rest.handlers.email;
 
-import com.pardot.api.response.email.Email;
-import com.pardot.api.rest.handlers.BaseResponseHandlerTest;
-import com.pardot.api.rest.handlers.user.UserQueryResponseHandlerTest;
+import com.darksci.pardot.api.response.email.Email;
+import com.darksci.pardot.api.rest.handlers.BaseResponseHandlerTest;
+import com.darksci.pardot.api.rest.handlers.user.UserQueryResponseHandlerTest;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,11 +13,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-/**
- *
- */
 public class EmailReadResponseHandlerTest extends BaseResponseHandlerTest {
-    private static final Logger logger = LoggerFactory.getLogger(UserQueryResponseHandlerTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(EmailReadResponseHandlerTest.class);
 
     /**
      * Validates we can parse a User Read

@@ -1,6 +1,6 @@
-package com.pardot.api.rest.handlers;
+package com.darksci.pardot.api.rest.handlers;
 
-import com.pardot.api.response.LoginResponse;
+import com.darksci.pardot.api.response.LoginResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

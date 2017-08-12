@@ -1,4 +1,4 @@
-package com.pardot.api.response.email;
+package com.darksci.pardot.api.response.email;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;

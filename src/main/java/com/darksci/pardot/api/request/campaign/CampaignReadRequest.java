@@ -1,7 +1,7 @@
-package com.pardot.api.request.campaign;
+package com.darksci.pardot.api.request.campaign;
 
 
-import com.pardot.api.request.BaseRequest;
+import com.darksci.pardot.api.request.BaseRequest;
 
 /**
  * Used to generate a Campaign read request.

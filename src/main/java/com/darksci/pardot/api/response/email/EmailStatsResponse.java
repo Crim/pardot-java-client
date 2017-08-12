@@ -1,4 +1,4 @@
-package com.pardot.api.response.email;
+package com.darksci.pardot.api.response.email;
 
 /**
  * Represents the result of an EmailStats API request.

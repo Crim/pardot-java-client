@@ -1,6 +1,6 @@
-package com.pardot.api.request.email;
+package com.darksci.pardot.api.request.email;
 
-import com.pardot.api.request.BaseRequest;
+import com.darksci.pardot.api.request.BaseRequest;
 
 /**
  * Used to generate a User read request.

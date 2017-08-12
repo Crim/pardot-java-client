@@ -1,4 +1,4 @@
-package com.pardot.api.response.user;
+package com.darksci.pardot.api.response.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.joda.time.LocalDateTime;

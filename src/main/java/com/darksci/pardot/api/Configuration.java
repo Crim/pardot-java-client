@@ -1,4 +1,4 @@
-package com.pardot.api;
+package com.darksci.pardot.api;
 
 /**
  * Configure your Pardot API credentials.

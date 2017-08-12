@@ -1,4 +1,4 @@
-package com.pardot.api;
+package com.darksci.pardot.api;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

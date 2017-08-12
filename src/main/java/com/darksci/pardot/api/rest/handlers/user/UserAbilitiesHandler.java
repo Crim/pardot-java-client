@@ -1,9 +1,7 @@
-package com.pardot.api.rest.handlers.user;
+package com.darksci.pardot.api.rest.handlers.user;
 
-import com.pardot.api.response.user.UserAbilitiesResponse;
-import com.pardot.api.rest.handlers.BaseResponseHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.darksci.pardot.api.response.user.UserAbilitiesResponse;
+import com.darksci.pardot.api.rest.handlers.BaseResponseHandler;
 
 import java.io.IOException;
 

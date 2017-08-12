@@ -1,7 +1,7 @@
-package com.pardot.api.rest.handlers.campaign;
+package com.darksci.pardot.api.rest.handlers.campaign;
 
-import com.pardot.api.response.campaign.CampaignQueryResponse;
-import com.pardot.api.rest.handlers.BaseResponseHandler;
+import com.darksci.pardot.api.response.campaign.CampaignQueryResponse;
+import com.darksci.pardot.api.rest.handlers.BaseResponseHandler;
 
 import java.io.IOException;
 

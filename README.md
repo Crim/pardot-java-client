@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/Crim/pardot-java-client.svg?branch=master)](https://travis-ci.org/Crim/pardot-java-client)
 
-## What is it at a high level? 
+## What is it? 
 
 This library intends to be a fluent style API client for Pardot's API (version 3).
 
@@ -10,8 +10,12 @@ This library intends to be a fluent style API client for Pardot's API (version 3
 need that is not yet implemented, please read the **[How to Contribute](#how-to-contribute)** section, or **[Create an issue](https://github.com/Crim/pardot-java-client/issues)** 
 requesting it. 
 
-**Note** Use this library at your own risk!  Currently there are no known issues, but as an unofficial library,
- I make no guarantees.  
+**Note** Use this library at your own risk!  Currently there are no known issues, but as an **unofficial** library,
+ there are no guarantees.  
+
+## How to use this library
+
+More information soon.
 
 ## What Features are implemented?
 
@@ -43,12 +47,16 @@ Official Documentation: [Users](http://developer.pardot.com/kb/api-version-3/use
 - Read
 - Abilities of API User
 
-## How to use this library
-
-More information soon.
-
 ## How to Contribute 
 
 More information soon.
+
+## Changelog
+
+The format is based on [Keep a Changelog](http://keepachangelog.com/)
+and this project adheres to [Semantic Versioning](http://semver.org/).
+
+[View Changelog](CHANGELOG.md)
+
 
 

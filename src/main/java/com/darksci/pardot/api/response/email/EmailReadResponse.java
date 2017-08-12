@@ -1,4 +1,4 @@
-package com.pardot.api.response.email;
+package com.darksci.pardot.api.response.email;
 
 /**
  * Represents API response for an Email read request.

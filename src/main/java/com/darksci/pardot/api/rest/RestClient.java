@@ -1,6 +1,6 @@
-package com.pardot.api.rest;
+package com.darksci.pardot.api.rest;
 
-import com.pardot.api.Configuration;
+import com.darksci.pardot.api.Configuration;
 
 /**
  * Interface for making HTTP calls.

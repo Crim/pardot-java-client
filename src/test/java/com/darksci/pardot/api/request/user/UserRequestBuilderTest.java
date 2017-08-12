@@ -1,6 +1,6 @@
-package com.pardot.api.request.user;
+package com.darksci.pardot.api.request.user;
 
-import com.pardot.api.request.DateParameter;
+import com.darksci.pardot.api.request.DateParameter;
 
 /**
  *

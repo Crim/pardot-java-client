@@ -1,4 +1,4 @@
-package com.pardot.api.request;
+package com.darksci.pardot.api.request;
 
 /**
  * Base Query Request.  Contains common properties/query parameters across differing objects.

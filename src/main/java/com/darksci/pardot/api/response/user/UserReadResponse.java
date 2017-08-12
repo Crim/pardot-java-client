@@ -1,4 +1,4 @@
-package com.pardot.api.response.user;
+package com.darksci.pardot.api.response.user;
 
 /**
  * Represents a Pardot User.
