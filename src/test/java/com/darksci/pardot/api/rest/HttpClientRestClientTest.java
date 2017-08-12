@@ -73,7 +73,7 @@ public class HttpClientRestClientTest {
         testConfig = null;
     }
 
-    @Test
+    //@Test
     public void smokeTest() throws IOException {
         // Define configuration
         Configuration configuration = new Configuration("test@example.com", "password", "userkey");
@@ -85,7 +85,7 @@ public class HttpClientRestClientTest {
     /**
      * Attempt to login.
      */
-    @Test
+    //@Test
     public void loginTest() throws IOException {
         final LoginResponse response = restClient.authenticate();
 
@@ -97,7 +97,7 @@ public class HttpClientRestClientTest {
     /**
      * Attempt to retrieve users.
      */
-    @Test
+    //@Test
     public void userQueryTest() throws IOException {
         UserQueryRequest userQueryRequest = new UserQueryRequest()
             .withIdGreaterThan(10)
@@ -114,7 +114,7 @@ public class HttpClientRestClientTest {
     /**
      * Attempt to retrieve current user's abilities.
      */
-    @Test
+    //@Test
     public void userAbilitiesTest() throws IOException {
         UserAbilitiesRequest userAbilitiesRequest = new UserAbilitiesRequest();
 
@@ -126,7 +126,7 @@ public class HttpClientRestClientTest {
     /**
      * Attempt to retrieve a user.
      */
-    @Test
+    //@Test
     public void userReadTest() throws IOException {
         UserReadRequest readRequest = new UserReadRequest()
             .selectById(3793281L);
@@ -139,7 +139,7 @@ public class HttpClientRestClientTest {
     /**
      * Attempt to query campaigns.
      */
-    @Test
+    //@Test
     public void campaignQueryTest() throws IOException {
         CampaignQueryRequest request = new CampaignQueryRequest()
             .withSortBy("poop");
@@ -152,7 +152,7 @@ public class HttpClientRestClientTest {
     /**
      * Attempt to read campaign.
      */
-    @Test
+    //@Test
     public void campaignReadTest() throws IOException {
         CampaignReadRequest request = new CampaignReadRequest()
             .selectById(14885L);
@@ -165,7 +165,7 @@ public class HttpClientRestClientTest {
     /**
      * Attempt to create a campaign.
      */
-    @Test
+    //@Test
     public void campaignCreateTest() throws IOException {
         // Define campaign
         final Campaign campaign = new Campaign();
@@ -188,7 +188,7 @@ public class HttpClientRestClientTest {
     /**
      * Attempt to create a campaign.
      */
-    @Test
+    //@Test
     public void campaignUpdateTest() throws IOException {
         final long campaignId = 14887L;
 
@@ -214,7 +214,7 @@ public class HttpClientRestClientTest {
     /**
      * Test reading a specific email over the api.
      */
-    @Test
+    //@Test
     public void emailReadTest() throws IOException {
         final long emailId = 167044349L;
 
@@ -229,7 +229,7 @@ public class HttpClientRestClientTest {
     /**
      * Test reading a specific email over the api.
      */
-    @Test
+    //@Test
     public void emailStatsTest() throws IOException {
         final long listEmailId = 167044401;
 
@@ -244,7 +244,7 @@ public class HttpClientRestClientTest {
     /**
      * Test sending a 1-to-1 email to a specific prospect.
      */
-    @Test
+    //@Test
     public void emailSendOneToOneTest() throws IOException {
         final long campaignId = 14885;
         final long prospectId = 59135263;
@@ -270,7 +270,7 @@ public class HttpClientRestClientTest {
     /**
      * Test sending a 1-to-1 email to a specific prospect.
      */
-    @Test
+    //@Test
     public void emailSendListTest() throws IOException {
         final long campaignId = 14885;
         final long listId = 33173;
