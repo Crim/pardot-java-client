@@ -1,8 +1,10 @@
 package com.pardot.api.rest;
 
 import com.pardot.api.Configuration;
+import com.pardot.api.request.campaign.CampaignCreateRequest;
 import com.pardot.api.request.campaign.CampaignQueryRequest;
 import com.pardot.api.request.campaign.CampaignReadRequest;
+import com.pardot.api.request.campaign.CampaignUpdateRequest;
 import com.pardot.api.request.user.UserAbilitiesRequest;
 import com.pardot.api.request.user.UserQueryRequest;
 import com.pardot.api.request.user.UserReadRequest;
@@ -22,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 /**
@@ -138,7 +141,7 @@ public class HttpClientRestClientTest {
     }
 
     /**
-     * Attempt to query campaigns.
+     * Attempt to read campaign.
      */
     @Test
     public void campaignReadTest() throws IOException {
@@ -147,6 +150,55 @@ public class HttpClientRestClientTest {
 
         final Campaign response = restClient.campaignRead(request);
         assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Attempt to create a campaign.
+     */
+    @Test
+    public void campaignCreateTest() throws IOException {
+        // Define campaign
+        final Campaign campaign = new Campaign();
+        campaign.setName("API Test Campaign " + System.currentTimeMillis());
+        campaign.setCost(31337);
+
+        // Create request
+        CampaignCreateRequest request = new CampaignCreateRequest()
+            .withCampaign(campaign);
+
+        // Send Request
+        final Campaign response = restClient.campaignCreate(request);
+        assertNotNull("Should not be null", response);
+        assertNotNull("Has an Id", response.getId());
+        assertEquals("Has correct name", campaign.getName(), response.getName());
+        assertEquals("Has correct cost", campaign.getCost(), response.getCost());
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Attempt to create a campaign.
+     */
+    @Test
+    public void campaignUpdateTest() throws IOException {
+        final long campaignId = 14887L;
+
+        // Define campaign
+        final Campaign campaign = new Campaign();
+        campaign.setId(campaignId);
+        campaign.setName("Updated API Test Campaign " + System.currentTimeMillis());
+        campaign.setCost(20);
+
+        // Create request
+        CampaignUpdateRequest request = new CampaignUpdateRequest()
+            .withCampaign(campaign);
+
+        // Send Request
+        final Campaign response = restClient.campaignUpdate(request);
+        assertNotNull("Should not be null", response);
+        assertEquals("Has correct Id", campaignId, (long) response.getId());
+        assertEquals("Has correct name", campaign.getName(), response.getName());
+        assertEquals("Has correct cost", campaign.getCost(), response.getCost());
         logger.info("Response: {}", response);
     }
 }

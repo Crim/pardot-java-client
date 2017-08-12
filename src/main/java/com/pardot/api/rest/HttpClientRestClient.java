@@ -2,8 +2,10 @@ package com.pardot.api.rest;
 
 import com.pardot.api.Configuration;
 import com.pardot.api.request.Request;
+import com.pardot.api.request.campaign.CampaignCreateRequest;
 import com.pardot.api.request.campaign.CampaignQueryRequest;
 import com.pardot.api.request.campaign.CampaignReadRequest;
+import com.pardot.api.request.campaign.CampaignUpdateRequest;
 import com.pardot.api.request.user.UserAbilitiesRequest;
 import com.pardot.api.request.user.UserQueryRequest;
 import com.pardot.api.request.user.UserReadRequest;
@@ -289,6 +291,14 @@ public class HttpClientRestClient implements RestClient {
     }
 
     public Campaign campaignRead(final CampaignReadRequest request) throws IOException {
+        return post(request, new CampaignReadResponseHandler());
+    }
+
+    public Campaign campaignCreate(final CampaignCreateRequest request) throws IOException {
+        return post(request, new CampaignReadResponseHandler());
+    }
+
+    public Campaign campaignUpdate(final CampaignUpdateRequest request) throws IOException {
         return post(request, new CampaignReadResponseHandler());
     }
 
