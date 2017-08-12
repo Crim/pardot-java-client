@@ -1,5 +1,6 @@
 package com.pardot.api.rest;
 
+import categories.IntegrationTest;
 import com.pardot.api.Configuration;
 import com.pardot.api.request.campaign.CampaignCreateRequest;
 import com.pardot.api.request.campaign.CampaignQueryRequest;
@@ -23,6 +24,7 @@ import com.pardot.api.response.user.UserQueryResponse;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,8 +36,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 /**
- * Integration test over HttpClientRestClient.
+ * Integration/End-to-End test over HttpClientRestClient.
  */
+@Category(IntegrationTest.class)
 public class HttpClientRestClientTest {
     private static final Logger logger = LoggerFactory.getLogger(HttpClientRestClientTest.class);
 

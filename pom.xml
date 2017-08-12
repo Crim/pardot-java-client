@@ -48,6 +48,9 @@
         <skipTests>false</skipTests>
         <skipCodeCoverage>true</skipCodeCoverage>
         <skipCheckStyle>false</skipCheckStyle>
+
+        <!-- By default exclude Integration/End-to-End tests -->
+        <excludeTests>categories.IntegrationTest</excludeTests>
     </properties>
 
 
@@ -173,6 +176,11 @@
                     <argLine>-Xmx512M</argLine>
                     <skipTests>${skipTests}</skipTests>
                     <runOrder>alphabetical</runOrder>
+
+                    <!-- By default exclude Integration Tests -->
+                    <excludedGroups>
+                        ${excludeTests}
+                    </excludedGroups>
                 </configuration>
             </plugin>
 
