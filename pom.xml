@@ -7,6 +7,7 @@
     <groupId>com.pardot</groupId>
     <artifactId>api-client</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
 
     <!-- Require Maven 3.3.9 -->
     <prerequisites>
@@ -14,16 +15,32 @@
     </prerequisites>
 
     <!-- Module Description and Ownership -->
-    <description>Converts Doctrine.Yaml to POJO</description>
-    <organization>
-        <name>Kyber</name>
-    </organization>
+    <name>Pardot API Client</name>
+    <description>A fluent client for Pardot's API</description>
+    <url>https://github.com/Crim/pardot-java-client</url>
     <developers>
         <developer>
             <name>Stephen Powis</name>
-            <email>spowis@salesforce.com</email>
+            <email>stephen.powis@gmail.com</email>
+            <organization>Pardot</organization>
+            <organizationUrl>http://www.pardot.com/</organizationUrl>
         </developer>
     </developers>
+
+    <!-- MIT License -->
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
+
+    <!-- Source Control -->
+    <scm>
+        <connection>scm:git:git://github.com/crim/pardot-java-client.git</connection>
+        <developerConnection>scm:git:ssh://github.com:Crim/pardot-java-client.git</developerConnection>
+        <url>https://github.com/Crim/pardot-java-client/tree/master</url>
+    </scm>
 
     <!-- Module Properties -->
     <properties>
