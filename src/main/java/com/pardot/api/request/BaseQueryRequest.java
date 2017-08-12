@@ -1,5 +1,6 @@
 package com.pardot.api.request;
 
+import com.pardot.api.request.user.UserQueryRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -7,6 +8,66 @@ import org.slf4j.LoggerFactory;
  *
  */
 public abstract class BaseQueryRequest<T> extends BaseRequest<T> {
+
+    // Standard Query Filters
+    public T withIdGreaterThan(final Integer idGreaterThan) {
+        return setParam("id_greater_than", idGreaterThan);
+    }
+
+    public T withIdLessThan(final Integer idLessThan) {
+        return setParam("id_less_than", idLessThan);
+    }
+
+
+    public T withCreatedAfter(DateParameter dateParameter) {
+        return setParam("created_after", dateParameter);
+    }
+
+    public T withCreatedBefore(final DateParameter createdBefore) {
+        return setParam("created_before", createdBefore);
+    }
+
+    protected T withUpdatedAfter(final DateParameter dateParameter) {
+        return setParam("updated_after", dateParameter);
+    }
+
+    protected T withUpdatedBefore(final DateParameter dateParameter) {
+        return setParam("updated_before", dateParameter);
+    }
+
+    public DateParameter getCreatedAfter() {
+        return getParam("created_after");
+    }
+
+    public DateParameter getCreatedBefore() {
+        return getParam("created_before");
+    }
+
+    public Integer getIdGreaterThan() {
+        return getParam("id_greater_than");
+    }
+
+    public Integer getIdLessThan() {
+        return getParam("id_less_than");
+    }
+
+    // Optional Sorting Options
+    protected T withSortByCreatedAt() {
+        return withSortBy("created_at");
+    }
+    protected T withSortByUpdatedAt() {
+        return withSortBy("updated_at");
+    }
+    protected T withSortByName() {
+        return withSortBy("name");
+    }
+
+    protected T withSortById() {
+        return withSortBy("id");
+    }
+
+
+    // Standard Query Options
     public Integer getLimit() {
         return getParam("limit");
     }

@@ -2,15 +2,18 @@ package com.pardot.api.rest;
 
 import com.pardot.api.Configuration;
 import com.pardot.api.request.Request;
+import com.pardot.api.request.campaign.CampaignQueryRequest;
 import com.pardot.api.request.user.UserAbilitiesRequest;
 import com.pardot.api.request.user.UserQueryRequest;
 import com.pardot.api.request.user.UserReadRequest;
+import com.pardot.api.rest.handlers.CampaignQueryResponseHandler;
 import com.pardot.api.rest.handlers.LoginResponseHandler;
 import com.pardot.api.rest.handlers.StringResponseHandler;
 import com.pardot.api.rest.handlers.UserAbilitiesHandler;
 import com.pardot.api.rest.handlers.UserQueryResponseHandler;
 import com.pardot.api.rest.handlers.UserReadResponseHandler;
 import com.pardot.api.rest.responses.LoginResponse;
+import com.pardot.api.rest.responses.campaign.CampaignQueryResponse;
 import com.pardot.api.rest.responses.user.User;
 import com.pardot.api.rest.responses.user.UserAbilitiesResponse;
 import com.pardot.api.rest.responses.user.UserQueryResponse;
@@ -277,6 +280,10 @@ public class HttpClientRestClient implements RestClient {
         return post(readRequest, new UserReadResponseHandler());
     }
 
+    public CampaignQueryResponse.Result campaignQuery(final CampaignQueryRequest request) throws IOException {
+        return post(request, new CampaignQueryResponseHandler());
+    }
+
     /**
      * Internal helper method for generating URLs w/ the appropriate API host and API version.
      * @param endPoint The end point you want to hit.
@@ -288,5 +295,4 @@ public class HttpClientRestClient implements RestClient {
             + "/version/"
             + configuration.getPardotApiVersion();
     }
-
 }

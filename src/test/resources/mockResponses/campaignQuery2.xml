@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rsp stat="ok" version="1.0">
+    <result>
+        <total_results>1</total_results>
+        <campaign>
+            <id>123</id>
+            <name>Website Tracking</name>
+            <cost/>
+        </campaign>
+    </result>
+</rsp>

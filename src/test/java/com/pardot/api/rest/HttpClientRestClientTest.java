@@ -1,10 +1,12 @@
 package com.pardot.api.rest;
 
 import com.pardot.api.Configuration;
+import com.pardot.api.request.campaign.CampaignQueryRequest;
 import com.pardot.api.request.user.UserAbilitiesRequest;
 import com.pardot.api.request.user.UserQueryRequest;
 import com.pardot.api.request.user.UserReadRequest;
 import com.pardot.api.rest.responses.LoginResponse;
+import com.pardot.api.rest.responses.campaign.CampaignQueryResponse;
 import com.pardot.api.rest.responses.user.User;
 import com.pardot.api.rest.responses.user.UserAbilitiesResponse;
 import com.pardot.api.rest.responses.user.UserQueryResponse;
@@ -113,9 +115,21 @@ public class HttpClientRestClientTest {
     @Test
     public void userReadTest() throws IOException {
         UserReadRequest readRequest = new UserReadRequest()
-            .selectByEmail("stephen.powis@gmail.com");
+            .selectById(3793281L);
 
         final User response = restClient.userRead(readRequest);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Attempt to query campaigns.
+     */
+    @Test
+    public void campaignQueryTest() throws IOException {
+        CampaignQueryRequest request = new CampaignQueryRequest();
+
+        final CampaignQueryResponse.Result response = restClient.campaignQuery(request);
         assertNotNull("Should not be null", response);
         logger.info("Response: {}", response);
     }
