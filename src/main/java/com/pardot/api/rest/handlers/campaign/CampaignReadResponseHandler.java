@@ -15,12 +15,7 @@ public class CampaignReadResponseHandler extends BaseResponseHandler<Campaign> {
     private static final Logger logger = LoggerFactory.getLogger(CampaignReadResponseHandler.class);
 
     @Override
-    public Campaign parseResponse(final String responseStr) {
-        try {
-            return getMapper().readValue(responseStr, CampaignReadResponse.class).getCampaign();
-        } catch (IOException e) {
-            logger.error("Failed to parse: {}", e.getMessage(), e);
-            return null;
-        }
+    public Campaign parseResponse(final String responseStr) throws IOException {
+        return getMapper().readValue(responseStr, CampaignReadResponse.class).getCampaign();
     }
 }

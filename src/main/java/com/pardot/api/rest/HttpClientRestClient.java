@@ -222,6 +222,7 @@ public class HttpClientRestClient implements RestClient {
         } catch (ClientProtocolException e) {
             e.printStackTrace();
         } catch (IOException e) {
+            // Typically this is a parse error.
             e.printStackTrace();
         } finally {
             // Only close at end

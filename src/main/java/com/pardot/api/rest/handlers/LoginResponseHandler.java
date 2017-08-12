@@ -13,12 +13,7 @@ public class LoginResponseHandler extends BaseResponseHandler<LoginResponse> {
     private static final Logger logger = LoggerFactory.getLogger(LoginResponseHandler.class);
 
     @Override
-    public LoginResponse parseResponse(final String responseStr) {
-        try {
-            return getMapper().readValue(responseStr, LoginResponse.class);
-        } catch (IOException e) {
-            logger.error("Failed to parse: {}", e.getMessage(), e);
-            return null;
-        }
+    public LoginResponse parseResponse(final String responseStr) throws IOException {
+        return getMapper().readValue(responseStr, LoginResponse.class);
     }
 }

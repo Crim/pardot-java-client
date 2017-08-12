@@ -1,6 +1,8 @@
 package com.pardot.api.rest.handlers;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
@@ -58,7 +60,19 @@ public abstract class BaseResponseHandler<T> implements ResponseHandler<T> {
             EntityUtils.consume(entity);
 
             // Return value
-            return parseResponse(returnStr);
+            try {
+                return parseResponse(returnStr);
+            } catch (JsonParseException exception) {
+                // if underlying input contains invalid content
+                logger.error("Caught exception {}", exception.getMessage(), exception);
+            } catch (JsonMappingException exception) {
+                // if the input JSON structure does not match structure
+                logger.error("Caught exception {}", exception.getMessage(), exception);
+            } catch (IOException exception) {
+                // if a low-level I/O problem happens when parsing
+                logger.error("Caught exception {}", exception.getMessage(), exception);
+            }
+            return null;
         } else {
             throw new ClientProtocolException("Unexpected response status: " + status);
         }
@@ -70,7 +84,7 @@ public abstract class BaseResponseHandler<T> implements ResponseHandler<T> {
      * @param responseStr The response string from the request.
      * @return Parsed response.
      */
-    public abstract T parseResponse(final String responseStr);
+    public abstract T parseResponse(final String responseStr) throws IOException;
 
     /**
      * @return Jackson Mapper instance.

@@ -129,7 +129,8 @@ public class HttpClientRestClientTest {
      */
     @Test
     public void campaignQueryTest() throws IOException {
-        CampaignQueryRequest request = new CampaignQueryRequest();
+        CampaignQueryRequest request = new CampaignQueryRequest()
+            .withSortBy("poop");
 
         final CampaignQueryResponse.Result response = restClient.campaignQuery(request);
         assertNotNull("Should not be null", response);

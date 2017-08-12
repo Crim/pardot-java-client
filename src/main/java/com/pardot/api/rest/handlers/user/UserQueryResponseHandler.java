@@ -14,12 +14,7 @@ public class UserQueryResponseHandler extends BaseResponseHandler<UserQueryRespo
     private static final Logger logger = LoggerFactory.getLogger(UserQueryResponseHandler.class);
 
     @Override
-    public UserQueryResponse.Result parseResponse(final String responseStr) {
-        try {
-            return getMapper().readValue(responseStr, UserQueryResponse.class).getResult();
-        } catch (IOException e) {
-            logger.error("Failed to parse: {}", e.getMessage(), e);
-            return null;
-        }
+    public UserQueryResponse.Result parseResponse(final String responseStr) throws IOException {
+        return getMapper().readValue(responseStr, UserQueryResponse.class).getResult();
     }
 }
