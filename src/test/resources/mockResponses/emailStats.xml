@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rsp stat="ok" version="1.0">
+    <stats>
+        <sent>1024</sent>
+        <delivered>1020</delivered>
+        <total_clicks>512</total_clicks>
+        <unique_clicks>256</unique_clicks>
+        <soft_bounced>10</soft_bounced>
+        <hard_bounced>12</hard_bounced>
+        <opt_outs>14</opt_outs>
+        <spam_complaints>2</spam_complaints>
+        <opens>964</opens>
+        <unique_opens>459</unique_opens>
+        <delivery_rate>98.42%</delivery_rate>
+        <opens_rate>42.00%</opens_rate>
+        <click_through_rate>23.00%</click_through_rate>
+        <unique_click_through_rate>53.00%</unique_click_through_rate>
+        <click_open_ratio>75.05%</click_open_ratio>
+        <opt_out_rate>4.00%</opt_out_rate>
+        <spam_complaint_rate>2.20%</spam_complaint_rate>
+    </stats>
+</rsp>

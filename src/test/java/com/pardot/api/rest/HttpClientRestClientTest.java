@@ -6,6 +6,7 @@ import com.pardot.api.request.campaign.CampaignQueryRequest;
 import com.pardot.api.request.campaign.CampaignReadRequest;
 import com.pardot.api.request.campaign.CampaignUpdateRequest;
 import com.pardot.api.request.email.EmailReadRequest;
+import com.pardot.api.request.email.EmailStatsRequest;
 import com.pardot.api.request.user.UserAbilitiesRequest;
 import com.pardot.api.request.user.UserQueryRequest;
 import com.pardot.api.request.user.UserReadRequest;
@@ -13,6 +14,7 @@ import com.pardot.api.response.LoginResponse;
 import com.pardot.api.response.campaign.Campaign;
 import com.pardot.api.response.campaign.CampaignQueryResponse;
 import com.pardot.api.response.email.Email;
+import com.pardot.api.response.email.EmailStatsResponse;
 import com.pardot.api.response.user.User;
 import com.pardot.api.response.user.UserAbilitiesResponse;
 import com.pardot.api.response.user.UserQueryResponse;
@@ -204,6 +206,9 @@ public class HttpClientRestClientTest {
         logger.info("Response: {}", response);
     }
 
+    /**
+     * Test reading a specific email over the api.
+     */
     @Test
     public void emailReadTest() throws IOException {
         final long emailId = 167044349L;
@@ -212,6 +217,21 @@ public class HttpClientRestClientTest {
             .selectById(emailId);
 
         final Email response = restClient.emailRead(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test reading a specific email over the api.
+     */
+    @Test
+    public void emailStatsTest() throws IOException {
+        final long listEmailId = 167044401;
+
+        EmailStatsRequest request = new EmailStatsRequest()
+            .selectByListEmailId(listEmailId);
+
+        final EmailStatsResponse.Stats response = restClient.emailStats(request);
         assertNotNull("Should not be null", response);
         logger.info("Response: {}", response);
     }
