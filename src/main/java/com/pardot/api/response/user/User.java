@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import org.joda.time.LocalDateTime;
 
 /**
- *
+ * Represents a Pardot User.
  */
 public class User {
 
@@ -61,16 +61,16 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-            "id='" + id + '\'' +
-            ", account=" + account +
-            ", email='" + email + '\'' +
-            ", firstName='" + firstName + '\'' +
-            ", lastName='" + lastName + '\'' +
-            ", jobTitle='" + jobTitle + '\'' +
-            ", role='" + role + '\'' +
-            ", createdAt='" + createdAt + '\'' +
-            ", updatedAt='" + updatedAt + '\'' +
-            '}';
+        return "User{"
+            + "id=" + id
+            + ", account=" + account
+            + ", email='" + email + '\''
+            + ", firstName='" + firstName + '\''
+            + ", lastName='" + lastName + '\''
+            + ", jobTitle='" + jobTitle + '\''
+            + ", role='" + role + '\''
+            + ", createdAt=" + createdAt
+            + ", updatedAt=" + updatedAt
+            + '}';
     }
 }

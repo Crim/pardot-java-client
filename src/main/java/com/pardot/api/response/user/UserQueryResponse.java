@@ -14,6 +14,9 @@ public class UserQueryResponse {
         return result;
     }
 
+    /**
+     * Represents one or more Users.
+     */
     public static class Result {
         private Integer totalResults = 0;
 

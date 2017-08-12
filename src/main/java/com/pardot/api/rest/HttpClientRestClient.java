@@ -153,6 +153,7 @@ public class HttpClientRestClient implements RestClient {
 
     /**
      * Test method for now.  Does a GET request.
+     * TODO determine if this can be removed.
      */
     String get(final String url) throws IOException {
         try {
@@ -177,6 +178,7 @@ public class HttpClientRestClient implements RestClient {
 
     /**
      * Test POST method for now.
+     * TODO determine if this can be removed.
      * @param url Url to POST to.
      * @param postParams Any POST parameters to include
      * @return String representation of response.
@@ -185,7 +187,14 @@ public class HttpClientRestClient implements RestClient {
         return post(url, postParams, new StringResponseHandler());
     }
 
-    <T> T post(final Request request, final ResponseHandler<T> responseHandler) throws IOException {
+    /**
+     * For issuing an API Request.
+     * @param request The Request to perform.
+     * @param responseHandler How to parse the response.
+     * @param <T> The return type.
+     * @return The parsed API response.
+     */
+    private <T> T post(final Request request, final ResponseHandler<T> responseHandler) throws IOException {
         final String url = constructApiUrl(request.getApiEndpoint());
         return post(url, request.getRequestParameters(), responseHandler);
     }
@@ -193,12 +202,12 @@ public class HttpClientRestClient implements RestClient {
     /**
      * Internal POST method.
      * @param url Url to POST to.
-     * @param postParams Any POST parameters to include
+     * @param postParams POST parameters to include in the request
      * @param responseHandler The response Handler to use to parse the response
      * @param <T> The type that ResponseHandler returns.
      * @return Parsed response.
      */
-    <T> T post(final String url, Map<String, String> postParams, final ResponseHandler<T> responseHandler) throws IOException {
+    private <T> T post(final String url, Map<String, String> postParams, final ResponseHandler<T> responseHandler) throws IOException {
         // Ensure we're authenticated.
         if (!(responseHandler instanceof LoginResponseHandler)) {
             // Attempt to login
@@ -241,6 +250,13 @@ public class HttpClientRestClient implements RestClient {
         return null;
     }
 
+    /**
+     * Check to see if we're already logged in and have an API key.
+     * If no existing API key is found, this will attempt to authenticate and
+     * get a new API key.
+     *
+     * TODO Allow passing in an existing API token via Configuration class.
+     */
     private void loginCheck() {
         // If we have an api key
         if (apiKey != null) {
@@ -282,30 +298,51 @@ public class HttpClientRestClient implements RestClient {
         return null;
     }
 
+    /**
+     * Make API request to query one or more users.
+     */
     public UserQueryResponse.Result userQuery(final UserQueryRequest userQueryRequest) throws IOException {
         return post(userQueryRequest, new UserQueryResponseHandler());
     }
 
+    /**
+     * Make API request to read the abilities of the currently authenticated user.
+     */
     public UserAbilitiesResponse.Result userAbilities(final UserAbilitiesRequest userAbilitiesRequest) throws IOException {
         return post(userAbilitiesRequest, new UserAbilitiesHandler());
     }
 
+    /**
+     * Make API request to read a specific user.
+     */
     public User userRead(final UserReadRequest readRequest) throws IOException {
         return post(readRequest, new UserReadResponseHandler());
     }
 
+    /**
+     * Make API request to query for one or more campaigns.
+     */
     public CampaignQueryResponse.Result campaignQuery(final CampaignQueryRequest request) throws IOException {
         return post(request, new CampaignQueryResponseHandler());
     }
 
+    /**
+     * Make API request to read a specific campaign.
+     */
     public Campaign campaignRead(final CampaignReadRequest request) throws IOException {
         return post(request, new CampaignReadResponseHandler());
     }
 
+    /**
+     * Make API request to create a new Campaign.
+     */
     public Campaign campaignCreate(final CampaignCreateRequest request) throws IOException {
         return post(request, new CampaignReadResponseHandler());
     }
 
+    /**
+     * Make API request to update an existing Campaign.
+     */
     public Campaign campaignUpdate(final CampaignUpdateRequest request) throws IOException {
         return post(request, new CampaignReadResponseHandler());
     }

@@ -12,7 +12,6 @@ import java.io.IOException;
 public class EmailReadResponseHandler extends BaseResponseHandler<Email> {
     @Override
     public Email parseResponse(final String responseStr) throws IOException {
-        logResponse(responseStr);
         return getMapper().readValue(responseStr, EmailReadResponse.class).getEmail();
     }
 }

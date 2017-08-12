@@ -1,7 +1,7 @@
 package com.pardot.api.response.user;
 
 /**
- *
+ * Represents a Pardot User.
  */
 public class UserReadResponse {
 

@@ -4,6 +4,9 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 import java.util.List;
 
+/**
+ * Represents one or more Abilities/Credentials that a user has.
+ */
 public class UserAbilitiesResponse {
     private UserAbilitiesResponse.Result result;
 
@@ -11,6 +14,9 @@ public class UserAbilitiesResponse {
         return result;
     }
 
+    /**
+     * Represents one or more Abilities/Credentials that a user has.
+     */
     public static class Result {
         private Integer totalResults = 0;
 
@@ -33,6 +39,9 @@ public class UserAbilitiesResponse {
                 + '}';
         }
 
+        /**
+         * Represents one or more Abilities/Credentials that a user has.
+         */
         public static class Credentials {
             private List<String> credentials;
 
