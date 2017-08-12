@@ -1,7 +1,8 @@
-package com.pardot.api.rest.handlers;
+package com.pardot.api.rest.handlers.user;
 
-import com.pardot.api.rest.responses.user.User;
-import com.pardot.api.rest.responses.user.UserRead;
+import com.pardot.api.response.user.User;
+import com.pardot.api.response.user.UserReadResponse;
+import com.pardot.api.rest.handlers.BaseResponseHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +17,7 @@ public class UserReadResponseHandler extends BaseResponseHandler<User> {
     @Override
     public User parseResponse(final String responseStr) {
         try {
-            return getMapper().readValue(responseStr, UserRead.class).getUser();
+            return getMapper().readValue(responseStr, UserReadResponse.class).getUser();
         } catch (IOException e) {
             logger.error("Failed to parse: {}", e.getMessage(), e);
             return null;

@@ -2,9 +2,6 @@ package com.pardot.api.request.campaign;
 
 import com.pardot.api.request.BaseQueryRequest;
 import com.pardot.api.request.DateParameter;
-import com.pardot.api.request.user.UserQueryRequest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Used to query Campaigns over the Pardot API.

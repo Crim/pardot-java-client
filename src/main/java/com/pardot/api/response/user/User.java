@@ -1,9 +1,7 @@
-package com.pardot.api.rest.responses.user;
+package com.pardot.api.response.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.joda.time.LocalDateTime;
-
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *

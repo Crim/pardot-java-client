@@ -1,8 +1,6 @@
-package com.pardot.api.rest.responses.campaign;
+package com.pardot.api.response.campaign;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 

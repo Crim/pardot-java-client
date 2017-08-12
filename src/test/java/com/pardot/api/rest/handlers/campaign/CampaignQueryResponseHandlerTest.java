@@ -1,16 +1,16 @@
-package com.pardot.api.rest.handlers;
+package com.pardot.api.rest.handlers.campaign;
 
-import com.pardot.api.rest.responses.campaign.Campaign;
-import com.pardot.api.rest.responses.campaign.CampaignQueryResponse;
-import com.pardot.api.rest.responses.user.User;
-import com.pardot.api.rest.responses.user.UserQueryResponse;
+import com.pardot.api.response.campaign.Campaign;
+import com.pardot.api.response.campaign.CampaignQueryResponse;
+import com.pardot.api.rest.handlers.BaseResponseHandlerTest;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  *

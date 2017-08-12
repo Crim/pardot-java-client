@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rsp stat="ok" version="1.0">
+    <campaign>
+        <id>456</id>
+        <name>Test Campaign</name>
+        <cost>100</cost>
+    </campaign>
+</rsp>

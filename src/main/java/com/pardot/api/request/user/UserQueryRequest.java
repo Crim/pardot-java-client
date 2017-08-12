@@ -1,8 +1,6 @@
 package com.pardot.api.request.user;
 
 import com.pardot.api.request.BaseQueryRequest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Used to query Users over the Pardot API.

@@ -1,9 +1,9 @@
-package com.pardot.api.rest.responses.user;
+package com.pardot.api.response.user;
 
 /**
  *
  */
-public class UserRead {
+public class UserReadResponse {
 
     private User user;
 

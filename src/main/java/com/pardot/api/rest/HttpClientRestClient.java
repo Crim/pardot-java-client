@@ -3,20 +3,23 @@ package com.pardot.api.rest;
 import com.pardot.api.Configuration;
 import com.pardot.api.request.Request;
 import com.pardot.api.request.campaign.CampaignQueryRequest;
+import com.pardot.api.request.campaign.CampaignReadRequest;
 import com.pardot.api.request.user.UserAbilitiesRequest;
 import com.pardot.api.request.user.UserQueryRequest;
 import com.pardot.api.request.user.UserReadRequest;
-import com.pardot.api.rest.handlers.CampaignQueryResponseHandler;
+import com.pardot.api.response.LoginResponse;
+import com.pardot.api.response.campaign.Campaign;
+import com.pardot.api.response.campaign.CampaignQueryResponse;
+import com.pardot.api.response.user.User;
+import com.pardot.api.response.user.UserAbilitiesResponse;
+import com.pardot.api.response.user.UserQueryResponse;
 import com.pardot.api.rest.handlers.LoginResponseHandler;
 import com.pardot.api.rest.handlers.StringResponseHandler;
-import com.pardot.api.rest.handlers.UserAbilitiesHandler;
-import com.pardot.api.rest.handlers.UserQueryResponseHandler;
-import com.pardot.api.rest.handlers.UserReadResponseHandler;
-import com.pardot.api.rest.responses.LoginResponse;
-import com.pardot.api.rest.responses.campaign.CampaignQueryResponse;
-import com.pardot.api.rest.responses.user.User;
-import com.pardot.api.rest.responses.user.UserAbilitiesResponse;
-import com.pardot.api.rest.responses.user.UserQueryResponse;
+import com.pardot.api.rest.handlers.campaign.CampaignQueryResponseHandler;
+import com.pardot.api.rest.handlers.campaign.CampaignReadResponseHandler;
+import com.pardot.api.rest.handlers.user.UserAbilitiesHandler;
+import com.pardot.api.rest.handlers.user.UserQueryResponseHandler;
+import com.pardot.api.rest.handlers.user.UserReadResponseHandler;
 import org.apache.http.HttpHost;
 import org.apache.http.NameValuePair;
 import org.apache.http.auth.AuthScope;
@@ -282,6 +285,10 @@ public class HttpClientRestClient implements RestClient {
 
     public CampaignQueryResponse.Result campaignQuery(final CampaignQueryRequest request) throws IOException {
         return post(request, new CampaignQueryResponseHandler());
+    }
+
+    public Campaign campaignRead(final CampaignReadRequest request) throws IOException {
+        return post(request, new CampaignReadResponseHandler());
     }
 
     /**

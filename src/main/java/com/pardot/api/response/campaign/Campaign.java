@@ -1,4 +1,4 @@
-package com.pardot.api.rest.responses.campaign;
+package com.pardot.api.response.campaign;
 
 /**
  * Represents a Pardot Campaign.

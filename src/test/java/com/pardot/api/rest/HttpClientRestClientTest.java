@@ -2,14 +2,16 @@ package com.pardot.api.rest;
 
 import com.pardot.api.Configuration;
 import com.pardot.api.request.campaign.CampaignQueryRequest;
+import com.pardot.api.request.campaign.CampaignReadRequest;
 import com.pardot.api.request.user.UserAbilitiesRequest;
 import com.pardot.api.request.user.UserQueryRequest;
 import com.pardot.api.request.user.UserReadRequest;
-import com.pardot.api.rest.responses.LoginResponse;
-import com.pardot.api.rest.responses.campaign.CampaignQueryResponse;
-import com.pardot.api.rest.responses.user.User;
-import com.pardot.api.rest.responses.user.UserAbilitiesResponse;
-import com.pardot.api.rest.responses.user.UserQueryResponse;
+import com.pardot.api.response.LoginResponse;
+import com.pardot.api.response.campaign.Campaign;
+import com.pardot.api.response.campaign.CampaignQueryResponse;
+import com.pardot.api.response.user.User;
+import com.pardot.api.response.user.UserAbilitiesResponse;
+import com.pardot.api.response.user.UserQueryResponse;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -130,6 +132,19 @@ public class HttpClientRestClientTest {
         CampaignQueryRequest request = new CampaignQueryRequest();
 
         final CampaignQueryResponse.Result response = restClient.campaignQuery(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Attempt to query campaigns.
+     */
+    @Test
+    public void campaignReadTest() throws IOException {
+        CampaignReadRequest request = new CampaignReadRequest()
+            .selectById(14885L);
+
+        final Campaign response = restClient.campaignRead(request);
         assertNotNull("Should not be null", response);
         logger.info("Response: {}", response);
     }

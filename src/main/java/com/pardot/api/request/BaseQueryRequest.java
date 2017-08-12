@@ -1,9 +1,5 @@
 package com.pardot.api.request;
 
-import com.pardot.api.request.user.UserQueryRequest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  *
  */

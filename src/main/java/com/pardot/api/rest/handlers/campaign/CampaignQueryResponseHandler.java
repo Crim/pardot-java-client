@@ -1,7 +1,7 @@
-package com.pardot.api.rest.handlers;
+package com.pardot.api.rest.handlers.campaign;
 
-import com.pardot.api.rest.responses.campaign.CampaignQueryResponse;
-import com.pardot.api.rest.responses.user.UserQueryResponse;
+import com.pardot.api.response.campaign.CampaignQueryResponse;
+import com.pardot.api.rest.handlers.BaseResponseHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

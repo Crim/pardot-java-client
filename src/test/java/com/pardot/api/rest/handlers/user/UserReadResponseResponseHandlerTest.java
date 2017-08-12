@@ -1,18 +1,20 @@
-package com.pardot.api.rest.handlers;
+package com.pardot.api.rest.handlers.user;
 
-import com.pardot.api.rest.responses.user.User;
+import com.pardot.api.response.user.User;
+import com.pardot.api.rest.handlers.BaseResponseHandlerTest;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  *
  */
-public class UserReadResponseHandlerTest extends BaseResponseHandlerTest {
+public class UserReadResponseResponseHandlerTest extends BaseResponseHandlerTest {
     private static final Logger logger = LoggerFactory.getLogger(UserQueryResponseHandlerTest.class);
 
     /**

@@ -1,6 +1,7 @@
-package com.pardot.api.rest.handlers;
+package com.pardot.api.rest.handlers.user;
 
-import com.pardot.api.rest.responses.user.UserAbilitiesResponse;
+import com.pardot.api.response.user.UserAbilitiesResponse;
+import com.pardot.api.rest.handlers.BaseResponseHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
