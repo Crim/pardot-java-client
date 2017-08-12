@@ -4,11 +4,11 @@
 
 ## What is it at a high level? 
 
-This library intends to be a fluent style API client for Pardot's version 3 API.
+This library intends to be a fluent style API client for Pardot's API (version 3).
 
 **Note** It currently is not fully featured/fully implemented. If there is a feature/end point that you
-need that is not yet implemented, please read the **How to Contribute** section, or **create an issue 
-requesting it**. 
+need that is not yet implemented, please read the **[How to Contribute](#how-to-contribute)** section, or **[Create an issue](https://github.com/Crim/pardot-java-client/issues)** 
+requesting it. 
 
 **Note** Use this library at your own risk!  Currently there are no known issues, but as an unofficial library,
  I make no guarantees.  
