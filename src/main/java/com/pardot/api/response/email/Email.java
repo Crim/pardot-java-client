@@ -1,6 +1,5 @@
 package com.pardot.api.response.email;
 
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import org.joda.time.LocalDateTime;
@@ -68,6 +67,9 @@ public class Email {
         this.createdAt = createdAt;
     }
 
+    /**
+     * Represents the Text and Html content bodies for an Email.
+     */
     public static class Message {
         private String text;
         private String html;

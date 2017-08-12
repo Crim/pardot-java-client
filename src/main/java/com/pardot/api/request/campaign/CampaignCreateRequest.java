@@ -12,6 +12,10 @@ public class CampaignCreateRequest extends BaseRequest<CampaignCreateRequest> {
         return "campaign/do/create";
     }
 
+    /**
+     * Define the campaign you want to create in pardot.
+     * @param campaign The campaign you want to create in pardot.
+     */
     public CampaignCreateRequest withCampaign(final Campaign campaign) {
         setParam("name", campaign.getName());
         setParam("cost", campaign.getCost());

@@ -12,7 +12,10 @@ public class UserReadRequest extends BaseRequest<UserReadRequest> {
         return "user/do/read";
     }
 
-
+    /**
+     * Returns the data for the user specified by email.
+     * @param email The email address of the target user.
+     */
     public UserReadRequest selectByEmail(final String email) {
         if (email != null) {
             selectById(null);
@@ -20,6 +23,10 @@ public class UserReadRequest extends BaseRequest<UserReadRequest> {
         return setParam("email", email);
     }
 
+    /**
+     * Returns the data for the user specified by id.
+     * @param id The Pardot ID of the target user.
+     */
     public UserReadRequest selectById(final Long id) {
         if (id != null) {
             selectByEmail(null);

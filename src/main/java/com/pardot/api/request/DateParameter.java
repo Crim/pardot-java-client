@@ -42,6 +42,9 @@ public class DateParameter {
         return new DateParameter(year + "-" + month + "-" + day);
     }
 
+    /**
+     * Define a custom date & time.
+     */
     public static DateParameter custom(final int year, final int month, final int day, final int hour, final int min, final int sec) {
         String gnuDateStr = year + "-" + month + "-" + day + " ";
         if (hour < 10) {

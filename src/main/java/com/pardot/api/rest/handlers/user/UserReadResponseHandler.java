@@ -9,10 +9,9 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 
 /**
- *
+ * Handles parsing UserRead API responses into POJOs.
  */
 public class UserReadResponseHandler extends BaseResponseHandler<User> {
-    private static final Logger logger = LoggerFactory.getLogger(UserReadResponseHandler.class);
 
     @Override
     public User parseResponse(final String responseStr) throws IOException {

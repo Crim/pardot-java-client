@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 
 /**
- *
+ * Handles parsing CampaignRead API responses into POJOs.
  */
 public class CampaignReadResponseHandler extends BaseResponseHandler<Campaign> {
     private static final Logger logger = LoggerFactory.getLogger(CampaignReadResponseHandler.class);

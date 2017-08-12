@@ -12,6 +12,10 @@ public class CampaignUpdateRequest extends BaseRequest<CampaignCreateRequest> {
         return "campaign/do/update";
     }
 
+    /**
+     * Define the campaign you want to update in pardot.
+     * @param campaign The campaign you want to update in pardot.
+     */
     public CampaignUpdateRequest withCampaign(final Campaign campaign) {
         setParam("id", campaign.getId());
         setParam("name", campaign.getName());

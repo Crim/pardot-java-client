@@ -14,6 +14,9 @@ public class CampaignQueryResponse {
         return result;
     }
 
+    /**
+     * Represents the results of querying Campaigns in Pardot API.
+     */
     public static class Result {
         private Integer totalResults = 0;
 

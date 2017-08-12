@@ -10,6 +10,9 @@ public class EmailStatsResponse {
         return stats;
     }
 
+    /**
+     * Represents the result of an EmailStats API request.
+     */
     public static class Stats {
         private Integer sent;
         private Integer delivered;

@@ -8,10 +8,9 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 
 /**
- *
+ * Handles parsing UserAbilities API responses into POJOs.
  */
 public class UserAbilitiesHandler extends BaseResponseHandler<UserAbilitiesResponse.Result> {
-    private static final Logger logger = LoggerFactory.getLogger(UserAbilitiesHandler.class);
 
     @Override
     public UserAbilitiesResponse.Result parseResponse(final String responseStr) throws IOException {

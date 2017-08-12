@@ -6,6 +6,7 @@ import java.util.Map;
 
 /**
  * Base Request Properties.
+ * @param <T> The class type that extends this so we can return the appropriate value.
  */
 public abstract class BaseRequest<T> implements Request {
     // Param holder
