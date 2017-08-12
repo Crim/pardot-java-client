@@ -93,4 +93,11 @@ public abstract class BaseResponseHandler<T> implements ResponseHandler<T> {
     protected ObjectMapper getMapper() {
         return mapper;
     }
+
+    /**
+     * Utility/debug method for logging a response.
+     */
+    protected void logResponse(final String response) {
+        logger.info("Response: {}", response);
+    }
 }

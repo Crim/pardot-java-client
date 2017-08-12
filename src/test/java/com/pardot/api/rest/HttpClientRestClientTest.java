@@ -6,6 +6,8 @@ import com.pardot.api.request.campaign.CampaignQueryRequest;
 import com.pardot.api.request.campaign.CampaignReadRequest;
 import com.pardot.api.request.campaign.CampaignUpdateRequest;
 import com.pardot.api.request.email.EmailReadRequest;
+import com.pardot.api.request.email.EmailSendListRequest;
+import com.pardot.api.request.email.EmailSendOneToOneRequest;
 import com.pardot.api.request.email.EmailStatsRequest;
 import com.pardot.api.request.user.UserAbilitiesRequest;
 import com.pardot.api.request.user.UserQueryRequest;
@@ -232,6 +234,58 @@ public class HttpClientRestClientTest {
             .selectByListEmailId(listEmailId);
 
         final EmailStatsResponse.Stats response = restClient.emailStats(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test sending a 1-to-1 email to a specific prospect.
+     */
+    @Test
+    public void emailSendOneToOneTest() throws IOException {
+        final long campaignId = 14885;
+        final long prospectId = 59135263;
+
+        EmailSendOneToOneRequest request = new EmailSendOneToOneRequest()
+            .withProspectId(prospectId)
+            .withCampaignId(campaignId)
+            .withFromNameAndEmail("Test User", "no-reply@example.com")
+            .withReplyToEmail("no-reply@example.com")
+            .withName("Test Email Send " + System.currentTimeMillis())
+            .withOperationalEmail(true)
+            .withSubject("Test Email From Api")
+            .withTag("Tag 1")
+            .withTag("Tag 2")
+            .withTextContent("Hello %%first_name%%!")
+            .withHtmlContent("<html><body><h1>Hello %%first_name%%!</h1></body></html>");
+
+        final Email response = restClient.emailSendOneToOne(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test sending a 1-to-1 email to a specific prospect.
+     */
+    @Test
+    public void emailSendListTest() throws IOException {
+        final long campaignId = 14885;
+        final long listId = 33173;
+
+        EmailSendListRequest request = new EmailSendListRequest()
+            .withListId(listId)
+            .withCampaignId(campaignId)
+            .withFromNameAndEmail("Test User", "no-reply@example.com")
+            .withReplyToEmail("no-reply@example.com")
+            .withName("Test List Email Send " + System.currentTimeMillis())
+            .withOperationalEmail(true)
+            .withSubject("Test Email From Api")
+            .withTag("Tag 1")
+            .withTag("Tag 2")
+            .withTextContent("Hello %%first_name%%!")
+            .withHtmlContent("<html><body><h1>Hello %%first_name%%!</h1></body></html>");
+
+        final Email response = restClient.emailSendList(request);
         assertNotNull("Should not be null", response);
         logger.info("Response: {}", response);
     }

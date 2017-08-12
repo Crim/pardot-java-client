@@ -7,6 +7,8 @@ import com.pardot.api.request.campaign.CampaignQueryRequest;
 import com.pardot.api.request.campaign.CampaignReadRequest;
 import com.pardot.api.request.campaign.CampaignUpdateRequest;
 import com.pardot.api.request.email.EmailReadRequest;
+import com.pardot.api.request.email.EmailSendListRequest;
+import com.pardot.api.request.email.EmailSendOneToOneRequest;
 import com.pardot.api.request.email.EmailStatsRequest;
 import com.pardot.api.request.user.UserAbilitiesRequest;
 import com.pardot.api.request.user.UserQueryRequest;
@@ -308,12 +310,32 @@ public class HttpClientRestClient implements RestClient {
         return post(request, new CampaignReadResponseHandler());
     }
 
+    /**
+     * Make API request to read a specific Email.
+     */
     public Email emailRead(final EmailReadRequest request) throws IOException {
         return post(request, new EmailReadResponseHandler());
     }
 
+    /**
+     * Make API request to retrieve stats about a List Email Send.
+     */
     public EmailStatsResponse.Stats emailStats(final EmailStatsRequest request) throws IOException {
         return post(request, new EmailStatsResponseHandler());
+    }
+
+    /**
+     * Make API request to send a 1-to-1 prospect email.
+     */
+    public Email emailSendOneToOne(final EmailSendOneToOneRequest request) throws IOException {
+        return post(request, new EmailReadResponseHandler());
+    }
+
+    /**
+     * Make API request to send a list email.
+     */
+    public Email emailSendList(final EmailSendListRequest request) throws IOException {
+        return post(request, new EmailReadResponseHandler());
     }
 
     /**
