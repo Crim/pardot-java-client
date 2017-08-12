@@ -43,7 +43,14 @@ public class DateParameter {
     }
 
     /**
-     * Define a custom date & time.
+     * Define a custom date and time.
+     * @param year Four digit year, ex. 2017.
+     * @param month Month, 1 through 12.
+     * @param day Day of month.
+     * @param hour Hour of day, 24 time, 0 through 23.
+     * @param min Minute of hour, 0 through 59.
+     * @param sec Second of minute, 0 through 59.
+     * @return Configured DateParameter.
      */
     public static DateParameter custom(final int year, final int month, final int day, final int hour, final int min, final int sec) {
         String gnuDateStr = year + "-" + month + "-" + day + " ";

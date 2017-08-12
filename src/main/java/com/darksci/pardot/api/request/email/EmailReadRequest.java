@@ -21,6 +21,7 @@ public class EmailReadRequest extends BaseRequest<EmailReadRequest> {
      * When set to false, the email will not include the html nor text body message.
      * Defaults to true.
      * @param includeMessage Should the response include the html and text bodies.
+     * @return EmailReadRequest builder.
      */
     public EmailReadRequest withIncludeMessageInResponse(boolean includeMessage) {
         String value = "true";

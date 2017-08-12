@@ -300,27 +300,39 @@ public class HttpClientRestClient implements RestClient {
 
     /**
      * Make API request to query one or more users.
+     * @param request Request definition.
+     * @return Parsed user query response.
+     * @throws IOException on parse errors.
      */
-    public UserQueryResponse.Result userQuery(final UserQueryRequest userQueryRequest) throws IOException {
-        return post(userQueryRequest, new UserQueryResponseHandler());
+    public UserQueryResponse.Result userQuery(final UserQueryRequest request) throws IOException {
+        return post(request, new UserQueryResponseHandler());
     }
 
     /**
      * Make API request to read the abilities of the currently authenticated user.
+     * @param request Request definition.
+     * @return Parsed api response.
+     * @throws IOException on parse errors.
      */
-    public UserAbilitiesResponse.Result userAbilities(final UserAbilitiesRequest userAbilitiesRequest) throws IOException {
-        return post(userAbilitiesRequest, new UserAbilitiesHandler());
+    public UserAbilitiesResponse.Result userAbilities(final UserAbilitiesRequest request) throws IOException {
+        return post(request, new UserAbilitiesHandler());
     }
 
     /**
      * Make API request to read a specific user.
+     * @param request Request definition.
+     * @return Parsed api response.
+     * @throws IOException on parse errors.
      */
-    public User userRead(final UserReadRequest readRequest) throws IOException {
-        return post(readRequest, new UserReadResponseHandler());
+    public User userRead(final UserReadRequest request) throws IOException {
+        return post(request, new UserReadResponseHandler());
     }
 
     /**
      * Make API request to query for one or more campaigns.
+     * @param request Request definition.
+     * @return Parsed api response.
+     * @throws IOException on parse errors.
      */
     public CampaignQueryResponse.Result campaignQuery(final CampaignQueryRequest request) throws IOException {
         return post(request, new CampaignQueryResponseHandler());
@@ -328,6 +340,9 @@ public class HttpClientRestClient implements RestClient {
 
     /**
      * Make API request to read a specific campaign.
+     * @param request Request definition.
+     * @return Parsed api response.
+     * @throws IOException on parse errors.
      */
     public Campaign campaignRead(final CampaignReadRequest request) throws IOException {
         return post(request, new CampaignReadResponseHandler());
@@ -335,6 +350,9 @@ public class HttpClientRestClient implements RestClient {
 
     /**
      * Make API request to create a new Campaign.
+     * @param request Request definition.
+     * @return Parsed api response.
+     * @throws IOException on parse errors.
      */
     public Campaign campaignCreate(final CampaignCreateRequest request) throws IOException {
         return post(request, new CampaignReadResponseHandler());
@@ -342,6 +360,9 @@ public class HttpClientRestClient implements RestClient {
 
     /**
      * Make API request to update an existing Campaign.
+     * @param request Request definition.
+     * @return Parsed api response.
+     * @throws IOException on parse errors.
      */
     public Campaign campaignUpdate(final CampaignUpdateRequest request) throws IOException {
         return post(request, new CampaignReadResponseHandler());
@@ -349,6 +370,9 @@ public class HttpClientRestClient implements RestClient {
 
     /**
      * Make API request to read a specific Email.
+     * @param request Request definition.
+     * @return Parsed api response.
+     * @throws IOException on parse errors.
      */
     public Email emailRead(final EmailReadRequest request) throws IOException {
         return post(request, new EmailReadResponseHandler());
@@ -356,6 +380,9 @@ public class HttpClientRestClient implements RestClient {
 
     /**
      * Make API request to retrieve stats about a List Email Send.
+     * @param request Request definition.
+     * @return Parsed api response.
+     * @throws IOException on parse errors.
      */
     public EmailStatsResponse.Stats emailStats(final EmailStatsRequest request) throws IOException {
         return post(request, new EmailStatsResponseHandler());
@@ -363,6 +390,9 @@ public class HttpClientRestClient implements RestClient {
 
     /**
      * Make API request to send a 1-to-1 prospect email.
+     * @param request Request definition.
+     * @return Parsed api response.
+     * @throws IOException on parse errors.
      */
     public Email emailSendOneToOne(final EmailSendOneToOneRequest request) throws IOException {
         return post(request, new EmailReadResponseHandler());
@@ -370,6 +400,9 @@ public class HttpClientRestClient implements RestClient {
 
     /**
      * Make API request to send a list email.
+     * @param request Request definition.
+     * @return Parsed api response.
+     * @throws IOException on parse errors.
      */
     public Email emailSendList(final EmailSendListRequest request) throws IOException {
         return post(request, new EmailReadResponseHandler());

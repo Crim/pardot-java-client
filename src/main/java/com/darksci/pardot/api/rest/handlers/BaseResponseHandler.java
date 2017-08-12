@@ -50,18 +50,25 @@ public abstract class BaseResponseHandler<T> implements ResponseHandler<T> {
     }
 
     @Override
-    public T handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+    public T handleResponse(final HttpResponse response) throws ClientProtocolException {
         int status = response.getStatusLine().getStatusCode();
         if (status >= 200 && status < 300) {
-            HttpEntity entity = response.getEntity();
-            final String returnStr = entity != null ? EntityUtils.toString(entity) : null;
+            final String responseStr;
+            try {
+                HttpEntity entity = response.getEntity();
+                responseStr = entity != null ? EntityUtils.toString(entity) : null;
 
-            // Fully consume entity.
-            EntityUtils.consume(entity);
+                // Fully consume entity.
+                EntityUtils.consume(entity);
+            } catch (IOException exception) {
+                logger.error("Failed to read entity: {}", exception.getMessage(), exception);
+                // TODO throw exception
+                return null;
+            }
 
             // Return value
             try {
-                return parseResponse(returnStr);
+                return parseResponse(responseStr);
             } catch (JsonParseException exception) {
                 // if underlying input contains invalid content
                 logger.error("Caught exception {}", exception.getMessage(), exception);
@@ -84,6 +91,7 @@ public abstract class BaseResponseHandler<T> implements ResponseHandler<T> {
      * to parse into something more useful and return it!
      * @param responseStr The response string from the request.
      * @return Parsed response.
+     * @throws IOException on parse errors.
      */
     public abstract T parseResponse(final String responseStr) throws IOException;
 
@@ -96,6 +104,7 @@ public abstract class BaseResponseHandler<T> implements ResponseHandler<T> {
 
     /**
      * Utility/debug method for logging a response.
+     * @param response the response string to log.
      */
     protected void logResponse(final String response) {
         logger.info("Response: {}", response);

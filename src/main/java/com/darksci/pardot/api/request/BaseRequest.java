@@ -16,7 +16,7 @@ public abstract class BaseRequest<T> implements Request {
         return (T) params.getOrDefault(name, null);
     }
 
-    protected <T> T setParam(final String name, Object value) {
+    protected T setParam(final String name, Object value) {
         if (value == null) {
             params.remove(name);
         } else {
@@ -29,8 +29,9 @@ public abstract class BaseRequest<T> implements Request {
      * Utility method to set a boolean parameter, converts boolean into string "true"/"false"
      * @param parameterName Name of the parameter to set.
      * @param booleanValue Boolean value to store.
+     * @return BaseRequest
      */
-    protected <T> T setBooleanParam(final String parameterName, final boolean booleanValue) {
+    protected T setBooleanParam(final String parameterName, final boolean booleanValue) {
         String value = "true";
         if (!booleanValue) {
             value = "false";
@@ -40,6 +41,7 @@ public abstract class BaseRequest<T> implements Request {
 
     /**
      * Returns all set RequestParameters for the Request.
+     * @return All set Request Parameters generated from Request builder.
      */
     @Override
     public Map<String, String> getRequestParameters() {

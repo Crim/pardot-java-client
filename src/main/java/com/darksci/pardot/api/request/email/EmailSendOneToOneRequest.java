@@ -93,7 +93,7 @@ public class EmailSendOneToOneRequest extends BaseRequest<EmailSendOneToOneReque
      * @param sendFromAccountOwner True to send from Prospect's account owner, false if not.
      * @return RequestBuilder
      */
-    public EmailSendListRequest withFromAccountOwner(final boolean sendFromAccountOwner) {
+    public EmailSendOneToOneRequest withFromAccountOwner(final boolean sendFromAccountOwner) {
         return setBooleanParam("from_account_owner", sendFromAccountOwner);
     }
 
