@@ -5,12 +5,14 @@ import com.pardot.api.request.campaign.CampaignCreateRequest;
 import com.pardot.api.request.campaign.CampaignQueryRequest;
 import com.pardot.api.request.campaign.CampaignReadRequest;
 import com.pardot.api.request.campaign.CampaignUpdateRequest;
+import com.pardot.api.request.email.EmailReadRequest;
 import com.pardot.api.request.user.UserAbilitiesRequest;
 import com.pardot.api.request.user.UserQueryRequest;
 import com.pardot.api.request.user.UserReadRequest;
 import com.pardot.api.response.LoginResponse;
 import com.pardot.api.response.campaign.Campaign;
 import com.pardot.api.response.campaign.CampaignQueryResponse;
+import com.pardot.api.response.email.Email;
 import com.pardot.api.response.user.User;
 import com.pardot.api.response.user.UserAbilitiesResponse;
 import com.pardot.api.response.user.UserQueryResponse;
@@ -199,6 +201,18 @@ public class HttpClientRestClientTest {
         assertEquals("Has correct Id", campaignId, (long) response.getId());
         assertEquals("Has correct name", campaign.getName(), response.getName());
         assertEquals("Has correct cost", campaign.getCost(), response.getCost());
+        logger.info("Response: {}", response);
+    }
+
+    @Test
+    public void emailReadTest() throws IOException {
+        final long emailId = 167044349L;
+
+        EmailReadRequest request = new EmailReadRequest()
+            .selectById(emailId);
+
+        final Email response = restClient.emailRead(request);
+        assertNotNull("Should not be null", response);
         logger.info("Response: {}", response);
     }
 }

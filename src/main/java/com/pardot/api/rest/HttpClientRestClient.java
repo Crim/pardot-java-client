@@ -6,12 +6,14 @@ import com.pardot.api.request.campaign.CampaignCreateRequest;
 import com.pardot.api.request.campaign.CampaignQueryRequest;
 import com.pardot.api.request.campaign.CampaignReadRequest;
 import com.pardot.api.request.campaign.CampaignUpdateRequest;
+import com.pardot.api.request.email.EmailReadRequest;
 import com.pardot.api.request.user.UserAbilitiesRequest;
 import com.pardot.api.request.user.UserQueryRequest;
 import com.pardot.api.request.user.UserReadRequest;
 import com.pardot.api.response.LoginResponse;
 import com.pardot.api.response.campaign.Campaign;
 import com.pardot.api.response.campaign.CampaignQueryResponse;
+import com.pardot.api.response.email.Email;
 import com.pardot.api.response.user.User;
 import com.pardot.api.response.user.UserAbilitiesResponse;
 import com.pardot.api.response.user.UserQueryResponse;
@@ -19,6 +21,7 @@ import com.pardot.api.rest.handlers.LoginResponseHandler;
 import com.pardot.api.rest.handlers.StringResponseHandler;
 import com.pardot.api.rest.handlers.campaign.CampaignQueryResponseHandler;
 import com.pardot.api.rest.handlers.campaign.CampaignReadResponseHandler;
+import com.pardot.api.rest.handlers.email.EmailReadResponseHandler;
 import com.pardot.api.rest.handlers.user.UserAbilitiesHandler;
 import com.pardot.api.rest.handlers.user.UserQueryResponseHandler;
 import com.pardot.api.rest.handlers.user.UserReadResponseHandler;
@@ -312,5 +315,9 @@ public class HttpClientRestClient implements RestClient {
             + "/" + endPoint
             + "/version/"
             + configuration.getPardotApiVersion();
+    }
+
+    public Email emailRead(final EmailReadRequest request) throws IOException {
+        return post(request, new EmailReadResponseHandler());
     }
 }

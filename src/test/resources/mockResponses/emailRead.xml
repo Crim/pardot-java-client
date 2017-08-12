@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rsp stat="ok" version="1.0">
+    <email>
+        <id>12345</id>
+        <name>Test Email To Stephen</name>
+        <isOneToOne>true</isOneToOne>
+        <subject>This is the Subject</subject>
+        <message>
+            <text>%%first_name%%,
+
+                This is some default email content that you can change or delete as you see fit. It's a good starting point for a basic email that looks personal.
+
+                Regards,
+                %%user_name%%
+                %%user_job_title%%
+                %%user_phone%%
+
+                You are receiving this email because you signed up to receive our monthly newsletter at http://www.example.com
+                Unsubscribe
+                %%unsubscribe%%
+
+                from email communications
+
+                %%account_address%%</text>
+            <html>&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;
+                &lt;html lang=&quot;en&quot; xml:lang=&quot;en&quot; xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
+                &lt;head&gt;&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html;&quot; /&gt;
+                &lt;title&gt;Email Newsletter&lt;/title&gt;
+                &lt;/head&gt;
+                &lt;body style=&quot;font-family: Helvetica, Arial, sans-serif; font-size: 12px&quot;&gt;
+                &lt;p&gt;%%first_name%%,&lt;br /&gt;
+                &lt;br /&gt;
+                This is some default email content that you can change or delete as you see fit. It&amp;#39;s a good starting point for a basic email that looks personal.&lt;br /&gt;
+                &lt;br /&gt;
+                Regards,&lt;br /&gt;
+                %%user_name%%&lt;br /&gt;
+                %%user_job_title%%&lt;br /&gt;
+                %%user_phone%%&lt;/p&gt;
+
+                &lt;p&gt;You are receiving this email because you signed up to receive our monthly newsletter at http://www.example.com&lt;br /&gt;
+                &lt;a href=&quot;%%unsubscribe%%&quot;&gt;Unsubscribe&lt;/a&gt; from email communications&lt;br /&gt;
+                &lt;br /&gt;
+                %%account_address%%&lt;/p&gt;
+                &lt;/body&gt;
+                &lt;/html&gt;
+            </html>
+        </message>
+        <created_at>2017-08-11 21:41:08</created_at>
+    </email>
+</rsp>

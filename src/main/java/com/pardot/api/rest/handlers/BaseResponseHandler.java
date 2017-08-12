@@ -68,6 +68,7 @@ public abstract class BaseResponseHandler<T> implements ResponseHandler<T> {
             } catch (JsonMappingException exception) {
                 // if the input JSON structure does not match structure
                 logger.error("Caught exception {}", exception.getMessage(), exception);
+                // TODO throw parsing exception
             } catch (IOException exception) {
                 // if a low-level I/O problem happens when parsing
                 logger.error("Caught exception {}", exception.getMessage(), exception);
