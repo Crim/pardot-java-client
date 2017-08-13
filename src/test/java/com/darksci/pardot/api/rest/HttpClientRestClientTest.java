@@ -1,7 +1,9 @@
 package com.darksci.pardot.api.rest;
 
 import categories.IntegrationTest;
+import com.darksci.pardot.api.request.account.AccountReadRequest;
 import com.darksci.pardot.api.request.email.EmailSendListRequest;
+import com.darksci.pardot.api.response.account.Account;
 import com.darksci.pardot.api.response.email.Email;
 import com.darksci.pardot.api.response.user.UserQueryResponse;
 import com.darksci.pardot.api.Configuration;
@@ -92,6 +94,18 @@ public class HttpClientRestClientTest {
         logger.info("Response: {}", response);
         assertNotNull("Should not be null", response);
         assertNotNull("Should have non-null property", response.getApiKey());
+    }
+
+    /**
+     * Attempt to retrieve account.
+     */
+    @Test
+    public void accountReadTest() throws IOException {
+        AccountReadRequest readRequest = new AccountReadRequest();
+
+        final Account response = restClient.accountRead(readRequest);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
     }
 
     /**

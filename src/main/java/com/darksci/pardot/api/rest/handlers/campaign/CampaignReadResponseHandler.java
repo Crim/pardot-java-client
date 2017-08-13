@@ -12,7 +12,6 @@ import java.io.IOException;
  * Handles parsing CampaignRead API responses into POJOs.
  */
 public class CampaignReadResponseHandler extends BaseResponseHandler<Campaign> {
-    private static final Logger logger = LoggerFactory.getLogger(CampaignReadResponseHandler.class);
 
     @Override
     public Campaign parseResponse(final String responseStr) throws IOException {

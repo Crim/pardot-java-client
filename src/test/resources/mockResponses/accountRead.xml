@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rsp stat="ok" version="1.0">
+    <account>
+        <id>1</id>
+        <company>Test Account</company>
+        <level>SFDC Ultimate Edition</level>
+        <website>http://www.example.com</website>
+        <vanity_domain>http://go.example.com</vanity_domain>
+        <plugin_campaign_id>2</plugin_campaign_id>
+        <tracking_code_template>piAId = '10001';&#13;
+            &#13;
+            &#13;
+            (function() {&#13;
+            function async_load(){&#13;
+            var s = document.createElement('script'); s.type = 'text/javascript';&#13;
+            s.src = ('https:' == document.location.protocol ? 'https://pi' : 'http://cdn') + '.pardot.com/pd.js';&#13;
+            var c = document.getElementsByTagName('script')[0]; c.parentNode.insertBefore(s, c);&#13;
+            }&#13;
+            if(window.attachEvent) { window.attachEvent('onload', async_load); }&#13;
+            else { window.addEventListener('load', async_load, false); }&#13;
+            })();</tracking_code_template>
+        <address1>123 Main Street</address1>
+        <address2>addr2</address2>
+        <city>Atlanta</city>
+        <state>GA</state>
+        <territory>Test Territory</territory>
+        <zip>30064</zip>
+        <country>United States</country>
+        <phone>123-456-4789</phone>
+        <fax></fax>
+        <created_at>2016-01-04 10:39:26</created_at>
+        <updated_at>2017-08-10 05:32:19</updated_at>
+    </account>
+</rsp>

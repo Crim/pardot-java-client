@@ -11,9 +11,6 @@ import java.io.IOException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-/**
- *
- */
 public class CampaignReadResponseHandlerTest extends BaseResponseHandlerTest {
     private static final Logger logger = LoggerFactory.getLogger(CampaignReadResponseHandlerTest.class);
 

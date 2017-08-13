@@ -1,5 +1,8 @@
 package com.darksci.pardot.api.rest;
 
+import com.darksci.pardot.api.request.account.AccountReadRequest;
+import com.darksci.pardot.api.response.account.Account;
+import com.darksci.pardot.api.rest.handlers.account.AccountReadResponseHandler;
 import com.darksci.pardot.api.rest.handlers.campaign.CampaignQueryResponseHandler;
 import com.darksci.pardot.api.Configuration;
 import com.darksci.pardot.api.request.Request;
@@ -296,6 +299,16 @@ public class HttpClientRestClient implements RestClient {
             logger.error("Failed to Authenticate: {}", e.getMessage(), e);
         }
         return null;
+    }
+
+    /**
+     * Make API request to read the account of the currently authenticated user.
+     * @param request Request definition.
+     * @return Parsed api response.
+     * @throws IOException on parse errors.
+     */
+    public Account accountRead(final AccountReadRequest request) throws IOException {
+        return post(request, new AccountReadResponseHandler());
     }
 
     /**
