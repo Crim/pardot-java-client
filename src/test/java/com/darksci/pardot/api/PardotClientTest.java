@@ -11,6 +11,7 @@ import com.darksci.pardot.api.request.email.EmailSendListRequest;
 import com.darksci.pardot.api.request.email.EmailSendOneToOneRequest;
 import com.darksci.pardot.api.request.email.EmailStatsRequest;
 import com.darksci.pardot.api.request.login.LoginRequest;
+import com.darksci.pardot.api.request.prospect.ProspectReadRequest;
 import com.darksci.pardot.api.request.user.UserAbilitiesRequest;
 import com.darksci.pardot.api.request.user.UserQueryRequest;
 import com.darksci.pardot.api.request.user.UserReadRequest;
@@ -20,6 +21,7 @@ import com.darksci.pardot.api.response.campaign.CampaignQueryResponse;
 import com.darksci.pardot.api.response.email.Email;
 import com.darksci.pardot.api.response.email.EmailStatsResponse;
 import com.darksci.pardot.api.response.login.LoginResponse;
+import com.darksci.pardot.api.response.prospect.Prospect;
 import com.darksci.pardot.api.response.user.User;
 import com.darksci.pardot.api.response.user.UserAbilitiesResponse;
 import com.darksci.pardot.api.response.user.UserQueryResponse;
@@ -277,7 +279,7 @@ public class PardotClientTest {
      * Test sending a 1-to-1 email to a specific prospect.
      */
     @Test
-    public void emailSendListTest() throws IOException {
+    public void emailSendListTest() {
         final long campaignId = 14885;
         final long listId = 33173;
 
@@ -295,6 +297,20 @@ public class PardotClientTest {
             .withHtmlContent("<html><body><h1>Hello %%first_name%%!</h1></body></html>");
 
         final Email response = client.emailSendList(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test reading prospect by id.
+     */
+    @Test
+    public void prospectReadTest() {
+        final long prospectId = 59135263;
+
+        final Prospect response = client.prospectRead(new ProspectReadRequest()
+            .selectById(prospectId)
+        );
         assertNotNull("Should not be null", response);
         logger.info("Response: {}", response);
     }

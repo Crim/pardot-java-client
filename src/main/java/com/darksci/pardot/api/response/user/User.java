@@ -15,7 +15,9 @@ public class User {
     private String lastName;
     private String jobTitle;
     private String role;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updatedAt;
 
     public User() {
@@ -49,12 +51,10 @@ public class User {
         return role;
     }
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }

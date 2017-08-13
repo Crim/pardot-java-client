@@ -31,8 +31,8 @@ public class AccountReadResponseParserTest extends BaseResponseParserTest {
         assertEquals("Has correct vanity domain", "http://go.example.com", account.getVanityDomain());
         assertEquals("Has correct plugin campaign id", 2, (long) account.getPluginCampaignId());
         assertNotNull("Has non-null tracking code template", account.getTrackingCodeTemplate());
-        assertEquals("Has correct address1", "123 Main Street", account.getAddress1());
-        assertEquals("Has correct address2", "addr2", account.getAddress2());
+        assertEquals("Has correct address1", "123 Main Street", account.getAddressOne());
+        assertEquals("Has correct address2", "addr2", account.getAddressTwo());
         assertEquals("Has correct city", "Atlanta", account.getCity());
         assertEquals("Has correct state", "GA", account.getState());
         assertEquals("Has correct territory", "Test Territory", account.getTerritory());

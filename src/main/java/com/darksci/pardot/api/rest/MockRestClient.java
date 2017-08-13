@@ -5,8 +5,6 @@ import com.darksci.pardot.api.request.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-
 /**
  * A Mock Rest Client for testing.
  */

@@ -8,6 +8,7 @@ import com.darksci.pardot.api.parser.campaign.CampaignReadResponseParser;
 import com.darksci.pardot.api.parser.email.EmailReadResponseParser;
 import com.darksci.pardot.api.parser.email.EmailStatsResponseParser;
 import com.darksci.pardot.api.parser.login.LoginResponseParser;
+import com.darksci.pardot.api.parser.prospect.ProspectReadResponseParser;
 import com.darksci.pardot.api.parser.user.UserAbilitiesParser;
 import com.darksci.pardot.api.parser.user.UserQueryResponseParser;
 import com.darksci.pardot.api.parser.user.UserReadResponseParser;
@@ -22,6 +23,7 @@ import com.darksci.pardot.api.request.email.EmailSendListRequest;
 import com.darksci.pardot.api.request.email.EmailSendOneToOneRequest;
 import com.darksci.pardot.api.request.email.EmailStatsRequest;
 import com.darksci.pardot.api.request.login.LoginRequest;
+import com.darksci.pardot.api.request.prospect.ProspectReadRequest;
 import com.darksci.pardot.api.request.user.UserAbilitiesRequest;
 import com.darksci.pardot.api.request.user.UserQueryRequest;
 import com.darksci.pardot.api.request.user.UserReadRequest;
@@ -32,6 +34,7 @@ import com.darksci.pardot.api.response.campaign.CampaignQueryResponse;
 import com.darksci.pardot.api.response.email.Email;
 import com.darksci.pardot.api.response.email.EmailStatsResponse;
 import com.darksci.pardot.api.response.login.LoginResponse;
+import com.darksci.pardot.api.response.prospect.Prospect;
 import com.darksci.pardot.api.response.user.User;
 import com.darksci.pardot.api.response.user.UserAbilitiesResponse;
 import com.darksci.pardot.api.response.user.UserQueryResponse;
@@ -283,6 +286,15 @@ public class PardotClient implements AutoCloseable {
      */
     public Email emailSendList(final EmailSendListRequest request) {
         return submitRequest(request, new EmailReadResponseParser());
+    }
+
+    /**
+     * Make API request to read a prospect.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public Prospect prospectRead(final ProspectReadRequest request) {
+        return submitRequest(request, new ProspectReadResponseParser());
     }
 
     /**

@@ -3,8 +3,6 @@ package com.darksci.pardot.api.rest;
 import com.darksci.pardot.api.Configuration;
 import com.darksci.pardot.api.request.Request;
 
-import java.io.IOException;
-
 /**
  * Interface for making HTTP calls.
  */

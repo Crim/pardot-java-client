@@ -1,8 +1,5 @@
 package com.darksci.pardot.api.rest;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * Exception when an underlying error occurs in a RestClient implementation.
  */

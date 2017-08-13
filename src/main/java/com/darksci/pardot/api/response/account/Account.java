@@ -1,6 +1,7 @@
 package com.darksci.pardot.api.response.account;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import org.joda.time.DateTime;
 
 /**
@@ -14,8 +15,10 @@ public class Account {
     private String vanityDomain;
     private Long pluginCampaignId;
     private String trackingCodeTemplate;
-    private String address1;
-    private String address2;
+    @JacksonXmlProperty(localName = "address1")
+    private String addressOne;
+    @JacksonXmlProperty(localName = "address2")
+    private String addressTwo;
     private String city;
     private String state;
     private String territory;
@@ -56,12 +59,12 @@ public class Account {
         return trackingCodeTemplate;
     }
 
-    public String getAddress1() {
-        return address1;
+    public String getAddressOne() {
+        return addressOne;
     }
 
-    public String getAddress2() {
-        return address2;
+    public String getAddressTwo() {
+        return addressTwo;
     }
 
     public String getCity() {
@@ -110,8 +113,8 @@ public class Account {
             + ", vanityDomain='" + vanityDomain + '\''
             + ", pluginCampaignId=" + pluginCampaignId
             + ", trackingCodeTemplate='" + trackingCodeTemplate + '\''
-            + ", address1='" + address1 + '\''
-            + ", address2='" + address2 + '\''
+            + ", addressOne='" + addressOne + '\''
+            + ", addressTwo='" + addressTwo + '\''
             + ", city='" + city + '\''
             + ", state='" + state + '\''
             + ", territory='" + territory + '\''

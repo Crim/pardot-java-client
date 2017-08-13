@@ -1,8 +1,5 @@
 package com.darksci.pardot.api;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * Thrown when a parser implementation has an error.
  */

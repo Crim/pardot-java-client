@@ -6,8 +6,6 @@ import com.darksci.pardot.api.request.campaign.CampaignQueryRequest;
 import com.darksci.pardot.api.response.account.Account;
 import com.darksci.pardot.api.response.campaign.CampaignQueryResponse;
 
-import java.io.IOException;
-
 /**
  * Just a simple example code showing basic usage.
  */
