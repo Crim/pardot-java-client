@@ -84,7 +84,7 @@ public class PardotClient implements AutoCloseable {
         this.restClient = restClient;
     }
 
-    private <T> T submitRequest(final Request request, ResponseParser<T> responseParser) throws IOException {
+    private <T> T submitRequest(final Request request, ResponseParser<T> responseParser) {
         // Ugly hack,
         // avoid doing login check if we're doing a login request.
         if (!(request instanceof LoginRequest)) {
@@ -102,13 +102,21 @@ public class PardotClient implements AutoCloseable {
         if (restResponse.getHttpCode() >= 200 && restResponse.getHttpCode() < 300) {
             // High level check for error response
             if (restResponse.getResponseStr().contains("<rsp stat=\"fail\"")) {
-                // Parse error response
-                final ErrorResponse error = new ErrorResponseParser().parseResponse(restResponse.getResponseStr());
+                try {
+                    // Parse error response
+                    final ErrorResponse error = new ErrorResponseParser().parseResponse(restResponse.getResponseStr());
 
-                // throw exception
-                throw new InvalidRequestException(error.getMessage(), error.getCode());
+                    // throw exception
+                    throw new InvalidRequestException(error.getMessage(), error.getCode());
+                } catch (IOException exception) {
+                    throw new ParserException(exception.getMessage(), exception);
+                }
             }
-            return responseParser.parseResponse(restResponse.getResponseStr());
+            try {
+                return responseParser.parseResponse(restResponse.getResponseStr());
+            } catch (IOException exception) {
+                throw new ParserException(exception.getMessage(), exception);
+            }
         }
         // Otherwise throw an exception.
         throw new InvalidRequestException("Invalid http response code from server: " + restResponse.getHttpCode(), restResponse.getHttpCode());
@@ -144,7 +152,7 @@ public class PardotClient implements AutoCloseable {
      * If no existing API key is found, this will attempt to authenticate and
      * get a new API key.
      */
-    private void checkLogin() throws IOException {
+    private void checkLogin() {
         if (configuration.getApiKey() != null) {
             return;
         }
@@ -165,7 +173,7 @@ public class PardotClient implements AutoCloseable {
      * Make login request
      * @return LoginResponse returned from server.
      */
-    public LoginResponse login(LoginRequest request) throws IOException {
+    public LoginResponse login(LoginRequest request) {
         return submitRequest(request, new LoginResponseParser());
     }
 
@@ -173,9 +181,8 @@ public class PardotClient implements AutoCloseable {
      * Make API request to read the account of the currently authenticated user.
      * @param request Request definition.
      * @return Parsed api response.
-     * @throws IOException on parse errors.
      */
-    public Account accountRead(final AccountReadRequest request) throws IOException {
+    public Account accountRead(final AccountReadRequest request) {
         return submitRequest(request, new AccountReadResponseParser());
     }
 
@@ -183,9 +190,8 @@ public class PardotClient implements AutoCloseable {
      * Make API request to query one or more users.
      * @param request Request definition.
      * @return Parsed user query response.
-     * @throws IOException on parse errors.
      */
-    public UserQueryResponse.Result userQuery(final UserQueryRequest request) throws IOException {
+    public UserQueryResponse.Result userQuery(final UserQueryRequest request) {
         return submitRequest(request, new UserQueryResponseParser());
     }
 
@@ -193,9 +199,8 @@ public class PardotClient implements AutoCloseable {
      * Make API request to read the abilities of the currently authenticated user.
      * @param request Request definition.
      * @return Parsed api response.
-     * @throws IOException on parse errors.
      */
-    public UserAbilitiesResponse.Result userAbilities(final UserAbilitiesRequest request) throws IOException {
+    public UserAbilitiesResponse.Result userAbilities(final UserAbilitiesRequest request) {
         return submitRequest(request, new UserAbilitiesParser());
     }
 
@@ -203,9 +208,8 @@ public class PardotClient implements AutoCloseable {
      * Make API request to read a specific user.
      * @param request Request definition.
      * @return Parsed api response.
-     * @throws IOException on parse errors.
      */
-    public User userRead(final UserReadRequest request) throws IOException {
+    public User userRead(final UserReadRequest request) {
         return submitRequest(request, new UserReadResponseParser());
     }
 
@@ -213,9 +217,8 @@ public class PardotClient implements AutoCloseable {
      * Make API request to query for one or more campaigns.
      * @param request Request definition.
      * @return Parsed api response.
-     * @throws IOException on parse errors.
      */
-    public CampaignQueryResponse.Result campaignQuery(final CampaignQueryRequest request) throws IOException {
+    public CampaignQueryResponse.Result campaignQuery(final CampaignQueryRequest request) {
         return submitRequest(request, new CampaignQueryResponseParser());
     }
 
@@ -223,9 +226,8 @@ public class PardotClient implements AutoCloseable {
      * Make API request to read a specific campaign.
      * @param request Request definition.
      * @return Parsed api response.
-     * @throws IOException on parse errors.
      */
-    public Campaign campaignRead(final CampaignReadRequest request) throws IOException {
+    public Campaign campaignRead(final CampaignReadRequest request) {
         return submitRequest(request, new CampaignReadResponseParser());
     }
 
@@ -233,9 +235,8 @@ public class PardotClient implements AutoCloseable {
      * Make API request to create a new Campaign.
      * @param request Request definition.
      * @return Parsed api response.
-     * @throws IOException on parse errors.
      */
-    public Campaign campaignCreate(final CampaignCreateRequest request) throws IOException {
+    public Campaign campaignCreate(final CampaignCreateRequest request) {
         return submitRequest(request, new CampaignReadResponseParser());
     }
 
@@ -243,9 +244,8 @@ public class PardotClient implements AutoCloseable {
      * Make API request to update an existing Campaign.
      * @param request Request definition.
      * @return Parsed api response.
-     * @throws IOException on parse errors.
      */
-    public Campaign campaignUpdate(final CampaignUpdateRequest request) throws IOException {
+    public Campaign campaignUpdate(final CampaignUpdateRequest request) {
         return submitRequest(request, new CampaignReadResponseParser());
     }
 
@@ -253,9 +253,8 @@ public class PardotClient implements AutoCloseable {
      * Make API request to read a specific Email.
      * @param request Request definition.
      * @return Parsed api response.
-     * @throws IOException on parse errors.
      */
-    public Email emailRead(final EmailReadRequest request) throws IOException {
+    public Email emailRead(final EmailReadRequest request) {
         return submitRequest(request, new EmailReadResponseParser());
     }
 
@@ -263,9 +262,8 @@ public class PardotClient implements AutoCloseable {
      * Make API request to retrieve stats about a List Email Send.
      * @param request Request definition.
      * @return Parsed api response.
-     * @throws IOException on parse errors.
      */
-    public EmailStatsResponse.Stats emailStats(final EmailStatsRequest request) throws IOException {
+    public EmailStatsResponse.Stats emailStats(final EmailStatsRequest request) {
         return submitRequest(request, new EmailStatsResponseParser());
     }
 
@@ -273,9 +271,8 @@ public class PardotClient implements AutoCloseable {
      * Make API request to send a 1-to-1 prospect email.
      * @param request Request definition.
      * @return Parsed api response.
-     * @throws IOException on parse errors.
      */
-    public Email emailSendOneToOne(final EmailSendOneToOneRequest request) throws IOException {
+    public Email emailSendOneToOne(final EmailSendOneToOneRequest request) {
         return submitRequest(request, new EmailReadResponseParser());
     }
 
@@ -283,9 +280,8 @@ public class PardotClient implements AutoCloseable {
      * Make API request to send a list email.
      * @param request Request definition.
      * @return Parsed api response.
-     * @throws IOException on parse errors.
      */
-    public Email emailSendList(final EmailSendListRequest request) throws IOException {
+    public Email emailSendList(final EmailSendListRequest request) {
         return submitRequest(request, new EmailReadResponseParser());
     }
 

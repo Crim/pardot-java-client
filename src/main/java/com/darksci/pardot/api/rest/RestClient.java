@@ -20,9 +20,9 @@ public interface RestClient {
      * Make a request against the Pardot API.
      * @param request The request to submit.
      * @return The response, in UTF-8 String format.
-     * @throws IOException if something goes wrong?
+     * @throws RestException When something goes wrong in an underlying implementation.
      */
-    RestResponse submitRequest(final Request request) throws IOException;
+    RestResponse submitRequest(final Request request) throws RestException;
 
     /**
      * Called to release any internally held resources.

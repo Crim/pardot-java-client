@@ -16,7 +16,7 @@ public class Example {
     /**
      * Example code.
      */
-    public static void example() throws IOException {
+    public static void example() {
         /*
          * Create a new configuration object with your Pardot credentials.
          *
@@ -59,7 +59,7 @@ public class Example {
     /**
      * Example code showing off Auto-closable.
      */
-    public static void autoCloseableExample() throws IOException {
+    public static void autoCloseableExample() {
         /*
          * Since PardotClient implements Autoclosable, you can also use the try-with-resources pattern.
          */
