@@ -24,6 +24,12 @@ Official Documentation: [Authentication](http://developer.pardot.com/#authentica
 
 Authenticating with Pardot's API using your Pardot Username, Password, and User Token.  
 
+### Accounts
+Official Documentation: [Accounts](http://developer.pardot.com/kb/api-version-3/accounts/)
+
+- Read
+
+
 ### Campaigns
 Official Documentation: [Campaigns](http://developer.pardot.com/kb/api-version-3/campaigns/)
 
