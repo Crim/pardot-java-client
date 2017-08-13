@@ -19,7 +19,7 @@ public class MockRestClient implements RestClient {
     }
 
     @Override
-    public RestResponse submitRequest(final Request request) throws IOException {
+    public RestResponse submitRequest(final Request request) throws RestException {
         // Not implemented yet.
         return null;
     }

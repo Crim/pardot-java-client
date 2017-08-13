@@ -133,11 +133,15 @@ public class HttpClientRestClient implements RestClient {
      * Make a request against the Pardot API.
      * @param request The request to submit.
      * @return The response, in UTF-8 String format.
-     * @throws IOException if something goes wrong?
+     * @throws RestException if something goes wrong.
      */
     @Override
-    public RestResponse submitRequest(final Request request) throws IOException {
-        return submitRequest(request, new RestResponseHandler());
+    public RestResponse submitRequest(final Request request) throws RestException {
+        try {
+            return submitRequest(request, new RestResponseHandler());
+        } catch (IOException exception) {
+            throw new RestException(exception.getMessage(), exception);
+        }
     }
 
     /**
