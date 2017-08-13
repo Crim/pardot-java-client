@@ -117,27 +117,6 @@ public class HttpClientRestClient implements RestClient {
         httpClient = clientBuilder.build();
     }
 
-    /**
-     * Test POST method for now.
-     *
-     * @param url Url to POST to.
-     * @param postParams Any POST parameters to include
-     * @return String representation of response.
-     */
-    public String submitRequest(final String url, Map<String, String> postParams) throws IOException {
-        return submitRequest(url, postParams, new StringResponseHandler());
-    }
-
-    /**
-     * Make a request against the Pardot API.
-     * @param request The request to submit.
-     * @return The response, in UTF-8 String format.
-     * @throws IOException if something goes wrong?
-     */
-    public RestResponse submitRequest(final Request request) throws IOException {
-        return submitRequest(request, new RestResponseHandler());
-    }
-
     @Override
     public void close() {
         if (httpClient != null) {
@@ -148,6 +127,17 @@ public class HttpClientRestClient implements RestClient {
             }
         }
         httpClient = null;
+    }
+
+    /**
+     * Make a request against the Pardot API.
+     * @param request The request to submit.
+     * @return The response, in UTF-8 String format.
+     * @throws IOException if something goes wrong?
+     */
+    @Override
+    public RestResponse submitRequest(final Request request) throws IOException {
+        return submitRequest(request, new RestResponseHandler());
     }
 
     /**
