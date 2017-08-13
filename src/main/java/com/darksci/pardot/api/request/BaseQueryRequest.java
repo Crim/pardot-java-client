@@ -13,7 +13,7 @@ public abstract class BaseQueryRequest<T> extends BaseRequest<T> {
      * @param idGreaterThan Id constraint.
      * @return BaseQueryRequest
      */
-    public T withIdGreaterThan(final Integer idGreaterThan) {
+    public T withIdGreaterThan(final Long idGreaterThan) {
         return setParam("id_greater_than", idGreaterThan);
     }
 
@@ -22,7 +22,7 @@ public abstract class BaseQueryRequest<T> extends BaseRequest<T> {
      * @param idLessThan Id constraint.
      * @return BaseQueryRequest
      */
-    public T withIdLessThan(final Integer idLessThan) {
+    public T withIdLessThan(final Long idLessThan) {
         return setParam("id_less_than", idLessThan);
     }
 

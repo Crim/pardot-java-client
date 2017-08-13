@@ -15,11 +15,17 @@ public class MockRestClient implements RestClient {
 
     @Override
     public void init(final Configuration configuration) {
-
+        // Noop.
     }
 
     @Override
     public RestResponse submitRequest(final Request request) throws IOException {
+        // Not implemented yet.
         return null;
+    }
+
+    @Override
+    public void close() {
+        // Noop.
     }
 }

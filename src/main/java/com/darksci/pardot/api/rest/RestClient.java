@@ -23,4 +23,10 @@ public interface RestClient {
      * @throws IOException if something goes wrong?
      */
     RestResponse submitRequest(final Request request) throws IOException;
+
+    /**
+     * Called to release any internally held resources.
+     */
+    void close();
+
 }

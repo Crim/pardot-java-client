@@ -46,7 +46,7 @@ import java.io.IOException;
 /**
  * Interface for Pardot's API.
  */
-public class PardotClient {
+public class PardotClient implements AutoCloseable {
     private static final Logger logger = LoggerFactory.getLogger(PardotClient.class);
 
     /**
@@ -287,5 +287,12 @@ public class PardotClient {
      */
     public Email emailSendList(final EmailSendListRequest request) throws IOException {
         return submitRequest(request, new EmailReadResponseParser());
+    }
+
+    /**
+     * Clean up instance, releasing any resources held internally.
+     */
+    public void close() {
+        getRestClient().close();
     }
 }

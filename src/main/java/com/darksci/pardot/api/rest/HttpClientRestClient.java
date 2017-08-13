@@ -138,6 +138,18 @@ public class HttpClientRestClient implements RestClient {
         return submitRequest(request, new RestResponseHandler());
     }
 
+    @Override
+    public void close() {
+        if (httpClient != null) {
+            try {
+                httpClient.close();
+            } catch (IOException e) {
+                logger.error("Error closing: {}", e.getMessage(), e);
+            }
+        }
+        httpClient = null;
+    }
+
     /**
      * For issuing an API Request.
      * @param request The Request to perform.
