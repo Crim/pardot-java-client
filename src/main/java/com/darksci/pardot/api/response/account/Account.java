@@ -2,8 +2,6 @@ package com.darksci.pardot.api.response.account;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.joda.time.DateTime;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Represents a Pardot Account.
