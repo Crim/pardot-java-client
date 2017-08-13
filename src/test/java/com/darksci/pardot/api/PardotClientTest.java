@@ -107,7 +107,7 @@ public class PardotClientTest {
     @Test
     public void userQueryTest() throws IOException {
         UserQueryRequest userQueryRequest = new UserQueryRequest()
-            .withIdGreaterThan(10)
+            .withIdGreaterThan(10L)
             .withLimit(1)
             .withArchivedUsersOnly(true)
             .withSortByCreatedAt()
