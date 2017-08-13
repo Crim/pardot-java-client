@@ -118,7 +118,20 @@ Official Documentation: [Users](http://developer.pardot.com/kb/api-version-3/use
 
 ## How to Contribute 
 
-More information soon.
+Want to help implement the missing API end points?  Fork the repository, write some code, and 
+submit a PR to the project!
+
+Implementing new API requests really only requires implementing the two following interfaces, along with
+minimal glue code.
+
+### [Request](/blob/master/src/main/java/com/darksci/pardot/api/request/Request.java)
+The Request interface can typically be implemented by extending either [BaseRequest](/blob/master/src/main/java/com/darksci/pardot/api/request/BaseRequest.java) or [BaseQueryRequest](/blob/master/src/main/java/com/darksci/pardot/api/request/BaseQueryRequest.java).
+This defines the end point that the request will hit, along with what parameters will be
+passed along with it.
+
+### [ResponseParser](/blob/master/src/main/java/com/darksci/pardot/api/parser/ResponseParser.java)
+The ResponseParser interface defines how to take the API's response and convert it back into
+user friendly Plain Old Java Objects (POJOs).
 
 ## Changelog
 
