@@ -10,6 +10,11 @@ public class Configuration {
     private final String password;
     private final String userKey;
 
+    /**
+     * Optionally you can re-use an existing known good api key.
+     */
+    private String apiKey = null;
+
     // Optional Proxy Configuration
     private String proxyHost = null;
     private int proxyPort = 0;
@@ -105,6 +110,14 @@ public class Configuration {
 
     public void setPardotApiVersion(final String pardotApiVersion) {
         this.pardotApiVersion = pardotApiVersion;
+    }
+
+    public String getApiKey() {
+        return apiKey;
+    }
+
+    public void setApiKey(final String apiKey) {
+        this.apiKey = apiKey;
     }
 
     @Override
