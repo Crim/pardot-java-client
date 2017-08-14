@@ -349,6 +349,7 @@ public class PardotClient implements AutoCloseable {
     public ProspectQueryResponse.Result prospectQuery(final ProspectQueryRequest request) {
         return submitRequest(request, new ProspectQueryResponseParser());
     }
+    
     /**
      * Make API request to delete prospects.
      * @param request Request definition.
