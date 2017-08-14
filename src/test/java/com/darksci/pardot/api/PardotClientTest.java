@@ -11,8 +11,12 @@ import com.darksci.pardot.api.request.email.EmailSendListRequest;
 import com.darksci.pardot.api.request.email.EmailSendOneToOneRequest;
 import com.darksci.pardot.api.request.email.EmailStatsRequest;
 import com.darksci.pardot.api.request.login.LoginRequest;
+import com.darksci.pardot.api.request.prospect.ProspectCreateRequest;
+import com.darksci.pardot.api.request.prospect.ProspectDeleteRequest;
 import com.darksci.pardot.api.request.prospect.ProspectQueryRequest;
 import com.darksci.pardot.api.request.prospect.ProspectReadRequest;
+import com.darksci.pardot.api.request.prospect.ProspectUpdateRequest;
+import com.darksci.pardot.api.request.prospect.ProspectUpsertRequest;
 import com.darksci.pardot.api.request.user.UserAbilitiesRequest;
 import com.darksci.pardot.api.request.user.UserQueryRequest;
 import com.darksci.pardot.api.request.user.UserReadRequest;
@@ -313,6 +317,89 @@ public class PardotClientTest {
         final Prospect response = client.prospectRead(new ProspectReadRequest()
             .selectById(prospectId)
         );
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test creating prospect.
+     */
+    @Test
+    public void prospectCreateTest() {
+        final Prospect prospect = new Prospect();
+        prospect.setEmail("random-email" + System.currentTimeMillis() + "@example.com");
+        prospect.setFirstName("Test");
+        prospect.setLastName("User");
+        prospect.setCity("Some City");
+
+        final ProspectCreateRequest request = new ProspectCreateRequest()
+            .withProspect(prospect);
+
+        // Issue request
+        final Prospect response = client.prospectCreate(request);
+
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test creating prospect.
+     */
+    @Test
+    public void prospectUpsertTest() {
+        final Prospect prospect = new Prospect();
+        prospect.setEmail("random-email" + System.currentTimeMillis() + "@example.com");
+        prospect.setFirstName("Test");
+        prospect.setLastName("User");
+        prospect.setCity("Some City");
+
+        final ProspectUpsertRequest request = new ProspectUpsertRequest()
+            .withProspect(prospect);
+
+        // Issue request
+        final Prospect response = client.prospectUpsert(request);
+
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test creating prospect.
+     */
+    @Test
+    public void prospectUpdateTest() {
+        final long prospectId = 59138429L;
+
+        final Prospect prospect = new Prospect();
+        prospect.setId(prospectId);
+        prospect.setFirstName("Test");
+        prospect.setLastName("User");
+        prospect.setCity("Some City");
+        prospect.setCompany("New Company");
+
+        final ProspectUpdateRequest request = new ProspectUpdateRequest()
+            .withProspect(prospect);
+
+        // Issue request
+        final Prospect response = client.prospectUpdate(request);
+
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test creating prospect.
+     */
+    @Test
+    public void prospectDeleteTest() {
+        final long prospectId = 59138429L;
+
+        final ProspectDeleteRequest request = new ProspectDeleteRequest()
+            .withProspectId(prospectId);
+
+        // Issue request
+        final boolean response = client.prospectDelete(request);
+
         assertNotNull("Should not be null", response);
         logger.info("Response: {}", response);
     }

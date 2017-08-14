@@ -3,7 +3,6 @@ package com.darksci.pardot.api.request.email;
 import com.darksci.pardot.api.request.BaseRequest;
 
 import java.util.Collection;
-import java.util.HashSet;
 
 /**
  * For sending 1-to-1 prospect emails via Pardot Api.

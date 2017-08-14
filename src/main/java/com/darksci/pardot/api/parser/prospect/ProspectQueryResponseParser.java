@@ -2,7 +2,6 @@ package com.darksci.pardot.api.parser.prospect;
 
 import com.darksci.pardot.api.parser.JacksonFactory;
 import com.darksci.pardot.api.parser.ResponseParser;
-import com.darksci.pardot.api.response.campaign.CampaignQueryResponse;
 import com.darksci.pardot.api.response.prospect.ProspectQueryResponse;
 
 import java.io.IOException;

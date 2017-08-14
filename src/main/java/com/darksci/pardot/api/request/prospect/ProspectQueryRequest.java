@@ -2,8 +2,6 @@ package com.darksci.pardot.api.request.prospect;
 
 import com.darksci.pardot.api.request.BaseQueryRequest;
 import com.darksci.pardot.api.request.DateParameter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.stream.Collectors;

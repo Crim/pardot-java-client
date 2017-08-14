@@ -283,6 +283,106 @@ public class Prospect {
         return visitors;
     }
 
+    public void setId(final Long id) {
+        this.id = id;
+    }
+
+    public void setCampaignId(final Long campaignId) {
+        this.campaignId = campaignId;
+    }
+
+    public void setSalutation(final String salutation) {
+        this.salutation = salutation;
+    }
+
+    public void setFirstName(final String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(final String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setEmail(final String email) {
+        this.email = email;
+    }
+
+    public void setCompany(final String company) {
+        this.company = company;
+    }
+
+    public void setProspectAccountId(final long prospectAccountId) {
+        this.prospectAccountId = prospectAccountId;
+    }
+
+    public void setWebsite(final String website) {
+        this.website = website;
+    }
+
+    public void setJobTitle(final String jobTitle) {
+        this.jobTitle = jobTitle;
+    }
+
+    public void setDepartment(final String department) {
+        this.department = department;
+    }
+
+    public void setCountry(final String country) {
+        this.country = country;
+    }
+
+    public void setAddressOne(final String addressOne) {
+        this.addressOne = addressOne;
+    }
+
+    public void setAddressTwo(final String addressTwo) {
+        this.addressTwo = addressTwo;
+    }
+
+    public void setCity(final String city) {
+        this.city = city;
+    }
+
+    public void setState(final String state) {
+        this.state = state;
+    }
+
+    public void setTerritory(final String territory) {
+        this.territory = territory;
+    }
+
+    public void setZip(final String zip) {
+        this.zip = zip;
+    }
+
+    public void setPhone(final String phone) {
+        this.phone = phone;
+    }
+
+    public void setFax(final String fax) {
+        this.fax = fax;
+    }
+
+    public void setSource(final String source) {
+        this.source = source;
+    }
+
+    public void setAnnualRevenue(final String annualRevenue) {
+        this.annualRevenue = annualRevenue;
+    }
+
+    public void setEmployees(final String employees) {
+        this.employees = employees;
+    }
+
+    public void setIndustry(final String industry) {
+        this.industry = industry;
+    }
+
+    public void setYearsInBusiness(final String yearsInBusiness) {
+        this.yearsInBusiness = yearsInBusiness;
+    }
+
     @Override
     public String toString() {
         return "Prospect{"

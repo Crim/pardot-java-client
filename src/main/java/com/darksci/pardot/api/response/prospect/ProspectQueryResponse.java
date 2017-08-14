@@ -1,11 +1,6 @@
 package com.darksci.pardot.api.response.prospect;
 
-import com.darksci.pardot.api.response.campaign.Campaign;
-import com.darksci.pardot.api.response.campaign.CampaignQueryResponse;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 

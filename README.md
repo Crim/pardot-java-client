@@ -109,6 +109,16 @@ Official Documentation: [Emails](http://developer.pardot.com/kb/api-version-3/em
 - Sending One to One Emails
 - Sending List Emails
 
+### Prospects
+Official Documentation: [Emails](http://developer.pardot.com/kb/api-version-3/prospects/)
+
+- Read
+- Create - Partial implementation, can only set default fields.
+- Update - Partial implementation, can only set default fields.
+- Upsert - Partial implementation, can only set default fields.
+- Delete
+- Query
+
 ### Users
 Official Documentation: [Users](http://developer.pardot.com/kb/api-version-3/users/)
 

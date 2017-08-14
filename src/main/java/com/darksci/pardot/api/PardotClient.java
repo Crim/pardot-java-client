@@ -2,6 +2,7 @@ package com.darksci.pardot.api;
 
 import com.darksci.pardot.api.parser.ErrorResponseParser;
 import com.darksci.pardot.api.parser.ResponseParser;
+import com.darksci.pardot.api.parser.StringResponseParser;
 import com.darksci.pardot.api.parser.account.AccountReadResponseParser;
 import com.darksci.pardot.api.parser.campaign.CampaignQueryResponseParser;
 import com.darksci.pardot.api.parser.campaign.CampaignReadResponseParser;
@@ -24,8 +25,12 @@ import com.darksci.pardot.api.request.email.EmailSendListRequest;
 import com.darksci.pardot.api.request.email.EmailSendOneToOneRequest;
 import com.darksci.pardot.api.request.email.EmailStatsRequest;
 import com.darksci.pardot.api.request.login.LoginRequest;
+import com.darksci.pardot.api.request.prospect.ProspectCreateRequest;
+import com.darksci.pardot.api.request.prospect.ProspectDeleteRequest;
 import com.darksci.pardot.api.request.prospect.ProspectQueryRequest;
 import com.darksci.pardot.api.request.prospect.ProspectReadRequest;
+import com.darksci.pardot.api.request.prospect.ProspectUpdateRequest;
+import com.darksci.pardot.api.request.prospect.ProspectUpsertRequest;
 import com.darksci.pardot.api.request.user.UserAbilitiesRequest;
 import com.darksci.pardot.api.request.user.UserQueryRequest;
 import com.darksci.pardot.api.request.user.UserReadRequest;
@@ -100,12 +105,20 @@ public class PardotClient implements AutoCloseable {
 
         // Submit request
         final RestResponse restResponse = getRestClient().submitRequest(request);
+        final int responseCode = restResponse.getHttpCode();
+        String responseStr = restResponse.getResponseStr();
 
         // If we have a valid response
         logger.info("Response: {}", restResponse);
 
         // Check for invalid http status codes
-        if (restResponse.getHttpCode() >= 200 && restResponse.getHttpCode() < 300) {
+        if (responseCode >= 200 && responseCode < 300) {
+            // These response codes have no values
+            if (responseCode == 205 && responseStr == null) {
+                // Avoid NPE
+                responseStr = "";
+            }
+
             // High level check for error response
             if (restResponse.getResponseStr().contains("<rsp stat=\"fail\"")) {
                 try {
@@ -302,12 +315,48 @@ public class PardotClient implements AutoCloseable {
     }
 
     /**
+     * Make API request to create a new prospect.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public Prospect prospectCreate(final ProspectCreateRequest request) {
+        return submitRequest(request, new ProspectReadResponseParser());
+    }
+
+    /**
+     * Make API request to update an existing prospect.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public Prospect prospectUpdate(final ProspectUpdateRequest request) {
+        return submitRequest(request, new ProspectReadResponseParser());
+    }
+
+    /**
+     * Make API request to upsert a prospect.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public Prospect prospectUpsert(final ProspectUpsertRequest request) {
+        return submitRequest(request, new ProspectReadResponseParser());
+    }
+
+    /**
      * Make API request to query prospects.
      * @param request Request definition.
      * @return Parsed api response.
      */
     public ProspectQueryResponse.Result prospectQuery(final ProspectQueryRequest request) {
         return submitRequest(request, new ProspectQueryResponseParser());
+    }
+    /**
+     * Make API request to delete prospects.
+     * @param request Request definition.
+     * @return true if success, false if error.
+     */
+    public boolean prospectDelete(final ProspectDeleteRequest request) {
+        submitRequest(request, new StringResponseParser());
+        return true;
     }
 
     /**
@@ -316,4 +365,5 @@ public class PardotClient implements AutoCloseable {
     public void close() {
         getRestClient().close();
     }
+
 }

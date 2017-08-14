@@ -1,7 +1,5 @@
 package com.darksci.pardot.api.request;
 
-import com.darksci.pardot.api.request.email.EmailSendOneToOneRequest;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
