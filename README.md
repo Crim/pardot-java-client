@@ -110,7 +110,7 @@ Official Documentation: [Emails](http://developer.pardot.com/kb/api-version-3/em
 - Sending List Emails
 
 ### Prospects
-Official Documentation: [Emails](http://developer.pardot.com/kb/api-version-3/prospects/)
+Official Documentation: [Prospects](http://developer.pardot.com/kb/api-version-3/prospects/)
 
 - Read
 - Create - Partial implementation, can only set default fields.
