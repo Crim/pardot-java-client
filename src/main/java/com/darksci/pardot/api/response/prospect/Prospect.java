@@ -1,19 +1,29 @@
 package com.darksci.pardot.api.response.prospect;
 
+import com.darksci.pardot.api.parser.PardotBooleanSerializer;
 import com.darksci.pardot.api.response.campaign.Campaign;
 import com.darksci.pardot.api.response.list.ListSubscription;
 import com.darksci.pardot.api.response.profile.Profile;
+import com.darksci.pardot.api.response.user.User;
 import com.darksci.pardot.api.response.visitor.Visitor;
 import com.darksci.pardot.api.response.visitoractivity.VisitorActivity;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import org.joda.time.LocalDateTime;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Represents a Pardot Prospect.
  */
+@JsonIgnoreProperties({ "password" })
 public class Prospect {
     private Long id;
     private Long campaignId;
@@ -54,6 +64,7 @@ public class Prospect {
     private LocalDateTime lastActivityAt;
     private String recentInteraction;
 
+    private String salesforceFid;
     private String crmLeadFid;
     private String crmContactFid;
     private String crmOwnerFid;
@@ -62,16 +73,35 @@ public class Prospect {
     private LocalDateTime crmLastSync;
     private String crmUrl;
 
+    @JsonDeserialize(using=PardotBooleanSerializer.class)
+    @JacksonXmlProperty(localName = "is_do_not_email")
     private Boolean isDoNotEmail;
+
+    @JsonDeserialize(using=PardotBooleanSerializer.class)
+    @JacksonXmlProperty(localName = "is_do_not_call")
     private Boolean isDoNotCall;
+
+    @JsonDeserialize(using=PardotBooleanSerializer.class)
     private Boolean optedOut;
+
+    @JsonDeserialize(using=PardotBooleanSerializer.class)
+    @JacksonXmlProperty(localName = "is_reviewed")
     private Boolean isReviewed;
+
+    @JsonDeserialize(using=PardotBooleanSerializer.class)
+    @JacksonXmlProperty(localName = "is_starred")
     private Boolean isStarred;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updatedAt;
+
+    // Assigned User
+    private AssignedTo assignedTo;
+
+    // Custom fields
+    private Map<String, String> customFields = new HashMap<>();
 
     // Related Objects
     private Campaign campaign;
@@ -210,6 +240,10 @@ public class Prospect {
         return recentInteraction;
     }
 
+    public String getSalesforceFid() {
+        return salesforceFid;
+    }
+
     public String getCrmLeadFid() {
         return crmLeadFid;
     }
@@ -234,23 +268,23 @@ public class Prospect {
         return crmUrl;
     }
 
-    public Boolean getDoNotEmail() {
+    public Boolean getIsDoNotEmail() {
         return isDoNotEmail;
     }
 
-    public Boolean getDoNotCall() {
+    public Boolean getIsDoNotCall() {
         return isDoNotCall;
     }
 
-    public Boolean getOptedOut() {
+    public Boolean getIsOptedOut() {
         return optedOut;
     }
 
-    public Boolean getReviewed() {
+    public Boolean getIsReviewed() {
         return isReviewed;
     }
 
-    public Boolean getStarred() {
+    public Boolean getIsStarred() {
         return isStarred;
     }
 
@@ -260,6 +294,42 @@ public class Prospect {
 
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
+    }
+
+    // Assigned User
+    public AssignedTo getAssignedTo() {
+        return assignedTo;
+    }
+
+    /**
+     * Utility method to get assigned user, if defined.
+     * @return Assigned User.
+     */
+    public User getAssignedUser() {
+        if (getAssignedTo() != null) {
+            return getAssignedTo().getUser();
+        }
+        return null;
+    }
+
+    // Custom fields
+    @JsonAnyGetter
+    public Map<String, String> getCustomFields() {
+        return customFields;
+    }
+
+    /**
+     * Utility method to get custom field value
+     * @param customFieldName Field to retrieve value for.
+     * @return Value of the custom field.
+     */
+    public String getCustomField(final String customFieldName) {
+        return getCustomFields().get(customFieldName);
+    }
+
+    @JsonAnySetter
+    public void setCustomField(final String fieldName, final String fieldValue) {
+        customFields.put(fieldName, fieldValue);
     }
 
     // Related Objects
@@ -283,6 +353,8 @@ public class Prospect {
         return visitors;
     }
 
+
+    // Setters
     public void setId(final Long id) {
         this.id = id;
     }
@@ -383,6 +455,94 @@ public class Prospect {
         this.yearsInBusiness = yearsInBusiness;
     }
 
+    public void setComments(final String comments) {
+        this.comments = comments;
+    }
+
+    public void setNotes(final String notes) {
+        this.notes = notes;
+    }
+
+    public void setScore(final Integer score) {
+        this.score = score;
+    }
+
+    public void setGrade(final String grade) {
+        this.grade = grade;
+    }
+
+    public void setLastActivityAt(final LocalDateTime lastActivityAt) {
+        this.lastActivityAt = lastActivityAt;
+    }
+
+    public void setRecentInteraction(final String recentInteraction) {
+        this.recentInteraction = recentInteraction;
+    }
+
+    public void setSalesforceFid(final String salesforceFid) {
+        this.salesforceFid = salesforceFid;
+    }
+
+    public void setCrmLeadFid(final String crmLeadFid) {
+        this.crmLeadFid = crmLeadFid;
+    }
+
+    public void setCrmContactFid(final String crmContactFid) {
+        this.crmContactFid = crmContactFid;
+    }
+
+    public void setCrmOwnerFid(final String crmOwnerFid) {
+        this.crmOwnerFid = crmOwnerFid;
+    }
+
+    public void setCrmAccountFid(final String crmAccountFid) {
+        this.crmAccountFid = crmAccountFid;
+    }
+
+    public void setCrmLastSync(final LocalDateTime crmLastSync) {
+        this.crmLastSync = crmLastSync;
+    }
+
+    public void setCrmUrl(final String crmUrl) {
+        this.crmUrl = crmUrl;
+    }
+
+    public void setDoNotEmail(final Boolean doNotEmail) {
+        isDoNotEmail = doNotEmail;
+    }
+
+    public void setDoNotCall(final Boolean doNotCall) {
+        isDoNotCall = doNotCall;
+    }
+
+    public void setOptedOut(final Boolean optedOut) {
+        this.optedOut = optedOut;
+    }
+
+    public void setReviewed(final Boolean reviewed) {
+        isReviewed = reviewed;
+    }
+
+    public void setStarred(final Boolean starred) {
+        isStarred = starred;
+    }
+
+    public void setCreatedAt(final LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setUpdatedAt(final LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public void setCampaign(final Campaign campaign) {
+        this.campaign = campaign;
+    }
+
+    public void setProfile(final Profile profile) {
+        this.profile = profile;
+    }
+
     @Override
     public String toString() {
         return "Prospect{"
@@ -417,6 +577,7 @@ public class Prospect {
             + ", grade='" + grade + '\''
             + ", lastActivityAt=" + lastActivityAt
             + ", recentInteraction='" + recentInteraction + '\''
+            + ", salesforceFid='" + salesforceFid + '\''
             + ", crmLeadFid='" + crmLeadFid + '\''
             + ", crmContactFid='" + crmContactFid + '\''
             + ", crmOwnerFid='" + crmOwnerFid + '\''
@@ -430,11 +591,24 @@ public class Prospect {
             + ", isStarred=" + isStarred
             + ", createdAt=" + createdAt
             + ", updatedAt=" + updatedAt
+            + ", assignedTo=" + assignedTo
+            + ", customFields=" + customFields
             + ", campaign=" + campaign
             + ", profile=" + profile
             + ", visitorActivities=" + visitorActivities
             + ", listSubscriptions=" + listSubscriptions
             + ", visitors=" + visitors
             + '}';
+    }
+
+    /**
+     * Holds value in the assignedTo field.
+     */
+    private static class AssignedTo {
+        private User user;
+
+        public User getUser() {
+            return user;
+        }
     }
 }

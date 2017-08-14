@@ -96,35 +96,37 @@ Official Documentation: [Accounts](http://developer.pardot.com/kb/api-version-3/
 ### Campaigns
 Official Documentation: [Campaigns](http://developer.pardot.com/kb/api-version-3/campaigns/)
 
+- Create
 - Query
 - Read
-- Create
 - Update
 
 ### Emails
 Official Documentation: [Emails](http://developer.pardot.com/kb/api-version-3/emails/)
 
 - Read
-- Stats
-- Sending One to One Emails
 - Sending List Emails
+- Sending One to One Emails
+- Stats
 
 ### Prospects
 Official Documentation: [Prospects](http://developer.pardot.com/kb/api-version-3/prospects/)
 
-- Read
-- Create - Partial implementation, can only set default fields.
-- Update - Partial implementation, can only set default fields.
-- Upsert - Partial implementation, can only set default fields.
+- Assign
+- Create - Does not support multiple values for record-multiple fields.
 - Delete
 - Query
+- Read
+- Unassign
+- Update - Does not support multiple values for record-multiple fields.
+- Upsert - Does not support multiple values for record-multiple fields.
 
 ### Users
 Official Documentation: [Users](http://developer.pardot.com/kb/api-version-3/users/)
 
+- Abilities of current API User
 - Query
 - Read
-- Abilities of API User
 
 ## How to Contribute 
 

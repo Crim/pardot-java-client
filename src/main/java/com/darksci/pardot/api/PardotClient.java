@@ -25,10 +25,12 @@ import com.darksci.pardot.api.request.email.EmailSendListRequest;
 import com.darksci.pardot.api.request.email.EmailSendOneToOneRequest;
 import com.darksci.pardot.api.request.email.EmailStatsRequest;
 import com.darksci.pardot.api.request.login.LoginRequest;
+import com.darksci.pardot.api.request.prospect.ProspectAssignRequest;
 import com.darksci.pardot.api.request.prospect.ProspectCreateRequest;
 import com.darksci.pardot.api.request.prospect.ProspectDeleteRequest;
 import com.darksci.pardot.api.request.prospect.ProspectQueryRequest;
 import com.darksci.pardot.api.request.prospect.ProspectReadRequest;
+import com.darksci.pardot.api.request.prospect.ProspectUnassignRequest;
 import com.darksci.pardot.api.request.prospect.ProspectUpdateRequest;
 import com.darksci.pardot.api.request.prospect.ProspectUpsertRequest;
 import com.darksci.pardot.api.request.user.UserAbilitiesRequest;
@@ -358,6 +360,24 @@ public class PardotClient implements AutoCloseable {
     public boolean prospectDelete(final ProspectDeleteRequest request) {
         submitRequest(request, new StringResponseParser());
         return true;
+    }
+
+    /**
+     * Make API request to assign a prospect.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public Prospect prospectAssign(final ProspectAssignRequest request) {
+        return submitRequest(request, new ProspectReadResponseParser());
+    }
+
+    /**
+     * Make API request to unassign a prospect.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public Prospect prospectUnassign(final ProspectUnassignRequest request) {
+        return submitRequest(request, new ProspectReadResponseParser());
     }
 
     /**

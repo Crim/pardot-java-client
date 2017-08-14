@@ -11,10 +11,12 @@ import com.darksci.pardot.api.request.email.EmailSendListRequest;
 import com.darksci.pardot.api.request.email.EmailSendOneToOneRequest;
 import com.darksci.pardot.api.request.email.EmailStatsRequest;
 import com.darksci.pardot.api.request.login.LoginRequest;
+import com.darksci.pardot.api.request.prospect.ProspectAssignRequest;
 import com.darksci.pardot.api.request.prospect.ProspectCreateRequest;
 import com.darksci.pardot.api.request.prospect.ProspectDeleteRequest;
 import com.darksci.pardot.api.request.prospect.ProspectQueryRequest;
 import com.darksci.pardot.api.request.prospect.ProspectReadRequest;
+import com.darksci.pardot.api.request.prospect.ProspectUnassignRequest;
 import com.darksci.pardot.api.request.prospect.ProspectUpdateRequest;
 import com.darksci.pardot.api.request.prospect.ProspectUpsertRequest;
 import com.darksci.pardot.api.request.user.UserAbilitiesRequest;
@@ -399,6 +401,42 @@ public class PardotClientTest {
 
         // Issue request
         final boolean response = client.prospectDelete(request);
+
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test assigning prospect.
+     */
+    @Test
+    public void prospectAssignTest() {
+        final long prospectId = 59138429L;
+        final long userId = 3793281;
+
+        final ProspectAssignRequest request = new ProspectAssignRequest()
+            .withProspectId(prospectId)
+            .withUserId(userId);
+
+        // Issue request
+        final Prospect response = client.prospectAssign(request);
+
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test unassigning prospect.
+     */
+    @Test
+    public void prospectUnassignTest() {
+        final long prospectId = 59138429L;
+
+        final ProspectUnassignRequest request = new ProspectUnassignRequest()
+            .withProspectId(prospectId);
+
+        // Issue request
+        final Prospect response = client.prospectUnassign(request);
 
         assertNotNull("Should not be null", response);
         logger.info("Response: {}", response);

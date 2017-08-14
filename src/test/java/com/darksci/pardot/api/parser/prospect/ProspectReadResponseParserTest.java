@@ -31,11 +31,14 @@ public class ProspectReadResponseParserTest extends BaseResponseParserTest {
     }
 
     private void validateProspect1(final Prospect prospect) {
+        // Validate identifiers
         assertEquals("has correct id", 1233, (long) prospect.getId());
+        assertEquals("has correct email", "random.user@example.com", prospect.getEmail());
+
+        // Validate default fields
         assertEquals("has correct campaignId", 423, (long) prospect.getCampaignId());
         assertEquals("has correct first name", "Random", prospect.getFirstName());
         assertEquals("has correct last name", "user", prospect.getLastName());
-        assertEquals("has correct email", "random.user@example.com", prospect.getEmail());
         assertEquals("has correct country", "Canada", prospect.getCountry());
         assertEquals("has correct address one", "123 Main St", prospect.getAddressOne());
         assertEquals("has correct address two ", "Unit 44", prospect.getAddressTwo());
@@ -48,6 +51,26 @@ public class ProspectReadResponseParserTest extends BaseResponseParserTest {
         assertEquals("has correct recent interaction", "Played Video Games", prospect.getRecentInteraction());
         assertEquals("has correct created at", "2017-08-11T21:40:25.000", prospect.getCreatedAt().toString());
         assertEquals("has correct updated at", "2017-08-11T21:40:25.000", prospect.getUpdatedAt().toString());
+        assertEquals("has correct is_reviewed", true, prospect.getIsReviewed());
+        assertEquals("has correct is_starred", false, prospect.getIsStarred());
+        assertEquals("has correct is do not call", false, prospect.getIsDoNotCall());
+
+        // Validate custom fields
+        assertNotNull("Should have non-null custom fields", prospect.getCustomFields());
+        assertEquals("Should have 2 custom fields", 2, prospect.getCustomFields().size());
+        assertEquals("Should have first custom field value", "my custom field value", prospect.getCustomField("MyCustom_Field"));
+        assertEquals("Should have second custom field value", "my other custom field value", prospect.getCustomField("MyOtherCustom_Field"));
+
+        // Validate assigned To user
+        assertNotNull("Assigned To is not null", prospect.getAssignedTo());
+        assertEquals("has correct id", 2332L, (long) prospect.getAssignedUser().getId());
+        assertEquals("has correct account id", 1L, (long) prospect.getAssignedUser().getAccount());
+        assertEquals("Has correct email", "sales.user@example.com", prospect.getAssignedUser().getEmail());
+        assertEquals("Has correct first_name", "Sales", prospect.getAssignedUser().getFirstName());
+        assertEquals("Has correct last_name", "User", prospect.getAssignedUser().getLastName());
+        assertEquals("Has correct role", "Administrator", prospect.getAssignedUser().getRole());
+        assertEquals("has correct created at", "2016-01-04T10:39:29.000", prospect.getAssignedUser().getCreatedAt().toString());
+        assertEquals("has correct updated at", "2017-08-09T18:28:24.000", prospect.getAssignedUser().getUpdatedAt().toString());
 
         // Validate campaign
         assertNotNull("Should have non-null campaign", prospect.getCampaign());

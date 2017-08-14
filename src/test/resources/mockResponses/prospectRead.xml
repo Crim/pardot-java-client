@@ -42,7 +42,7 @@
         <is_do_not_email></is_do_not_email>
         <is_do_not_call></is_do_not_call>
         <opted_out></opted_out>
-        <is_reviewed></is_reviewed>
+        <is_reviewed>1</is_reviewed>
         <is_starred></is_starred>
         <created_at>2017-08-11 21:40:25</created_at>
         <updated_at>2017-08-11 21:40:25</updated_at>
@@ -50,6 +50,21 @@
             <id>423</id>
             <name>Website Tracking</name>
         </campaign>
+        <assigned_to>
+            <user>
+                <id>2332</id>
+                <email>sales.user@example.com</email>
+                <first_name>Sales</first_name>
+                <last_name>User</last_name>
+                <job_title/>
+                <role>Administrator</role>
+                <account>1</account>
+                <created_at>2016-01-04 10:39:29</created_at>
+                <updated_at>2017-08-09 18:28:24</updated_at>
+            </user>
+        </assigned_to>
+        <MyCustom_Field>my custom field value</MyCustom_Field>
+        <MyOtherCustom_Field>my other custom field value</MyOtherCustom_Field>
         <profile>
             <id>209</id>
             <name>Default</name>
