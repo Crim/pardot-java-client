@@ -73,22 +73,22 @@ public class Prospect {
     private LocalDateTime crmLastSync;
     private String crmUrl;
 
-    @JsonDeserialize(using=PardotBooleanSerializer.class)
+    @JsonDeserialize(using = PardotBooleanSerializer.class)
     @JacksonXmlProperty(localName = "is_do_not_email")
     private Boolean isDoNotEmail;
 
-    @JsonDeserialize(using=PardotBooleanSerializer.class)
+    @JsonDeserialize(using = PardotBooleanSerializer.class)
     @JacksonXmlProperty(localName = "is_do_not_call")
     private Boolean isDoNotCall;
 
-    @JsonDeserialize(using=PardotBooleanSerializer.class)
+    @JsonDeserialize(using = PardotBooleanSerializer.class)
     private Boolean optedOut;
 
-    @JsonDeserialize(using=PardotBooleanSerializer.class)
+    @JsonDeserialize(using = PardotBooleanSerializer.class)
     @JacksonXmlProperty(localName = "is_reviewed")
     private Boolean isReviewed;
 
-    @JsonDeserialize(using=PardotBooleanSerializer.class)
+    @JsonDeserialize(using = PardotBooleanSerializer.class)
     @JacksonXmlProperty(localName = "is_starred")
     private Boolean isStarred;
 
