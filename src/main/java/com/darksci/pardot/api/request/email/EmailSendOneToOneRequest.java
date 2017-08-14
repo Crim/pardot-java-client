@@ -112,13 +112,7 @@ public class EmailSendOneToOneRequest extends BaseRequest<EmailSendOneToOneReque
      * @return RequestBuilder
      */
     public EmailSendOneToOneRequest withTag(final String tag) {
-        Collection<String> tags = getParam("tags");
-        if (tags == null) {
-            tags = new HashSet<>();
-        }
-        tags.add(tag);
-
-        return setParam("tags", tags);
+        return withCollectionParam("tags", tag);
     }
 
     /**
@@ -127,10 +121,7 @@ public class EmailSendOneToOneRequest extends BaseRequest<EmailSendOneToOneReque
      * @return RequestBuilder
      */
     public EmailSendOneToOneRequest withTags(Collection<String> tags) {
-        for (final String tag: tags) {
-            withTag(tag);
-        }
-        return this;
+        return withCollectionParams("tags", tags);
     }
 
     /**

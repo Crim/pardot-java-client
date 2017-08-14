@@ -6,6 +6,10 @@ import com.darksci.pardot.api.request.BaseRequest;
  * Defines a Prospect Read Request.
  */
 public class ProspectReadRequest extends BaseRequest<ProspectReadRequest> {
+
+    /**
+     * Default constructor.
+     */
     public ProspectReadRequest() {
         super();
 

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rsp stat="ok" version="1.0">
+    <result>
+        <total_results>128</total_results>
+        <prospect>
+            <id>331</id>
+            <campaign_id>893</campaign_id>
+            <salutation/>
+            <first_name>Else</first_name>
+            <last_name>Someone</last_name>
+            <email>testuser+2@live.com</email>
+            <password/>
+            <company/>
+            <website/>
+            <job_title/>
+            <department/>
+            <country>USA</country>
+            <address_one>123 Burkhall St</address_one>
+            <address_two>Unit 103</address_two>
+            <city>Weymouth</city>
+            <state>TX</state>
+            <territory/>
+            <zip>02190 </zip>
+            <phone>(321) 456-0987</phone>
+            <fax/>
+            <source/>
+            <annual_revenue/>
+            <employees/>
+            <industry/>
+            <years_in_business/>
+            <comments/>
+            <notes/>
+            <score>0</score>
+            <grade>A+</grade>
+            <last_activity_at/>
+            <recent_interaction>Never active</recent_interaction>
+            <crm_lead_fid/>
+            <crm_contact_fid/>
+            <crm_owner_fid/>
+            <crm_account_fid/>
+            <salesforce_fid/>
+            <crm_last_sync/>
+            <crm_url/>
+            <is_do_not_email></is_do_not_email>
+            <is_do_not_call></is_do_not_call>
+            <opted_out></opted_out>
+            <is_reviewed></is_reviewed>
+            <is_starred></is_starred>
+            <created_at>2016-01-17 04:49:51</created_at>
+            <updated_at>2017-08-09 18:32:40</updated_at>
+            <campaign>
+                <id>893</id>
+                <name>Database Mining</name>
+            </campaign>
+        </prospect>
+        <prospect>
+            <id>332</id>
+            <campaign_id>99</campaign_id>
+            <salutation/>
+            <first_name>Test</first_name>
+            <last_name>User</last_name>
+            <email>testUser@aol.com</email>
+            <password/>
+            <company/>
+            <website/>
+            <job_title/>
+            <department/>
+            <country>USA</country>
+            <address_one>89 Sunset Way</address_one>
+            <address_two/>
+            <city>Atlanta</city>
+            <state>GA</state>
+            <territory/>
+            <zip>012345</zip>
+            <phone>(123) 456-7890</phone>
+            <fax/>
+            <source/>
+            <annual_revenue/>
+            <employees/>
+            <industry/>
+            <years_in_business/>
+            <comments/>
+            <notes/>
+            <score>123</score>
+            <grade>C-</grade>
+            <last_activity_at/>
+            <recent_interaction>Sent Fancy Email</recent_interaction>
+            <crm_lead_fid/>
+            <crm_contact_fid/>
+            <crm_owner_fid/>
+            <crm_account_fid/>
+            <salesforce_fid/>
+            <crm_last_sync/>
+            <crm_url/>
+            <is_do_not_email></is_do_not_email>
+            <is_do_not_call></is_do_not_call>
+            <opted_out></opted_out>
+            <is_reviewed></is_reviewed>
+            <is_starred></is_starred>
+            <created_at>2016-01-17 04:49:51</created_at>
+            <updated_at>2017-08-09 18:32:40</updated_at>
+            <campaign>
+                <id>99</id>
+                <name>Website Tracking</name>
+            </campaign>
+        </prospect>
+    </result>
+</rsp>

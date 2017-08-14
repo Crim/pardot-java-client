@@ -35,15 +35,15 @@ public class List {
         return description;
     }
 
-    public Boolean getPublic() {
+    public Boolean getIsPublic() {
         return isPublic;
     }
 
-    public Boolean getDynamic() {
+    public Boolean getIsDynamic() {
         return isDynamic;
     }
 
-    public Boolean getCrmVisible() {
+    public Boolean getIsCrmVisible() {
         return isCrmVisible;
     }
 

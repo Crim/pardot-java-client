@@ -1,7 +1,10 @@
 package com.darksci.pardot.api.request;
 
+import com.darksci.pardot.api.request.email.EmailSendOneToOneRequest;
+
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 /**
@@ -37,6 +40,23 @@ public abstract class BaseRequest<T> implements Request {
             value = "false";
         }
         return setParam(parameterName, booleanValue);
+    }
+
+    protected T withCollectionParam(final String name, final Object value) {
+        Collection<Object> values = getParam(name);
+        if (values == null) {
+            values = new HashSet<>();
+        }
+        values.add(value);
+
+        return setParam(name, values);
+    }
+
+    protected T withCollectionParams(final String name, Collection<?> values) {
+        for (final Object value: values) {
+            withCollectionParam(name, value);
+        }
+        return (T) this;
     }
 
     /**

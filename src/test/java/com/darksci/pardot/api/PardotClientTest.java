@@ -11,6 +11,7 @@ import com.darksci.pardot.api.request.email.EmailSendListRequest;
 import com.darksci.pardot.api.request.email.EmailSendOneToOneRequest;
 import com.darksci.pardot.api.request.email.EmailStatsRequest;
 import com.darksci.pardot.api.request.login.LoginRequest;
+import com.darksci.pardot.api.request.prospect.ProspectQueryRequest;
 import com.darksci.pardot.api.request.prospect.ProspectReadRequest;
 import com.darksci.pardot.api.request.user.UserAbilitiesRequest;
 import com.darksci.pardot.api.request.user.UserQueryRequest;
@@ -22,6 +23,7 @@ import com.darksci.pardot.api.response.email.Email;
 import com.darksci.pardot.api.response.email.EmailStatsResponse;
 import com.darksci.pardot.api.response.login.LoginResponse;
 import com.darksci.pardot.api.response.prospect.Prospect;
+import com.darksci.pardot.api.response.prospect.ProspectQueryResponse;
 import com.darksci.pardot.api.response.user.User;
 import com.darksci.pardot.api.response.user.UserAbilitiesResponse;
 import com.darksci.pardot.api.response.user.UserQueryResponse;
@@ -311,6 +313,19 @@ public class PardotClientTest {
         final Prospect response = client.prospectRead(new ProspectReadRequest()
             .selectById(prospectId)
         );
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test reading prospect by id.
+     */
+    @Test
+    public void prospectQueryTest() {
+        final ProspectQueryRequest request = new ProspectQueryRequest()
+            .withArchivedOnly();
+
+        final ProspectQueryResponse.Result response = client.prospectQuery(request);
         assertNotNull("Should not be null", response);
         logger.info("Response: {}", response);
     }

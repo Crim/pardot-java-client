@@ -8,6 +8,7 @@ import com.darksci.pardot.api.parser.campaign.CampaignReadResponseParser;
 import com.darksci.pardot.api.parser.email.EmailReadResponseParser;
 import com.darksci.pardot.api.parser.email.EmailStatsResponseParser;
 import com.darksci.pardot.api.parser.login.LoginResponseParser;
+import com.darksci.pardot.api.parser.prospect.ProspectQueryResponseParser;
 import com.darksci.pardot.api.parser.prospect.ProspectReadResponseParser;
 import com.darksci.pardot.api.parser.user.UserAbilitiesParser;
 import com.darksci.pardot.api.parser.user.UserQueryResponseParser;
@@ -23,6 +24,7 @@ import com.darksci.pardot.api.request.email.EmailSendListRequest;
 import com.darksci.pardot.api.request.email.EmailSendOneToOneRequest;
 import com.darksci.pardot.api.request.email.EmailStatsRequest;
 import com.darksci.pardot.api.request.login.LoginRequest;
+import com.darksci.pardot.api.request.prospect.ProspectQueryRequest;
 import com.darksci.pardot.api.request.prospect.ProspectReadRequest;
 import com.darksci.pardot.api.request.user.UserAbilitiesRequest;
 import com.darksci.pardot.api.request.user.UserQueryRequest;
@@ -35,6 +37,7 @@ import com.darksci.pardot.api.response.email.Email;
 import com.darksci.pardot.api.response.email.EmailStatsResponse;
 import com.darksci.pardot.api.response.login.LoginResponse;
 import com.darksci.pardot.api.response.prospect.Prospect;
+import com.darksci.pardot.api.response.prospect.ProspectQueryResponse;
 import com.darksci.pardot.api.response.user.User;
 import com.darksci.pardot.api.response.user.UserAbilitiesResponse;
 import com.darksci.pardot.api.response.user.UserQueryResponse;
@@ -174,6 +177,7 @@ public class PardotClient implements AutoCloseable {
 
     /**
      * Make login request
+     * @param request Login request definition.
      * @return LoginResponse returned from server.
      */
     public LoginResponse login(LoginRequest request) {
@@ -295,6 +299,15 @@ public class PardotClient implements AutoCloseable {
      */
     public Prospect prospectRead(final ProspectReadRequest request) {
         return submitRequest(request, new ProspectReadResponseParser());
+    }
+
+    /**
+     * Make API request to query prospects.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public ProspectQueryResponse.Result prospectQuery(final ProspectQueryRequest request) {
+        return submitRequest(request, new ProspectQueryResponseParser());
     }
 
     /**
