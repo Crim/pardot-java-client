@@ -3,6 +3,9 @@ package com.darksci.pardot.api.response.list;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.joda.time.LocalDateTime;
 
+/**
+ * Represents a Pardot ListMembership.
+ */
 public class ListMembership {
     private Long id;
     private Long listId;

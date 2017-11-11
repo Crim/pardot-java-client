@@ -13,12 +13,23 @@ public class ListMembershipReadRequest extends BaseRequest<ListMembershipReadReq
         return "listMembership/do/read";
     }
 
+    /**
+     * Retrieve membership by id.
+     * @param id Id of the ListMembership.
+     * @return The ListMembershipReadRequest
+     */
     public ListMembershipReadRequest selectById(final long id) {
         setParam("list_id", null);
         setParam("prospect_id", null);
         return setParam("id", id);
     }
 
+    /**
+     * Retrieve membership by listId and prospectId.
+     * @param listId Id of the List.
+     * @param prospectId Id of the prospect.
+     * @return The ListMembershipReadRequest
+     */
     public ListMembershipReadRequest selectByListIdAndProspectId(final long listId, final long prospectId) {
         setParam("id", null);
         setParam("prospect_id", prospectId);

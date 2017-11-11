@@ -71,8 +71,8 @@ public class List {
         this.description = description;
     }
 
-    public void setPublic(final Boolean aPublic) {
-        isPublic = aPublic;
+    public void setPublic(final Boolean isPublic) {
+        this.isPublic = isPublic;
     }
 
     public void setDynamic(final Boolean dynamic) {
