@@ -31,7 +31,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class ListMembershipQueryResponseParserTest  extends BaseResponseParserTest {
-    private static final Logger logger = LoggerFactory.getLogger(ListQueryResponseParserTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(ListMembershipQueryResponseParserTest.class);
 
     /**
      * Validates we can parse a List query with multiple Lists response A-OK.
