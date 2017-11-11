@@ -4,7 +4,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 0.2.0 (11/11/17)
 - Support Api version 4 via configuration method .withApiVersion4()
--
+- Add support for List and ListMembership API endpoints.
 
 
 ## 0.1.0 (08/15/17)

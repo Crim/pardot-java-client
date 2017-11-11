@@ -4,7 +4,7 @@
 
 ## What is it? 
 
-This library intends to be a fluent style API client for Pardot's API (version 3).
+This library intends to be a fluent style API client for Pardot's API (version 3 and 4).
 
 **Note** It currently is not fully featured/fully implemented. If there is a feature/end point that you
 need that is not yet implemented, please read the **[How to Contribute](#how-to-contribute)** section, or **[Create an issue](https://github.com/Crim/pardot-java-client/issues)** 
@@ -21,7 +21,7 @@ This client library is released on Maven Central.  Add a new dependency to your 
 <dependency>
     <groupId>com.darksci</groupId>
     <artifactId>pardot-api-client</artifactId>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
 </dependency>
 ```
 
@@ -34,6 +34,15 @@ Example Code:
  * such as using an outbound proxy (authenticated or not).
  */
 final Configuration configuration = new Configuration("YourPardotUserNameHere", "PardotPassword", "UserKey");
+
+/*
+ * Optionally select which API version to use, if none is explicitly selected
+ * the library will default to version 3.
+ */
+configuration.withApiVersion3();
+
+/* Or */
+configuration.withApiVersion4();
 
 /*
  * Create an instance of PardotClient, passing your configuration.
@@ -108,6 +117,22 @@ Official Documentation: [Emails](http://developer.pardot.com/kb/api-version-3/em
 - Sending List Emails
 - Sending One to One Emails
 - Stats
+
+### Lists
+Official Documentation: [Lists](http://developer.pardot.com/kb/api-version-3/lists/)
+
+- Create
+- Query
+- Read
+- Update
+
+### List Memberships
+Official Documentation: [ListMemberships](http://developer.pardot.com/kb/api-version-3/list-memberships/)
+
+- Create
+- Query
+- Read
+- Update
 
 ### Prospects
 Official Documentation: [Prospects](http://developer.pardot.com/kb/api-version-3/prospects/)

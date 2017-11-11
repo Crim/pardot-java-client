@@ -41,6 +41,15 @@ public class Example {
         final Configuration configuration = new Configuration("YourPardotUserNameHere", "PardotPassword", "UserKey");
 
         /*
+         * Optionally select which API version to use, if none is explicitly selected
+         * the library will default to version 3.
+         */
+        configuration.withApiVersion3();
+
+        /* Or */
+        configuration.withApiVersion4();
+
+        /*
          * Create an instance of PardotClient, passing your configuration.
          */
         final PardotClient client = new PardotClient(configuration);
