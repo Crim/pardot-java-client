@@ -1,3 +1,20 @@
+/**
+ * Copyright 2017 Stephen Powis https://github.com/Crim/pardot-java-client
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
+ * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit
+ * persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
+ * Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ * WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+ * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
 package com.darksci.pardot.api.rest;
 
 import com.darksci.pardot.api.Configuration;
@@ -180,7 +197,7 @@ public class HttpClientRestClient implements RestClient {
             }
             post.setEntity(new UrlEncodedFormEntity(params));
 
-            logger.info("Executing request {} with {}", post.getRequestLine(), params);
+            logger.info("Executing request {} with {}", post.getRequestLine(), filterSensitiveParams(params));
 
             // Execute and return
             return httpClient.execute(post, responseHandler);
@@ -206,5 +223,31 @@ public class HttpClientRestClient implements RestClient {
             + "/" + endPoint
             + "/version/"
             + configuration.getPardotApiVersion();
+    }
+
+    /**
+     * Internal helper utility to prevent sensitive field values from being logged.
+     * @param inputParams The input request parameters.
+     * @return A filtered list of params suitable to be logged.
+     */
+    private List<NameValuePair> filterSensitiveParams(final List<NameValuePair> inputParams) {
+        // Define sensitive fields
+        final String[] sensitiveFields = new String[] { "user_key", "password", "api_key" };
+
+        // Create a copy of the list
+        final List<NameValuePair> copiedList = new ArrayList<>();
+        copiedList.addAll(inputParams);
+
+        // Loop over each sensitive field name.
+        for (final String sensitiveField : sensitiveFields) {
+            // Remove sensitive param from copied list
+            if (copiedList.removeIf((nameValuePair -> nameValuePair.getName().equals(sensitiveField)))) {
+                // Add dummy value
+                copiedList.add(new BasicNameValuePair(sensitiveField, "XXXXXXX"));
+            }
+        }
+
+        // Return the filtered list
+        return copiedList;
     }
 }

@@ -1,3 +1,20 @@
+/**
+ * Copyright 2017 Stephen Powis https://github.com/Crim/pardot-java-client
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
+ * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit
+ * persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
+ * Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ * WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+ * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
 package com.darksci.pardot.api;
 
 import categories.IntegrationTest;
@@ -10,6 +27,14 @@ import com.darksci.pardot.api.request.email.EmailReadRequest;
 import com.darksci.pardot.api.request.email.EmailSendListRequest;
 import com.darksci.pardot.api.request.email.EmailSendOneToOneRequest;
 import com.darksci.pardot.api.request.email.EmailStatsRequest;
+import com.darksci.pardot.api.request.list.ListCreateRequest;
+import com.darksci.pardot.api.request.list.ListQueryRequest;
+import com.darksci.pardot.api.request.list.ListReadRequest;
+import com.darksci.pardot.api.request.list.ListUpdateRequest;
+import com.darksci.pardot.api.request.listmembership.ListMembershipCreateRequest;
+import com.darksci.pardot.api.request.listmembership.ListMembershipQueryRequest;
+import com.darksci.pardot.api.request.listmembership.ListMembershipReadRequest;
+import com.darksci.pardot.api.request.listmembership.ListMembershipUpdateRequest;
 import com.darksci.pardot.api.request.login.LoginRequest;
 import com.darksci.pardot.api.request.prospect.ProspectAssignRequest;
 import com.darksci.pardot.api.request.prospect.ProspectCreateRequest;
@@ -27,6 +52,10 @@ import com.darksci.pardot.api.response.campaign.Campaign;
 import com.darksci.pardot.api.response.campaign.CampaignQueryResponse;
 import com.darksci.pardot.api.response.email.Email;
 import com.darksci.pardot.api.response.email.EmailStatsResponse;
+import com.darksci.pardot.api.response.list.List;
+import com.darksci.pardot.api.response.list.ListMembership;
+import com.darksci.pardot.api.response.list.ListQueryResponse;
+import com.darksci.pardot.api.response.listmembership.ListMembershipQueryResponse;
 import com.darksci.pardot.api.response.login.LoginResponse;
 import com.darksci.pardot.api.response.prospect.Prospect;
 import com.darksci.pardot.api.response.prospect.ProspectQueryResponse;
@@ -49,6 +78,11 @@ import static org.junit.Assert.assertNotNull;
 
 /**
  * Integration/End-to-End test over HttpClientRestClient.
+ *
+ * You can run these tests by creating a file under test/resources/test_credentials.properties with 3 values:
+ * username=your_pardot_username
+ * password=your_pardot_password
+ * user_key=your_pardot_userkey
  */
 @Category(IntegrationTest.class)
 public class PardotClientTest {
@@ -265,7 +299,7 @@ public class PardotClientTest {
         final long campaignId = 14885;
         final long prospectId = 59135263;
 
-        EmailSendOneToOneRequest request = new EmailSendOneToOneRequest()
+        final EmailSendOneToOneRequest request = new EmailSendOneToOneRequest()
             .withProspectId(prospectId)
             .withCampaignId(campaignId)
             .withFromNameAndEmail("Test User", "no-reply@example.com")
@@ -279,6 +313,151 @@ public class PardotClientTest {
             .withHtmlContent("<html><body><h1>Hello %%first_name%%!</h1></body></html>");
 
         final Email response = client.emailSendOneToOne(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test querying lists.
+     */
+    @Test
+    public void listQueryTest() {
+        final ListQueryRequest request = new ListQueryRequest();
+
+        final ListQueryResponse.Result response = client.listQuery(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test reading a specific list.
+     */
+    @Test
+    public void listReadTest() {
+        final ListReadRequest request = new ListReadRequest()
+            .selectById(33173L);
+
+        final List response = client.listRead(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test creating a list.
+     */
+    @Test
+    public void listCreateTest() {
+        // Create list
+        final List list = new List();
+        list.setName("My new test list");
+        list.setTitle("Title of my list");
+        list.setDescription("My new list description");
+        list.setCrmVisible(true);
+        list.setPublic(false);
+
+        final ListCreateRequest request = new ListCreateRequest()
+            .withList(list)
+            .withFolderId(18449L);
+
+        final List response = client.listCreate(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test update a list.
+     */
+    @Test
+    public void listUpdateTest() {
+        // Create list
+        final List list = new List();
+        list.setId(37275L);
+        list.setName("UpdatedList");
+        list.setTitle("Updated Title of my list");
+        list.setDescription("My Updated list description");
+        list.setCrmVisible(true);
+        list.setPublic(false);
+
+        final ListUpdateRequest request = new ListUpdateRequest()
+            .withList(list)
+            .withFolderId(18449L);
+
+        final List response = client.listUpdate(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test querying listMemberships.
+     */
+    @Test
+    public void listMembershipQueryTest() {
+        final ListMembershipQueryRequest request = new ListMembershipQueryRequest()
+            .withListId(33173L);
+
+        final ListMembershipQueryResponse.Result response = client.listMembershipQuery(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test reading a specific listMembership by ListId and ProspectId.
+     */
+    @Test
+    public void listMembershipByListIdAndProspectIdReadTest() {
+        final ListMembershipReadRequest request = new ListMembershipReadRequest()
+            .selectByListIdAndProspectId(33173L, 59156811L);
+
+        final ListMembership response = client.listMembershipRead(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test reading a specific listMembership by Id.
+     */
+    @Test
+    public void listMembershipByIdReadTest() {
+        final ListMembershipReadRequest request = new ListMembershipReadRequest()
+            .selectById(170293539L);
+
+        final ListMembership response = client.listMembershipRead(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test creating a list membership.
+     */
+    @Test
+    public void listMembershipCreateTest() {
+        // Create list
+        final ListMembership listMembership = new ListMembership();
+        listMembership.setListId(33173L);
+        listMembership.setProspectId(59156811L);
+
+        final ListMembershipCreateRequest request = new ListMembershipCreateRequest()
+            .withListMembership(listMembership);
+
+        final ListMembership response = client.listMembershipCreate(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test updating a list membership.
+     */
+    @Test
+    public void listMembershipUpdateTest() {
+        // Create list
+        final ListMembership listMembership = new ListMembership();
+        listMembership.setListId(33173L);
+        listMembership.setProspectId(59156811L);
+
+        final ListMembershipUpdateRequest request = new ListMembershipUpdateRequest()
+            .withListMembership(listMembership);
+
+        final ListMembership response = client.listMembershipUpdate(request);
         assertNotNull("Should not be null", response);
         logger.info("Response: {}", response);
     }
