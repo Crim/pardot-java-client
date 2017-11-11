@@ -14,6 +14,7 @@
  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
 package com.darksci.pardot.api;
 
 import com.darksci.pardot.api.parser.ErrorResponseParser;
@@ -183,7 +184,8 @@ public class PardotClient implements AutoCloseable {
     }
 
     /**
-     * Package protected for access in tests.
+     *
+package protected for access in tests.
      * @return Rest Client.
      */
     RestClient getRestClient() {
