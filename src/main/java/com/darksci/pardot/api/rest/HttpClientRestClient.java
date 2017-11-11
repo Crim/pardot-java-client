@@ -180,7 +180,7 @@ public class HttpClientRestClient implements RestClient {
             }
             post.setEntity(new UrlEncodedFormEntity(params));
 
-            logger.info("Executing request {} with {}", post.getRequestLine(), params);
+            logger.info("Executing request {} with {}", post.getRequestLine(), filterSensitiveParams(params));
 
             // Execute and return
             return httpClient.execute(post, responseHandler);
@@ -206,5 +206,31 @@ public class HttpClientRestClient implements RestClient {
             + "/" + endPoint
             + "/version/"
             + configuration.getPardotApiVersion();
+    }
+
+    /**
+     * Internal helper utility to prevent sensitive field values from being logged.
+     * @param inputParams The input request parameters.
+     * @return A filtered list of params suitable to be logged.
+     */
+    private List<NameValuePair> filterSensitiveParams(final List<NameValuePair> inputParams) {
+        // Define sensitive fields
+        final String[] sensitiveFields = new String[] { "user_key", "password", "api_key" };
+
+        // Create a copy of the list
+        final List<NameValuePair> copiedList = new ArrayList<>();
+        copiedList.addAll(inputParams);
+
+        // Loop over each sensitive field name.
+        for (final String sensitiveField : sensitiveFields) {
+            // Remove sensitive param from copied list
+            if (copiedList.removeIf((nameValuePair -> nameValuePair.getName().equals(sensitiveField)))) {
+                // Add dummy value
+                copiedList.add(new BasicNameValuePair(sensitiveField, "XXXXXXX"));
+            }
+        }
+
+        // Return the filtered list
+        return copiedList;
     }
 }

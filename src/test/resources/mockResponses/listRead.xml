@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rsp stat="ok" version="1.0">
+    <list>
+        <id>33173</id>
+        <name>Stevie Only List</name>
+        <is_public>false</is_public>
+        <is_dynamic>false</is_dynamic>
+        <title/>
+        <description/>
+        <is_crm_visible>false</is_crm_visible>
+        <created_at>2017-08-11 22:03:22</created_at>
+        <updated_at>2017-08-11 22:03:22</updated_at>
+    </list>
+</rsp>

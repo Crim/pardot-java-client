@@ -9,4 +9,11 @@ public class CampaignReadResponse {
     public Campaign getCampaign() {
         return campaign;
     }
+
+    @Override
+    public String toString() {
+        return "CampaignReadResponse{"
+            + "campaign=" + campaign
+            + '}';
+    }
 }

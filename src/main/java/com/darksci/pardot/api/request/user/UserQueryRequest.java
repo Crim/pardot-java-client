@@ -15,10 +15,12 @@ public class UserQueryRequest extends BaseQueryRequest<UserQueryRequest> {
         return super.withArchivedOnly(archivedUsersOnly);
     }
 
+    @Override
     public UserQueryRequest withSortByCreatedAt() {
         return super.withSortByCreatedAt();
     }
 
+    @Override
     public UserQueryRequest withSortById() {
         return super.withSortById();
     }

@@ -55,6 +55,42 @@ public class List {
         return updatedAt;
     }
 
+    public void setId(final Long id) {
+        this.id = id;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
+    }
+
+    public void setTitle(final String title) {
+        this.title = title;
+    }
+
+    public void setDescription(final String description) {
+        this.description = description;
+    }
+
+    public void setPublic(final Boolean aPublic) {
+        isPublic = aPublic;
+    }
+
+    public void setDynamic(final Boolean dynamic) {
+        isDynamic = dynamic;
+    }
+
+    public void setCrmVisible(final Boolean crmVisible) {
+        isCrmVisible = crmVisible;
+    }
+
+    public void setCreatedAt(final LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setUpdatedAt(final LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
     @Override
     public String toString() {
         return "List{"

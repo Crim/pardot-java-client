@@ -15,7 +15,7 @@ public class CampaignReadResponseParserTest extends BaseResponseParserTest {
     private static final Logger logger = LoggerFactory.getLogger(CampaignReadResponseParserTest.class);
 
     /**
-     * Validates we can parse a User Read
+     * Validates we can parse a Campaign Read
      */
     @Test
     public void testRead() throws IOException {

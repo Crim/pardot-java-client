@@ -8,6 +8,10 @@ import com.darksci.pardot.api.parser.campaign.CampaignQueryResponseParser;
 import com.darksci.pardot.api.parser.campaign.CampaignReadResponseParser;
 import com.darksci.pardot.api.parser.email.EmailReadResponseParser;
 import com.darksci.pardot.api.parser.email.EmailStatsResponseParser;
+import com.darksci.pardot.api.parser.list.ListQueryResponseParser;
+import com.darksci.pardot.api.parser.list.ListReadResponseParser;
+import com.darksci.pardot.api.parser.listmembership.ListMembershipQueryResponseParser;
+import com.darksci.pardot.api.parser.listmembership.ListMembershipReadResponseParser;
 import com.darksci.pardot.api.parser.login.LoginResponseParser;
 import com.darksci.pardot.api.parser.prospect.ProspectQueryResponseParser;
 import com.darksci.pardot.api.parser.prospect.ProspectReadResponseParser;
@@ -24,6 +28,14 @@ import com.darksci.pardot.api.request.email.EmailReadRequest;
 import com.darksci.pardot.api.request.email.EmailSendListRequest;
 import com.darksci.pardot.api.request.email.EmailSendOneToOneRequest;
 import com.darksci.pardot.api.request.email.EmailStatsRequest;
+import com.darksci.pardot.api.request.list.ListCreateRequest;
+import com.darksci.pardot.api.request.list.ListQueryRequest;
+import com.darksci.pardot.api.request.list.ListReadRequest;
+import com.darksci.pardot.api.request.list.ListUpdateRequest;
+import com.darksci.pardot.api.request.listmembership.ListMembershipCreateRequest;
+import com.darksci.pardot.api.request.listmembership.ListMembershipQueryRequest;
+import com.darksci.pardot.api.request.listmembership.ListMembershipReadRequest;
+import com.darksci.pardot.api.request.listmembership.ListMembershipUpdateRequest;
 import com.darksci.pardot.api.request.login.LoginRequest;
 import com.darksci.pardot.api.request.prospect.ProspectAssignRequest;
 import com.darksci.pardot.api.request.prospect.ProspectCreateRequest;
@@ -42,6 +54,10 @@ import com.darksci.pardot.api.response.campaign.Campaign;
 import com.darksci.pardot.api.response.campaign.CampaignQueryResponse;
 import com.darksci.pardot.api.response.email.Email;
 import com.darksci.pardot.api.response.email.EmailStatsResponse;
+import com.darksci.pardot.api.response.list.List;
+import com.darksci.pardot.api.response.list.ListMembership;
+import com.darksci.pardot.api.response.list.ListQueryResponse;
+import com.darksci.pardot.api.response.listmembership.ListMembershipQueryResponse;
 import com.darksci.pardot.api.response.login.LoginResponse;
 import com.darksci.pardot.api.response.prospect.Prospect;
 import com.darksci.pardot.api.response.prospect.ProspectQueryResponse;
@@ -305,6 +321,78 @@ public class PardotClient implements AutoCloseable {
      */
     public Email emailSendList(final EmailSendListRequest request) {
         return submitRequest(request, new EmailReadResponseParser());
+    }
+
+    /**
+     * Make API request to query for one or more lists.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public ListQueryResponse.Result listQuery(final ListQueryRequest request) {
+        return submitRequest(request, new ListQueryResponseParser());
+    }
+
+    /**
+     * Make API request to read a specific list.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public List listRead(final ListReadRequest request) {
+        return submitRequest(request, new ListReadResponseParser());
+    }
+
+    /**
+     * Make API request to create a new List.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public List listCreate(final ListCreateRequest request) {
+        return submitRequest(request, new ListReadResponseParser());
+    }
+
+    /**
+     * Make API request to update an existing List.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public List listUpdate(final ListUpdateRequest request) {
+        return submitRequest(request, new ListReadResponseParser());
+    }
+
+    /**
+     * Make API request to query for one or more list memberships.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public ListMembershipQueryResponse.Result listMembershipQuery(final ListMembershipQueryRequest request) {
+        return submitRequest(request, new ListMembershipQueryResponseParser());
+    }
+
+    /**
+     * Make API request to read a listMembership.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public ListMembership listMembershipRead(final ListMembershipReadRequest request) {
+        return submitRequest(request, new ListMembershipReadResponseParser());
+    }
+
+    /**
+     * Make API request to create a new List Membership.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public ListMembership listMembershipCreate(final ListMembershipCreateRequest request) {
+        return submitRequest(request, new ListMembershipReadResponseParser());
+    }
+
+    /**
+     * Make API request to update an existing List Membership.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public ListMembership listMembershipUpdate(final ListMembershipUpdateRequest request) {
+        return submitRequest(request, new ListMembershipReadResponseParser());
     }
 
     /**

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rsp stat="ok" version="1.0">
+    <result>
+        <total_results>2</total_results>
+        <list>
+            <id>839</id>
+            <name>Internal Test List</name>
+            <is_public>true</is_public>
+            <is_dynamic>false</is_dynamic>
+            <title>Title of my list</title>
+            <description>Internal Test List Description</description>
+            <is_crm_visible>false</is_crm_visible>
+            <created_at>2016-01-04 10:39:27</created_at>
+            <updated_at>2016-01-04 10:39:27</updated_at>
+        </list>
+        <list>
+            <id>33173</id>
+            <name>Stevie Only List</name>
+            <is_public>false</is_public>
+            <is_dynamic>true</is_dynamic>
+            <title/>
+            <description/>
+            <is_crm_visible>false</is_crm_visible>
+            <created_at>2017-08-11 22:03:22</created_at>
+            <updated_at>2017-08-11 22:03:22</updated_at>
+        </list>
+    </result>
+</rsp>

@@ -24,7 +24,7 @@ public class Configuration {
     private String proxyUsername = null;
     private String proxyPassword = null;
 
-    // If you want to override the Pardot API url
+    // If you want to override the Pardot API url or version.
     private String pardotApiHost = "https://pi.pardot.com/api";
     private String pardotApiVersion = "3";
 
@@ -58,11 +58,13 @@ public class Configuration {
      * @param proxyHost Host for the proxy to use.
      * @param proxyPort Post for the proxy to use.
      * @param proxyScheme Scheme to use, HTTP/HTTPS
+     * @return Configuration instance.
      */
-    public void useProxy(final String proxyHost, final int proxyPort, final String proxyScheme) {
+    public Configuration useProxy(final String proxyHost, final int proxyPort, final String proxyScheme) {
         this.proxyHost = proxyHost;
         this.proxyPort = proxyPort;
         this.proxyScheme = proxyScheme;
+        return this;
     }
 
     /**
@@ -70,10 +72,30 @@ public class Configuration {
      *
      * @param proxyUsername Username for proxy.
      * @param proxyPassword Password for proxy.
+     * @return Configuration instance.
      */
-    public void useProxyAuthentication(final String proxyUsername, final String proxyPassword) {
+    public Configuration useProxyAuthentication(final String proxyUsername, final String proxyPassword) {
         this.proxyUsername = proxyUsername;
         this.proxyPassword = proxyPassword;
+        return this;
+    }
+
+    /**
+     * Configure library to use Pardot Api Version 4.
+     * @return Configuration instance.
+     */
+    public Configuration withApiVersion4() {
+        this.pardotApiVersion = "4";
+        return this;
+    }
+
+    /**
+     * Configure library to use Pardot Api Version 4.
+     * @return Configuration instance.
+     */
+    public Configuration withApiVersion3() {
+        this.pardotApiVersion = "3";
+        return this;
     }
 
     public String getProxyHost() {
