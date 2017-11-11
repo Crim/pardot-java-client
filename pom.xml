@@ -255,16 +255,17 @@
                     <artifactId>license-maven-plugin</artifactId>
                     <version>3.0</version>
                     <configuration>
-                        <header>LICENSE</header>
+                        <header>LICENSE.txt</header>
                         <excludes>
                             <exclude>**/.md</exclude>
                             <exclude>**/.bak</exclude>
                             <exclude>**.yml</exclude>
                             <exclude>**.yaml</exclude>
                             <exclude>**.xml</exclude>
-                            <exclude>script/**</exclude>
+                            <exclude>build/**</exclude>
                             <exclude>src/test/resources/**</exclude>
                             <exclude>src/main/resources/**</exclude>
+                            <exclude>LICENSE.txt</exclude>
                         </excludes>
                     </configuration>
                     <executions>

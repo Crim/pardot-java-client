@@ -1,20 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE module PUBLIC
-        "-//Puppy Crawl//DTD Check Configuration 1.3//EN"
-        "http://www.puppycrawl.com/dtds/configuration_1_3.dtd">
-<!--
-    DO NOT MANUALLY EDIT THIS FILE!
-    Pull Latest from here: https://confluence.dev.pardot.com/display/PE/Java+Standards
-
-    Checkstyle configuration based originally on the Google coding conventions.
-
-    Changelog:
-
-    v1.5 -  August 8, 2017
-      - Now requiring class level javadocs for all public scoped interfaces, classes, and enums.
-
- -->
-
+    "-//Puppy Crawl//DTD Check Configuration 1.3//EN"
+    "http://www.puppycrawl.com/dtds/configuration_1_3.dtd">
 <module name = "Checker">
     <property name="charset" value="UTF-8"/>
 
