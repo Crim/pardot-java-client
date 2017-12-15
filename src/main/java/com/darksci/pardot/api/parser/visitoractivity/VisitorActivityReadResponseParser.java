@@ -19,8 +19,6 @@ package com.darksci.pardot.api.parser.visitoractivity;
 
 import com.darksci.pardot.api.parser.JacksonFactory;
 import com.darksci.pardot.api.parser.ResponseParser;
-import com.darksci.pardot.api.response.user.User;
-import com.darksci.pardot.api.response.user.UserReadResponse;
 import com.darksci.pardot.api.response.visitoractivity.VisitorActivity;
 
 import java.io.IOException;

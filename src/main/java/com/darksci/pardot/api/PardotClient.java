@@ -166,7 +166,7 @@ public class PardotClient implements AutoCloseable {
             }
 
             // High level check for error response
-            if (restResponse.getResponseStr().contains("<rsp stat=\"fail\"")) {
+            if (responseStr.contains("<rsp stat=\"fail\"")) {
                 try {
                     // Parse error response
                     final ErrorResponse error = new ErrorResponseParser().parseResponse(restResponse.getResponseStr());
@@ -195,9 +195,7 @@ public class PardotClient implements AutoCloseable {
     }
 
     /**
-     *
-
-package protected for access in tests.
+     * package protected for access in tests.
      * @return Rest Client.
      */
     RestClient getRestClient() {

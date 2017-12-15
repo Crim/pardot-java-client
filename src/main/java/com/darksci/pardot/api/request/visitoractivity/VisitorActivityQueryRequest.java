@@ -18,11 +18,9 @@
 package com.darksci.pardot.api.request.visitoractivity;
 
 import com.darksci.pardot.api.request.BaseQueryRequest;
-import com.darksci.pardot.api.request.DateParameter;
 import com.darksci.pardot.api.response.visitoractivity.VisitorActivityType;
 
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 /**
  * Defines a Visitor Activity Query Request.

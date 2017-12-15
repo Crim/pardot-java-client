@@ -1,8 +1,5 @@
 package com.darksci.pardot.api.response.visitoractivity;
 
-import com.darksci.pardot.api.response.email.Email;
-import sun.jvm.hotspot.debugger.Page;
-
 /**
  * Enum Representing Visitor Activity types.
  */
