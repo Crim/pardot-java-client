@@ -28,6 +28,7 @@ public class VisitorActivity {
     private Long id;
     private Integer type;
     private String typeName;
+    private VisitorActivityType activityType;
     private String details;
     private Long emailId;
     private Long listEmailId;
@@ -45,6 +46,10 @@ public class VisitorActivity {
 
     public String getTypeName() {
         return typeName;
+    }
+
+    public VisitorActivityType getActivityType() {
+        return VisitorActivityType.fromValue(getType());
     }
 
     public String getDetails() {

@@ -35,6 +35,8 @@ import com.darksci.pardot.api.parser.prospect.ProspectReadResponseParser;
 import com.darksci.pardot.api.parser.user.UserAbilitiesParser;
 import com.darksci.pardot.api.parser.user.UserQueryResponseParser;
 import com.darksci.pardot.api.parser.user.UserReadResponseParser;
+import com.darksci.pardot.api.parser.visitoractivity.VisitorActivityQueryResponseParser;
+import com.darksci.pardot.api.parser.visitoractivity.VisitorActivityReadResponseParser;
 import com.darksci.pardot.api.request.Request;
 import com.darksci.pardot.api.request.account.AccountReadRequest;
 import com.darksci.pardot.api.request.campaign.CampaignCreateRequest;
@@ -65,6 +67,8 @@ import com.darksci.pardot.api.request.prospect.ProspectUpsertRequest;
 import com.darksci.pardot.api.request.user.UserAbilitiesRequest;
 import com.darksci.pardot.api.request.user.UserQueryRequest;
 import com.darksci.pardot.api.request.user.UserReadRequest;
+import com.darksci.pardot.api.request.visitoractivity.VisitorActivityQueryRequest;
+import com.darksci.pardot.api.request.visitoractivity.VisitorActivityReadRequest;
 import com.darksci.pardot.api.response.ErrorResponse;
 import com.darksci.pardot.api.response.account.Account;
 import com.darksci.pardot.api.response.campaign.Campaign;
@@ -81,6 +85,7 @@ import com.darksci.pardot.api.response.prospect.ProspectQueryResponse;
 import com.darksci.pardot.api.response.user.User;
 import com.darksci.pardot.api.response.user.UserAbilitiesResponse;
 import com.darksci.pardot.api.response.user.UserQueryResponse;
+import com.darksci.pardot.api.response.visitoractivity.VisitorActivity;
 import com.darksci.pardot.api.rest.HttpClientRestClient;
 import com.darksci.pardot.api.rest.RestClient;
 import com.darksci.pardot.api.rest.RestResponse;
@@ -485,6 +490,24 @@ package protected for access in tests.
      */
     public Prospect prospectUnassign(final ProspectUnassignRequest request) {
         return submitRequest(request, new ProspectReadResponseParser());
+    }
+
+    /**
+     * Make API request to query visitorActivities.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public String visitorActivityQuery(final VisitorActivityQueryRequest request) {
+        return submitRequest(request, new VisitorActivityQueryResponseParser());
+    }
+
+    /**
+     * Make API request to read a visitor activity.
+     * @param request Request definition.
+     * @return Parsed api response
+     */
+    public VisitorActivity visitorActivityRead(final VisitorActivityReadRequest request) {
+        return submitRequest(request, new VisitorActivityReadResponseParser());
     }
 
     /**
