@@ -91,7 +91,9 @@ import com.darksci.pardot.api.response.user.User;
 import com.darksci.pardot.api.response.user.UserAbilitiesResponse;
 import com.darksci.pardot.api.response.user.UserQueryResponse;
 import com.darksci.pardot.api.response.visitor.Visitor;
+import com.darksci.pardot.api.response.visitor.VisitorQueryResponse;
 import com.darksci.pardot.api.response.visitoractivity.VisitorActivity;
+import com.darksci.pardot.api.response.visitoractivity.VisitorActivityQueryResponse;
 import com.darksci.pardot.api.rest.HttpClientRestClient;
 import com.darksci.pardot.api.rest.RestClient;
 import com.darksci.pardot.api.rest.RestResponse;
@@ -510,7 +512,7 @@ public class PardotClient implements AutoCloseable {
      * @param request Request definition.
      * @return Parsed api response.
      */
-    public String visitorQuery(final VisitorQueryRequest request) {
+    public VisitorQueryResponse.Result visitorQuery(final VisitorQueryRequest request) {
         return submitRequest(request, new VisitorQueryResponseParser());
     }
 
@@ -528,7 +530,7 @@ public class PardotClient implements AutoCloseable {
      * @param request Request definition.
      * @return Parsed api response.
      */
-    public String visitorActivityQuery(final VisitorActivityQueryRequest request) {
+    public VisitorActivityQueryResponse.Result visitorActivityQuery(final VisitorActivityQueryRequest request) {
         return submitRequest(request, new VisitorActivityQueryResponseParser());
     }
 

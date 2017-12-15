@@ -17,19 +17,19 @@
 
 package com.darksci.pardot.api.parser.visitoractivity;
 
+import com.darksci.pardot.api.parser.JacksonFactory;
 import com.darksci.pardot.api.parser.ResponseParser;
+import com.darksci.pardot.api.response.visitoractivity.VisitorActivityQueryResponse;
 
 import java.io.IOException;
 
 /**
  * Handles parsing VisitorActivity Query API responses into POJOs.
  */
-public class VisitorActivityQueryResponseParser implements ResponseParser<String> {
+public class VisitorActivityQueryResponseParser implements ResponseParser<VisitorActivityQueryResponse.Result> {
 
     @Override
-    public String parseResponse(final String responseStr) throws IOException {
-        // TODO
-        //return JacksonFactory.newInstance().readValue(responseStr, UserQueryResponse.class).getResult();
-        return responseStr;
+    public VisitorActivityQueryResponse.Result parseResponse(final String responseStr) throws IOException {
+        return JacksonFactory.newInstance().readValue(responseStr, VisitorActivityQueryResponse.class).getResult();
     }
 }

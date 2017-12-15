@@ -43,11 +43,19 @@ public class VisitorQueryRequest extends BaseQueryRequest<VisitorQueryRequest> {
     }
 
     /**
-     * Only select identified visitors.
+     * Only select identified visitors.  By default if not set, the API will ONLY show identified visitors.
      * @return RequestBuilder
      */
     public VisitorQueryRequest withIdentifiedOnly() {
         return setBooleanParam("only_identified", true);
+    }
+
+    /**
+     * Show all visitors (not just identified).
+     * @return RequestBuilder
+     */
+    public VisitorQueryRequest withNonIdentifiedVisitors() {
+        return setBooleanParam("only_identified", false);
     }
 
     // Relationship filters

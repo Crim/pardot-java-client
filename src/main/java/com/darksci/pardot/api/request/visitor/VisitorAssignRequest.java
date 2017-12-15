@@ -19,6 +19,7 @@ package com.darksci.pardot.api.request.visitor;
 
 
 import com.darksci.pardot.api.request.BaseQueryRequest;
+import com.darksci.pardot.api.request.DateParameter;
 
 /**
  * Request for assigning a visitor to a prospect.
@@ -47,5 +48,14 @@ public class VisitorAssignRequest extends BaseQueryRequest<VisitorAssignRequest>
     public VisitorAssignRequest withProspectId(final Long prospectId) {
         setParam("prospect_email", null);
         return setParam("prospect_id", prospectId);
+    }
+
+    /**
+     * Select which visitor to assign.
+     * @param visitorId The id of the visitor to assign.
+     * @return RequestBuilder
+     */
+    public VisitorAssignRequest withVisitorId(final Long visitorId) {
+        return setParam("id", visitorId);
     }
 }

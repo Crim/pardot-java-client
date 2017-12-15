@@ -117,6 +117,9 @@ public class Prospect {
     // Assigned User
     private AssignedTo assignedTo;
 
+    // Last Activity
+    private LastActivity lastActivity;
+
     // Custom fields
     private Map<String, String> customFields = new HashMap<>();
 
@@ -325,6 +328,16 @@ public class Prospect {
     public User getAssignedUser() {
         if (getAssignedTo() != null) {
             return getAssignedTo().getUser();
+        }
+        return null;
+    }
+
+    /**
+     * @return Last VisitorActivity, if defined.
+     */
+    public VisitorActivity getLastActivity() {
+        if (lastActivity != null) {
+            return lastActivity.getVisitorActivity();
         }
         return null;
     }
@@ -626,6 +639,17 @@ public class Prospect {
 
         public User getUser() {
             return user;
+        }
+    }
+
+    /**
+     * Holds value in lastActivity field.
+     */
+    private static class LastActivity {
+        private VisitorActivity visitorActivity;
+
+        public VisitorActivity getVisitorActivity() {
+            return visitorActivity;
         }
     }
 }

@@ -4,6 +4,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 0.3.0 (12/15/17)
 - Add support for Visitor and VisitorActivity API endpoints.
+- Bugfix to Prospect parser.
 
 
 ## 0.2.0 (11/11/17)

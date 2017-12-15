@@ -15,22 +15,53 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.darksci.pardot.api.parser.visitor;
+package com.darksci.pardot.api.response.visitoractivity;
 
-import com.darksci.pardot.api.parser.JacksonFactory;
-import com.darksci.pardot.api.parser.ResponseParser;
 import com.darksci.pardot.api.response.visitor.Visitor;
-import com.darksci.pardot.api.response.visitor.VisitorReadResponse;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
-import java.io.IOException;
+import java.util.List;
 
 /**
- * Handles parsing Visitor Read API responses into POJOs.
+ * Represents the result from a Visitor Activity Query API call.
  */
-public class VisitorReadResponseParser implements ResponseParser<Visitor> {
+public class VisitorActivityQueryResponse {
+    private VisitorActivityQueryResponse.Result result;
+
+    public Result getResult() {
+        return result;
+    }
+
+    /**
+     * Represents one or more visitor activities.
+     */
+    public static class Result {
+        private Integer totalResults = 0;
+
+        @JacksonXmlProperty(localName = "visitor_activity")
+        private List<VisitorActivity> visitorActivities;
+
+        public Integer getTotalResults() {
+            return totalResults;
+        }
+
+        public List<VisitorActivity> getVisitorActivities() {
+            return visitorActivities;
+        }
+
+        @Override
+        public String toString() {
+            return "Result{"
+                + "totalResults=" + totalResults
+                + ", visitorActivities=" + visitorActivities
+                + '}';
+        }
+    }
 
     @Override
-    public Visitor parseResponse(final String responseStr) throws IOException {
-        return JacksonFactory.newInstance().readValue(responseStr, VisitorReadResponse.class).getVisitor();
+    public String toString() {
+        return "VisitorActivityQueryResponse{"
+            + "result=" + result
+            + '}';
     }
 }
