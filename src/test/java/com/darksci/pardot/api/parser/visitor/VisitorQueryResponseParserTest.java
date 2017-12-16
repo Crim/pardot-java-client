@@ -18,9 +18,6 @@
 package com.darksci.pardot.api.parser.visitor;
 
 import com.darksci.pardot.api.parser.BaseResponseParserTest;
-import com.darksci.pardot.api.parser.user.UserQueryResponseParser;
-import com.darksci.pardot.api.response.user.User;
-import com.darksci.pardot.api.response.user.UserQueryResponse;
 import com.darksci.pardot.api.response.visitor.Visitor;
 import com.darksci.pardot.api.response.visitor.VisitorQueryResponse;
 import org.junit.Test;

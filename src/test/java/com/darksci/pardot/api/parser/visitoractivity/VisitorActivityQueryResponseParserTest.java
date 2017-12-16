@@ -18,9 +18,6 @@
 package com.darksci.pardot.api.parser.visitoractivity;
 
 import com.darksci.pardot.api.parser.BaseResponseParserTest;
-import com.darksci.pardot.api.parser.visitor.VisitorQueryResponseParser;
-import com.darksci.pardot.api.response.visitor.Visitor;
-import com.darksci.pardot.api.response.visitor.VisitorQueryResponse;
 import com.darksci.pardot.api.response.visitoractivity.VisitorActivity;
 import com.darksci.pardot.api.response.visitoractivity.VisitorActivityQueryResponse;
 import com.darksci.pardot.api.response.visitoractivity.VisitorActivityType;
@@ -33,7 +30,6 @@ import java.io.IOException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 public class VisitorActivityQueryResponseParserTest extends BaseResponseParserTest {
     private static final Logger logger = LoggerFactory.getLogger(VisitorActivityQueryResponseParserTest.class);

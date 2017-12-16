@@ -19,7 +19,6 @@ package com.darksci.pardot.api.request.visitor;
 
 
 import com.darksci.pardot.api.request.BaseQueryRequest;
-import com.darksci.pardot.api.request.DateParameter;
 
 /**
  * Request for assigning a visitor to a prospect.

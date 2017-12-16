@@ -18,8 +18,6 @@
 package com.darksci.pardot.api.parser.visitor;
 
 import com.darksci.pardot.api.parser.BaseResponseParserTest;
-import com.darksci.pardot.api.parser.user.UserReadResponseParser;
-import com.darksci.pardot.api.response.user.User;
 import com.darksci.pardot.api.response.visitor.Visitor;
 import org.junit.Test;
 import org.slf4j.Logger;

@@ -17,7 +17,6 @@
 
 package com.darksci.pardot.api.response.visitoractivity;
 
-import com.darksci.pardot.api.response.visitor.Visitor;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 import java.util.List;
