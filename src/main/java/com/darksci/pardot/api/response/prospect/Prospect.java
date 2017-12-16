@@ -33,6 +33,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import org.joda.time.LocalDateTime;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -371,18 +372,35 @@ public class Prospect {
         return profile;
     }
 
+    /**
+     * @return Associated visitor activites, or empty list if none.
+     */
     public List<VisitorActivity> getVisitorActivities() {
+        if (visitorActivities == null) {
+            return new ArrayList<>();
+        }
         return visitorActivities;
     }
 
+    /**
+     * @return List subscriptions.
+     */
     public List<ListSubscription> getListSubscriptions() {
+        if (listSubscriptions == null) {
+            return new ArrayList<>();
+        }
         return listSubscriptions;
     }
 
+    /**
+     * @return Associated visitors.
+     */
     public List<Visitor> getVisitors() {
+        if (visitors == null) {
+            return new ArrayList<>();
+        }
         return visitors;
     }
-
 
     // Setters
     public void setId(final Long id) {

@@ -56,6 +56,9 @@ public class Visitor {
         return prospectId;
     }
 
+    /**
+     * @return How many page views the visitor has.
+     */
     public Integer getPageViewCount() {
         if (pageViewCount == null) {
             return 0;
@@ -99,6 +102,9 @@ public class Visitor {
         return updatedAt;
     }
 
+    /**
+     * @return Associated Visitor Activities, or empty list if none.
+     */
     public List<VisitorActivity> getVisitorActivities() {
         if (visitorActivities == null) {
             return new ArrayList<>();

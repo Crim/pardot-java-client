@@ -17,6 +17,7 @@
 
 package com.darksci.pardot.api.response.profile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,7 +36,13 @@ public class Profile {
         return name;
     }
 
+    /**
+     * @return Associated profile criteria.
+     */
     public List<ProfileCriteria> getProfileCriteria() {
+        if (profileCriteria == null) {
+            return new ArrayList<>();
+        }
         return profileCriteria;
     }
 
