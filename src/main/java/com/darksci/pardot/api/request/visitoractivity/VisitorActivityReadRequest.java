@@ -15,43 +15,26 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.darksci.pardot.api.response.profile;
+package com.darksci.pardot.api.request.visitoractivity;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.darksci.pardot.api.request.BaseRequest;
 
 /**
- * Represents a Pardot profile.
+ * Used to generate a Visitor Activity read request.
  */
-public class Profile {
-    private Long id;
-    private String name;
-    private List<ProfileCriteria> profileCriteria;
+public class VisitorActivityReadRequest extends BaseRequest<VisitorActivityReadRequest> {
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
+    @Override
+    public String getApiEndpoint() {
+        return "visitorActivity/do/read";
     }
 
     /**
-     * @return Associated profile criteria.
+     * Returns the data for the visitor activity specified by id.
+     * @param id The Id of the target visitor activity.
+     * @return UserReadRequest builder.
      */
-    public List<ProfileCriteria> getProfileCriteria() {
-        if (profileCriteria == null) {
-            return new ArrayList<>();
-        }
-        return profileCriteria;
-    }
-
-    @Override
-    public String toString() {
-        return "Profile{"
-            + "id=" + id
-            + ", name='" + name + '\''
-            + ", profileCriteria=" + profileCriteria
-            + '}';
+    public VisitorActivityReadRequest selectById(final Long id) {
+        return setParam("id", id);
     }
 }

@@ -32,6 +32,7 @@ abstract class ProspectModifyRequest<T> extends BaseRequest<T> {
      * @param prospect The prospect you want to create in pardot.
      * @return CampaignCreateRequest builder.
      */
+    @SuppressWarnings("unchecked")
     public T withProspect(final Prospect prospect) {
         // Identifying fields
         setParam("id", prospect.getId());
@@ -68,8 +69,6 @@ abstract class ProspectModifyRequest<T> extends BaseRequest<T> {
                 setParam(entry.getKey(), entry.getValue());
             }
         }
-
-        // TODO add other fields?  How to handle custom fields?
 
         return (T) this;
     }

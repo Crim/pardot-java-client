@@ -47,6 +47,11 @@ import com.darksci.pardot.api.request.prospect.ProspectUpsertRequest;
 import com.darksci.pardot.api.request.user.UserAbilitiesRequest;
 import com.darksci.pardot.api.request.user.UserQueryRequest;
 import com.darksci.pardot.api.request.user.UserReadRequest;
+import com.darksci.pardot.api.request.visitor.VisitorAssignRequest;
+import com.darksci.pardot.api.request.visitor.VisitorQueryRequest;
+import com.darksci.pardot.api.request.visitor.VisitorReadRequest;
+import com.darksci.pardot.api.request.visitoractivity.VisitorActivityQueryRequest;
+import com.darksci.pardot.api.request.visitoractivity.VisitorActivityReadRequest;
 import com.darksci.pardot.api.response.account.Account;
 import com.darksci.pardot.api.response.campaign.Campaign;
 import com.darksci.pardot.api.response.campaign.CampaignQueryResponse;
@@ -62,6 +67,10 @@ import com.darksci.pardot.api.response.prospect.ProspectQueryResponse;
 import com.darksci.pardot.api.response.user.User;
 import com.darksci.pardot.api.response.user.UserAbilitiesResponse;
 import com.darksci.pardot.api.response.user.UserQueryResponse;
+import com.darksci.pardot.api.response.visitor.Visitor;
+import com.darksci.pardot.api.response.visitor.VisitorQueryResponse;
+import com.darksci.pardot.api.response.visitoractivity.VisitorActivity;
+import com.darksci.pardot.api.response.visitoractivity.VisitorActivityQueryResponse;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -122,7 +131,7 @@ public class PardotClientTest {
      * Attempt to login.
      */
     @Test
-    public void loginTest() throws IOException {
+    public void loginTest() {
         final LoginResponse response = client.login(new LoginRequest()
             .withEmail(testConfig.getEmail())
             .withPassword(testConfig.getPassword())
@@ -137,7 +146,7 @@ public class PardotClientTest {
      * Attempt to retrieve account.
      */
     @Test
-    public void accountReadTest() throws IOException {
+    public void accountReadTest() {
         AccountReadRequest readRequest = new AccountReadRequest();
 
         final Account response = client.accountRead(readRequest);
@@ -149,7 +158,7 @@ public class PardotClientTest {
      * Attempt to retrieve users.
      */
     @Test
-    public void userQueryTest() throws IOException {
+    public void userQueryTest() {
         UserQueryRequest userQueryRequest = new UserQueryRequest()
             .withIdGreaterThan(10L)
             .withLimit(1)
@@ -166,7 +175,7 @@ public class PardotClientTest {
      * Attempt to retrieve current user's abilities.
      */
     @Test
-    public void userAbilitiesTest() throws IOException {
+    public void userAbilitiesTest() {
         UserAbilitiesRequest userAbilitiesRequest = new UserAbilitiesRequest();
 
         final UserAbilitiesResponse.Result response = client.userAbilities(userAbilitiesRequest);
@@ -178,7 +187,7 @@ public class PardotClientTest {
      * Attempt to retrieve a user.
      */
     @Test
-    public void userReadTest() throws IOException {
+    public void userReadTest() {
         UserReadRequest readRequest = new UserReadRequest()
             .selectById(3793281L);
 
@@ -191,7 +200,7 @@ public class PardotClientTest {
      * Attempt to query campaigns.
      */
     @Test
-    public void campaignQueryTest() throws IOException {
+    public void campaignQueryTest() {
         CampaignQueryRequest request = new CampaignQueryRequest();
 
         final CampaignQueryResponse.Result response = client.campaignQuery(request);
@@ -216,7 +225,7 @@ public class PardotClientTest {
      * Attempt to create a campaign.
      */
     @Test
-    public void campaignCreateTest() throws IOException {
+    public void campaignCreateTest() {
         // Define campaign
         final Campaign campaign = new Campaign();
         campaign.setName("API Test Campaign " + System.currentTimeMillis());
@@ -239,7 +248,7 @@ public class PardotClientTest {
      * Attempt to create a campaign.
      */
     @Test
-    public void campaignUpdateTest() throws IOException {
+    public void campaignUpdateTest() {
         final long campaignId = 14887L;
 
         // Define campaign
@@ -265,7 +274,7 @@ public class PardotClientTest {
      * Test reading a specific email over the api.
      */
     @Test
-    public void emailReadTest() throws IOException {
+    public void emailReadTest() {
         final long emailId = 167044349L;
 
         EmailReadRequest request = new EmailReadRequest()
@@ -280,7 +289,7 @@ public class PardotClientTest {
      * Test reading a specific email over the api.
      */
     @Test
-    public void emailStatsTest() throws IOException {
+    public void emailStatsTest() {
         final long listEmailId = 167044401;
 
         EmailStatsRequest request = new EmailStatsRequest()
@@ -295,7 +304,7 @@ public class PardotClientTest {
      * Test sending a 1-to-1 email to a specific prospect.
      */
     @Test
-    public void emailSendOneToOneTest() throws IOException {
+    public void emailSendOneToOneTest() {
         final long campaignId = 14885;
         final long prospectId = 59135263;
 
@@ -493,7 +502,7 @@ public class PardotClientTest {
      */
     @Test
     public void prospectReadTest() {
-        final long prospectId = 59135263;
+        final long prospectId = 191208284;
 
         final Prospect response = client.prospectRead(new ProspectReadRequest()
             .selectById(prospectId)
@@ -622,7 +631,7 @@ public class PardotClientTest {
     }
 
     /**
-     * Test reading prospect by id.
+     * Test querying prospects.
      */
     @Test
     public void prospectQueryTest() {
@@ -630,6 +639,76 @@ public class PardotClientTest {
             .withArchivedOnly();
 
         final ProspectQueryResponse.Result response = client.prospectQuery(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test Querying visitors.
+     */
+    @Test
+    public void visitorQueryTest() {
+        final VisitorQueryRequest request = new VisitorQueryRequest()
+            .withNonIdentifiedVisitors();
+
+        final VisitorQueryResponse.Result response = client.visitorQuery(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test Reading a visitor.
+     */
+    @Test
+    public void visitorReadTest() {
+        final long visitorId = 37640L;
+        final VisitorReadRequest request = new VisitorReadRequest()
+            .selectById(visitorId);
+
+        final Visitor response = client.visitorRead(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test assigning a visitor.
+     */
+    @Test
+    public void visitorAssignTest() {
+        final long visitorId = 1610949348L;
+        final long prospectId = 41323302L;
+
+        final VisitorAssignRequest request = new VisitorAssignRequest()
+            .withVisitorId(visitorId)
+            .withProspectId(prospectId);
+
+        final Visitor response = client.visitorAssign(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test Querying visitor activities.
+     */
+    @Test
+    public void visitorActivityQueryTest() {
+        final VisitorActivityQueryRequest request = new VisitorActivityQueryRequest();
+
+        final VisitorActivityQueryResponse.Result response = client.visitorActivityQuery(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test Reading a visitor activity.
+     */
+    @Test
+    public void visitorActivityReadTest() {
+        final long visitorActivityId = 320419032L;
+        final VisitorActivityReadRequest request = new VisitorActivityReadRequest()
+            .selectById(visitorActivityId);
+
+        final VisitorActivity response = client.visitorActivityRead(request);
         assertNotNull("Should not be null", response);
         logger.info("Response: {}", response);
     }

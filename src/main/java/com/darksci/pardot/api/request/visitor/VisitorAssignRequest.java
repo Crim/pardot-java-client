@@ -15,43 +15,46 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.darksci.pardot.api.response.profile;
+package com.darksci.pardot.api.request.visitor;
 
-import java.util.ArrayList;
-import java.util.List;
+
+import com.darksci.pardot.api.request.BaseQueryRequest;
 
 /**
- * Represents a Pardot profile.
+ * Request for assigning a visitor to a prospect.
  */
-public class Profile {
-    private Long id;
-    private String name;
-    private List<ProfileCriteria> profileCriteria;
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
+public class VisitorAssignRequest extends BaseQueryRequest<VisitorAssignRequest> {
+    @Override
+    public String getApiEndpoint() {
+        return "visitor/do/assign";
     }
 
     /**
-     * @return Associated profile criteria.
+     * Assign visitor to the specified Prospect's email address.
+     * @param email Email address of prospect.
+     * @return RequestBuilder
      */
-    public List<ProfileCriteria> getProfileCriteria() {
-        if (profileCriteria == null) {
-            return new ArrayList<>();
-        }
-        return profileCriteria;
+    public VisitorAssignRequest withProspectEmail(final String email) {
+        setParam("prospect_id", null);
+        return setParam("prospect_email", email);
     }
 
-    @Override
-    public String toString() {
-        return "Profile{"
-            + "id=" + id
-            + ", name='" + name + '\''
-            + ", profileCriteria=" + profileCriteria
-            + '}';
+    /**
+     * Assign visitor to the specified prospect by prospectId.
+     * @param prospectId Id of prospect.
+     * @return RequestBuilder
+     */
+    public VisitorAssignRequest withProspectId(final Long prospectId) {
+        setParam("prospect_email", null);
+        return setParam("prospect_id", prospectId);
+    }
+
+    /**
+     * Select which visitor to assign.
+     * @param visitorId The id of the visitor to assign.
+     * @return RequestBuilder
+     */
+    public VisitorAssignRequest withVisitorId(final Long visitorId) {
+        return setParam("id", visitorId);
     }
 }

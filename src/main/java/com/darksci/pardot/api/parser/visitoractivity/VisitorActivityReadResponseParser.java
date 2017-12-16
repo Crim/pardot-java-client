@@ -15,43 +15,22 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.darksci.pardot.api.response.profile;
+package com.darksci.pardot.api.parser.visitoractivity;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.darksci.pardot.api.parser.JacksonFactory;
+import com.darksci.pardot.api.parser.ResponseParser;
+import com.darksci.pardot.api.response.visitoractivity.VisitorActivity;
+import com.darksci.pardot.api.response.visitoractivity.VisitorActivityReadResponse;
+
+import java.io.IOException;
 
 /**
- * Represents a Pardot profile.
+ * Handles parsing VisitorActivity Read API responses into POJOs.
  */
-public class Profile {
-    private Long id;
-    private String name;
-    private List<ProfileCriteria> profileCriteria;
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * @return Associated profile criteria.
-     */
-    public List<ProfileCriteria> getProfileCriteria() {
-        if (profileCriteria == null) {
-            return new ArrayList<>();
-        }
-        return profileCriteria;
-    }
+public class VisitorActivityReadResponseParser implements ResponseParser<VisitorActivity> {
 
     @Override
-    public String toString() {
-        return "Profile{"
-            + "id=" + id
-            + ", name='" + name + '\''
-            + ", profileCriteria=" + profileCriteria
-            + '}';
+    public VisitorActivity parseResponse(final String responseStr) throws IOException {
+        return JacksonFactory.newInstance().readValue(responseStr, VisitorActivityReadResponse.class).getVisitorActivity();
     }
 }

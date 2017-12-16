@@ -18,7 +18,6 @@
 package com.darksci.pardot.api.parser.listmembership;
 
 import com.darksci.pardot.api.parser.BaseResponseParserTest;
-import com.darksci.pardot.api.parser.list.ListQueryResponseParserTest;
 import com.darksci.pardot.api.response.list.ListMembership;
 import com.darksci.pardot.api.response.listmembership.ListMembershipQueryResponse;
 import org.junit.Test;

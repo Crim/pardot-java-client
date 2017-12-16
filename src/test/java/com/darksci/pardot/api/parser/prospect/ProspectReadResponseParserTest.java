@@ -141,4 +141,17 @@ public class ProspectReadResponseParserTest extends BaseResponseParserTest {
         assertEquals("has correct created at", "2017-08-11T22:03:22.000", list.getCreatedAt().toString());
         assertEquals("has correct updated at", "2017-08-11T22:03:22.000", list.getUpdatedAt().toString());
     }
+
+    /**
+     * Validates a prospect read with last_activity entry.
+     */
+    @Test
+    public void testRead_prospectWithLastActivity() throws IOException {
+        final String input = readFile("prospectRead2.xml");
+        final Prospect response = new ProspectReadResponseParser().parseResponse(input);
+        logger.info("Result: {}", response);
+
+        assertNotNull("Is not null", response);
+        assertNotNull("Has non-null lastActivity", response.getLastActivity());
+    }
 }

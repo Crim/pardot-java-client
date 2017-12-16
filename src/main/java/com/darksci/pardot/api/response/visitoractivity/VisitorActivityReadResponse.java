@@ -15,43 +15,16 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.darksci.pardot.api.response.profile;
-
-import java.util.ArrayList;
-import java.util.List;
+package com.darksci.pardot.api.response.visitoractivity;
 
 /**
- * Represents a Pardot profile.
+ * Represents a Pardot Visitor Activity.
  */
-public class Profile {
-    private Long id;
-    private String name;
-    private List<ProfileCriteria> profileCriteria;
+public class VisitorActivityReadResponse {
 
-    public Long getId() {
-        return id;
-    }
+    private VisitorActivity visitorActivity;
 
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * @return Associated profile criteria.
-     */
-    public List<ProfileCriteria> getProfileCriteria() {
-        if (profileCriteria == null) {
-            return new ArrayList<>();
-        }
-        return profileCriteria;
-    }
-
-    @Override
-    public String toString() {
-        return "Profile{"
-            + "id=" + id
-            + ", name='" + name + '\''
-            + ", profileCriteria=" + profileCriteria
-            + '}';
+    public VisitorActivity getVisitorActivity() {
+        return visitorActivity;
     }
 }

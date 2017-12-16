@@ -26,17 +26,43 @@ import org.joda.time.LocalDateTime;
  */
 public class VisitorActivity {
     private Long id;
+
+    // Properties
     private Integer type;
     private String typeName;
     private String details;
+
+    // FK References
+    private Long visitorId;
+    private Long prospectId;
     private Long emailId;
+    private Long emailTemplateId;
+    private Long fileId;
+    private Long formId;
+    private Long formHandlerId;
+    private Long landingPageId;
     private Long listEmailId;
+    private Long siteSearchQueryId;
+    private Long multivariateTestVariationId;
+    private Long paidSearchId;
+    private Long visitorPageViewId;
+
+    // Campaign detail
     private Campaign campaign;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
 
     public Long getId() {
         return id;
+    }
+
+    public Long getVisitorId() {
+        return visitorId;
+    }
+
+    public Long getProspectId() {
+        return prospectId;
     }
 
     public Integer getType() {
@@ -45,6 +71,10 @@ public class VisitorActivity {
 
     public String getTypeName() {
         return typeName;
+    }
+
+    public VisitorActivityType getActivityType() {
+        return VisitorActivityType.fromValue(getType());
     }
 
     public String getDetails() {
@@ -57,6 +87,42 @@ public class VisitorActivity {
 
     public Long getListEmailId() {
         return listEmailId;
+    }
+
+    public Long getFileId() {
+        return fileId;
+    }
+
+    public Long getFormId() {
+        return formId;
+    }
+
+    public Long getFormHandlerId() {
+        return formHandlerId;
+    }
+
+    public Long getLandingPageId() {
+        return landingPageId;
+    }
+
+    public Long getEmailTemplateId() {
+        return emailTemplateId;
+    }
+
+    public Long getSiteSearchQueryId() {
+        return siteSearchQueryId;
+    }
+
+    public Long getMultivariateTestVariationId() {
+        return multivariateTestVariationId;
+    }
+
+    public Long getPaidSearchId() {
+        return paidSearchId;
+    }
+
+    public Long getVisitorPageViewId() {
+        return visitorPageViewId;
     }
 
     public Campaign getCampaign() {
@@ -73,9 +139,21 @@ public class VisitorActivity {
             + "id=" + id
             + ", type=" + type
             + ", typeName='" + typeName + '\''
+            + ", activityType=" + getActivityType()
             + ", details='" + details + '\''
+            + ", visitorId=" + visitorId
+            + ", prospectId=" + prospectId
             + ", emailId=" + emailId
+            + ", emailTemplateId=" + emailTemplateId
+            + ", fileId=" + fileId
+            + ", formId=" + formId
+            + ", formHandlerId=" + formHandlerId
+            + ", landingPageId=" + landingPageId
             + ", listEmailId=" + listEmailId
+            + ", siteSearchQueryId=" + siteSearchQueryId
+            + ", multivariateTestVariationId=" + multivariateTestVariationId
+            + ", paidSearchId=" + paidSearchId
+            + ", visitorPageViewId=" + visitorPageViewId
             + ", campaign=" + campaign
             + ", createdAt=" + createdAt
             + '}';

@@ -15,43 +15,52 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.darksci.pardot.api.response.profile;
+package com.darksci.pardot.api.response.visitoractivity;
 
-import java.util.ArrayList;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+
 import java.util.List;
 
 /**
- * Represents a Pardot profile.
+ * Represents the result from a Visitor Activity Query API call.
  */
-public class Profile {
-    private Long id;
-    private String name;
-    private List<ProfileCriteria> profileCriteria;
+public class VisitorActivityQueryResponse {
+    private VisitorActivityQueryResponse.Result result;
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
+    public Result getResult() {
+        return result;
     }
 
     /**
-     * @return Associated profile criteria.
+     * Represents one or more visitor activities.
      */
-    public List<ProfileCriteria> getProfileCriteria() {
-        if (profileCriteria == null) {
-            return new ArrayList<>();
+    public static class Result {
+        private Integer totalResults = 0;
+
+        @JacksonXmlProperty(localName = "visitor_activity")
+        private List<VisitorActivity> visitorActivities;
+
+        public Integer getTotalResults() {
+            return totalResults;
         }
-        return profileCriteria;
+
+        public List<VisitorActivity> getVisitorActivities() {
+            return visitorActivities;
+        }
+
+        @Override
+        public String toString() {
+            return "Result{"
+                + "totalResults=" + totalResults
+                + ", visitorActivities=" + visitorActivities
+                + '}';
+        }
     }
 
     @Override
     public String toString() {
-        return "Profile{"
-            + "id=" + id
-            + ", name='" + name + '\''
-            + ", profileCriteria=" + profileCriteria
+        return "VisitorActivityQueryResponse{"
+            + "result=" + result
             + '}';
     }
 }

@@ -15,43 +15,52 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.darksci.pardot.api.response.profile;
+package com.darksci.pardot.api.response.visitor;
 
-import java.util.ArrayList;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+
 import java.util.List;
 
 /**
- * Represents a Pardot profile.
+ * Represents the result from a Visitor Query API call.
  */
-public class Profile {
-    private Long id;
-    private String name;
-    private List<ProfileCriteria> profileCriteria;
+public class VisitorQueryResponse {
+    private VisitorQueryResponse.Result result;
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
+    public Result getResult() {
+        return result;
     }
 
     /**
-     * @return Associated profile criteria.
+     * Represents one or more visitors.
      */
-    public List<ProfileCriteria> getProfileCriteria() {
-        if (profileCriteria == null) {
-            return new ArrayList<>();
+    public static class Result {
+        private Integer totalResults = 0;
+
+        @JacksonXmlProperty(localName = "visitor")
+        private List<Visitor> visitors;
+
+        public Integer getTotalResults() {
+            return totalResults;
         }
-        return profileCriteria;
+
+        public List<Visitor> getVisitors() {
+            return visitors;
+        }
+
+        @Override
+        public String toString() {
+            return "Result{"
+                + "totalResults=" + totalResults
+                + ", visitors=" + visitors
+                + '}';
+        }
     }
 
     @Override
     public String toString() {
-        return "Profile{"
-            + "id=" + id
-            + ", name='" + name + '\''
-            + ", profileCriteria=" + profileCriteria
+        return "VisitorQueryResponse{"
+            + "result=" + result
             + '}';
     }
 }

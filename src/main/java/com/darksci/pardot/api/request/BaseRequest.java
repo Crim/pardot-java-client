@@ -30,10 +30,12 @@ public abstract class BaseRequest<T> implements Request {
     // Param holder
     private Map<String, Object> params = new HashMap<>();
 
+    @SuppressWarnings("unchecked")
     protected <T> T getParam(final String name) {
         return (T) params.getOrDefault(name, null);
     }
 
+    @SuppressWarnings("unchecked")
     protected T setParam(final String name, Object value) {
         if (value == null) {
             params.remove(name);
@@ -50,6 +52,7 @@ public abstract class BaseRequest<T> implements Request {
      * @return BaseRequest
      */
     protected T setBooleanParam(final String parameterName, final boolean booleanValue) {
+        // TODO i think this is a bug? Or needs to be removed.
         String value = "true";
         if (!booleanValue) {
             value = "false";
@@ -67,6 +70,7 @@ public abstract class BaseRequest<T> implements Request {
         return setParam(name, values);
     }
 
+    @SuppressWarnings("unchecked")
     protected T withCollectionParams(final String name, Collection<?> values) {
         for (final Object value: values) {
             withCollectionParam(name, value);
