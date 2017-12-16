@@ -51,6 +51,7 @@ import com.darksci.pardot.api.request.visitor.VisitorAssignRequest;
 import com.darksci.pardot.api.request.visitor.VisitorQueryRequest;
 import com.darksci.pardot.api.request.visitor.VisitorReadRequest;
 import com.darksci.pardot.api.request.visitoractivity.VisitorActivityQueryRequest;
+import com.darksci.pardot.api.request.visitoractivity.VisitorActivityReadRequest;
 import com.darksci.pardot.api.response.account.Account;
 import com.darksci.pardot.api.response.campaign.Campaign;
 import com.darksci.pardot.api.response.campaign.CampaignQueryResponse;
@@ -68,6 +69,7 @@ import com.darksci.pardot.api.response.user.UserAbilitiesResponse;
 import com.darksci.pardot.api.response.user.UserQueryResponse;
 import com.darksci.pardot.api.response.visitor.Visitor;
 import com.darksci.pardot.api.response.visitor.VisitorQueryResponse;
+import com.darksci.pardot.api.response.visitoractivity.VisitorActivity;
 import com.darksci.pardot.api.response.visitoractivity.VisitorActivityQueryResponse;
 import org.junit.After;
 import org.junit.Before;
@@ -693,6 +695,20 @@ public class PardotClientTest {
         final VisitorActivityQueryRequest request = new VisitorActivityQueryRequest();
 
         final VisitorActivityQueryResponse.Result response = client.visitorActivityQuery(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test Reading a visitor activity.
+     */
+    @Test
+    public void visitorActivityReadTest() {
+        final long visitorActivityId = 320419032L;
+        final VisitorActivityReadRequest request = new VisitorActivityReadRequest()
+            .selectById(visitorActivityId);
+
+        final VisitorActivity response = client.visitorActivityRead(request);
         assertNotNull("Should not be null", response);
         logger.info("Response: {}", response);
     }

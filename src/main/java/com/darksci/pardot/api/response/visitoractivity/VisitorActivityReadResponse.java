@@ -15,22 +15,16 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.darksci.pardot.api.parser.visitoractivity;
-
-import com.darksci.pardot.api.parser.JacksonFactory;
-import com.darksci.pardot.api.parser.ResponseParser;
-import com.darksci.pardot.api.response.visitoractivity.VisitorActivity;
-import com.darksci.pardot.api.response.visitoractivity.VisitorActivityReadResponse;
-
-import java.io.IOException;
+package com.darksci.pardot.api.response.visitoractivity;
 
 /**
- * Handles parsing VisitorActivity Read API responses into POJOs.
+ * Represents a Pardot Visitor Activity.
  */
-public class VisitorActivityReadResponseParser implements ResponseParser<VisitorActivity> {
+public class VisitorActivityReadResponse {
 
-    @Override
-    public VisitorActivity parseResponse(final String responseStr) throws IOException {
-        return JacksonFactory.newInstance().readValue(responseStr, VisitorActivityReadResponse.class).getVisitorActivity();
+    private VisitorActivity visitorActivity;
+
+    public VisitorActivity getVisitorActivity() {
+        return visitorActivity;
     }
 }

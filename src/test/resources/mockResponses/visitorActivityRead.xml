@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rsp stat="ok" version="1.0">
+    <visitor_activity>
+        <id>456</id>
+        <visitor_id>654</visitor_id>
+        <prospect_id>100</prospect_id>
+        <type>2</type>
+        <type_name>Landing Page</type_name>
+        <details>Landing Page 1</details>
+        <landing_page_id>12</landing_page_id>
+        <campaign>
+            <id>1111</id>
+            <name>Website Tracking</name>
+        </campaign>
+        <created_at>2015-09-25 11:15:16</created_at>
+    </visitor_activity>
+</rsp>

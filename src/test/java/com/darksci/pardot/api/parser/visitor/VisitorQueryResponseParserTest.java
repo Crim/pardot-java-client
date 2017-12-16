@@ -34,9 +34,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-/**
- *
- */
 public class VisitorQueryResponseParserTest extends BaseResponseParserTest {
     private static final Logger logger = LoggerFactory.getLogger(VisitorQueryResponseParserTest.class);
 
@@ -44,7 +41,7 @@ public class VisitorQueryResponseParserTest extends BaseResponseParserTest {
      * Validates we can parse a Visitor query with multiple visitors response A-OK.
      */
     @Test
-    public void testMultpleUsers() throws IOException {
+    public void testMultpleVisitors() throws IOException {
         final String input = readFile("visitorQuery.xml");
         final VisitorQueryResponse.Result response = new VisitorQueryResponseParser().parseResponse(input);
         logger.info("Result: {}", response);
