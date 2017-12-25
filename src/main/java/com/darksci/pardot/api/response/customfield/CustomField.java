@@ -1,13 +1,10 @@
 package com.darksci.pardot.api.response.customfield;
 
 import com.darksci.pardot.api.parser.PardotBooleanSerializer;
-import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import org.joda.time.DateTime;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Represents a Pardot CustomField record.
@@ -81,7 +78,7 @@ public class CustomField {
      * Set field type properties from Enum.
      * @param fieldType Enum to use to set properties.
      */
-    public void setFieldtype(final CustomFieldType fieldType) {
+    public void setFieldType(final CustomFieldType fieldType) {
         if (fieldType == null) {
             setType(null);
             setTypeId(null);

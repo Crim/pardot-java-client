@@ -17,23 +17,23 @@
 
 package com.darksci.pardot.api.request.customfield;
 
-import com.darksci.pardot.api.request.BaseQueryRequest;
+import com.darksci.pardot.api.request.BaseRequest;
 
 /**
- * Used to query Custom Fields over the Pardot API.
+ * For deleting custom fields using Pardot's API.
  */
-public class CustomFieldQueryRequest extends BaseQueryRequest<CustomFieldQueryRequest> {
+public class CustomFieldDeleteRequest extends BaseRequest<CustomFieldDeleteRequest> {
     @Override
     public String getApiEndpoint() {
-        return "customField/do/query";
+        return "customField/do/delete";
     }
 
-    // Sorting Options
-    public CustomFieldQueryRequest withSortById() {
-        return super.withSortById();
-    }
-
-    public CustomFieldQueryRequest withSortByCreatedAt() {
-        return super.withSortByCreatedAt();
+    /**
+     * Define which custom field to perform action on by Id.
+     * @param customFieldId Id of custom field to delete.
+     * @return RequestBuilder
+     */
+    public CustomFieldDeleteRequest withCustomFieldId(final Long customFieldId) {
+        return setParam("id", customFieldId);
     }
 }

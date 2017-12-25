@@ -23,8 +23,11 @@ import com.darksci.pardot.api.request.campaign.CampaignCreateRequest;
 import com.darksci.pardot.api.request.campaign.CampaignQueryRequest;
 import com.darksci.pardot.api.request.campaign.CampaignReadRequest;
 import com.darksci.pardot.api.request.campaign.CampaignUpdateRequest;
+import com.darksci.pardot.api.request.customfield.CustomFieldCreateRequest;
+import com.darksci.pardot.api.request.customfield.CustomFieldDeleteRequest;
 import com.darksci.pardot.api.request.customfield.CustomFieldQueryRequest;
 import com.darksci.pardot.api.request.customfield.CustomFieldReadRequest;
+import com.darksci.pardot.api.request.customfield.CustomFieldUpdateRequest;
 import com.darksci.pardot.api.request.email.EmailReadRequest;
 import com.darksci.pardot.api.request.email.EmailSendListRequest;
 import com.darksci.pardot.api.request.email.EmailSendOneToOneRequest;
@@ -59,6 +62,7 @@ import com.darksci.pardot.api.response.campaign.Campaign;
 import com.darksci.pardot.api.response.campaign.CampaignQueryResponse;
 import com.darksci.pardot.api.response.customfield.CustomField;
 import com.darksci.pardot.api.response.customfield.CustomFieldQueryResponse;
+import com.darksci.pardot.api.response.customfield.CustomFieldType;
 import com.darksci.pardot.api.response.email.Email;
 import com.darksci.pardot.api.response.email.EmailStatsResponse;
 import com.darksci.pardot.api.response.list.List;
@@ -88,6 +92,7 @@ import java.util.Properties;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Integration/End-to-End test over HttpClientRestClient.
@@ -290,13 +295,81 @@ public class PardotClientTest {
      * Attempt to read custom field.
      */
     @Test
-    public void customFieldReadTest() throws IOException {
-        final long customFieldId = 5143;
+    public void customFieldReadTest() {
+        final long customFieldId = 5636;
         CustomFieldReadRequest request = new CustomFieldReadRequest()
             .selectById(customFieldId);
 
         final CustomField response = client.customFieldRead(request);
         assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Attempt to create a custom field.
+     */
+    @Test
+    public void customFieldCreateTest() {
+        // Define custom field
+        final CustomField customField = new CustomField();
+        customField.setName("API Test Campaign " + System.currentTimeMillis());
+        customField.setFieldType(CustomFieldType.TEXT);
+        customField.setFieldId("Api_Test_Field_" + System.currentTimeMillis());
+        customField.setRecordMultipleResponses(true);
+        customField.setUseValues(true);
+
+        // Create request
+        CustomFieldCreateRequest request = new CustomFieldCreateRequest()
+            .withCustomField(customField)
+            .withFieldIsNotRequired();
+
+        // Send Request
+        final CustomField response = client.customFieldCreate(request);
+        assertNotNull("Should not be null", response);
+        assertNotNull("Has an Id", response.getId());
+        assertEquals("Has correct name", customField.getName(), response.getName());
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Attempt to update a custom field.
+     */
+    @Test
+    public void customFieldUpdateTest() {
+        final long customFieldId = 5634;
+
+        // Define campaign
+        final CustomField customField = new CustomField();
+        customField.setId(customFieldId);
+        customField.setName("Updated API Test CustomField " + System.currentTimeMillis());
+
+        // Create request
+        CustomFieldUpdateRequest request = new CustomFieldUpdateRequest()
+            .withCustomField(customField);
+
+        // Send Request
+        final CustomField response = client.customFieldUpdate(request);
+        assertNotNull("Should not be null", response);
+        assertNotNull("Has an Id", response.getId());
+        assertEquals("Has correct name", customField.getName(), response.getName());
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Attempt to delete a custom field.
+     */
+    @Test
+    public void customFieldDeleteTest() {
+        final long customFieldId = 5636;
+
+        // Create request
+        CustomFieldDeleteRequest request = new CustomFieldDeleteRequest()
+            .withCustomFieldId(customFieldId);
+
+        // Send Request
+        final Boolean response = client.customFieldDelete(request);
+        assertNotNull("Should not be null", response);
+        assertTrue("Is true", response);
         logger.info("Response: {}", response);
     }
 

@@ -1,9 +1,6 @@
 package com.darksci.pardot.api.parser.customfield;
 
 import com.darksci.pardot.api.parser.BaseResponseParserTest;
-import com.darksci.pardot.api.parser.campaign.CampaignQueryResponseParser;
-import com.darksci.pardot.api.response.campaign.Campaign;
-import com.darksci.pardot.api.response.campaign.CampaignQueryResponse;
 import com.darksci.pardot.api.response.customfield.CustomField;
 import com.darksci.pardot.api.response.customfield.CustomFieldQueryResponse;
 import com.darksci.pardot.api.response.customfield.CustomFieldType;
@@ -13,7 +10,11 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests parsing CustomFieldQuery api responses.

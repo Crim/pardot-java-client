@@ -47,8 +47,11 @@ import com.darksci.pardot.api.request.campaign.CampaignCreateRequest;
 import com.darksci.pardot.api.request.campaign.CampaignQueryRequest;
 import com.darksci.pardot.api.request.campaign.CampaignReadRequest;
 import com.darksci.pardot.api.request.campaign.CampaignUpdateRequest;
+import com.darksci.pardot.api.request.customfield.CustomFieldCreateRequest;
+import com.darksci.pardot.api.request.customfield.CustomFieldDeleteRequest;
 import com.darksci.pardot.api.request.customfield.CustomFieldQueryRequest;
 import com.darksci.pardot.api.request.customfield.CustomFieldReadRequest;
+import com.darksci.pardot.api.request.customfield.CustomFieldUpdateRequest;
 import com.darksci.pardot.api.request.email.EmailReadRequest;
 import com.darksci.pardot.api.request.email.EmailSendListRequest;
 import com.darksci.pardot.api.request.email.EmailSendOneToOneRequest;
@@ -168,7 +171,7 @@ public class PardotClient implements AutoCloseable {
         // Check for invalid http status codes
         if (responseCode >= 200 && responseCode < 300) {
             // These response codes have no values
-            if (responseCode == 205 && responseStr == null) {
+            if ((responseCode == 204 || responseCode == 205) && responseStr == null) {
                 // Avoid NPE
                 responseStr = "";
             }
@@ -339,6 +342,34 @@ public class PardotClient implements AutoCloseable {
      */
     public CustomField customFieldRead(final CustomFieldReadRequest request) {
         return submitRequest(request, new CustomFieldReadResponseParser());
+    }
+
+    /**
+     * Make API request to create a new Custom field.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public CustomField customFieldCreate(final CustomFieldCreateRequest request) {
+        return submitRequest(request, new CustomFieldReadResponseParser());
+    }
+
+    /**
+     * Make API request to update an existing custom field.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public CustomField customFieldUpdate(final CustomFieldUpdateRequest request) {
+        return submitRequest(request, new CustomFieldReadResponseParser());
+    }
+
+    /**
+     * Make API request to delete a custom field.
+     * @param request Request definition.
+     * @return true if success, false if error.
+     */
+    public boolean customFieldDelete(final CustomFieldDeleteRequest request) {
+        submitRequest(request, new StringResponseParser());
+        return true;
     }
 
     /**

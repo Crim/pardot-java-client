@@ -19,7 +19,6 @@ package com.darksci.pardot.api.parser.customfield;
 
 import com.darksci.pardot.api.parser.JacksonFactory;
 import com.darksci.pardot.api.parser.ResponseParser;
-import com.darksci.pardot.api.response.campaign.CampaignQueryResponse;
 import com.darksci.pardot.api.response.customfield.CustomFieldQueryResponse;
 
 import java.io.IOException;

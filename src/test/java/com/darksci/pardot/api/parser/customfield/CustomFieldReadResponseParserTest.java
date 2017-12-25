@@ -18,8 +18,6 @@
 package com.darksci.pardot.api.parser.customfield;
 
 import com.darksci.pardot.api.parser.BaseResponseParserTest;
-import com.darksci.pardot.api.parser.campaign.CampaignReadResponseParser;
-import com.darksci.pardot.api.response.campaign.Campaign;
 import com.darksci.pardot.api.response.customfield.CustomField;
 import com.darksci.pardot.api.response.customfield.CustomFieldType;
 import org.junit.Test;

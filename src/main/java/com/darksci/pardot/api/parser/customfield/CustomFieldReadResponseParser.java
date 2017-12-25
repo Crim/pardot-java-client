@@ -19,8 +19,6 @@ package com.darksci.pardot.api.parser.customfield;
 
 import com.darksci.pardot.api.parser.JacksonFactory;
 import com.darksci.pardot.api.parser.ResponseParser;
-import com.darksci.pardot.api.response.campaign.Campaign;
-import com.darksci.pardot.api.response.campaign.CampaignReadResponse;
 import com.darksci.pardot.api.response.customfield.CustomField;
 import com.darksci.pardot.api.response.customfield.CustomFieldReadResponse;
 
