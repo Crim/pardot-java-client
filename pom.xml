@@ -47,7 +47,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!-- Jackson version -->
-        <jackson.version>2.9.0</jackson.version>
+        <jackson.version>2.9.3</jackson.version>
 
         <!-- Define which version of junit you'll be running -->
         <junit.version>4.12</junit.version>
@@ -75,7 +75,7 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.5.3</version>
+            <version>4.5.4</version>
         </dependency>
 
         <!-- For parsing XML responses to POJOs -->
@@ -130,7 +130,7 @@
         <dependency>
             <groupId>com.tngtech.java</groupId>
             <artifactId>junit-dataprovider</artifactId>
-            <version>1.12.0</version>
+            <version>1.13.1</version>
             <scope>test</scope>
         </dependency>
 
@@ -146,7 +146,7 @@
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.5</version>
+            <version>2.6</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
