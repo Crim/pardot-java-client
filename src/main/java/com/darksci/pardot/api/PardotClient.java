@@ -29,6 +29,7 @@ import com.darksci.pardot.api.parser.customredirect.CustomRedirectQueryResponseP
 import com.darksci.pardot.api.parser.customredirect.CustomRedirectReadResponseParser;
 import com.darksci.pardot.api.parser.email.EmailReadResponseParser;
 import com.darksci.pardot.api.parser.email.EmailStatsResponseParser;
+import com.darksci.pardot.api.parser.emailclick.EmailClickQueryResponseParser;
 import com.darksci.pardot.api.parser.list.ListQueryResponseParser;
 import com.darksci.pardot.api.parser.list.ListReadResponseParser;
 import com.darksci.pardot.api.parser.listmembership.ListMembershipQueryResponseParser;
@@ -60,6 +61,7 @@ import com.darksci.pardot.api.request.email.EmailReadRequest;
 import com.darksci.pardot.api.request.email.EmailSendListRequest;
 import com.darksci.pardot.api.request.email.EmailSendOneToOneRequest;
 import com.darksci.pardot.api.request.email.EmailStatsRequest;
+import com.darksci.pardot.api.request.emailclick.EmailClickQueryRequest;
 import com.darksci.pardot.api.request.list.ListCreateRequest;
 import com.darksci.pardot.api.request.list.ListQueryRequest;
 import com.darksci.pardot.api.request.list.ListReadRequest;
@@ -95,6 +97,7 @@ import com.darksci.pardot.api.response.customredirect.CustomRedirect;
 import com.darksci.pardot.api.response.customredirect.CustomRedirectQueryResponse;
 import com.darksci.pardot.api.response.email.Email;
 import com.darksci.pardot.api.response.email.EmailStatsResponse;
+import com.darksci.pardot.api.response.emailclick.EmailClickQueryResponse;
 import com.darksci.pardot.api.response.list.List;
 import com.darksci.pardot.api.response.list.ListMembership;
 import com.darksci.pardot.api.response.list.ListQueryResponse;
@@ -430,6 +433,15 @@ public class PardotClient implements AutoCloseable {
      */
     public Email emailSendList(final EmailSendListRequest request) {
         return submitRequest(request, new EmailReadResponseParser());
+    }
+
+    /**
+     * Make API request to query for one or more email clicks.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public EmailClickQueryResponse.Result emailClickQuery(final EmailClickQueryRequest request) {
+        return submitRequest(request, new EmailClickQueryResponseParser());
     }
 
     /**

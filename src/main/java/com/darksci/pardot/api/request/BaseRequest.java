@@ -19,7 +19,7 @@ package com.darksci.pardot.api.request;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Map;
 
 /**
@@ -61,13 +61,26 @@ public abstract class BaseRequest<T> implements Request {
     }
 
     protected T withCollectionParam(final String name, final Object value) {
-        Collection<Object> values = getParam(name);
-        if (values == null) {
-            values = new HashSet<>();
+        // Sanity test, if we got passed null, we should remove the collection
+        if (value == null) {
+            // This should remove it.
+            return setParam(name, null);
         }
-        values.add(value);
 
-        return setParam(name, values);
+        // Sanity test, if we got passed a collection, we should handle it gracefully.
+        if (value instanceof Collection) {
+            return withCollectionParams(name, (Collection) value);
+        }
+
+        Collection<Object> existingValues = getParam(name);
+        if (existingValues == null) {
+            // Using linked hash set to preserve ordering.
+            existingValues = new LinkedHashSet<>();
+        }
+
+        existingValues.add(value);
+
+        return setParam(name, existingValues);
     }
 
     @SuppressWarnings("unchecked")

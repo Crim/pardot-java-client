@@ -132,6 +132,11 @@ Official Documentation: [Emails](http://developer.pardot.com/kb/api-version-3/em
 - Sending One to One Emails
 - Stats
 
+### Email Clicks
+Official Documentation: [Email Clicks](http://developer.pardot.com/kb/api-version-3/batch-email-clicks/)
+
+- Query
+
 ### Lists
 Official Documentation: [Lists](http://developer.pardot.com/kb/api-version-3/lists/)
 

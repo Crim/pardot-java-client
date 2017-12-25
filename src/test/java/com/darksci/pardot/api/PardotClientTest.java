@@ -34,6 +34,7 @@ import com.darksci.pardot.api.request.email.EmailReadRequest;
 import com.darksci.pardot.api.request.email.EmailSendListRequest;
 import com.darksci.pardot.api.request.email.EmailSendOneToOneRequest;
 import com.darksci.pardot.api.request.email.EmailStatsRequest;
+import com.darksci.pardot.api.request.emailclick.EmailClickQueryRequest;
 import com.darksci.pardot.api.request.list.ListCreateRequest;
 import com.darksci.pardot.api.request.list.ListQueryRequest;
 import com.darksci.pardot.api.request.list.ListReadRequest;
@@ -69,6 +70,7 @@ import com.darksci.pardot.api.response.customredirect.CustomRedirect;
 import com.darksci.pardot.api.response.customredirect.CustomRedirectQueryResponse;
 import com.darksci.pardot.api.response.email.Email;
 import com.darksci.pardot.api.response.email.EmailStatsResponse;
+import com.darksci.pardot.api.response.emailclick.EmailClickQueryResponse;
 import com.darksci.pardot.api.response.list.List;
 import com.darksci.pardot.api.response.list.ListMembership;
 import com.darksci.pardot.api.response.list.ListQueryResponse;
@@ -455,6 +457,18 @@ public class PardotClientTest {
             .withHtmlContent("<html><body><h1>Hello %%first_name%%!</h1></body></html>");
 
         final Email response = client.emailSendOneToOne(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test querying email clicks.
+     */
+    @Test
+    public void emailClickQueryTest() {
+        final EmailClickQueryRequest request = new EmailClickQueryRequest();
+
+        final EmailClickQueryResponse.Result response = client.emailClickQuery(request);
         assertNotNull("Should not be null", response);
         logger.info("Response: {}", response);
     }
