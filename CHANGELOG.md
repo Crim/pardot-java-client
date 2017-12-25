@@ -4,6 +4,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 0.4.0 (12/25/17)
 - Add support for CustomField, CustomRedirect API, EmailClicks, and Opportunity end points.
+- Client will change configured API version from 3 to 4 automatically upon login.
 - Fixed bug in VisitorQueryRequest around querying for multiple foreign key ids.
 - Fixed bug in ordering of request parameters.
 
