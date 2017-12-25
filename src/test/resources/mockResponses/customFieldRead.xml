@@ -1,0 +1,14 @@
+<rsp stat="ok" version="1.0">
+    <customField>
+        <id>3</id>
+        <name>Zip</name>
+        <field_id>Zip2</field_id>
+        <type>Text</type>
+        <type_id>1</type_id>
+        <crm_id/>
+        <is_record_multiple_responses>true</is_record_multiple_responses>
+        <is_use_values>true</is_use_values>
+        <created_at>2016-05-31 09:29:42</created_at>
+        <updated_at>2016-05-31 09:29:42</updated_at>
+    </customField>
+</rsp>

@@ -23,6 +23,8 @@ import com.darksci.pardot.api.request.campaign.CampaignCreateRequest;
 import com.darksci.pardot.api.request.campaign.CampaignQueryRequest;
 import com.darksci.pardot.api.request.campaign.CampaignReadRequest;
 import com.darksci.pardot.api.request.campaign.CampaignUpdateRequest;
+import com.darksci.pardot.api.request.customfield.CustomFieldQueryRequest;
+import com.darksci.pardot.api.request.customfield.CustomFieldReadRequest;
 import com.darksci.pardot.api.request.email.EmailReadRequest;
 import com.darksci.pardot.api.request.email.EmailSendListRequest;
 import com.darksci.pardot.api.request.email.EmailSendOneToOneRequest;
@@ -55,6 +57,8 @@ import com.darksci.pardot.api.request.visitoractivity.VisitorActivityReadRequest
 import com.darksci.pardot.api.response.account.Account;
 import com.darksci.pardot.api.response.campaign.Campaign;
 import com.darksci.pardot.api.response.campaign.CampaignQueryResponse;
+import com.darksci.pardot.api.response.customfield.CustomField;
+import com.darksci.pardot.api.response.customfield.CustomFieldQueryResponse;
 import com.darksci.pardot.api.response.email.Email;
 import com.darksci.pardot.api.response.email.EmailStatsResponse;
 import com.darksci.pardot.api.response.list.List;
@@ -267,6 +271,32 @@ public class PardotClientTest {
         assertEquals("Has correct Id", campaignId, (long) response.getId());
         assertEquals("Has correct name", campaign.getName(), response.getName());
         assertEquals("Has correct cost", campaign.getCost(), response.getCost());
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Attempt to query custom fields.
+     */
+    @Test
+    public void customFieldQueryTest() {
+        CustomFieldQueryRequest request = new CustomFieldQueryRequest();
+
+        final CustomFieldQueryResponse.Result response = client.customFieldQuery(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Attempt to read custom field.
+     */
+    @Test
+    public void customFieldReadTest() throws IOException {
+        final long customFieldId = 5143;
+        CustomFieldReadRequest request = new CustomFieldReadRequest()
+            .selectById(customFieldId);
+
+        final CustomField response = client.customFieldRead(request);
+        assertNotNull("Should not be null", response);
         logger.info("Response: {}", response);
     }
 

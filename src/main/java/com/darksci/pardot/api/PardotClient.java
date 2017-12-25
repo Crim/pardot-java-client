@@ -23,6 +23,8 @@ import com.darksci.pardot.api.parser.StringResponseParser;
 import com.darksci.pardot.api.parser.account.AccountReadResponseParser;
 import com.darksci.pardot.api.parser.campaign.CampaignQueryResponseParser;
 import com.darksci.pardot.api.parser.campaign.CampaignReadResponseParser;
+import com.darksci.pardot.api.parser.customfield.CustomFieldQueryResponseParser;
+import com.darksci.pardot.api.parser.customfield.CustomFieldReadResponseParser;
 import com.darksci.pardot.api.parser.email.EmailReadResponseParser;
 import com.darksci.pardot.api.parser.email.EmailStatsResponseParser;
 import com.darksci.pardot.api.parser.list.ListQueryResponseParser;
@@ -45,6 +47,8 @@ import com.darksci.pardot.api.request.campaign.CampaignCreateRequest;
 import com.darksci.pardot.api.request.campaign.CampaignQueryRequest;
 import com.darksci.pardot.api.request.campaign.CampaignReadRequest;
 import com.darksci.pardot.api.request.campaign.CampaignUpdateRequest;
+import com.darksci.pardot.api.request.customfield.CustomFieldQueryRequest;
+import com.darksci.pardot.api.request.customfield.CustomFieldReadRequest;
 import com.darksci.pardot.api.request.email.EmailReadRequest;
 import com.darksci.pardot.api.request.email.EmailSendListRequest;
 import com.darksci.pardot.api.request.email.EmailSendOneToOneRequest;
@@ -78,6 +82,8 @@ import com.darksci.pardot.api.response.ErrorResponse;
 import com.darksci.pardot.api.response.account.Account;
 import com.darksci.pardot.api.response.campaign.Campaign;
 import com.darksci.pardot.api.response.campaign.CampaignQueryResponse;
+import com.darksci.pardot.api.response.customfield.CustomField;
+import com.darksci.pardot.api.response.customfield.CustomFieldQueryResponse;
 import com.darksci.pardot.api.response.email.Email;
 import com.darksci.pardot.api.response.email.EmailStatsResponse;
 import com.darksci.pardot.api.response.list.List;
@@ -315,6 +321,24 @@ public class PardotClient implements AutoCloseable {
      */
     public Campaign campaignUpdate(final CampaignUpdateRequest request) {
         return submitRequest(request, new CampaignReadResponseParser());
+    }
+
+    /**
+     * Make API request to query for one or more custom fields.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public CustomFieldQueryResponse.Result customFieldQuery(final CustomFieldQueryRequest request) {
+        return submitRequest(request, new CustomFieldQueryResponseParser());
+    }
+
+    /**
+     * Make API request to read a specific custom field.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public CustomField customFieldRead(final CustomFieldReadRequest request) {
+        return submitRequest(request, new CustomFieldReadResponseParser());
     }
 
     /**
