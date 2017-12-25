@@ -149,7 +149,7 @@ public class VisitorActivityQueryRequest extends BaseQueryRequest<VisitorActivit
      * @return RequestBuilder
      */
     public VisitorActivityQueryRequest withCampaignIds(final Collection<Long> campaignIds) {
-        return withCollectionParam("campaign_id", campaignIds);
+        return withCollectionParams("campaign_id", campaignIds);
     }
 
     /**
@@ -167,7 +167,7 @@ public class VisitorActivityQueryRequest extends BaseQueryRequest<VisitorActivit
      * @return RequestBuilder
      */
     public VisitorActivityQueryRequest withCustomUrlIds(final Collection<Long> customUrlIds) {
-        return withCollectionParam("custom_url_id", customUrlIds);
+        return withCollectionParams("custom_url_id", customUrlIds);
     }
 
     /**
@@ -185,7 +185,7 @@ public class VisitorActivityQueryRequest extends BaseQueryRequest<VisitorActivit
      * @return RequestBuilder
      */
     public VisitorActivityQueryRequest withEmailIds(final Collection<Long> emailIds) {
-        return withCollectionParam("email_id", emailIds);
+        return withCollectionParams("email_id", emailIds);
     }
 
     /**
@@ -203,7 +203,7 @@ public class VisitorActivityQueryRequest extends BaseQueryRequest<VisitorActivit
      * @return RequestBuilder
      */
     public VisitorActivityQueryRequest withFileIds(final Collection<Long> fileIds) {
-        return withCollectionParam("file_id", fileIds);
+        return withCollectionParams("file_id", fileIds);
     }
 
     /**
@@ -221,7 +221,7 @@ public class VisitorActivityQueryRequest extends BaseQueryRequest<VisitorActivit
      * @return RequestBuilder
      */
     public VisitorActivityQueryRequest withFormIds(final Collection<Long> formIds) {
-        return withCollectionParam("form_id", formIds);
+        return withCollectionParams("form_id", formIds);
     }
 
     /**
@@ -239,7 +239,7 @@ public class VisitorActivityQueryRequest extends BaseQueryRequest<VisitorActivit
      * @return RequestBuilder
      */
     public VisitorActivityQueryRequest withFormHandlerId(final Collection<Long> formHandlerIds) {
-        return withCollectionParam("form_handler_id", formHandlerIds);
+        return withCollectionParams("form_handler_id", formHandlerIds);
     }
 
     /**
@@ -257,7 +257,7 @@ public class VisitorActivityQueryRequest extends BaseQueryRequest<VisitorActivit
      * @return RequestBuilder
      */
     public VisitorActivityQueryRequest withLandingPageIds(final Collection<Long> landingPageIds) {
-        return withCollectionParam("landing_page_id", landingPageIds);
+        return withCollectionParams("landing_page_id", landingPageIds);
     }
 
     /**
@@ -275,7 +275,7 @@ public class VisitorActivityQueryRequest extends BaseQueryRequest<VisitorActivit
      * @return RequestBuilder
      */
     public VisitorActivityQueryRequest withProspectIds(final Collection<Long> prospectIds) {
-        return withCollectionParam("prospect_id", prospectIds);
+        return withCollectionParams("prospect_id", prospectIds);
     }
 
     /**
@@ -293,7 +293,7 @@ public class VisitorActivityQueryRequest extends BaseQueryRequest<VisitorActivit
      * @return RequestBuilder
      */
     public VisitorActivityQueryRequest withVisitorIds(final Collection<Long> visitorIds) {
-        return withCollectionParam("visitor_id", visitorIds);
+        return withCollectionParams("visitor_id", visitorIds);
     }
 
     // Sort options

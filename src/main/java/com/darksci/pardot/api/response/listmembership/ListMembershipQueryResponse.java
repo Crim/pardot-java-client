@@ -20,6 +20,7 @@ package com.darksci.pardot.api.response.listmembership;
 import com.darksci.pardot.api.response.list.ListMembership;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -39,14 +40,20 @@ public class ListMembershipQueryResponse {
         private Integer totalResults = 0;
 
         @JacksonXmlProperty(localName = "list_membership")
-        private List<ListMembership> listMemberships;
+        private List<ListMembership> listMemberships = Collections.emptyList();
 
         public Integer getTotalResults() {
             return totalResults;
         }
 
+        /**
+         * @return related list memberships.
+         */
         public List<ListMembership> getListMemberships() {
-            return listMemberships;
+            if (listMemberships == null) {
+                listMemberships = Collections.emptyList();
+            }
+            return Collections.unmodifiableList(listMemberships);
         }
 
         @Override

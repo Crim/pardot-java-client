@@ -75,7 +75,7 @@ public class VisitorQueryRequest extends BaseQueryRequest<VisitorQueryRequest> {
      * @return RequestBuilder
      */
     public VisitorQueryRequest withProspectIds(final Collection<Long> prospectIds) {
-        return withCollectionParam("prospect_ids", prospectIds);
+        return withCollectionParams("prospect_ids", prospectIds);
     }
 
     // Sort options

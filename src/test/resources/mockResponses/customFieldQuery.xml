@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rsp stat="ok" version="1.0">
+    <result>
+        <total_results>6</total_results>
+        <customField>
+            <id>1</id>
+            <name>date</name>
+            <field_id>my__date</field_id>
+            <type>Date</type>
+            <type_id>12</type_id>
+            <crm_id/>
+            <is_record_multiple_responses>false</is_record_multiple_responses>
+            <is_use_values>false</is_use_values>
+            <created_at>2016-04-07 00:27:09</created_at>
+            <updated_at>2017-08-22 01:20:28</updated_at>
+        </customField>
+        <customField>
+            <id>2</id>
+            <name>nothing field</name>
+            <field_id>nothing_field</field_id>
+            <type>Text</type>
+            <type_id>1</type_id>
+            <crm_id>my_crm_id__c</crm_id>
+            <is_record_multiple_responses>false</is_record_multiple_responses>
+            <is_use_values>false</is_use_values>
+            <created_at>2016-04-07 00:29:23</created_at>
+            <updated_at>2016-04-07 00:29:23</updated_at>
+        </customField>
+        <customField>
+            <id>3</id>
+            <name>Zip</name>
+            <field_id>Zip2</field_id>
+            <type>Text</type>
+            <type_id>1</type_id>
+            <crm_id/>
+            <is_record_multiple_responses>true</is_record_multiple_responses>
+            <is_use_values>true</is_use_values>
+            <created_at>2016-05-31 09:29:42</created_at>
+            <updated_at>2016-05-31 09:29:42</updated_at>
+        </customField>
+    </result>
+</rsp>

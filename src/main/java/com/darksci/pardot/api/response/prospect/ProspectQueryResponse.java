@@ -19,6 +19,7 @@ package com.darksci.pardot.api.response.prospect;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -39,14 +40,20 @@ public class ProspectQueryResponse {
         private Integer totalResults = 0;
 
         @JacksonXmlProperty(localName = "prospect")
-        private List<Prospect> prospects;
+        private List<Prospect> prospects = Collections.emptyList();
 
         public Integer getTotalResults() {
             return totalResults;
         }
 
+        /**
+         * @return Prospect results.
+         */
         public List<Prospect> getProspects() {
-            return prospects;
+            if (prospects == null) {
+                prospects = Collections.emptyList();
+            }
+            return Collections.unmodifiableList(prospects);
         }
 
         @Override

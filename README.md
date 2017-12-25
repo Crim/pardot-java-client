@@ -21,7 +21,7 @@ This client library is released on Maven Central.  Add a new dependency to your 
 <dependency>
     <groupId>com.darksci</groupId>
     <artifactId>pardot-api-client</artifactId>
-    <version>0.3.0</version>
+    <version>0.4.0</version>
 </dependency>
 ```
 
@@ -110,6 +110,20 @@ Official Documentation: [Campaigns](http://developer.pardot.com/kb/api-version-3
 - Read
 - Update
 
+### Custom Fields
+Official Documentation: [Custom Fields](http://developer.pardot.com/kb/api-version-3/custom-fields/)
+
+- Create
+- Query
+- Read
+- Update
+
+### Custom Redirects
+Official Documentation: [Custom Redirects](http://developer.pardot.com/kb/api-version-3/custom-redirects/)
+
+- Query
+- Read
+
 ### Emails
 Official Documentation: [Emails](http://developer.pardot.com/kb/api-version-3/emails/)
 
@@ -117,6 +131,11 @@ Official Documentation: [Emails](http://developer.pardot.com/kb/api-version-3/em
 - Sending List Emails
 - Sending One to One Emails
 - Stats
+
+### Email Clicks
+Official Documentation: [Email Clicks](http://developer.pardot.com/kb/api-version-3/batch-email-clicks/)
+
+- Query
 
 ### Lists
 Official Documentation: [Lists](http://developer.pardot.com/kb/api-version-3/lists/)
@@ -132,6 +151,16 @@ Official Documentation: [ListMemberships](http://developer.pardot.com/kb/api-ver
 - Create
 - Query
 - Read
+- Update
+
+### Opportunities
+Official Documentation: [Opportunities](http://developer.pardot.com/kb/api-version-3/opportunities/)
+
+- Create
+- Delete
+- Query
+- Read
+- Undelete
 - Update
 
 ### Prospects

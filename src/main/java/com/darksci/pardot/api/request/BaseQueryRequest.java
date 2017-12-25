@@ -186,7 +186,7 @@ public abstract class BaseQueryRequest<T> extends BaseRequest<T> {
     }
 
     /**
-     * Marked as protected because I'm not sure if all objects support this or not.
+     * Marked as protected because not all objects support this filter.
      * @param onlyReturnArchived True to only get returned archived entries.
      * @return BaseQueryRequest
      */

@@ -57,8 +57,6 @@ public enum VisitorActivityType {
     USERVOICE_TICKET(33, "UserVoice Ticket"),
     VIDEO_WATCHED(34, "Video Watched (≥ 75% watched)");
 
-    // TODO fill in rest.
-
     private final int value;
     private final String name;
 
@@ -86,7 +84,11 @@ public enum VisitorActivityType {
      * @param value value of type.
      * @return Enum.
      */
-    public static VisitorActivityType fromValue(final int value) {
+    public static VisitorActivityType fromValue(final Integer value) {
+        if (value == null) {
+            return UNKNOWN;
+        }
+
         switch (value) {
             case 1:
                 return CLICK;

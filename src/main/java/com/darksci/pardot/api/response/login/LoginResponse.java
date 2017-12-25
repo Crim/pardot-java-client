@@ -26,18 +26,30 @@ public class LoginResponse {
     @JacksonXmlProperty(localName = "api_key")
     private String apiKey;
 
+    // Default to version 3 is none defined.
+    @JacksonXmlProperty(localName = "version", isAttribute = false)
+    private String apiVersion = "3";
+
     public String getApiKey() {
         return apiKey;
     }
 
-    public void setApiKey(final String apiKey) {
-        this.apiKey = apiKey;
+    /**
+     * @return API Version returned by login.
+     */
+    public String getApiVersion() {
+        // Only allow 3 or 4.  Pardots encoding of this is not very friendly w/ jackson.
+        if (!"4".equals(apiVersion)) {
+            apiVersion = "3";
+        }
+        return apiVersion;
     }
 
     @Override
     public String toString() {
         return "LoginResponse{"
             + "apiKey='" + apiKey + '\''
+            + ", apiVersion=" + apiVersion
             + '}';
     }
 }

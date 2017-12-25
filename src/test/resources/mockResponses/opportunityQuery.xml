@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rsp stat="ok" version="1.0">
+    <result>
+        <total_results>193</total_results>
+        <opportunity>
+            <id>1</id>
+            <name>Opportunity1</name>
+            <value>5</value>
+            <probability>50</probability>
+            <type>ReallyGood</type>
+            <stage>Alpha</stage>
+            <status>Open</status>
+            <created_at>2017-12-18 19:29:56</created_at>
+            <updated_at>2017-12-18 19:29:56</updated_at>
+            <campaign>
+                <id>3</id>
+                <name>Google Buyer's Guide Campaign</name>
+            </campaign>
+            <prospects>
+                <prospect>
+                    <id>11</id>
+                    <first_name>Angela</first_name>
+                    <last_name>Lansbury</last_name>
+                    <email>angela.lansbury@cbs.com</email>
+                    <company>CBS</company>
+                </prospect>
+            </prospects>
+        </opportunity>
+        <opportunity>
+            <id>2</id>
+            <name>Opportunity2</name>
+            <value>200</value>
+            <probability>2</probability>
+            <type>Horrible</type>
+            <stage>Beta</stage>
+            <status>Open</status>
+            <created_at>2017-12-18 19:29:56</created_at>
+            <updated_at>2017-12-18 19:29:56</updated_at>
+            <campaign>
+                <id>3</id>
+                <name>Google Buyer's Guide Campaign</name>
+            </campaign>
+            <prospects/>
+        </opportunity>
+    </result>
+</rsp>

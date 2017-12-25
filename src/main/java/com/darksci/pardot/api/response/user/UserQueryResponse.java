@@ -19,6 +19,7 @@ package com.darksci.pardot.api.response.user;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -38,14 +39,20 @@ public class UserQueryResponse {
         private Integer totalResults = 0;
 
         @JacksonXmlProperty(localName = "user")
-        private List<User> users;
+        private List<User> users = Collections.emptyList();
 
         public Integer getTotalResults() {
             return totalResults;
         }
 
+        /**
+         * @return User results.
+         */
         public List<User> getUsers() {
-            return users;
+            if (users == null) {
+                users = Collections.emptyList();
+            }
+            return Collections.unmodifiableList(users);
         }
 
         @Override

@@ -23,10 +23,18 @@ import com.darksci.pardot.api.request.campaign.CampaignCreateRequest;
 import com.darksci.pardot.api.request.campaign.CampaignQueryRequest;
 import com.darksci.pardot.api.request.campaign.CampaignReadRequest;
 import com.darksci.pardot.api.request.campaign.CampaignUpdateRequest;
+import com.darksci.pardot.api.request.customfield.CustomFieldCreateRequest;
+import com.darksci.pardot.api.request.customfield.CustomFieldDeleteRequest;
+import com.darksci.pardot.api.request.customfield.CustomFieldQueryRequest;
+import com.darksci.pardot.api.request.customfield.CustomFieldReadRequest;
+import com.darksci.pardot.api.request.customfield.CustomFieldUpdateRequest;
+import com.darksci.pardot.api.request.customredirect.CustomRedirectQueryRequest;
+import com.darksci.pardot.api.request.customredirect.CustomRedirectReadRequest;
 import com.darksci.pardot.api.request.email.EmailReadRequest;
 import com.darksci.pardot.api.request.email.EmailSendListRequest;
 import com.darksci.pardot.api.request.email.EmailSendOneToOneRequest;
 import com.darksci.pardot.api.request.email.EmailStatsRequest;
+import com.darksci.pardot.api.request.emailclick.EmailClickQueryRequest;
 import com.darksci.pardot.api.request.list.ListCreateRequest;
 import com.darksci.pardot.api.request.list.ListQueryRequest;
 import com.darksci.pardot.api.request.list.ListReadRequest;
@@ -36,6 +44,12 @@ import com.darksci.pardot.api.request.listmembership.ListMembershipQueryRequest;
 import com.darksci.pardot.api.request.listmembership.ListMembershipReadRequest;
 import com.darksci.pardot.api.request.listmembership.ListMembershipUpdateRequest;
 import com.darksci.pardot.api.request.login.LoginRequest;
+import com.darksci.pardot.api.request.opportunity.OpportunityCreateRequest;
+import com.darksci.pardot.api.request.opportunity.OpportunityDeleteRequest;
+import com.darksci.pardot.api.request.opportunity.OpportunityQueryRequest;
+import com.darksci.pardot.api.request.opportunity.OpportunityReadRequest;
+import com.darksci.pardot.api.request.opportunity.OpportunityUndeleteRequest;
+import com.darksci.pardot.api.request.opportunity.OpportunityUpdateRequest;
 import com.darksci.pardot.api.request.prospect.ProspectAssignRequest;
 import com.darksci.pardot.api.request.prospect.ProspectCreateRequest;
 import com.darksci.pardot.api.request.prospect.ProspectDeleteRequest;
@@ -55,13 +69,21 @@ import com.darksci.pardot.api.request.visitoractivity.VisitorActivityReadRequest
 import com.darksci.pardot.api.response.account.Account;
 import com.darksci.pardot.api.response.campaign.Campaign;
 import com.darksci.pardot.api.response.campaign.CampaignQueryResponse;
+import com.darksci.pardot.api.response.customfield.CustomField;
+import com.darksci.pardot.api.response.customfield.CustomFieldQueryResponse;
+import com.darksci.pardot.api.response.customfield.CustomFieldType;
+import com.darksci.pardot.api.response.customredirect.CustomRedirect;
+import com.darksci.pardot.api.response.customredirect.CustomRedirectQueryResponse;
 import com.darksci.pardot.api.response.email.Email;
 import com.darksci.pardot.api.response.email.EmailStatsResponse;
+import com.darksci.pardot.api.response.emailclick.EmailClickQueryResponse;
 import com.darksci.pardot.api.response.list.List;
 import com.darksci.pardot.api.response.list.ListMembership;
 import com.darksci.pardot.api.response.list.ListQueryResponse;
 import com.darksci.pardot.api.response.listmembership.ListMembershipQueryResponse;
 import com.darksci.pardot.api.response.login.LoginResponse;
+import com.darksci.pardot.api.response.opportunity.Opportunity;
+import com.darksci.pardot.api.response.opportunity.OpportunityQueryResponse;
 import com.darksci.pardot.api.response.prospect.Prospect;
 import com.darksci.pardot.api.response.prospect.ProspectQueryResponse;
 import com.darksci.pardot.api.response.user.User;
@@ -84,6 +106,7 @@ import java.util.Properties;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Integration/End-to-End test over HttpClientRestClient.
@@ -271,6 +294,126 @@ public class PardotClientTest {
     }
 
     /**
+     * Attempt to query custom fields.
+     */
+    @Test
+    public void customFieldQueryTest() {
+        CustomFieldQueryRequest request = new CustomFieldQueryRequest();
+
+        final CustomFieldQueryResponse.Result response = client.customFieldQuery(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Attempt to read custom field.
+     */
+    @Test
+    public void customFieldReadTest() {
+        final long customFieldId = 5636;
+        CustomFieldReadRequest request = new CustomFieldReadRequest()
+            .selectById(customFieldId);
+
+        final CustomField response = client.customFieldRead(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Attempt to create a custom field.
+     */
+    @Test
+    public void customFieldCreateTest() {
+        // Define custom field
+        final CustomField customField = new CustomField();
+        customField.setName("API Test Campaign " + System.currentTimeMillis());
+        customField.setFieldType(CustomFieldType.TEXT);
+        customField.setFieldId("Api_Test_Field_" + System.currentTimeMillis());
+        customField.setRecordMultipleResponses(true);
+        customField.setUseValues(true);
+
+        // Create request
+        CustomFieldCreateRequest request = new CustomFieldCreateRequest()
+            .withCustomField(customField)
+            .withFieldIsNotRequired();
+
+        // Send Request
+        final CustomField response = client.customFieldCreate(request);
+        assertNotNull("Should not be null", response);
+        assertNotNull("Has an Id", response.getId());
+        assertEquals("Has correct name", customField.getName(), response.getName());
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Attempt to update a custom field.
+     */
+    @Test
+    public void customFieldUpdateTest() {
+        final long customFieldId = 5634;
+
+        // Define campaign
+        final CustomField customField = new CustomField();
+        customField.setId(customFieldId);
+        customField.setName("Updated API Test CustomField " + System.currentTimeMillis());
+
+        // Create request
+        CustomFieldUpdateRequest request = new CustomFieldUpdateRequest()
+            .withCustomField(customField);
+
+        // Send Request
+        final CustomField response = client.customFieldUpdate(request);
+        assertNotNull("Should not be null", response);
+        assertNotNull("Has an Id", response.getId());
+        assertEquals("Has correct name", customField.getName(), response.getName());
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Attempt to delete a custom field.
+     */
+    @Test
+    public void customFieldDeleteTest() {
+        final long customFieldId = 5636;
+
+        // Create request
+        CustomFieldDeleteRequest request = new CustomFieldDeleteRequest()
+            .withCustomFieldId(customFieldId);
+
+        // Send Request
+        final Boolean response = client.customFieldDelete(request);
+        assertNotNull("Should not be null", response);
+        assertTrue("Is true", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Attempt to query custom redirects.
+     */
+    @Test
+    public void customRedirectQueryTest() {
+        CustomRedirectQueryRequest request = new CustomRedirectQueryRequest();
+
+        final CustomRedirectQueryResponse.Result response = client.customRedirectQuery(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Attempt to read custom field.
+     */
+    @Test
+    public void customRedirectReadTest() {
+        final long customRedirectId = 1147;
+        CustomRedirectReadRequest request = new CustomRedirectReadRequest()
+            .selectById(customRedirectId);
+
+        final CustomRedirect response = client.customRedirectRead(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
      * Test reading a specific email over the api.
      */
     @Test
@@ -322,6 +465,44 @@ public class PardotClientTest {
             .withHtmlContent("<html><body><h1>Hello %%first_name%%!</h1></body></html>");
 
         final Email response = client.emailSendOneToOne(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test sending a 1-to-1 email to a specific prospect.
+     */
+    @Test
+    public void emailSendListTest() {
+        final long campaignId = 14885;
+        final long listId = 33173;
+
+        EmailSendListRequest request = new EmailSendListRequest()
+            .withListId(listId)
+            .withCampaignId(campaignId)
+            .withFromNameAndEmail("Test User", "no-reply@example.com")
+            .withReplyToEmail("no-reply@example.com")
+            .withName("Test List Email Send " + System.currentTimeMillis())
+            .withOperationalEmail(true)
+            .withSubject("Test Email From Api")
+            .withTag("Tag 1")
+            .withTag("Tag 2")
+            .withTextContent("Hello %%first_name%%!")
+            .withHtmlContent("<html><body><h1>Hello %%first_name%%!</h1></body></html>");
+
+        final Email response = client.emailSendList(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test querying email clicks.
+     */
+    @Test
+    public void emailClickQueryTest() {
+        final EmailClickQueryRequest request = new EmailClickQueryRequest();
+
+        final EmailClickQueryResponse.Result response = client.emailClickQuery(request);
         assertNotNull("Should not be null", response);
         logger.info("Response: {}", response);
     }
@@ -472,29 +653,93 @@ public class PardotClientTest {
     }
 
     /**
-     * Test sending a 1-to-1 email to a specific prospect.
+     * Test querying opportunities.
      */
     @Test
-    public void emailSendListTest() {
-        final long campaignId = 14885;
-        final long listId = 33173;
-
-        EmailSendListRequest request = new EmailSendListRequest()
-            .withListId(listId)
-            .withCampaignId(campaignId)
-            .withFromNameAndEmail("Test User", "no-reply@example.com")
-            .withReplyToEmail("no-reply@example.com")
-            .withName("Test List Email Send " + System.currentTimeMillis())
-            .withOperationalEmail(true)
-            .withSubject("Test Email From Api")
-            .withTag("Tag 1")
-            .withTag("Tag 2")
-            .withTextContent("Hello %%first_name%%!")
-            .withHtmlContent("<html><body><h1>Hello %%first_name%%!</h1></body></html>");
-
-        final Email response = client.emailSendList(request);
+    public void opportunityQueryTest() {
+        final OpportunityQueryRequest request = new OpportunityQueryRequest();
+        final OpportunityQueryResponse.Result response = client.opportunityQuery(request);
         assertNotNull("Should not be null", response);
         logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test reading opportunity by id.
+     */
+    @Test
+    public void opportunityReadTest() {
+        final long opportunityId = 1;
+
+        final Opportunity response = client.opportunityRead(new OpportunityReadRequest()
+            .selectById(opportunityId)
+        );
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test creating an opportunity.
+     */
+    @Test
+    public void opportunityCreateTest() {
+        final OpportunityCreateRequest request = new OpportunityCreateRequest()
+            .withCampaignId(1L)
+            .withClosedAt(System.currentTimeMillis() / 1000)
+            .withProspectId(1L)
+            .withName("My test opp " + System.currentTimeMillis())
+            .withProbability(50)
+            .withValue(10000)
+            .withStage("My Stage")
+            .withStatusWon()
+            .withType("My Type");
+
+        final Opportunity response = client.opportunityCreate(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test updating an opportunity.
+     */
+    @Test
+    public void opportunityUpdateTest() {
+        final OpportunityUpdateRequest request = new OpportunityUpdateRequest()
+            .withId(194L)
+            .withCampaignId(1L)
+            .withClosedAt(System.currentTimeMillis() / 1000)
+            .withProspectId(1L)
+            .withName("My Updated test opp " + System.currentTimeMillis())
+            .withProbability(50)
+            .withValue(10000)
+            .withStage("My Stage")
+            .withStatusWon()
+            .withType("My Type");
+
+        final Opportunity response = client.opportunityUpdate(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test deleting an opportunity.
+     */
+    @Test
+    public void opportunityDeleteTest() {
+        final OpportunityDeleteRequest request = new OpportunityDeleteRequest()
+            .withOpportunityId(194L);
+
+        client.opportunityDelete(request);
+    }
+
+    /**
+     * Test undeleting an opportunity.
+     */
+    @Test
+    public void opportunityUndeleteTest() {
+        final OpportunityUndeleteRequest request = new OpportunityUndeleteRequest()
+            .withOpportunityId(194L);
+
+        client.opportunityUndelete(request);
     }
 
     /**

@@ -23,13 +23,20 @@ import com.darksci.pardot.api.parser.StringResponseParser;
 import com.darksci.pardot.api.parser.account.AccountReadResponseParser;
 import com.darksci.pardot.api.parser.campaign.CampaignQueryResponseParser;
 import com.darksci.pardot.api.parser.campaign.CampaignReadResponseParser;
+import com.darksci.pardot.api.parser.customfield.CustomFieldQueryResponseParser;
+import com.darksci.pardot.api.parser.customfield.CustomFieldReadResponseParser;
+import com.darksci.pardot.api.parser.customredirect.CustomRedirectQueryResponseParser;
+import com.darksci.pardot.api.parser.customredirect.CustomRedirectReadResponseParser;
 import com.darksci.pardot.api.parser.email.EmailReadResponseParser;
 import com.darksci.pardot.api.parser.email.EmailStatsResponseParser;
+import com.darksci.pardot.api.parser.emailclick.EmailClickQueryResponseParser;
 import com.darksci.pardot.api.parser.list.ListQueryResponseParser;
 import com.darksci.pardot.api.parser.list.ListReadResponseParser;
 import com.darksci.pardot.api.parser.listmembership.ListMembershipQueryResponseParser;
 import com.darksci.pardot.api.parser.listmembership.ListMembershipReadResponseParser;
 import com.darksci.pardot.api.parser.login.LoginResponseParser;
+import com.darksci.pardot.api.parser.opportunity.OpportunityQueryResponseParser;
+import com.darksci.pardot.api.parser.opportunity.OpportunityReadResponseParser;
 import com.darksci.pardot.api.parser.prospect.ProspectQueryResponseParser;
 import com.darksci.pardot.api.parser.prospect.ProspectReadResponseParser;
 import com.darksci.pardot.api.parser.user.UserAbilitiesParser;
@@ -45,10 +52,18 @@ import com.darksci.pardot.api.request.campaign.CampaignCreateRequest;
 import com.darksci.pardot.api.request.campaign.CampaignQueryRequest;
 import com.darksci.pardot.api.request.campaign.CampaignReadRequest;
 import com.darksci.pardot.api.request.campaign.CampaignUpdateRequest;
+import com.darksci.pardot.api.request.customfield.CustomFieldCreateRequest;
+import com.darksci.pardot.api.request.customfield.CustomFieldDeleteRequest;
+import com.darksci.pardot.api.request.customfield.CustomFieldQueryRequest;
+import com.darksci.pardot.api.request.customfield.CustomFieldReadRequest;
+import com.darksci.pardot.api.request.customfield.CustomFieldUpdateRequest;
+import com.darksci.pardot.api.request.customredirect.CustomRedirectQueryRequest;
+import com.darksci.pardot.api.request.customredirect.CustomRedirectReadRequest;
 import com.darksci.pardot.api.request.email.EmailReadRequest;
 import com.darksci.pardot.api.request.email.EmailSendListRequest;
 import com.darksci.pardot.api.request.email.EmailSendOneToOneRequest;
 import com.darksci.pardot.api.request.email.EmailStatsRequest;
+import com.darksci.pardot.api.request.emailclick.EmailClickQueryRequest;
 import com.darksci.pardot.api.request.list.ListCreateRequest;
 import com.darksci.pardot.api.request.list.ListQueryRequest;
 import com.darksci.pardot.api.request.list.ListReadRequest;
@@ -58,6 +73,12 @@ import com.darksci.pardot.api.request.listmembership.ListMembershipQueryRequest;
 import com.darksci.pardot.api.request.listmembership.ListMembershipReadRequest;
 import com.darksci.pardot.api.request.listmembership.ListMembershipUpdateRequest;
 import com.darksci.pardot.api.request.login.LoginRequest;
+import com.darksci.pardot.api.request.opportunity.OpportunityCreateRequest;
+import com.darksci.pardot.api.request.opportunity.OpportunityDeleteRequest;
+import com.darksci.pardot.api.request.opportunity.OpportunityQueryRequest;
+import com.darksci.pardot.api.request.opportunity.OpportunityReadRequest;
+import com.darksci.pardot.api.request.opportunity.OpportunityUndeleteRequest;
+import com.darksci.pardot.api.request.opportunity.OpportunityUpdateRequest;
 import com.darksci.pardot.api.request.prospect.ProspectAssignRequest;
 import com.darksci.pardot.api.request.prospect.ProspectCreateRequest;
 import com.darksci.pardot.api.request.prospect.ProspectDeleteRequest;
@@ -78,13 +99,20 @@ import com.darksci.pardot.api.response.ErrorResponse;
 import com.darksci.pardot.api.response.account.Account;
 import com.darksci.pardot.api.response.campaign.Campaign;
 import com.darksci.pardot.api.response.campaign.CampaignQueryResponse;
+import com.darksci.pardot.api.response.customfield.CustomField;
+import com.darksci.pardot.api.response.customfield.CustomFieldQueryResponse;
+import com.darksci.pardot.api.response.customredirect.CustomRedirect;
+import com.darksci.pardot.api.response.customredirect.CustomRedirectQueryResponse;
 import com.darksci.pardot.api.response.email.Email;
 import com.darksci.pardot.api.response.email.EmailStatsResponse;
+import com.darksci.pardot.api.response.emailclick.EmailClickQueryResponse;
 import com.darksci.pardot.api.response.list.List;
 import com.darksci.pardot.api.response.list.ListMembership;
 import com.darksci.pardot.api.response.list.ListQueryResponse;
 import com.darksci.pardot.api.response.listmembership.ListMembershipQueryResponse;
 import com.darksci.pardot.api.response.login.LoginResponse;
+import com.darksci.pardot.api.response.opportunity.Opportunity;
+import com.darksci.pardot.api.response.opportunity.OpportunityQueryResponse;
 import com.darksci.pardot.api.response.prospect.Prospect;
 import com.darksci.pardot.api.response.prospect.ProspectQueryResponse;
 import com.darksci.pardot.api.response.user.User;
@@ -162,7 +190,7 @@ public class PardotClient implements AutoCloseable {
         // Check for invalid http status codes
         if (responseCode >= 200 && responseCode < 300) {
             // These response codes have no values
-            if (responseCode == 205 && responseStr == null) {
+            if ((responseCode == 204 || responseCode == 205) && responseStr == null) {
                 // Avoid NPE
                 responseStr = "";
             }
@@ -224,15 +252,20 @@ public class PardotClient implements AutoCloseable {
             return;
         }
         // Otherwise attempt to authenticate.
-        final LoginResponse response = login(new LoginRequest()
-            .withEmail(configuration.getEmail())
-            .withPassword(configuration.getPassword())
-        );
+        try {
+            final LoginResponse response = login(new LoginRequest()
+                .withEmail(configuration.getEmail())
+                .withPassword(configuration.getPassword())
+            );
 
-        // If we have an API key.
-        if (response.getApiKey() != null) {
-            // Set it.
-            getConfiguration().setApiKey(response.getApiKey());
+            // If we have an API key.
+            if (response.getApiKey() != null) {
+                // Set it.
+                getConfiguration().setApiKey(response.getApiKey());
+            }
+        } catch (final InvalidRequestException exception) {
+            // If we get an InvalidRequest Exception
+            throw new LoginFailedException(exception.getMessage(), exception.getErrorCode(), exception);
         }
     }
 
@@ -240,9 +273,29 @@ public class PardotClient implements AutoCloseable {
      * Make login request
      * @param request Login request definition.
      * @return LoginResponse returned from server.
+     * @throws LoginFailedException if credentials are invalid.
      */
     public LoginResponse login(LoginRequest request) {
-        return submitRequest(request, new LoginResponseParser());
+        try {
+            final LoginResponse loginResponse = submitRequest(request, new LoginResponseParser());
+
+            // If we have a version mis-match.
+            if (!loginResponse.getApiVersion().equals(getConfiguration().getPardotApiVersion())) {
+                // Log what we're doing
+                logger.info(
+                    "Upgrading API version from {} to {}",
+                    getConfiguration().getPardotApiVersion(),
+                    loginResponse.getApiVersion());
+
+                // Update configuration
+                getConfiguration().setPardotApiVersion(loginResponse.getApiVersion());
+            }
+
+            return loginResponse;
+        } catch (final InvalidRequestException exception) {
+            // Throw more specific exception
+            throw new LoginFailedException(exception.getMessage(), exception.getErrorCode(), exception);
+        }
     }
 
     /**
@@ -318,6 +371,70 @@ public class PardotClient implements AutoCloseable {
     }
 
     /**
+     * Make API request to query for one or more custom fields.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public CustomFieldQueryResponse.Result customFieldQuery(final CustomFieldQueryRequest request) {
+        return submitRequest(request, new CustomFieldQueryResponseParser());
+    }
+
+    /**
+     * Make API request to read a specific custom field.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public CustomField customFieldRead(final CustomFieldReadRequest request) {
+        return submitRequest(request, new CustomFieldReadResponseParser());
+    }
+
+    /**
+     * Make API request to create a new Custom field.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public CustomField customFieldCreate(final CustomFieldCreateRequest request) {
+        return submitRequest(request, new CustomFieldReadResponseParser());
+    }
+
+    /**
+     * Make API request to update an existing custom field.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public CustomField customFieldUpdate(final CustomFieldUpdateRequest request) {
+        return submitRequest(request, new CustomFieldReadResponseParser());
+    }
+
+    /**
+     * Make API request to delete a custom field.
+     * @param request Request definition.
+     * @return true if success, false if error.
+     */
+    public boolean customFieldDelete(final CustomFieldDeleteRequest request) {
+        submitRequest(request, new StringResponseParser());
+        return true;
+    }
+
+    /**
+     * Make API request to query for one or more custom redirects.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public CustomRedirectQueryResponse.Result customRedirectQuery(final CustomRedirectQueryRequest request) {
+        return submitRequest(request, new CustomRedirectQueryResponseParser());
+    }
+
+    /**
+     * Make API request to read a specific custom redirect.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public CustomRedirect customRedirectRead(final CustomRedirectReadRequest request) {
+        return submitRequest(request, new CustomRedirectReadResponseParser());
+    }
+
+    /**
      * Make API request to read a specific Email.
      * @param request Request definition.
      * @return Parsed api response.
@@ -351,6 +468,15 @@ public class PardotClient implements AutoCloseable {
      */
     public Email emailSendList(final EmailSendListRequest request) {
         return submitRequest(request, new EmailReadResponseParser());
+    }
+
+    /**
+     * Make API request to query for one or more email clicks.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public EmailClickQueryResponse.Result emailClickQuery(final EmailClickQueryRequest request) {
+        return submitRequest(request, new EmailClickQueryResponseParser());
     }
 
     /**
@@ -423,6 +549,62 @@ public class PardotClient implements AutoCloseable {
      */
     public ListMembership listMembershipUpdate(final ListMembershipUpdateRequest request) {
         return submitRequest(request, new ListMembershipReadResponseParser());
+    }
+
+    /**
+     * Make API request to query opportunities.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public OpportunityQueryResponse.Result opportunityQuery(final OpportunityQueryRequest request) {
+        return submitRequest(request, new OpportunityQueryResponseParser());
+    }
+
+    /**
+     * Make API request to read an opportunity.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public Opportunity opportunityRead(final OpportunityReadRequest request) {
+        return submitRequest(request, new OpportunityReadResponseParser());
+    }
+
+    /**
+     * Make API request to create an opportunity.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public Opportunity opportunityCreate(final OpportunityCreateRequest request) {
+        return submitRequest(request, new OpportunityReadResponseParser());
+    }
+
+    /**
+     * Make API request to update an opportunity.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public Opportunity opportunityUpdate(final OpportunityUpdateRequest request) {
+        return submitRequest(request, new OpportunityReadResponseParser());
+    }
+
+    /**
+     * Make API request to delete an opportunity.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public boolean opportunityDelete(final OpportunityDeleteRequest request) {
+        submitRequest(request, new StringResponseParser());
+        return true;
+    }
+
+    /**
+     * Make API request to un-delete an opportunity.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public boolean opportunityUndelete(final OpportunityUndeleteRequest request) {
+        submitRequest(request, new StringResponseParser());
+        return true;
     }
 
     /**

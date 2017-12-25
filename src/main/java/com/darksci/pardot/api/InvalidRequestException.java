@@ -32,4 +32,8 @@ public class InvalidRequestException extends RuntimeException {
         super(message, cause);
         this.errorCode = -1;
     }
+
+    public int getErrorCode() {
+        return errorCode;
+    }
 }

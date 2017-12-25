@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rsp stat="ok" version="1.0">
+    <customRedirect>
+        <id>1</id>
+        <name>Blah</name>
+        <url>http://go.pardot.com/l/1/2016-06-03/2khmg8</url>
+        <destination_url>http://www.google.com</destination_url>
+        <campaign>
+            <id>2</id>
+            <name>Website Tracking</name>
+        </campaign>
+        <created_at>2016-06-03 15:00:50</created_at>
+        <updated_at>2016-06-03 15:00:50</updated_at>
+    </customRedirect>
+</rsp>
