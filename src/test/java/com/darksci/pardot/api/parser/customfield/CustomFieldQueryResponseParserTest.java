@@ -23,10 +23,10 @@ public class CustomFieldQueryResponseParserTest extends BaseResponseParserTest {
     private static final Logger logger = LoggerFactory.getLogger(CustomFieldQueryResponseParserTest.class);
 
     /**
-     * Validates we can parse a Campaign query with multiple campaigns response A-OK.
+     * Validates we can parse a Custom Fields query with multiple responses A-OK.
      */
     @Test
-    public void testMultipleCampaigns() throws IOException {
+    public void testMultipleCustomFields() throws IOException {
         final String input = readFile("customFieldQuery.xml");
         final CustomFieldQueryResponse.Result response = new CustomFieldQueryResponseParser().parseResponse(input);
         logger.info("Result: {}", response);

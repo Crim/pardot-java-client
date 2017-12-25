@@ -35,6 +35,8 @@ import com.darksci.pardot.api.parser.list.ListReadResponseParser;
 import com.darksci.pardot.api.parser.listmembership.ListMembershipQueryResponseParser;
 import com.darksci.pardot.api.parser.listmembership.ListMembershipReadResponseParser;
 import com.darksci.pardot.api.parser.login.LoginResponseParser;
+import com.darksci.pardot.api.parser.opportunity.OpportunityQueryResponseParser;
+import com.darksci.pardot.api.parser.opportunity.OpportunityReadResponseParser;
 import com.darksci.pardot.api.parser.prospect.ProspectQueryResponseParser;
 import com.darksci.pardot.api.parser.prospect.ProspectReadResponseParser;
 import com.darksci.pardot.api.parser.user.UserAbilitiesParser;
@@ -71,6 +73,12 @@ import com.darksci.pardot.api.request.listmembership.ListMembershipQueryRequest;
 import com.darksci.pardot.api.request.listmembership.ListMembershipReadRequest;
 import com.darksci.pardot.api.request.listmembership.ListMembershipUpdateRequest;
 import com.darksci.pardot.api.request.login.LoginRequest;
+import com.darksci.pardot.api.request.opportunity.OpportunityCreateRequest;
+import com.darksci.pardot.api.request.opportunity.OpportunityDeleteRequest;
+import com.darksci.pardot.api.request.opportunity.OpportunityQueryRequest;
+import com.darksci.pardot.api.request.opportunity.OpportunityReadRequest;
+import com.darksci.pardot.api.request.opportunity.OpportunityUndeleteRequest;
+import com.darksci.pardot.api.request.opportunity.OpportunityUpdateRequest;
 import com.darksci.pardot.api.request.prospect.ProspectAssignRequest;
 import com.darksci.pardot.api.request.prospect.ProspectCreateRequest;
 import com.darksci.pardot.api.request.prospect.ProspectDeleteRequest;
@@ -103,6 +111,8 @@ import com.darksci.pardot.api.response.list.ListMembership;
 import com.darksci.pardot.api.response.list.ListQueryResponse;
 import com.darksci.pardot.api.response.listmembership.ListMembershipQueryResponse;
 import com.darksci.pardot.api.response.login.LoginResponse;
+import com.darksci.pardot.api.response.opportunity.Opportunity;
+import com.darksci.pardot.api.response.opportunity.OpportunityQueryResponse;
 import com.darksci.pardot.api.response.prospect.Prospect;
 import com.darksci.pardot.api.response.prospect.ProspectQueryResponse;
 import com.darksci.pardot.api.response.user.User;
@@ -242,15 +252,20 @@ public class PardotClient implements AutoCloseable {
             return;
         }
         // Otherwise attempt to authenticate.
-        final LoginResponse response = login(new LoginRequest()
-            .withEmail(configuration.getEmail())
-            .withPassword(configuration.getPassword())
-        );
+        try {
+            final LoginResponse response = login(new LoginRequest()
+                .withEmail(configuration.getEmail())
+                .withPassword(configuration.getPassword())
+            );
 
-        // If we have an API key.
-        if (response.getApiKey() != null) {
-            // Set it.
-            getConfiguration().setApiKey(response.getApiKey());
+            // If we have an API key.
+            if (response.getApiKey() != null) {
+                // Set it.
+                getConfiguration().setApiKey(response.getApiKey());
+            }
+        } catch (final InvalidRequestException exception) {
+            // If we get an InvalidRequest Exception
+            throw new LoginFailedException(exception.getMessage(), exception.getErrorCode(), exception);
         }
     }
 
@@ -514,6 +529,62 @@ public class PardotClient implements AutoCloseable {
      */
     public ListMembership listMembershipUpdate(final ListMembershipUpdateRequest request) {
         return submitRequest(request, new ListMembershipReadResponseParser());
+    }
+
+    /**
+     * Make API request to query opportunities.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public OpportunityQueryResponse.Result opportunityQuery(final OpportunityQueryRequest request) {
+        return submitRequest(request, new OpportunityQueryResponseParser());
+    }
+
+    /**
+     * Make API request to read an opportunity.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public Opportunity opportunityRead(final OpportunityReadRequest request) {
+        return submitRequest(request, new OpportunityReadResponseParser());
+    }
+
+    /**
+     * Make API request to create an opportunity.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public Opportunity opportunityCreate(final OpportunityCreateRequest request) {
+        return submitRequest(request, new OpportunityReadResponseParser());
+    }
+
+    /**
+     * Make API request to update an opportunity.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public Opportunity opportunityUpdate(final OpportunityUpdateRequest request) {
+        return submitRequest(request, new OpportunityReadResponseParser());
+    }
+
+    /**
+     * Make API request to delete an opportunity.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public boolean opportunityDelete(final OpportunityDeleteRequest request) {
+        submitRequest(request, new StringResponseParser());
+        return true;
+    }
+
+    /**
+     * Make API request to un-delete an opportunity.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public boolean opportunityUndelete(final OpportunityUndeleteRequest request) {
+        submitRequest(request, new StringResponseParser());
+        return true;
     }
 
     /**

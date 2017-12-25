@@ -3,7 +3,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 0.4.0 (12/25/17)
-- Add support for CustomField, CustomRedirect API, EmailClicks end points.
+- Add support for CustomField, CustomRedirect API, EmailClicks, and Opportunity end points.
 - Fixed bug in VisitorQueryRequest around querying for multiple foreign key ids.
 - Fixed bug in ordering of request parameters.
 

@@ -33,7 +33,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import org.joda.time.LocalDateTime;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -129,13 +129,13 @@ public class Prospect {
     private Profile profile;
 
     @JacksonXmlElementWrapper(localName = "visitor_activities")
-    private List<VisitorActivity> visitorActivities;
+    private List<VisitorActivity> visitorActivities = Collections.emptyList();
 
     @JacksonXmlElementWrapper(localName = "lists")
-    private List<ListSubscription> listSubscriptions;
+    private List<ListSubscription> listSubscriptions = Collections.emptyList();
 
     @JacksonXmlElementWrapper(localName = "visitors")
-    private List<Visitor> visitors;
+    private List<Visitor> visitors = Collections.emptyList();
 
     public Long getId() {
         return id;
@@ -377,9 +377,9 @@ public class Prospect {
      */
     public List<VisitorActivity> getVisitorActivities() {
         if (visitorActivities == null) {
-            return new ArrayList<>();
+            visitorActivities = Collections.emptyList();
         }
-        return visitorActivities;
+        return Collections.unmodifiableList(visitorActivities);
     }
 
     /**
@@ -387,9 +387,9 @@ public class Prospect {
      */
     public List<ListSubscription> getListSubscriptions() {
         if (listSubscriptions == null) {
-            return new ArrayList<>();
+            listSubscriptions  = Collections.emptyList();
         }
-        return listSubscriptions;
+        return Collections.unmodifiableList(listSubscriptions);
     }
 
     /**
@@ -397,9 +397,9 @@ public class Prospect {
      */
     public List<Visitor> getVisitors() {
         if (visitors == null) {
-            return new ArrayList<>();
+            visitors = Collections.emptyList();
         }
-        return visitors;
+        return Collections.unmodifiableList(visitors);
     }
 
     // Setters

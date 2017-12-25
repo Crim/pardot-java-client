@@ -15,7 +15,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.darksci.pardot.api.response.prospect;
+package com.darksci.pardot.api.response.opportunity;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
@@ -23,13 +23,12 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Represents the response from a Prospect Query API call.
+ * Represents the results of querying Opportunities in Pardot API.
  */
-public class ProspectQueryResponse {
+public class OpportunityQueryResponse {
+    private OpportunityQueryResponse.Result result;
 
-    private ProspectQueryResponse.Result result;
-
-    public ProspectQueryResponse.Result getResult() {
+    public Result getResult() {
         return result;
     }
 
@@ -39,32 +38,32 @@ public class ProspectQueryResponse {
     public static class Result {
         private Integer totalResults = 0;
 
-        @JacksonXmlProperty(localName = "prospect")
-        private List<Prospect> prospects = Collections.emptyList();
+        @JacksonXmlProperty(localName = "opportunity")
+        private List<Opportunity> opportunities = Collections.emptyList();
 
         public Integer getTotalResults() {
             return totalResults;
         }
 
-        public List<Prospect> getProspects() {
-            if (prospects == null) {
-                prospects = Collections.emptyList();
+        public List<Opportunity> getOpportunities() {
+            if (opportunities == null) {
+                opportunities = Collections.emptyList();
             }
-            return Collections.unmodifiableList(prospects);
+            return Collections.unmodifiableList(opportunities);
         }
 
         @Override
         public String toString() {
             return "Result{"
                 + "totalResults=" + totalResults
-                + ", prospects=" + prospects
+                + ", opportunities=" + opportunities
                 + '}';
         }
     }
 
     @Override
     public String toString() {
-        return "ProspectQueryResponse{"
+        return "OpportunityQueryResponse{"
             + "result=" + result
             + '}';
     }

@@ -15,57 +15,26 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.darksci.pardot.api.response.prospect;
+package com.darksci.pardot.api.response.opportunity;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
-import java.util.Collections;
-import java.util.List;
-
 /**
- * Represents the response from a Prospect Query API call.
+ * Represents API response for an opportunity read request.
  */
-public class ProspectQueryResponse {
+public class OpportunityReadResponse {
 
-    private ProspectQueryResponse.Result result;
+    @JacksonXmlProperty(localName = "opportunity")
+    private Opportunity opportunity;
 
-    public ProspectQueryResponse.Result getResult() {
-        return result;
-    }
-
-    /**
-     * Represents the results of querying Campaigns in Pardot API.
-     */
-    public static class Result {
-        private Integer totalResults = 0;
-
-        @JacksonXmlProperty(localName = "prospect")
-        private List<Prospect> prospects = Collections.emptyList();
-
-        public Integer getTotalResults() {
-            return totalResults;
-        }
-
-        public List<Prospect> getProspects() {
-            if (prospects == null) {
-                prospects = Collections.emptyList();
-            }
-            return Collections.unmodifiableList(prospects);
-        }
-
-        @Override
-        public String toString() {
-            return "Result{"
-                + "totalResults=" + totalResults
-                + ", prospects=" + prospects
-                + '}';
-        }
+    public Opportunity getOpportunity() {
+        return opportunity;
     }
 
     @Override
     public String toString() {
-        return "ProspectQueryResponse{"
-            + "result=" + result
+        return "OpportunityReadResponse{"
+            + "opportunity=" + opportunity
             + '}';
     }
 }

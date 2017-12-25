@@ -19,6 +19,7 @@ package com.darksci.pardot.api.response.emailclick;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -38,14 +39,17 @@ public class EmailClickQueryResponse {
         private Integer totalResults = 0;
 
         @JacksonXmlProperty(localName = "emailClick")
-        private List<EmailClick> emailClicks;
+        private List<EmailClick> emailClicks = Collections.emptyList();
 
         public Integer getTotalResults() {
             return totalResults;
         }
 
         public List<EmailClick> getEmailClicks() {
-            return emailClicks;
+            if (emailClicks == null) {
+                emailClicks = Collections.emptyList();
+            }
+            return Collections.unmodifiableList(emailClicks);
         }
 
         @Override

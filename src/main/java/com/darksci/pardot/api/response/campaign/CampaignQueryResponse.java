@@ -19,6 +19,7 @@ package com.darksci.pardot.api.response.campaign;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -38,14 +39,17 @@ public class CampaignQueryResponse {
         private Integer totalResults = 0;
 
         @JacksonXmlProperty(localName = "campaign")
-        private List<Campaign> campaigns;
+        private List<Campaign> campaigns = Collections.emptyList();
 
         public Integer getTotalResults() {
             return totalResults;
         }
 
         public List<Campaign> getCampaigns() {
-            return campaigns;
+            if (campaigns == null) {
+                campaigns = Collections.emptyList();
+            }
+            return Collections.unmodifiableList(campaigns);
         }
 
         @Override

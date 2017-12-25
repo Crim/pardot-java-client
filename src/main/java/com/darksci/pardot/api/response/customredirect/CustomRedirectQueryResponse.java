@@ -19,6 +19,7 @@ package com.darksci.pardot.api.response.customredirect;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -38,14 +39,17 @@ public class CustomRedirectQueryResponse {
         private Integer totalResults = 0;
 
         @JacksonXmlProperty(localName = "customRedirect")
-        private List<CustomRedirect> customRedirects;
+        private List<CustomRedirect> customRedirects = Collections.emptyList();
 
         public Integer getTotalResults() {
             return totalResults;
         }
 
         public List<CustomRedirect> getCustomRedirects() {
-            return customRedirects;
+            if (customRedirects == null) {
+                customRedirects = Collections.emptyList();
+            }
+            return Collections.unmodifiableList(customRedirects);
         }
 
         @Override

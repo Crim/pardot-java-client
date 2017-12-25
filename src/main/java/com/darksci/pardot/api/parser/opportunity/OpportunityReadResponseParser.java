@@ -15,25 +15,22 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.darksci.pardot.api;
+package com.darksci.pardot.api.parser.opportunity;
+
+import com.darksci.pardot.api.parser.JacksonFactory;
+import com.darksci.pardot.api.parser.ResponseParser;
+import com.darksci.pardot.api.response.opportunity.Opportunity;
+import com.darksci.pardot.api.response.opportunity.OpportunityReadResponse;
+
+import java.io.IOException;
 
 /**
- * Represents when a request is invalid.
+ * Handles parsing Opportunity Read API responses into POJOs.
  */
-public class InvalidRequestException extends RuntimeException {
-    private final int errorCode;
+public class OpportunityReadResponseParser implements ResponseParser<Opportunity> {
 
-    public InvalidRequestException(final String message, final int errorCode) {
-        super(message);
-        this.errorCode = errorCode;
-    }
-
-    public InvalidRequestException(final String message, final Throwable cause) {
-        super(message, cause);
-        this.errorCode = -1;
-    }
-
-    public int getErrorCode() {
-        return errorCode;
+    @Override
+    public Opportunity parseResponse(final String responseStr) throws IOException {
+        return JacksonFactory.newInstance().readValue(responseStr, OpportunityReadResponse.class).getOpportunity();
     }
 }

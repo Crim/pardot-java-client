@@ -52,11 +52,8 @@ public abstract class BaseRequest<T> implements Request {
      * @return BaseRequest
      */
     protected T setBooleanParam(final String parameterName, final boolean booleanValue) {
-        // TODO i think this is a bug? Or needs to be removed.
-        String value = "true";
-        if (!booleanValue) {
-            value = "false";
-        }
+        // We store a Boolean, which when toString() is called returns 'true' or 'false'
+        // which inredirectly gets us the result we want.
         return setParam(parameterName, booleanValue);
     }
 

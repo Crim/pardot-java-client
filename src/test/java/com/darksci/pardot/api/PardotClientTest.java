@@ -44,6 +44,12 @@ import com.darksci.pardot.api.request.listmembership.ListMembershipQueryRequest;
 import com.darksci.pardot.api.request.listmembership.ListMembershipReadRequest;
 import com.darksci.pardot.api.request.listmembership.ListMembershipUpdateRequest;
 import com.darksci.pardot.api.request.login.LoginRequest;
+import com.darksci.pardot.api.request.opportunity.OpportunityCreateRequest;
+import com.darksci.pardot.api.request.opportunity.OpportunityDeleteRequest;
+import com.darksci.pardot.api.request.opportunity.OpportunityQueryRequest;
+import com.darksci.pardot.api.request.opportunity.OpportunityReadRequest;
+import com.darksci.pardot.api.request.opportunity.OpportunityUndeleteRequest;
+import com.darksci.pardot.api.request.opportunity.OpportunityUpdateRequest;
 import com.darksci.pardot.api.request.prospect.ProspectAssignRequest;
 import com.darksci.pardot.api.request.prospect.ProspectCreateRequest;
 import com.darksci.pardot.api.request.prospect.ProspectDeleteRequest;
@@ -76,6 +82,8 @@ import com.darksci.pardot.api.response.list.ListMembership;
 import com.darksci.pardot.api.response.list.ListQueryResponse;
 import com.darksci.pardot.api.response.listmembership.ListMembershipQueryResponse;
 import com.darksci.pardot.api.response.login.LoginResponse;
+import com.darksci.pardot.api.response.opportunity.Opportunity;
+import com.darksci.pardot.api.response.opportunity.OpportunityQueryResponse;
 import com.darksci.pardot.api.response.prospect.Prospect;
 import com.darksci.pardot.api.response.prospect.ProspectQueryResponse;
 import com.darksci.pardot.api.response.user.User;
@@ -462,6 +470,32 @@ public class PardotClientTest {
     }
 
     /**
+     * Test sending a 1-to-1 email to a specific prospect.
+     */
+    @Test
+    public void emailSendListTest() {
+        final long campaignId = 14885;
+        final long listId = 33173;
+
+        EmailSendListRequest request = new EmailSendListRequest()
+            .withListId(listId)
+            .withCampaignId(campaignId)
+            .withFromNameAndEmail("Test User", "no-reply@example.com")
+            .withReplyToEmail("no-reply@example.com")
+            .withName("Test List Email Send " + System.currentTimeMillis())
+            .withOperationalEmail(true)
+            .withSubject("Test Email From Api")
+            .withTag("Tag 1")
+            .withTag("Tag 2")
+            .withTextContent("Hello %%first_name%%!")
+            .withHtmlContent("<html><body><h1>Hello %%first_name%%!</h1></body></html>");
+
+        final Email response = client.emailSendList(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
      * Test querying email clicks.
      */
     @Test
@@ -619,29 +653,93 @@ public class PardotClientTest {
     }
 
     /**
-     * Test sending a 1-to-1 email to a specific prospect.
+     * Test querying opportunities.
      */
     @Test
-    public void emailSendListTest() {
-        final long campaignId = 14885;
-        final long listId = 33173;
-
-        EmailSendListRequest request = new EmailSendListRequest()
-            .withListId(listId)
-            .withCampaignId(campaignId)
-            .withFromNameAndEmail("Test User", "no-reply@example.com")
-            .withReplyToEmail("no-reply@example.com")
-            .withName("Test List Email Send " + System.currentTimeMillis())
-            .withOperationalEmail(true)
-            .withSubject("Test Email From Api")
-            .withTag("Tag 1")
-            .withTag("Tag 2")
-            .withTextContent("Hello %%first_name%%!")
-            .withHtmlContent("<html><body><h1>Hello %%first_name%%!</h1></body></html>");
-
-        final Email response = client.emailSendList(request);
+    public void opportunityQueryTest() {
+        final OpportunityQueryRequest request = new OpportunityQueryRequest();
+        final OpportunityQueryResponse.Result response = client.opportunityQuery(request);
         assertNotNull("Should not be null", response);
         logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test reading opportunity by id.
+     */
+    @Test
+    public void opportunityReadTest() {
+        final long opportunityId = 1;
+
+        final Opportunity response = client.opportunityRead(new OpportunityReadRequest()
+            .selectById(opportunityId)
+        );
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test creating an opportunity.
+     */
+    @Test
+    public void opportunityCreateTest() {
+        final OpportunityCreateRequest request = new OpportunityCreateRequest()
+            .withCampaignId(1L)
+            .withClosedAt(System.currentTimeMillis() / 1000)
+            .withProspectId(1L)
+            .withName("My test opp " + System.currentTimeMillis())
+            .withProbability(50)
+            .withValue(10000)
+            .withStage("My Stage")
+            .withStatusWon()
+            .withType("My Type");
+
+        final Opportunity response = client.opportunityCreate(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test updating an opportunity.
+     */
+    @Test
+    public void opportunityUpdateTest() {
+        final OpportunityUpdateRequest request = new OpportunityUpdateRequest()
+            .withId(194L)
+            .withCampaignId(1L)
+            .withClosedAt(System.currentTimeMillis() / 1000)
+            .withProspectId(1L)
+            .withName("My Updated test opp " + System.currentTimeMillis())
+            .withProbability(50)
+            .withValue(10000)
+            .withStage("My Stage")
+            .withStatusWon()
+            .withType("My Type");
+
+        final Opportunity response = client.opportunityUpdate(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test deleting an opportunity.
+     */
+    @Test
+    public void opportunityDeleteTest() {
+        final OpportunityDeleteRequest request = new OpportunityDeleteRequest()
+            .withOpportunityId(194L);
+
+        client.opportunityDelete(request);
+    }
+
+    /**
+     * Test undeleting an opportunity.
+     */
+    @Test
+    public void opportunityUndeleteTest() {
+        final OpportunityUndeleteRequest request = new OpportunityUndeleteRequest()
+            .withOpportunityId(194L);
+
+        client.opportunityUndelete(request);
     }
 
     /**

@@ -19,6 +19,7 @@ package com.darksci.pardot.api.response.customfield;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -38,14 +39,17 @@ public class CustomFieldQueryResponse {
         private Integer totalResults = 0;
 
         @JacksonXmlProperty(localName = "customField")
-        private List<CustomField> customFields;
+        private List<CustomField> customFields = Collections.emptyList();
 
         public Integer getTotalResults() {
             return totalResults;
         }
 
         public List<CustomField> getCustomFields() {
-            return customFields;
+            if (customFields == null) {
+                customFields = Collections.emptyList();
+            }
+            return Collections.unmodifiableList(customFields);
         }
 
         @Override

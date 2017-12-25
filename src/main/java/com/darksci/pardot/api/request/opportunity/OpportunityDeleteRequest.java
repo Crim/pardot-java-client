@@ -15,25 +15,25 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.darksci.pardot.api;
+package com.darksci.pardot.api.request.opportunity;
+
+import com.darksci.pardot.api.request.BaseRequest;
 
 /**
- * Represents when a request is invalid.
+ * For deleting opportunities using Pardot's API.
  */
-public class InvalidRequestException extends RuntimeException {
-    private final int errorCode;
-
-    public InvalidRequestException(final String message, final int errorCode) {
-        super(message);
-        this.errorCode = errorCode;
+public class OpportunityDeleteRequest extends BaseRequest<OpportunityDeleteRequest> {
+    @Override
+    public String getApiEndpoint() {
+        return "opportunity/do/delete";
     }
 
-    public InvalidRequestException(final String message, final Throwable cause) {
-        super(message, cause);
-        this.errorCode = -1;
-    }
-
-    public int getErrorCode() {
-        return errorCode;
+    /**
+     * Define which opportunity to perform action on by Id.
+     * @param opportunityId Id of opportunity to delete.
+     * @return RequestBuilder
+     */
+    public OpportunityDeleteRequest withOpportunityId(final Long opportunityId) {
+        return setParam("id", opportunityId);
     }
 }

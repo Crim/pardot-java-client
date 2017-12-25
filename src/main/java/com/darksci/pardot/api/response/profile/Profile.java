@@ -17,7 +17,7 @@
 
 package com.darksci.pardot.api.response.profile;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -26,7 +26,7 @@ import java.util.List;
 public class Profile {
     private Long id;
     private String name;
-    private List<ProfileCriteria> profileCriteria;
+    private List<ProfileCriteria> profileCriteria = Collections.emptyList();
 
     public Long getId() {
         return id;
@@ -41,9 +41,9 @@ public class Profile {
      */
     public List<ProfileCriteria> getProfileCriteria() {
         if (profileCriteria == null) {
-            return new ArrayList<>();
+            profileCriteria = Collections.emptyList();
         }
-        return profileCriteria;
+        return Collections.unmodifiableList(profileCriteria);
     }
 
     @Override

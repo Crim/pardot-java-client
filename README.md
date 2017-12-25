@@ -153,6 +153,16 @@ Official Documentation: [ListMemberships](http://developer.pardot.com/kb/api-ver
 - Read
 - Update
 
+### Opportunities
+Official Documentation: [Opportunities](http://developer.pardot.com/kb/api-version-3/opportunities/)
+
+- Create
+- Delete
+- Query
+- Read
+- Undelete
+- Update
+
 ### Prospects
 Official Documentation: [Prospects](http://developer.pardot.com/kb/api-version-3/prospects/)
 

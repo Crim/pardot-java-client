@@ -15,25 +15,22 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.darksci.pardot.api;
+package com.darksci.pardot.api.request.opportunity;
+
+
+import com.darksci.pardot.api.request.BaseRequest;
 
 /**
- * Represents when a request is invalid.
+ * Used to generate an Opportunity read request.
  */
-public class InvalidRequestException extends RuntimeException {
-    private final int errorCode;
+public class OpportunityReadRequest extends BaseRequest<OpportunityReadRequest> {
 
-    public InvalidRequestException(final String message, final int errorCode) {
-        super(message);
-        this.errorCode = errorCode;
+    @Override
+    public String getApiEndpoint() {
+        return "opportunity/do/read";
     }
 
-    public InvalidRequestException(final String message, final Throwable cause) {
-        super(message, cause);
-        this.errorCode = -1;
-    }
-
-    public int getErrorCode() {
-        return errorCode;
+    public OpportunityReadRequest selectById(final Long id) {
+        return setParam("id", id);
     }
 }

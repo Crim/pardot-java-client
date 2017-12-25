@@ -119,6 +119,44 @@ public class BaseRequestTest {
     }
 
     /**
+     * Validates if you set a boolean parameter as true, it sends the string 'true'.
+     */
+    @Test
+    public void testWithBooleanParamTrue() {
+        final String paramName = "my_param";
+
+        // Create request
+        final TestRequest request = new TestRequest();
+        request.setBooleanParam(paramName, true);
+
+        // Get out the params
+        final Map<String, String> requestParams = request.getRequestParameters();
+
+        // Validate
+        assertEquals("Should have 1 params", 1, requestParams.size());
+        assertEquals("Should be 'true'", "true", requestParams.get(paramName));
+    }
+
+    /**
+     * Validates if you set a boolean parameter as false, it sends the string 'false'.
+     */
+    @Test
+    public void testWithBooleanParamFalse() {
+        final String paramName = "my_param";
+
+        // Create request
+        final TestRequest request = new TestRequest();
+        request.setBooleanParam(paramName, false);
+
+        // Get out the params
+        final Map<String, String> requestParams = request.getRequestParameters();
+
+        // Validate
+        assertEquals("Should have 1 params", 1, requestParams.size());
+        assertEquals("Should be 'false'", "false", requestParams.get(paramName));
+    }
+
+    /**
      * Stand-in implementation for our tests.
      */
     private static class TestRequest extends BaseRequest<TestRequest> {
@@ -127,5 +165,4 @@ public class BaseRequestTest {
             return "/just/a/test";
         }
     }
-
 }
