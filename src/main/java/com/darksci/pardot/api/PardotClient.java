@@ -25,6 +25,8 @@ import com.darksci.pardot.api.parser.campaign.CampaignQueryResponseParser;
 import com.darksci.pardot.api.parser.campaign.CampaignReadResponseParser;
 import com.darksci.pardot.api.parser.customfield.CustomFieldQueryResponseParser;
 import com.darksci.pardot.api.parser.customfield.CustomFieldReadResponseParser;
+import com.darksci.pardot.api.parser.customredirect.CustomRedirectQueryResponseParser;
+import com.darksci.pardot.api.parser.customredirect.CustomRedirectReadResponseParser;
 import com.darksci.pardot.api.parser.email.EmailReadResponseParser;
 import com.darksci.pardot.api.parser.email.EmailStatsResponseParser;
 import com.darksci.pardot.api.parser.list.ListQueryResponseParser;
@@ -52,6 +54,8 @@ import com.darksci.pardot.api.request.customfield.CustomFieldDeleteRequest;
 import com.darksci.pardot.api.request.customfield.CustomFieldQueryRequest;
 import com.darksci.pardot.api.request.customfield.CustomFieldReadRequest;
 import com.darksci.pardot.api.request.customfield.CustomFieldUpdateRequest;
+import com.darksci.pardot.api.request.customredirect.CustomRedirectQueryRequest;
+import com.darksci.pardot.api.request.customredirect.CustomRedirectReadRequest;
 import com.darksci.pardot.api.request.email.EmailReadRequest;
 import com.darksci.pardot.api.request.email.EmailSendListRequest;
 import com.darksci.pardot.api.request.email.EmailSendOneToOneRequest;
@@ -87,6 +91,8 @@ import com.darksci.pardot.api.response.campaign.Campaign;
 import com.darksci.pardot.api.response.campaign.CampaignQueryResponse;
 import com.darksci.pardot.api.response.customfield.CustomField;
 import com.darksci.pardot.api.response.customfield.CustomFieldQueryResponse;
+import com.darksci.pardot.api.response.customredirect.CustomRedirect;
+import com.darksci.pardot.api.response.customredirect.CustomRedirectQueryResponse;
 import com.darksci.pardot.api.response.email.Email;
 import com.darksci.pardot.api.response.email.EmailStatsResponse;
 import com.darksci.pardot.api.response.list.List;
@@ -370,6 +376,24 @@ public class PardotClient implements AutoCloseable {
     public boolean customFieldDelete(final CustomFieldDeleteRequest request) {
         submitRequest(request, new StringResponseParser());
         return true;
+    }
+
+    /**
+     * Make API request to query for one or more custom redirects.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public CustomRedirectQueryResponse.Result customRedirectQuery(final CustomRedirectQueryRequest request) {
+        return submitRequest(request, new CustomRedirectQueryResponseParser());
+    }
+
+    /**
+     * Make API request to read a specific custom redirect.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public CustomRedirect customRedirectRead(final CustomRedirectReadRequest request) {
+        return submitRequest(request, new CustomRedirectReadResponseParser());
     }
 
     /**

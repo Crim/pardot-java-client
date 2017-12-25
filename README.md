@@ -118,6 +118,12 @@ Official Documentation: [Custom Fields](http://developer.pardot.com/kb/api-versi
 - Read
 - Update
 
+### Custom Redirects
+Official Documentation: [Custom Redirects](http://developer.pardot.com/kb/api-version-3/custom-redirects/)
+
+- Query
+- Read
+
 ### Emails
 Official Documentation: [Emails](http://developer.pardot.com/kb/api-version-3/emails/)
 

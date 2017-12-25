@@ -28,6 +28,8 @@ import com.darksci.pardot.api.request.customfield.CustomFieldDeleteRequest;
 import com.darksci.pardot.api.request.customfield.CustomFieldQueryRequest;
 import com.darksci.pardot.api.request.customfield.CustomFieldReadRequest;
 import com.darksci.pardot.api.request.customfield.CustomFieldUpdateRequest;
+import com.darksci.pardot.api.request.customredirect.CustomRedirectQueryRequest;
+import com.darksci.pardot.api.request.customredirect.CustomRedirectReadRequest;
 import com.darksci.pardot.api.request.email.EmailReadRequest;
 import com.darksci.pardot.api.request.email.EmailSendListRequest;
 import com.darksci.pardot.api.request.email.EmailSendOneToOneRequest;
@@ -63,6 +65,8 @@ import com.darksci.pardot.api.response.campaign.CampaignQueryResponse;
 import com.darksci.pardot.api.response.customfield.CustomField;
 import com.darksci.pardot.api.response.customfield.CustomFieldQueryResponse;
 import com.darksci.pardot.api.response.customfield.CustomFieldType;
+import com.darksci.pardot.api.response.customredirect.CustomRedirect;
+import com.darksci.pardot.api.response.customredirect.CustomRedirectQueryResponse;
 import com.darksci.pardot.api.response.email.Email;
 import com.darksci.pardot.api.response.email.EmailStatsResponse;
 import com.darksci.pardot.api.response.list.List;
@@ -370,6 +374,32 @@ public class PardotClientTest {
         final Boolean response = client.customFieldDelete(request);
         assertNotNull("Should not be null", response);
         assertTrue("Is true", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Attempt to query custom redirects.
+     */
+    @Test
+    public void customRedirectQueryTest() {
+        CustomRedirectQueryRequest request = new CustomRedirectQueryRequest();
+
+        final CustomRedirectQueryResponse.Result response = client.customRedirectQuery(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Attempt to read custom field.
+     */
+    @Test
+    public void customRedirectReadTest() {
+        final long customRedirectId = 1147;
+        CustomRedirectReadRequest request = new CustomRedirectReadRequest()
+            .selectById(customRedirectId);
+
+        final CustomRedirect response = client.customRedirectRead(request);
+        assertNotNull("Should not be null", response);
         logger.info("Response: {}", response);
     }
 
