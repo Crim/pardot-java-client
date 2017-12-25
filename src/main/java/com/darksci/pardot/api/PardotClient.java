@@ -273,9 +273,29 @@ public class PardotClient implements AutoCloseable {
      * Make login request
      * @param request Login request definition.
      * @return LoginResponse returned from server.
+     * @throws LoginFailedException if credentials are invalid.
      */
     public LoginResponse login(LoginRequest request) {
-        return submitRequest(request, new LoginResponseParser());
+        try {
+            final LoginResponse loginResponse = submitRequest(request, new LoginResponseParser());
+
+            // If we have a version mis-match.
+            if (!loginResponse.getApiVersion().equals(getConfiguration().getPardotApiVersion())) {
+                // Log what we're doing
+                logger.info(
+                    "Upgrading API version from {} to {}",
+                    getConfiguration().getPardotApiVersion(),
+                    loginResponse.getApiVersion());
+
+                // Update configuration
+                getConfiguration().setPardotApiVersion(loginResponse.getApiVersion());
+            }
+
+            return loginResponse;
+        } catch (final InvalidRequestException exception) {
+            // Throw more specific exception
+            throw new LoginFailedException(exception.getMessage(), exception.getErrorCode(), exception);
+        }
     }
 
     /**
