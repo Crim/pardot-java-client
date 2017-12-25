@@ -110,6 +110,14 @@ Official Documentation: [Campaigns](http://developer.pardot.com/kb/api-version-3
 - Read
 - Update
 
+### Custom Fields
+Official Documentation: [Custom Fields](http://developer.pardot.com/kb/api-version-3/custom-fields/)
+
+- Create
+- Query
+- Read
+- Update
+
 ### Emails
 Official Documentation: [Emails](http://developer.pardot.com/kb/api-version-3/emails/)
 
