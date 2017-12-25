@@ -45,6 +45,9 @@ public class ListQueryResponse {
             return totalResults;
         }
 
+        /**
+         * @return List results.
+         */
         public List<com.darksci.pardot.api.response.list.List> getLists() {
             if (lists == null) {
                 lists = Collections.emptyList();

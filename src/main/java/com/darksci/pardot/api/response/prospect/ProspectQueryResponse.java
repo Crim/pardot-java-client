@@ -46,6 +46,9 @@ public class ProspectQueryResponse {
             return totalResults;
         }
 
+        /**
+         * @return Prospect results.
+         */
         public List<Prospect> getProspects() {
             if (prospects == null) {
                 prospects = Collections.emptyList();

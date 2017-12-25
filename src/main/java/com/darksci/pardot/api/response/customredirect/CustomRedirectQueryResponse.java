@@ -45,6 +45,9 @@ public class CustomRedirectQueryResponse {
             return totalResults;
         }
 
+        /**
+         * @return Custom Redirect results.
+         */
         public List<CustomRedirect> getCustomRedirects() {
             if (customRedirects == null) {
                 customRedirects = Collections.emptyList();

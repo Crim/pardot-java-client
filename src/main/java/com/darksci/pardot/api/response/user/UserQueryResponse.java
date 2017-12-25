@@ -45,6 +45,9 @@ public class UserQueryResponse {
             return totalResults;
         }
 
+        /**
+         * @return User results.
+         */
         public List<User> getUsers() {
             if (users == null) {
                 users = Collections.emptyList();

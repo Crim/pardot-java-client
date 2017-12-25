@@ -75,6 +75,9 @@ public class Opportunity {
         return campaign;
     }
 
+    /**
+     * @return related prospects.
+     */
     public List<Prospect> getProspects() {
         if (prospects == null) {
             prospects = new Prospects();
@@ -82,6 +85,9 @@ public class Opportunity {
         return prospects.getProspects();
     }
 
+    /**
+     * @return related opportunity visitor activities.
+     */
     public List<VisitorActivity> getOpportunityActivities() {
         if (opportunityActivities == null) {
             opportunityActivities = new OpportunityActivities();

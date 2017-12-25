@@ -45,6 +45,9 @@ public class CampaignQueryResponse {
             return totalResults;
         }
 
+        /**
+         * @return Campaign results.
+         */
         public List<Campaign> getCampaigns() {
             if (campaigns == null) {
                 campaigns = Collections.emptyList();

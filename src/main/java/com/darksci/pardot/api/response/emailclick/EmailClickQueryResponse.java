@@ -45,6 +45,9 @@ public class EmailClickQueryResponse {
             return totalResults;
         }
 
+        /**
+         * @return Email Click results.
+         */
         public List<EmailClick> getEmailClicks() {
             if (emailClicks == null) {
                 emailClicks = Collections.emptyList();

@@ -46,6 +46,9 @@ public class ListMembershipQueryResponse {
             return totalResults;
         }
 
+        /**
+         * @return related list memberships.
+         */
         public List<ListMembership> getListMemberships() {
             if (listMemberships == null) {
                 listMemberships = Collections.emptyList();

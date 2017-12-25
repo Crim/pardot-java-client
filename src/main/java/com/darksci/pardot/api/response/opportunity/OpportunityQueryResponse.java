@@ -45,6 +45,9 @@ public class OpportunityQueryResponse {
             return totalResults;
         }
 
+        /**
+         * @return Opportunity results.
+         */
         public List<Opportunity> getOpportunities() {
             if (opportunities == null) {
                 opportunities = Collections.emptyList();

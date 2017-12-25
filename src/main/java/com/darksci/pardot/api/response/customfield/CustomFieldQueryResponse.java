@@ -45,6 +45,9 @@ public class CustomFieldQueryResponse {
             return totalResults;
         }
 
+        /**
+         * @return Custom Field results.
+         */
         public List<CustomField> getCustomFields() {
             if (customFields == null) {
                 customFields = Collections.emptyList();

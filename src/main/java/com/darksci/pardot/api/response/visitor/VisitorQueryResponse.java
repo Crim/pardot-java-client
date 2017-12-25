@@ -45,6 +45,9 @@ public class VisitorQueryResponse {
             return totalResults;
         }
 
+        /**
+         * @return Visitor results.
+         */
         public List<Visitor> getVisitors() {
             if (visitors == null) {
                 visitors = Collections.emptyList();
