@@ -66,8 +66,11 @@ import com.darksci.pardot.api.request.email.EmailSendListRequest;
 import com.darksci.pardot.api.request.email.EmailSendOneToOneRequest;
 import com.darksci.pardot.api.request.email.EmailStatsRequest;
 import com.darksci.pardot.api.request.emailclick.EmailClickQueryRequest;
+import com.darksci.pardot.api.request.form.FormCreateRequest;
+import com.darksci.pardot.api.request.form.FormDeleteRequest;
 import com.darksci.pardot.api.request.form.FormQueryRequest;
 import com.darksci.pardot.api.request.form.FormReadRequest;
+import com.darksci.pardot.api.request.form.FormUpdateRequest;
 import com.darksci.pardot.api.request.list.ListCreateRequest;
 import com.darksci.pardot.api.request.list.ListQueryRequest;
 import com.darksci.pardot.api.request.list.ListReadRequest;
@@ -486,6 +489,25 @@ public class PardotClient implements AutoCloseable {
     }
 
     /**
+     * Make API request to create a new form.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public Form formCreate(final FormCreateRequest request) {
+        return submitRequest(request, new FormReadResponseParser());
+    }
+
+    /**
+     * Make API request to delete a form.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public boolean formDelete(final FormDeleteRequest request) {
+        submitRequest(request, new StringResponseParser());
+        return true;
+    }
+
+    /**
      * Make API request to query for one or more forms.
      * @param request Request definition.
      * @return Parsed api response.
@@ -500,6 +522,15 @@ public class PardotClient implements AutoCloseable {
      * @return Parsed api response.
      */
     public Form formRead(final FormReadRequest request) {
+        return submitRequest(request, new FormReadResponseParser());
+    }
+
+    /**
+     * Make API request to update an existing form.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public Form formUpdate(final FormUpdateRequest request) {
         return submitRequest(request, new FormReadResponseParser());
     }
 
