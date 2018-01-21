@@ -84,6 +84,7 @@ import com.darksci.pardot.api.response.email.Email;
 import com.darksci.pardot.api.response.email.EmailStatsResponse;
 import com.darksci.pardot.api.response.emailclick.EmailClickQueryResponse;
 import com.darksci.pardot.api.response.emailtemplate.EmailTemplate;
+import com.darksci.pardot.api.response.emailtemplate.EmailTemplateListOneToOneResponse;
 import com.darksci.pardot.api.response.form.Form;
 import com.darksci.pardot.api.response.form.FormQueryResponse;
 import com.darksci.pardot.api.response.list.List;
@@ -529,6 +530,16 @@ public class PardotClientTest {
             .selectById(emailTemplateId);
 
         final EmailTemplate response = client.emailTemplateRead(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test listing all one to one email templates.
+     */
+    @Test
+    public void emailTemplateListOneToOneTest() {
+        final EmailTemplateListOneToOneResponse.Result response = client.emailTemplateListOneToOne();
         assertNotNull("Should not be null", response);
         logger.info("Response: {}", response);
     }

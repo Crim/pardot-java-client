@@ -15,18 +15,21 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.darksci.pardot.api.request.emailtemplate;
+package com.darksci.pardot.api.parser.emailtemplate;
 
+import com.darksci.pardot.api.parser.JacksonFactory;
+import com.darksci.pardot.api.parser.ResponseParser;
+import com.darksci.pardot.api.response.emailtemplate.EmailTemplateListOneToOneResponse;
 
-import com.darksci.pardot.api.request.BaseRequest;
+import java.io.IOException;
 
 /**
- * Used to generate an Email Template request to list all one to one email templates.
+ * Handles parsing CampaignQuery API responses into POJOs.
  */
-public class EmailTemplateListOneToOneRequest extends BaseRequest<EmailTemplateListOneToOneRequest> {
+public class EmailTemplateListOneToOneResponseParser implements ResponseParser<EmailTemplateListOneToOneResponse.Result> {
 
     @Override
-    public String getApiEndpoint() {
-        return "emailTemplate/do/listOneToOne";
+    public EmailTemplateListOneToOneResponse.Result parseResponse(final String responseStr) throws IOException {
+        return JacksonFactory.newInstance().readValue(responseStr, EmailTemplateListOneToOneResponse.class).getResult();
     }
 }

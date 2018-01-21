@@ -19,6 +19,7 @@ package com.darksci.pardot.api.parser.emailtemplate;
 
 import com.darksci.pardot.api.parser.BaseResponseParserTest;
 import com.darksci.pardot.api.response.emailtemplate.EmailTemplate;
+import com.darksci.pardot.api.response.emailtemplate.EmailTemplateListOneToOneResponse;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,33 +30,45 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-public class EmailTemplateReadResponseParserTest extends BaseResponseParserTest {
-    private static final Logger logger = LoggerFactory.getLogger(EmailTemplateReadResponseParserTest.class);
+/**
+ * Test parsing Email Template List One To One templates.
+ */
+public class EmailTemplateListOneToOneResponseParserTest extends BaseResponseParserTest {
+    private static final Logger logger = LoggerFactory.getLogger(EmailTemplateListOneToOneResponseParserTest.class);
 
     /**
-     * Validates we can parse a Campaign Read
+     * Validates we can parse an email template list one to one query.
      */
     @Test
-    public void testRead() throws IOException {
-        final String expectedHtml = "<html><body><center>My New Test Template!<br/>Come Check it out today at "
-            + "<a href=\"http://www.pardot.com/\">www.pardot.com</a>!<br/></center><br /><a href=\"%%unsubscribe%%\">Unsubscribe</a>"
-            +" from email communications</body></html>";
+    public void testMultipleTemplates() throws IOException {
+        final String input = readFile("emailTemplateListOneToOne.xml");
+        final EmailTemplateListOneToOneResponse.Result response = new EmailTemplateListOneToOneResponseParser().parseResponse(input);
+        logger.info("Result: {}", response);
 
-        final String expectedText = "My New Test Template!\n"
-            + "            Come check it out at http://www.pardot.com today!\n"
-            + "\n"
-            + "            Unsubscribe from email communications: %%unsubscribe%%";
+        assertNotNull("Should not be null", response);
+        assertEquals("Should have 11 results", 11, (int) response.getTotalResults());
+        assertEquals("Should have 2 results", 2, response.getEmailTemplates().size());
+        validateEmailTemplate1(response.getEmailTemplates().get(0));
+        validateEmailTemplate2(response.getEmailTemplates().get(1));
+    }
 
-        final String input = readFile("emailTemplateRead.xml");
-        final EmailTemplate emailTemplate = new EmailTemplateReadResponseParser().parseResponse(input);
-        logger.info("Result: {}", emailTemplate);
+    private void validateEmailTemplate1(final EmailTemplate emailTemplate) {
+        assertNotNull("Should not be null", emailTemplate);
+        assertEquals("Has correct id", 1L, (long) emailTemplate.getId());
+        assertEquals("Has correct name", "Buyer's Guide", emailTemplate.getName());
+        assertEquals("Has correct subject", "Free Buyer's Guide Subject", emailTemplate.getSubject());
+        assertTrue(emailTemplate.getIsOneToOneEmail());
+        assertTrue(emailTemplate.getIsDripEmail());
+        assertTrue(emailTemplate.getIsListEmail());
+        assertEquals("Email type is 0", (Long) 0L, emailTemplate.getEmailType());
+        assertEquals("Type is 1", (Long) 1L, (Long) emailTemplate.getType());
+    }
 
+    private void validateEmailTemplate2(final EmailTemplate emailTemplate) {
         assertNotNull("Should not be null", emailTemplate);
         assertEquals("Has correct id", 11L, (long) emailTemplate.getId());
         assertEquals("Has correct name", "Test Email Template", emailTemplate.getName());
-        assertEquals("Has correct html", expectedHtml, emailTemplate.getHtmlMessage());
-        assertEquals("Has correct text", expectedText, emailTemplate.getTextMessage());
-        assertEquals("Has correct subject", "Email Template - Its my New One!", emailTemplate.getSubject());
+        assertEquals("Has correct subject", "New Template - Its the New New!", emailTemplate.getSubject());
         assertTrue(emailTemplate.getIsOneToOneEmail());
         assertTrue(emailTemplate.getIsDripEmail());
         assertTrue(emailTemplate.getIsListEmail());

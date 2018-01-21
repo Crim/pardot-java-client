@@ -30,6 +30,7 @@ import com.darksci.pardot.api.parser.customredirect.CustomRedirectReadResponsePa
 import com.darksci.pardot.api.parser.email.EmailReadResponseParser;
 import com.darksci.pardot.api.parser.email.EmailStatsResponseParser;
 import com.darksci.pardot.api.parser.emailclick.EmailClickQueryResponseParser;
+import com.darksci.pardot.api.parser.emailtemplate.EmailTemplateListOneToOneResponseParser;
 import com.darksci.pardot.api.parser.emailtemplate.EmailTemplateReadResponseParser;
 import com.darksci.pardot.api.parser.form.FormQueryResponseParser;
 import com.darksci.pardot.api.parser.form.FormReadResponseParser;
@@ -67,6 +68,7 @@ import com.darksci.pardot.api.request.email.EmailSendListRequest;
 import com.darksci.pardot.api.request.email.EmailSendOneToOneRequest;
 import com.darksci.pardot.api.request.email.EmailStatsRequest;
 import com.darksci.pardot.api.request.emailclick.EmailClickQueryRequest;
+import com.darksci.pardot.api.request.emailtemplate.EmailTemplateListOneToOneRequest;
 import com.darksci.pardot.api.request.emailtemplate.EmailTemplateReadRequest;
 import com.darksci.pardot.api.request.form.FormCreateRequest;
 import com.darksci.pardot.api.request.form.FormDeleteRequest;
@@ -116,6 +118,7 @@ import com.darksci.pardot.api.response.email.Email;
 import com.darksci.pardot.api.response.email.EmailStatsResponse;
 import com.darksci.pardot.api.response.emailclick.EmailClickQueryResponse;
 import com.darksci.pardot.api.response.emailtemplate.EmailTemplate;
+import com.darksci.pardot.api.response.emailtemplate.EmailTemplateListOneToOneResponse;
 import com.darksci.pardot.api.response.form.Form;
 import com.darksci.pardot.api.response.form.FormQueryResponse;
 import com.darksci.pardot.api.response.list.List;
@@ -498,6 +501,14 @@ public class PardotClient implements AutoCloseable {
      */
     public EmailTemplate emailTemplateRead(final EmailTemplateReadRequest request) {
         return submitRequest(request, new EmailTemplateReadResponseParser());
+    }
+
+    /**
+     * Make API request to list all one to one email templates.
+     * @return Parsed api response.
+     */
+    public EmailTemplateListOneToOneResponse.Result emailTemplateListOneToOne() {
+        return submitRequest(new EmailTemplateListOneToOneRequest(), new EmailTemplateListOneToOneResponseParser());
     }
 
     /**
