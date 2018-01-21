@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rsp stat="ok" version="1.0">
+    <emailTemplate>
+        <error>0</error>
+        <sendOptions/>
+        <id>11</id>
+        <name>Test Email Template</name>
+        <htmlMessage>&lt;html&gt;&lt;body&gt;&lt;center&gt;My New Test Template!&lt;br/&gt;Come Check it out today at &lt;a href=&quot;http://www.pardot.com/&quot;&gt;www.pardot.com&lt;/a&gt;!&lt;br/&gt;&lt;/center&gt;&lt;br /&gt;&lt;a href=&quot;%%unsubscribe%%&quot;&gt;Unsubscribe&lt;/a&gt; from email communications&lt;/body&gt;&lt;/html&gt;</htmlMessage>
+        <textMessage>My New Test Template!
+            Come check it out at http://www.pardot.com today!
+
+            Unsubscribe from email communications: %%unsubscribe%%</textMessage>
+        <trackedTextMessage/>
+        <trackedHtmlMessage/>
+        <fromName/>
+        <isOneToOneEmail>1</isOneToOneEmail>
+        <isArchived></isArchived>
+        <isAutoResponderEmail>1</isAutoResponderEmail>
+        <isDripEmail>1</isDripEmail>
+        <isListEmail>1</isListEmail>
+        <subject>Email Template - Its my New One!</subject>
+        <emailType>0</emailType>
+        <type>3</type>
+    </emailTemplate>
+</rsp>

@@ -35,6 +35,7 @@ import com.darksci.pardot.api.request.email.EmailSendListRequest;
 import com.darksci.pardot.api.request.email.EmailSendOneToOneRequest;
 import com.darksci.pardot.api.request.email.EmailStatsRequest;
 import com.darksci.pardot.api.request.emailclick.EmailClickQueryRequest;
+import com.darksci.pardot.api.request.emailtemplate.EmailTemplateReadRequest;
 import com.darksci.pardot.api.request.form.FormCreateRequest;
 import com.darksci.pardot.api.request.form.FormDeleteRequest;
 import com.darksci.pardot.api.request.form.FormQueryRequest;
@@ -82,6 +83,7 @@ import com.darksci.pardot.api.response.customredirect.CustomRedirectQueryRespons
 import com.darksci.pardot.api.response.email.Email;
 import com.darksci.pardot.api.response.email.EmailStatsResponse;
 import com.darksci.pardot.api.response.emailclick.EmailClickQueryResponse;
+import com.darksci.pardot.api.response.emailtemplate.EmailTemplate;
 import com.darksci.pardot.api.response.form.Form;
 import com.darksci.pardot.api.response.form.FormQueryResponse;
 import com.darksci.pardot.api.response.list.List;
@@ -512,6 +514,21 @@ public class PardotClientTest {
         final EmailClickQueryRequest request = new EmailClickQueryRequest();
 
         final EmailClickQueryResponse.Result response = client.emailClickQuery(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test reading a specific email template over the api.
+     */
+    @Test
+    public void emailTemplateReadTest() {
+        final long emailTemplateId = 11L;
+
+        final EmailTemplateReadRequest request = new EmailTemplateReadRequest()
+            .selectById(emailTemplateId);
+
+        final EmailTemplate response = client.emailTemplateRead(request);
         assertNotNull("Should not be null", response);
         logger.info("Response: {}", response);
     }

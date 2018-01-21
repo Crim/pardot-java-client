@@ -30,6 +30,7 @@ import com.darksci.pardot.api.parser.customredirect.CustomRedirectReadResponsePa
 import com.darksci.pardot.api.parser.email.EmailReadResponseParser;
 import com.darksci.pardot.api.parser.email.EmailStatsResponseParser;
 import com.darksci.pardot.api.parser.emailclick.EmailClickQueryResponseParser;
+import com.darksci.pardot.api.parser.emailtemplate.EmailTemplateReadResponseParser;
 import com.darksci.pardot.api.parser.form.FormQueryResponseParser;
 import com.darksci.pardot.api.parser.form.FormReadResponseParser;
 import com.darksci.pardot.api.parser.list.ListQueryResponseParser;
@@ -66,6 +67,7 @@ import com.darksci.pardot.api.request.email.EmailSendListRequest;
 import com.darksci.pardot.api.request.email.EmailSendOneToOneRequest;
 import com.darksci.pardot.api.request.email.EmailStatsRequest;
 import com.darksci.pardot.api.request.emailclick.EmailClickQueryRequest;
+import com.darksci.pardot.api.request.emailtemplate.EmailTemplateReadRequest;
 import com.darksci.pardot.api.request.form.FormCreateRequest;
 import com.darksci.pardot.api.request.form.FormDeleteRequest;
 import com.darksci.pardot.api.request.form.FormQueryRequest;
@@ -113,6 +115,7 @@ import com.darksci.pardot.api.response.customredirect.CustomRedirectQueryRespons
 import com.darksci.pardot.api.response.email.Email;
 import com.darksci.pardot.api.response.email.EmailStatsResponse;
 import com.darksci.pardot.api.response.emailclick.EmailClickQueryResponse;
+import com.darksci.pardot.api.response.emailtemplate.EmailTemplate;
 import com.darksci.pardot.api.response.form.Form;
 import com.darksci.pardot.api.response.form.FormQueryResponse;
 import com.darksci.pardot.api.response.list.List;
@@ -486,6 +489,15 @@ public class PardotClient implements AutoCloseable {
      */
     public EmailClickQueryResponse.Result emailClickQuery(final EmailClickQueryRequest request) {
         return submitRequest(request, new EmailClickQueryResponseParser());
+    }
+
+    /**
+     * Make API request to read a specific Email.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public EmailTemplate emailTemplateRead(final EmailTemplateReadRequest request) {
+        return submitRequest(request, new EmailTemplateReadResponseParser());
     }
 
     /**
