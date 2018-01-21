@@ -30,6 +30,8 @@ import com.darksci.pardot.api.parser.customredirect.CustomRedirectReadResponsePa
 import com.darksci.pardot.api.parser.email.EmailReadResponseParser;
 import com.darksci.pardot.api.parser.email.EmailStatsResponseParser;
 import com.darksci.pardot.api.parser.emailclick.EmailClickQueryResponseParser;
+import com.darksci.pardot.api.parser.form.FormQueryResponseParser;
+import com.darksci.pardot.api.parser.form.FormReadResponseParser;
 import com.darksci.pardot.api.parser.list.ListQueryResponseParser;
 import com.darksci.pardot.api.parser.list.ListReadResponseParser;
 import com.darksci.pardot.api.parser.listmembership.ListMembershipQueryResponseParser;
@@ -64,6 +66,8 @@ import com.darksci.pardot.api.request.email.EmailSendListRequest;
 import com.darksci.pardot.api.request.email.EmailSendOneToOneRequest;
 import com.darksci.pardot.api.request.email.EmailStatsRequest;
 import com.darksci.pardot.api.request.emailclick.EmailClickQueryRequest;
+import com.darksci.pardot.api.request.form.FormQueryRequest;
+import com.darksci.pardot.api.request.form.FormReadRequest;
 import com.darksci.pardot.api.request.list.ListCreateRequest;
 import com.darksci.pardot.api.request.list.ListQueryRequest;
 import com.darksci.pardot.api.request.list.ListReadRequest;
@@ -106,6 +110,8 @@ import com.darksci.pardot.api.response.customredirect.CustomRedirectQueryRespons
 import com.darksci.pardot.api.response.email.Email;
 import com.darksci.pardot.api.response.email.EmailStatsResponse;
 import com.darksci.pardot.api.response.emailclick.EmailClickQueryResponse;
+import com.darksci.pardot.api.response.form.Form;
+import com.darksci.pardot.api.response.form.FormQueryResponse;
 import com.darksci.pardot.api.response.list.List;
 import com.darksci.pardot.api.response.list.ListMembership;
 import com.darksci.pardot.api.response.list.ListQueryResponse;
@@ -477,6 +483,24 @@ public class PardotClient implements AutoCloseable {
      */
     public EmailClickQueryResponse.Result emailClickQuery(final EmailClickQueryRequest request) {
         return submitRequest(request, new EmailClickQueryResponseParser());
+    }
+
+    /**
+     * Make API request to query for one or more forms.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public FormQueryResponse.Result formQuery(final FormQueryRequest request) {
+        return submitRequest(request, new FormQueryResponseParser());
+    }
+
+    /**
+     * Make API request to read a specific form.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public Form formRead(final FormReadRequest request) {
+        return submitRequest(request, new FormReadResponseParser());
     }
 
     /**

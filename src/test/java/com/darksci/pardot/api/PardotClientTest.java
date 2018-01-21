@@ -35,6 +35,8 @@ import com.darksci.pardot.api.request.email.EmailSendListRequest;
 import com.darksci.pardot.api.request.email.EmailSendOneToOneRequest;
 import com.darksci.pardot.api.request.email.EmailStatsRequest;
 import com.darksci.pardot.api.request.emailclick.EmailClickQueryRequest;
+import com.darksci.pardot.api.request.form.FormQueryRequest;
+import com.darksci.pardot.api.request.form.FormReadRequest;
 import com.darksci.pardot.api.request.list.ListCreateRequest;
 import com.darksci.pardot.api.request.list.ListQueryRequest;
 import com.darksci.pardot.api.request.list.ListReadRequest;
@@ -77,6 +79,8 @@ import com.darksci.pardot.api.response.customredirect.CustomRedirectQueryRespons
 import com.darksci.pardot.api.response.email.Email;
 import com.darksci.pardot.api.response.email.EmailStatsResponse;
 import com.darksci.pardot.api.response.emailclick.EmailClickQueryResponse;
+import com.darksci.pardot.api.response.form.Form;
+import com.darksci.pardot.api.response.form.FormQueryResponse;
 import com.darksci.pardot.api.response.list.List;
 import com.darksci.pardot.api.response.list.ListMembership;
 import com.darksci.pardot.api.response.list.ListQueryResponse;
@@ -139,6 +143,8 @@ public class PardotClientTest {
             properties.getProperty("user_key")
         );
 
+        // TODO REMOVE
+        testConfig.setPardotApiHost("http://pi.localhost.com/api");
         logger.info("Config: {}", testConfig);
 
         // Create client
@@ -503,6 +509,31 @@ public class PardotClientTest {
         final EmailClickQueryRequest request = new EmailClickQueryRequest();
 
         final EmailClickQueryResponse.Result response = client.emailClickQuery(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Attempt to query forms.
+     */
+    @Test
+    public void formQueryTest() {
+        FormQueryRequest request = new FormQueryRequest();
+
+        final FormQueryResponse.Result response = client.formQuery(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Attempt to read campaign.
+     */
+    @Test
+    public void formReadTest() throws IOException {
+        FormReadRequest request = new FormReadRequest()
+            .selectById(1L);
+
+        final Form response = client.formRead(request);
         assertNotNull("Should not be null", response);
         logger.info("Response: {}", response);
     }

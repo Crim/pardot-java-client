@@ -15,51 +15,39 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.darksci.pardot.api.request.campaign;
+package com.darksci.pardot.api.request.form;
 
 import com.darksci.pardot.api.request.BaseQueryRequest;
 import com.darksci.pardot.api.request.DateParameter;
 
 /**
- * Used to query Campaigns over the Pardot API.
+ * Used to query Forms over the Pardot API.
  */
-public class CampaignQueryRequest extends BaseQueryRequest<CampaignQueryRequest> {
+public class FormQueryRequest extends BaseQueryRequest<FormQueryRequest> {
     @Override
     public String getApiEndpoint() {
-        return "campaign/do/query";
+        return "form/do/query";
     }
 
     // Filter Options
-    public CampaignQueryRequest withName(final String name) {
-        return setParam("name", name);
-    }
-
-    public CampaignQueryRequest withUpdatedAfter(final DateParameter dateParameter) {
+    public FormQueryRequest withUpdatedAfter(final DateParameter dateParameter) {
         return super.withUpdatedAfter(dateParameter);
     }
 
-    public CampaignQueryRequest withUpdatedBefore(final DateParameter dateParameter) {
+    public FormQueryRequest withUpdatedBefore(final DateParameter dateParameter) {
         return super.withUpdatedBefore(dateParameter);
     }
 
     // Sorting Options
-    public CampaignQueryRequest withSortById() {
+    public FormQueryRequest withSortById() {
         return super.withSortById();
     }
 
-    public CampaignQueryRequest withSortByCreatedAt() {
+    public FormQueryRequest withSortByCreatedAt() {
         return super.withSortByCreatedAt();
     }
 
-    public CampaignQueryRequest withSortByName() {
-        return super.withSortByName();
-    }
-
-    public CampaignQueryRequest withSortByUpdatedAt() {
+    public FormQueryRequest withSortByUpdatedAt() {
         return super.withSortByUpdatedAt();
-    }
-
-    public CampaignQueryRequest withSortByCost() {
-        return super.withSortBy("cost");
     }
 }

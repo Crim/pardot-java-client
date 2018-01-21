@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rsp stat="ok" version="1.0">
+    <result>
+        <total_results>6</total_results>
+        <form>
+            <id>1</id>
+            <name>Standard Form</name>
+            <campaign>
+                <id>1</id>
+                <name>Website Tracking</name>
+            </campaign>
+            <embedCode>&lt;iframe src=&quot;http://go.pardot.com/l/1/2018-01-01/2i&quot; width=&quot;100%&quot; height=&quot;500&quot; type=&quot;text/html&quot; frameborder=&quot;0&quot; allowTransparency=&quot;true&quot; style=&quot;border: 0&quot;&gt;&lt;/iframe&gt;</embedCode>
+            <created_at>2017-12-25 16:14:13</created_at>
+            <updated_at>2017-12-25 16:14:13</updated_at>
+        </form>
+        <form>
+            <id>2</id>
+            <name>Buyer's Guide</name>
+            <campaign>
+                <id>3</id>
+                <name>Buyer's Guide Campaign</name>
+            </campaign>
+            <embedCode>&lt;iframe src=&quot;http://go.pardot.com/l/1/2018-01-02/5i&quot; width=&quot;100%&quot; height=&quot;500&quot; type=&quot;text/html&quot; frameborder=&quot;0&quot; allowTransparency=&quot;true&quot; style=&quot;border: 0&quot;&gt;&lt;/iframe&gt;</embedCode>
+            <created_at>2007-07-29 23:42:51</created_at>
+            <updated_at>2007-07-29 23:42:51</updated_at>
+        </form>
+    </result>
+</rsp>
