@@ -37,6 +37,6 @@ public class LoginResponseParserTest extends BaseResponseParserTest {
 
         final LoginResponse loginResponse = new LoginResponseParser().parseResponse(input);
         assertNotNull("Should not be null", loginResponse);
-        assertEquals("Has correct api_key", "5a1698a233e73d7c8ccd60d775fbc68a", loginResponse.getApiKey());
+        assertEquals("Has correct api_key", "DontWorryIDidNotCheckInARealHash", loginResponse.getApiKey());
     }
 }

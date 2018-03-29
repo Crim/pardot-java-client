@@ -2,9 +2,9 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 0.5.0 (01/21/18)
+## 0.5.0 (unreleased)
 - Add support for Form, Email Template end points.
-- Upgrade Jackson for [CVE-2017-17485](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-17485)
+- Updates jackson dependency for [CVE-2018-7489](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-7489).
 
 ## 0.4.0 (12/25/17)
 - Add support for CustomField, CustomRedirect API, EmailClicks, and Opportunity end points.
