@@ -2,6 +2,9 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.5.0 (unreleased)
+- Updates jackson dependency for [CVE-2018-7489](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-7489).
+
 ## 0.4.0 (12/25/17)
 - Add support for CustomField, CustomRedirect API, EmailClicks, and Opportunity end points.
 - Client will change configured API version from 3 to 4 automatically upon login.
