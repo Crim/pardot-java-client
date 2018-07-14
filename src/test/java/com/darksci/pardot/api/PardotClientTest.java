@@ -35,6 +35,12 @@ import com.darksci.pardot.api.request.email.EmailSendListRequest;
 import com.darksci.pardot.api.request.email.EmailSendOneToOneRequest;
 import com.darksci.pardot.api.request.email.EmailStatsRequest;
 import com.darksci.pardot.api.request.emailclick.EmailClickQueryRequest;
+import com.darksci.pardot.api.request.emailtemplate.EmailTemplateReadRequest;
+import com.darksci.pardot.api.request.form.FormCreateRequest;
+import com.darksci.pardot.api.request.form.FormDeleteRequest;
+import com.darksci.pardot.api.request.form.FormQueryRequest;
+import com.darksci.pardot.api.request.form.FormReadRequest;
+import com.darksci.pardot.api.request.form.FormUpdateRequest;
 import com.darksci.pardot.api.request.list.ListCreateRequest;
 import com.darksci.pardot.api.request.list.ListQueryRequest;
 import com.darksci.pardot.api.request.list.ListReadRequest;
@@ -77,6 +83,10 @@ import com.darksci.pardot.api.response.customredirect.CustomRedirectQueryRespons
 import com.darksci.pardot.api.response.email.Email;
 import com.darksci.pardot.api.response.email.EmailStatsResponse;
 import com.darksci.pardot.api.response.emailclick.EmailClickQueryResponse;
+import com.darksci.pardot.api.response.emailtemplate.EmailTemplate;
+import com.darksci.pardot.api.response.emailtemplate.EmailTemplateListOneToOneResponse;
+import com.darksci.pardot.api.response.form.Form;
+import com.darksci.pardot.api.response.form.FormQueryResponse;
 import com.darksci.pardot.api.response.list.List;
 import com.darksci.pardot.api.response.list.ListMembership;
 import com.darksci.pardot.api.response.list.ListQueryResponse;
@@ -139,6 +149,8 @@ public class PardotClientTest {
             properties.getProperty("user_key")
         );
 
+        // TODO REMOVE
+        testConfig.setPardotApiHost("http://pi.localhost.com/api");
         logger.info("Config: {}", testConfig);
 
         // Create client
@@ -505,6 +517,126 @@ public class PardotClientTest {
         final EmailClickQueryResponse.Result response = client.emailClickQuery(request);
         assertNotNull("Should not be null", response);
         logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test reading a specific email template over the api.
+     */
+    @Test
+    public void emailTemplateReadTest() {
+        final long emailTemplateId = 11L;
+
+        final EmailTemplateReadRequest request = new EmailTemplateReadRequest()
+            .selectById(emailTemplateId);
+
+        final EmailTemplate response = client.emailTemplateRead(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test listing all one to one email templates.
+     */
+    @Test
+    public void emailTemplateListOneToOneTest() {
+        final EmailTemplateListOneToOneResponse.Result response = client.emailTemplateListOneToOne();
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Attempt to create a form.
+     */
+    @Test
+    public void formCreateTest() {
+        final String name = "My new Form Name" + System.currentTimeMillis();
+        final Long campaignId = 1L;
+        final Long layoutTemplateId = 1L;
+        final Long folderId = 1L;
+
+        final FormCreateRequest request = new FormCreateRequest()
+            .withName(name)
+            .withCampaignId(campaignId)
+            .withLayoutTemplateId(layoutTemplateId)
+            .withFolderId(folderId);
+
+        final Form response = client.formCreate(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+
+        assertNotNull("Has an Id", response.getId());
+        assertEquals("Has correct name", name, response.getName());
+        assertNotNull("Has a campaign", response.getCampaign());
+        assertEquals("Has correct campaign id", campaignId, response.getCampaign().getId());
+        assertNotNull("Has an embedcode", response.getEmbedCode());
+    }
+
+    /**
+     * Attempt to create a form.
+     */
+    @Test
+    public void formDeleteTest() {
+        final Long formId = 8L;
+
+        final FormDeleteRequest request = new FormDeleteRequest()
+            .withFormId(formId);
+
+        final boolean response = client.formDelete(request);
+        assertTrue("Should be true", response);
+    }
+
+    /**
+     * Attempt to query forms.
+     */
+    @Test
+    public void formQueryTest() {
+        final FormQueryRequest request = new FormQueryRequest();
+
+        final FormQueryResponse.Result response = client.formQuery(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Attempt to read campaign.
+     */
+    @Test
+    public void formReadTest() throws IOException {
+        final FormReadRequest request = new FormReadRequest()
+            .selectById(1L);
+
+        final Form response = client.formRead(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Attempt to update an existing form.
+     */
+    @Test
+    public void formUpdateTest() {
+        final String name = "My new Form Name" + System.currentTimeMillis();
+        final Long campaignId = 1L;
+        final Long layoutTemplateId = 1L;
+        final Long folderId = 1L;
+        final Long formId = 1L;
+
+        final FormUpdateRequest request = new FormUpdateRequest()
+            .withFormId(formId)
+            .withName(name)
+            .withCampaignId(campaignId)
+            .withLayoutTemplateId(layoutTemplateId)
+            .withFolderId(folderId);
+
+        final Form response = client.formUpdate(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+
+        assertNotNull("Has an Id", response.getId());
+        assertEquals("Has correct name", name, response.getName());
+        assertNotNull("Has a campaign", response.getCampaign());
+        assertEquals("Has correct campaign id", campaignId, response.getCampaign().getId());
+        assertNotNull("Has an embedcode", response.getEmbedCode());
     }
 
     /**

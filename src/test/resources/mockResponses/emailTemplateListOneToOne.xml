@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rsp stat="ok" version="1.0">
+    <emailTemplates>
+        <templates>
+            <id>1</id>
+            <name>Buyer's Guide</name>
+            <fromName/>
+            <isOneToOneEmail>1</isOneToOneEmail>
+            <isArchived></isArchived>
+            <isAutoResponderEmail>1</isAutoResponderEmail>
+            <isDripEmail>1</isDripEmail>
+            <isListEmail>1</isListEmail>
+            <subject>Free Buyer's Guide Subject</subject>
+            <emailType>0</emailType>
+            <type>1</type>
+        </templates>
+        <templates>
+            <id>11</id>
+            <name>Test Email Template</name>
+            <fromName/>
+            <isOneToOneEmail>1</isOneToOneEmail>
+            <isArchived></isArchived>
+            <isAutoResponderEmail>1</isAutoResponderEmail>
+            <isDripEmail>1</isDripEmail>
+            <isListEmail>1</isListEmail>
+            <subject>New Template - Its the New New!</subject>
+            <emailType>0</emailType>
+            <type>3</type>
+        </templates>
+        <error>0</error>
+        <count>11</count>
+    </emailTemplates>
+</rsp>

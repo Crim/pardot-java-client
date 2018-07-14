@@ -137,6 +137,21 @@ Official Documentation: [Email Clicks](http://developer.pardot.com/kb/api-versio
 
 - Query
 
+### Email Templates
+Official Documentation: [Email Clicks](http://developer.pardot.com/kb/api-version-3/email-templates/)
+
+- List One to One templates
+- Read
+
+### Forms
+Official Documentation: [Emails](http://developer.pardot.com/kb/api-version-3/forms/)
+
+- Create
+- Delete
+- Query
+- Read
+- Update
+
 ### Lists
 Official Documentation: [Lists](http://developer.pardot.com/kb/api-version-3/lists/)
 
