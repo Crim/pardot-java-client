@@ -138,13 +138,13 @@ Official Documentation: [Email Clicks](http://developer.pardot.com/kb/api-versio
 - Query
 
 ### Email Templates
-Official Documentation: [Email Clicks](http://developer.pardot.com/kb/api-version-3/email-templates/)
+Official Documentation: [Email Templates](http://developer.pardot.com/kb/api-version-3/email-templates/)
 
 - List One to One templates
 - Read
 
 ### Forms
-Official Documentation: [Emails](http://developer.pardot.com/kb/api-version-3/forms/)
+Official Documentation: [Forms](http://developer.pardot.com/kb/api-version-3/forms/)
 
 - Create
 - Delete
@@ -189,6 +189,21 @@ Official Documentation: [Prospects](http://developer.pardot.com/kb/api-version-3
 - Unassign
 - Update - Does not support multiple values for record-multiple fields.
 - Upsert - Does not support multiple values for record-multiple fields.
+
+### Tags
+Official Documentation: [Tags](http://developer.pardot.com/kb/api-version-3/tags/)
+
+- Create
+- Delete
+- Query
+- Read
+- Update
+
+### TagObjects
+Official Documentation: [TagObjects](http://developer.pardot.com/kb/api-version-3/tag-objects/)
+
+- Query
+- Read
 
 ### Users
 Official Documentation: [Users](http://developer.pardot.com/kb/api-version-3/users/)

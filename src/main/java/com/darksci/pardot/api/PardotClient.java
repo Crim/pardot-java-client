@@ -43,6 +43,10 @@ import com.darksci.pardot.api.parser.opportunity.OpportunityQueryResponseParser;
 import com.darksci.pardot.api.parser.opportunity.OpportunityReadResponseParser;
 import com.darksci.pardot.api.parser.prospect.ProspectQueryResponseParser;
 import com.darksci.pardot.api.parser.prospect.ProspectReadResponseParser;
+import com.darksci.pardot.api.parser.tag.TagQueryResponseParser;
+import com.darksci.pardot.api.parser.tag.TagReadResponseParser;
+import com.darksci.pardot.api.parser.tagobject.TagObjectQueryResponseParser;
+import com.darksci.pardot.api.parser.tagobject.TagObjectReadResponseParser;
 import com.darksci.pardot.api.parser.user.UserAbilitiesParser;
 import com.darksci.pardot.api.parser.user.UserQueryResponseParser;
 import com.darksci.pardot.api.parser.user.UserReadResponseParser;
@@ -98,6 +102,13 @@ import com.darksci.pardot.api.request.prospect.ProspectReadRequest;
 import com.darksci.pardot.api.request.prospect.ProspectUnassignRequest;
 import com.darksci.pardot.api.request.prospect.ProspectUpdateRequest;
 import com.darksci.pardot.api.request.prospect.ProspectUpsertRequest;
+import com.darksci.pardot.api.request.tag.TagReadRequest;
+import com.darksci.pardot.api.request.tag.TagQueryRequest;
+import com.darksci.pardot.api.request.tag.TagCreateRequest;
+import com.darksci.pardot.api.request.tag.TagDeleteRequest;
+import com.darksci.pardot.api.request.tag.TagUpdateRequest;
+import com.darksci.pardot.api.request.tagobject.TagObjectQueryRequest;
+import com.darksci.pardot.api.request.tagobject.TagObjectReadRequest;
 import com.darksci.pardot.api.request.user.UserAbilitiesRequest;
 import com.darksci.pardot.api.request.user.UserQueryRequest;
 import com.darksci.pardot.api.request.user.UserReadRequest;
@@ -130,6 +141,10 @@ import com.darksci.pardot.api.response.opportunity.Opportunity;
 import com.darksci.pardot.api.response.opportunity.OpportunityQueryResponse;
 import com.darksci.pardot.api.response.prospect.Prospect;
 import com.darksci.pardot.api.response.prospect.ProspectQueryResponse;
+import com.darksci.pardot.api.response.tag.Tag;
+import com.darksci.pardot.api.response.tag.TagQueryResponse;
+import com.darksci.pardot.api.response.tagobject.TagObject;
+import com.darksci.pardot.api.response.tagobject.TagObjectQueryResponse;
 import com.darksci.pardot.api.response.user.User;
 import com.darksci.pardot.api.response.user.UserAbilitiesResponse;
 import com.darksci.pardot.api.response.user.UserQueryResponse;
@@ -756,6 +771,70 @@ public class PardotClient implements AutoCloseable {
      */
     public Prospect prospectUnassign(final ProspectUnassignRequest request) {
         return submitRequest(request, new ProspectReadResponseParser());
+    }
+
+    /**
+     * Make API request to create a new tag.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public Tag tagCreate(final TagCreateRequest request) {
+        return submitRequest(request, new TagReadResponseParser());
+    }
+
+    /**
+     * Make API request to delete a form.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public boolean tagDelete(final TagDeleteRequest request) {
+        submitRequest(request, new StringResponseParser());
+        return true;
+    }
+
+    /**
+     * Make API request to query for one or more tags.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public TagQueryResponse.Result tagQuery(final TagQueryRequest request) {
+        return submitRequest(request, new TagQueryResponseParser());
+    }
+
+    /**
+     * Make API request to read a specific tag.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public Tag tagRead(final TagReadRequest request) {
+        return submitRequest(request, new TagReadResponseParser());
+    }
+
+    /**
+     * Make API request to update an existing tag.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public Tag tagUpdate(final TagUpdateRequest request) {
+        return submitRequest(request, new TagReadResponseParser());
+    }
+
+    /**
+     * Make API request to query for one or more tagObjects.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public TagObjectQueryResponse.Result tagObjectQuery(final TagObjectQueryRequest request) {
+        return submitRequest(request, new TagObjectQueryResponseParser());
+    }
+
+    /**
+     * Make API request to read a specific tagObject.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public TagObject tagObjectRead(final TagObjectReadRequest request) {
+        return submitRequest(request, new TagObjectReadResponseParser());
     }
 
     /**
