@@ -19,6 +19,7 @@ package com.darksci.pardot.api.request.tagobject;
 
 import com.darksci.pardot.api.request.BaseQueryRequest;
 import com.darksci.pardot.api.request.DateParameter;
+import com.darksci.pardot.api.request.tag.TagQueryRequest;
 
 /**
  * Defines a TagObject Query Request.
@@ -31,16 +32,12 @@ public class TagObjectQueryRequest  extends BaseQueryRequest<TagObjectQueryReque
     }
 
     // Filter Options
-    public TagObjectQueryRequest withCreatedAfter(final DateParameter dateParameter) {
-        return super.withCreatedAfter(dateParameter);
-    }
-
-    public TagObjectQueryRequest withCreatedBefore(final DateParameter dateParameter) {
-        return super.withCreatedBefore(dateParameter);
-    }
-
     public TagObjectQueryRequest withType(final String type) {
         return setParam("type", type);
+    }
+
+    public TagObjectQueryRequest withType(final TagObjectType type) {
+        return setParam("type", type.getName());
     }
 
     public TagObjectQueryRequest withTagId(final Long tagId) {
@@ -51,6 +48,13 @@ public class TagObjectQueryRequest  extends BaseQueryRequest<TagObjectQueryReque
         return setParam("object_id", objectId);
     }
 
+    public TagObjectQueryRequest withIdLessThan(final Long id) {
+        return setParam("id_less_than", id);
+    }
+
+    public TagObjectQueryRequest withIdGreaterThan(final Long id) {
+        return setParam("id_greater_than", id);
+    }
 
     // Sorting Options
     public TagObjectQueryRequest withSortById() {

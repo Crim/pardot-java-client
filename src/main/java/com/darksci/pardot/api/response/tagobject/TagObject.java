@@ -17,6 +17,7 @@
 
 package com.darksci.pardot.api.response.tagobject;
 
+import com.darksci.pardot.api.request.tagobject.TagObjectType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.joda.time.LocalDateTime;
 
@@ -39,8 +40,21 @@ public class TagObject {
         return tagId;
     }
 
-    public String getType() {
+    /**
+     * @return Type as returned by the API in string format.
+     */
+    public String getTypeName() {
         return type;
+    }
+
+    /**
+     * @return Enum representing the type.
+     */
+    public TagObjectType getType() {
+        if (this.type == null) {
+            return null;
+        }
+        return TagObjectType.fromName(type);
     }
 
     public Long getObjectId() {
