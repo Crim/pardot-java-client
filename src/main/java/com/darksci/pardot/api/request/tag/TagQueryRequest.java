@@ -31,16 +31,24 @@ public class TagQueryRequest extends BaseQueryRequest<TagQueryRequest> {
     }
 
     // Filter Options
+    public TagQueryRequest withIdLessThan(final Long id) {
+        return setParam("id_less_than", id);
+    }
+
+    public TagQueryRequest withIdGreaterThan(final Long id) {
+        return setParam("id_greater_than", id);
+    }
+
+    public TagQueryRequest withName(final String name) {
+        return setParam("name", name);
+    }
+
     public TagQueryRequest withUpdatedAfter(final DateParameter dateParameter) {
         return super.withUpdatedAfter(dateParameter);
     }
 
     public TagQueryRequest withUpdatedBefore(final DateParameter dateParameter) {
         return super.withUpdatedBefore(dateParameter);
-    }
-
-    public TagQueryRequest withName(final String name) {
-        return setParam("name", name);
     }
 
     // Sorting Options

@@ -104,9 +104,6 @@ import com.darksci.pardot.api.request.prospect.ProspectUpdateRequest;
 import com.darksci.pardot.api.request.prospect.ProspectUpsertRequest;
 import com.darksci.pardot.api.request.tag.TagReadRequest;
 import com.darksci.pardot.api.request.tag.TagQueryRequest;
-import com.darksci.pardot.api.request.tag.TagCreateRequest;
-import com.darksci.pardot.api.request.tag.TagDeleteRequest;
-import com.darksci.pardot.api.request.tag.TagUpdateRequest;
 import com.darksci.pardot.api.request.tagobject.TagObjectQueryRequest;
 import com.darksci.pardot.api.request.tagobject.TagObjectReadRequest;
 import com.darksci.pardot.api.request.user.UserAbilitiesRequest;
@@ -774,25 +771,6 @@ public class PardotClient implements AutoCloseable {
     }
 
     /**
-     * Make API request to create a new tag.
-     * @param request Request definition.
-     * @return Parsed api response.
-     */
-    public Tag tagCreate(final TagCreateRequest request) {
-        return submitRequest(request, new TagReadResponseParser());
-    }
-
-    /**
-     * Make API request to delete a form.
-     * @param request Request definition.
-     * @return Parsed api response.
-     */
-    public boolean tagDelete(final TagDeleteRequest request) {
-        submitRequest(request, new StringResponseParser());
-        return true;
-    }
-
-    /**
      * Make API request to query for one or more tags.
      * @param request Request definition.
      * @return Parsed api response.
@@ -807,15 +785,6 @@ public class PardotClient implements AutoCloseable {
      * @return Parsed api response.
      */
     public Tag tagRead(final TagReadRequest request) {
-        return submitRequest(request, new TagReadResponseParser());
-    }
-
-    /**
-     * Make API request to update an existing tag.
-     * @param request Request definition.
-     * @return Parsed api response.
-     */
-    public Tag tagUpdate(final TagUpdateRequest request) {
         return submitRequest(request, new TagReadResponseParser());
     }
 

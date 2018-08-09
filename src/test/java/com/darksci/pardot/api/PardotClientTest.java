@@ -64,6 +64,11 @@ import com.darksci.pardot.api.request.prospect.ProspectReadRequest;
 import com.darksci.pardot.api.request.prospect.ProspectUnassignRequest;
 import com.darksci.pardot.api.request.prospect.ProspectUpdateRequest;
 import com.darksci.pardot.api.request.prospect.ProspectUpsertRequest;
+import com.darksci.pardot.api.request.tag.TagQueryRequest;
+import com.darksci.pardot.api.request.tag.TagReadRequest;
+import com.darksci.pardot.api.request.tagobject.TagObjectQueryRequest;
+import com.darksci.pardot.api.request.tagobject.TagObjectReadRequest;
+import com.darksci.pardot.api.request.tagobject.TagObjectType;
 import com.darksci.pardot.api.request.user.UserAbilitiesRequest;
 import com.darksci.pardot.api.request.user.UserQueryRequest;
 import com.darksci.pardot.api.request.user.UserReadRequest;
@@ -96,6 +101,10 @@ import com.darksci.pardot.api.response.opportunity.Opportunity;
 import com.darksci.pardot.api.response.opportunity.OpportunityQueryResponse;
 import com.darksci.pardot.api.response.prospect.Prospect;
 import com.darksci.pardot.api.response.prospect.ProspectQueryResponse;
+import com.darksci.pardot.api.response.tag.Tag;
+import com.darksci.pardot.api.response.tag.TagQueryResponse;
+import com.darksci.pardot.api.response.tagobject.TagObject;
+import com.darksci.pardot.api.response.tagobject.TagObjectQueryResponse;
 import com.darksci.pardot.api.response.user.User;
 import com.darksci.pardot.api.response.user.UserAbilitiesResponse;
 import com.darksci.pardot.api.response.user.UserQueryResponse;
@@ -148,9 +157,6 @@ public class PardotClientTest {
             properties.getProperty("password"),
             properties.getProperty("user_key")
         );
-
-        // TODO REMOVE
-        testConfig.setPardotApiHost("http://pi.localhost.com/api");
         logger.info("Config: {}", testConfig);
 
         // Create client
@@ -1017,6 +1023,93 @@ public class PardotClientTest {
 
         final ProspectQueryResponse.Result response = client.prospectQuery(request);
         assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test querying tags.
+     */
+    @Test
+    public void tagQueryTest() {
+        final TagQueryRequest request = new TagQueryRequest();
+
+        final TagQueryResponse.Result response = client.tagQuery(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test querying tags.
+     */
+    @Test
+    public void tagQueryIdGreaterThanTest() {
+        final TagQueryRequest request = new TagQueryRequest()
+            .withIdGreaterThan(1L);
+
+        final TagQueryResponse.Result response = client.tagQuery(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test Reading a tag.
+     */
+    @Test
+    public void tagReadTest() {
+        final long tagId = 711621L;
+
+        final TagReadRequest request = new TagReadRequest()
+            .selectById(tagId);
+
+        final Tag response = client.tagRead(request);
+        logger.info("Response: {}", response);
+
+        assertNotNull("Should not be null", response);
+        assertNotNull("Should have a name", response.getName());
+        assertNotNull("Should have an id", response.getId());
+        assertNotNull("Should have a create at", response.getCreatedAt());
+        assertNotNull("Should have an updated at", response.getUpdatedAt());
+    }
+
+    /**
+     * Test querying tag objects.
+     */
+    @Test
+    public void tagObjectQuery() {
+        final TagObjectQueryRequest request = new TagObjectQueryRequest();
+
+        final TagObjectQueryResponse.Result response = client.tagObjectQuery(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test querying tag objects.
+     */
+    @Test
+    public void tagObjectQueryWithEnum() {
+        final TagObjectQueryRequest request = new TagObjectQueryRequest()
+            .withType(TagObjectType.EMAIL);
+
+        final TagObjectQueryResponse.Result response = client.tagObjectQuery(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test reading tag object.
+     */
+    @Test
+    public void tagObjectReadQuery() {
+        final long tagObjectId = 17736959L;
+
+        final TagObjectReadRequest request = new TagObjectReadRequest()
+            .selectById(tagObjectId);
+
+        final TagObject response = client.tagObjectRead(request);
+        assertNotNull("Should not be null", response);
+        response.getType();
+        response.getTypeName();
         logger.info("Response: {}", response);
     }
 
