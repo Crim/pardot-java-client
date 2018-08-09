@@ -40,10 +40,16 @@ public class TagObject {
         return tagId;
     }
 
+    /**
+     * @return Type as returned by the API in string format.
+     */
     public String getTypeName() {
         return type;
     }
 
+    /**
+     * @return Enum representing the type.
+     */
     public TagObjectType getType() {
         if (this.type == null) {
             return null;

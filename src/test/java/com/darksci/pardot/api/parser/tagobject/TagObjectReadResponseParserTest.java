@@ -18,6 +18,7 @@
 package com.darksci.pardot.api.parser.tagobject;
 
 import com.darksci.pardot.api.parser.BaseResponseParserTest;
+import com.darksci.pardot.api.request.tagobject.TagObjectType;
 import com.darksci.pardot.api.response.tagobject.TagObject;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -48,6 +49,7 @@ public class TagObjectReadResponseParserTest extends BaseResponseParserTest {
         assertEquals("Has correct id", 53772L, (long) tagObject.getId());
         assertEquals("Has correct object_id", 1L, (long) tagObject.getObjectId());
         assertEquals("Has correct tag_id", 111L, (long) tagObject.getTagId());
-        assertEquals("Has correct type", "Prospect", tagObject.getType());
+        assertEquals("Has correct type enum", TagObjectType.PROSPECT, tagObject.getType());
+        assertEquals("Has correct type name", "Prospect", tagObject.getTypeName());
     }
 }

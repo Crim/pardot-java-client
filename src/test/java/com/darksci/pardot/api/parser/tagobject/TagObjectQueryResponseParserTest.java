@@ -18,6 +18,7 @@
 package com.darksci.pardot.api.parser.tagobject;
 
 import com.darksci.pardot.api.parser.BaseResponseParserTest;
+import com.darksci.pardot.api.request.tagobject.TagObjectType;
 import com.darksci.pardot.api.response.tagobject.TagObject;
 import com.darksci.pardot.api.response.tagobject.TagObjectQueryResponse;
 import org.junit.Test;
@@ -39,7 +40,7 @@ public class TagObjectQueryResponseParserTest extends BaseResponseParserTest {
      * Validates we can parse a TagObject query with multiple campaigns response A-OK.
      */
     @Test
-    public void testMultipleCampaigns() throws IOException {
+    public void testMultipleTags() throws IOException {
         final String input = readFile("tagObjectQuery.xml");
         final TagObjectQueryResponse.Result response = new TagObjectQueryResponseParser().parseResponse(input);
         logger.info("Result: {}", response);
@@ -53,11 +54,13 @@ public class TagObjectQueryResponseParserTest extends BaseResponseParserTest {
 
     private void validateTagObject1(final TagObject tagObject) {
         assertEquals("Has correct id", 53772L, (long) tagObject.getId());
-        assertEquals("Has correct type", "Prospect", tagObject.getType());
+        assertEquals("Has correct type", TagObjectType.PROSPECT, tagObject.getType());
+        assertEquals("Has correct type name", "Prospect", tagObject.getTypeName());
     }
 
     private void validateTagObject2(final TagObject tagObject) {
         assertEquals("Has correct id", 53773L, (long) tagObject.getId());
-        assertEquals("Has correct type", "Form", tagObject.getType());
+        assertEquals("Has correct type", TagObjectType.FORM, tagObject.getType());
+        assertEquals("Has correct type name", "Form", tagObject.getTypeName());
     }
 }
