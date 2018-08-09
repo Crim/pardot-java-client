@@ -193,11 +193,8 @@ Official Documentation: [Prospects](http://developer.pardot.com/kb/api-version-3
 ### Tags
 Official Documentation: [Tags](http://developer.pardot.com/kb/api-version-3/tags/)
 
-- Create
-- Delete
 - Query
 - Read
-- Update
 
 ### TagObjects
 Official Documentation: [TagObjects](http://developer.pardot.com/kb/api-version-3/tag-objects/)
