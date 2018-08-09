@@ -21,7 +21,7 @@ This client library is released on Maven Central.  Add a new dependency to your 
 <dependency>
     <groupId>com.darksci</groupId>
     <artifactId>pardot-api-client</artifactId>
-    <version>0.5.0</version>
+    <version>0.6.0</version>
 </dependency>
 ```
 
@@ -241,6 +241,10 @@ passed along with it.
 ### [ResponseParser](/blob/master/src/main/java/com/darksci/pardot/api/parser/ResponseParser.java)
 The ResponseParser interface defines how to take the API's response and convert it back into
 user friendly Plain Old Java Objects (POJOs).
+
+## Contributors
+[Crim](https://github.com/crim)
+[LoRez](https://github.com/lorez)
 
 ## Changelog
 
