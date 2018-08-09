@@ -2,6 +2,8 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.7.0 (UNRELEASED)
+
 ## 0.6.0 (08/09/2018)
 - Adds support for Tags and TagObjects, Thanks [LoRez](https://github.com/lorez)!
 
