@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rsp stat="ok" version="1.0">
+    <tag>
+        <id>1</id>
+        <name>Standard Tag</name>
+        <created_at>2017-12-25 16:14:13</created_at>
+        <updated_at>2017-12-25 16:14:13</updated_at>
+    </tag>
+</rsp>

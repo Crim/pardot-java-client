@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rsp stat="ok" version="1.0">
+    <result>
+        <total_results>6</total_results>
+        <tagObject>
+            <id>53772</id>
+            <tag_id>111</tag_id>
+            <type>Prospect</type>
+            <object_id>1</object_id>
+            <created_at>2011-03-01 16:03:41</created_at>
+        </tagObject>
+        <tagObject>
+            <id>53773</id>
+            <tag_id>112</tag_id>
+            <type>Form</type>
+            <object_id>4</object_id>
+            <created_at>2011-03-01 16:03:41</created_at>
+        </tagObject>
+    </result>
+</rsp>
