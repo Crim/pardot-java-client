@@ -30,6 +30,7 @@ import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.socket.LayeredConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -82,10 +83,10 @@ public class HttpClientRestClient implements RestClient {
         // Create default SSLContext
         final SSLContext sslcontext = SSLContexts.createDefault();
 
-        // Allow TLSv1 protocol only
-        final SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(
+        // Allow TLSv1_1 and TLSv1_2 protocols
+        final LayeredConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(
             sslcontext,
-            new String[] { "TLSv1" },
+            new String[] { "TLSv1_1", "TLSv1_2" },
             null,
             SSLConnectionSocketFactory.getDefaultHostnameVerifier()
         );
