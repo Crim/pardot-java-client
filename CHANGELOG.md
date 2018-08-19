@@ -2,7 +2,14 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 0.7.0 (UNRELEASED)
+## 1.0.0 (UNRELEASED)
+### Breaking Change 
+
+As of October 31, 2018 Pardot is disabling the TLS 1.0 encryption protocol.  This means that versions of this library
+prior to 1.0.0 will cease to be able to connect to the Pardot Api.
+
+Version 1.0.0 updates the library to use TLS 1.1 and 1.2 protocols. Everyone is encouraged to update
+the library prior to October 31st 2018.
 
 ## 0.6.0 (08/09/2018)
 - Adds support for Tags and TagObjects, Thanks [LoRez](https://github.com/lorez)!
