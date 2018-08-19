@@ -86,7 +86,7 @@ public class HttpClientRestClient implements RestClient {
         // Allow TLSv1_1 and TLSv1_2 protocols
         final LayeredConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(
             sslcontext,
-            new String[] { "TLSv1_1", "TLSv1_2" },
+            new String[] { "TLSv1.1", "TLSv1.2" },
             null,
             SSLConnectionSocketFactory.getDefaultHostnameVerifier()
         );
