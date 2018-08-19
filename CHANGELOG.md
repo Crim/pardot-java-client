@@ -2,7 +2,7 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 1.0.0 (UNRELEASED)
+## 1.0.0 (08/19/2018)
 ### Breaking Change 
 
 As of October 31, 2018 Pardot is disabling the TLS 1.0 encryption protocol.  This means that versions of this library
