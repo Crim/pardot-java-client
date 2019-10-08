@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rsp stat="ok" version="1.0">
+    <cookie>
+        <id>12</id>
+        <user_id>34</user_id>
+        <name>RememberMe</name>
+        <value>10bfe186d03-NOT-A-REAL-VALUE-38f9b37c497a597680603f818ee9a03dd36fff8207f070950980a6472fcf15eb3023e3e7e11a3a6c577d98c171499906d8222b3548</value>
+        <expire>1570030099</expire>
+        <path>/</path>
+        <domain></domain>
+        <secure/>
+        <httpOnly>1</httpOnly>
+        <created_at>2018-01-01 01:23:45</created_at>
+    </cookie>
+</rsp>

@@ -48,6 +48,7 @@ import com.darksci.pardot.api.parser.tag.TagReadResponseParser;
 import com.darksci.pardot.api.parser.tagobject.TagObjectQueryResponseParser;
 import com.darksci.pardot.api.parser.tagobject.TagObjectReadResponseParser;
 import com.darksci.pardot.api.parser.user.UserAbilitiesParser;
+import com.darksci.pardot.api.parser.user.UserCookieParser;
 import com.darksci.pardot.api.parser.user.UserQueryResponseParser;
 import com.darksci.pardot.api.parser.user.UserReadResponseParser;
 import com.darksci.pardot.api.parser.visitor.VisitorQueryResponseParser;
@@ -102,11 +103,13 @@ import com.darksci.pardot.api.request.prospect.ProspectReadRequest;
 import com.darksci.pardot.api.request.prospect.ProspectUnassignRequest;
 import com.darksci.pardot.api.request.prospect.ProspectUpdateRequest;
 import com.darksci.pardot.api.request.prospect.ProspectUpsertRequest;
-import com.darksci.pardot.api.request.tag.TagReadRequest;
 import com.darksci.pardot.api.request.tag.TagQueryRequest;
+import com.darksci.pardot.api.request.tag.TagReadRequest;
 import com.darksci.pardot.api.request.tagobject.TagObjectQueryRequest;
 import com.darksci.pardot.api.request.tagobject.TagObjectReadRequest;
 import com.darksci.pardot.api.request.user.UserAbilitiesRequest;
+import com.darksci.pardot.api.request.user.UserCookieRequest;
+import com.darksci.pardot.api.request.user.UserCreateRequest;
 import com.darksci.pardot.api.request.user.UserQueryRequest;
 import com.darksci.pardot.api.request.user.UserReadRequest;
 import com.darksci.pardot.api.request.visitor.VisitorAssignRequest;
@@ -142,6 +145,7 @@ import com.darksci.pardot.api.response.tag.Tag;
 import com.darksci.pardot.api.response.tag.TagQueryResponse;
 import com.darksci.pardot.api.response.tagobject.TagObject;
 import com.darksci.pardot.api.response.tagobject.TagObjectQueryResponse;
+import com.darksci.pardot.api.response.user.Cookie;
 import com.darksci.pardot.api.response.user.User;
 import com.darksci.pardot.api.response.user.UserAbilitiesResponse;
 import com.darksci.pardot.api.response.user.UserQueryResponse;
@@ -353,11 +357,29 @@ public class PardotClient implements AutoCloseable {
     }
 
     /**
+     * Make API request to read the login cookie of the currently authenticated user.
+     * @param request Requet definition.
+     * @return Parsed api response.
+     */
+    public Cookie userCookie(final UserCookieRequest request) {
+        return submitRequest(request, new UserCookieParser());
+    }
+
+    /**
      * Make API request to read a specific user.
      * @param request Request definition.
      * @return Parsed api response.
      */
     public User userRead(final UserReadRequest request) {
+        return submitRequest(request, new UserReadResponseParser());
+    }
+
+    /**
+     * Make API request to create a new user.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public User userCreate(final UserCreateRequest request) {
         return submitRequest(request, new UserReadResponseParser());
     }
 
@@ -857,5 +879,4 @@ public class PardotClient implements AutoCloseable {
     public void close() {
         getRestClient().close();
     }
-
 }

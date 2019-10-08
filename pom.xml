@@ -58,7 +58,7 @@
         <checkstyle.version>8.0</checkstyle.version>
 
         <!-- Log4J Version -->
-        <log4j2.version>2.11.0</log4j2.version>
+        <log4j2.version>2.12.1</log4j2.version>
 
         <!-- test toggling -->
         <skipTests>false</skipTests>
@@ -75,7 +75,7 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.5.6</version>
+            <version>4.5.10</version>
         </dependency>
 
         <!-- For parsing XML responses to POJOs -->
