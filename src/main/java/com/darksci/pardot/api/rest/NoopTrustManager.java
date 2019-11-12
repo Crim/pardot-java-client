@@ -15,30 +15,25 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.darksci.pardot.api.response.user;
+package com.darksci.pardot.api.rest;
+
+import javax.net.ssl.X509TrustManager;
+import java.security.cert.X509Certificate;
 
 /**
- * Represents a Pardot User.
+ * Implementation of TrustManager that blindly trusts all certificates with no validation or verification.
  */
-public class UserReadResponse {
-
-    /**
-     * The user instance.
-     */
-    private User user;
-
-    /**
-     * User instance.
-     * @return user.
-     */
-    public User getUser() {
-        return user;
+class NoopTrustManager implements X509TrustManager {
+    @Override
+    public void checkClientTrusted(final X509Certificate[] x509Certificates, final String input) {
     }
 
     @Override
-    public String toString() {
-        return "UserReadResponse{"
-            + "user=" + user
-            + '}';
+    public void checkServerTrusted(final X509Certificate[] x509Certificates, final String input) {
+    }
+
+    @Override
+    public X509Certificate[] getAcceptedIssuers() {
+        return new X509Certificate[0];
     }
 }

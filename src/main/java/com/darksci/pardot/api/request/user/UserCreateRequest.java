@@ -171,4 +171,16 @@ public class UserCreateRequest extends BaseRequest<UserCreateRequest> {
         setParam("crm_username", crmUsername);
         return this;
     }
+
+    /**
+     * Should Pardot send the activation email to the new user on creation?
+     * Defaults to true if not explicitly defined.
+     *
+     * @param sendEmail should Pardot send the activation email.
+     * @return UserCreateRequest builder.
+     */
+    public UserCreateRequest withSendActivationEmail(final boolean sendEmail) {
+        setBooleanParam("send_activation", sendEmail);
+        return this;
+    }
 }

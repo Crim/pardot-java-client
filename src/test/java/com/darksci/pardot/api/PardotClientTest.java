@@ -110,6 +110,7 @@ import com.darksci.pardot.api.response.tagobject.TagObjectQueryResponse;
 import com.darksci.pardot.api.response.user.Cookie;
 import com.darksci.pardot.api.response.user.User;
 import com.darksci.pardot.api.response.user.UserAbilitiesResponse;
+import com.darksci.pardot.api.response.user.UserCreateResponse;
 import com.darksci.pardot.api.response.user.UserQueryResponse;
 import com.darksci.pardot.api.response.visitor.Visitor;
 import com.darksci.pardot.api.response.visitor.VisitorQueryResponse;

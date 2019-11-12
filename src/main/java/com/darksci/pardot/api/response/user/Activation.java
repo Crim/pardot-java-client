@@ -18,27 +18,33 @@
 package com.darksci.pardot.api.response.user;
 
 /**
- * Represents a Pardot User.
+ * Represents activation details.
  */
-public class UserReadResponse {
+public class Activation {
+    private String hash;
+    private String url;
 
-    /**
-     * The user instance.
-     */
-    private User user;
+    public String getHash() {
+        return hash;
+    }
 
-    /**
-     * User instance.
-     * @return user.
-     */
-    public User getUser() {
-        return user;
+    public void setHash(final String hash) {
+        this.hash = hash;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(final String url) {
+        this.url = url;
     }
 
     @Override
     public String toString() {
-        return "UserReadResponse{"
-            + "user=" + user
+        return "Activation{"
+            + "hash='" + hash + '\''
+            + ", url='" + url + '\''
             + '}';
     }
 }

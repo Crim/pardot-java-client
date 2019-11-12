@@ -15,30 +15,23 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.darksci.pardot.api.response.user;
+package com.darksci.pardot.api.parser.user;
+
+import com.darksci.pardot.api.parser.JacksonFactory;
+import com.darksci.pardot.api.parser.ResponseParser;
+import com.darksci.pardot.api.response.user.User;
+import com.darksci.pardot.api.response.user.UserCreateResponse;
+import com.darksci.pardot.api.response.user.UserReadResponse;
+
+import java.io.IOException;
 
 /**
- * Represents a Pardot User.
+ * Handles parsing UserRead API responses into POJOs.
  */
-public class UserReadResponse {
-
-    /**
-     * The user instance.
-     */
-    private User user;
-
-    /**
-     * User instance.
-     * @return user.
-     */
-    public User getUser() {
-        return user;
-    }
+public class UserCreateResponseParser implements ResponseParser<UserCreateResponse> {
 
     @Override
-    public String toString() {
-        return "UserReadResponse{"
-            + "user=" + user
-            + '}';
+    public UserCreateResponse parseResponse(final String responseStr) throws IOException {
+        return JacksonFactory.newInstance().readValue(responseStr, UserCreateResponse.class);
     }
 }

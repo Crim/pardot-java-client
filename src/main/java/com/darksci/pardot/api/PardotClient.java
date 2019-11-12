@@ -49,6 +49,7 @@ import com.darksci.pardot.api.parser.tagobject.TagObjectQueryResponseParser;
 import com.darksci.pardot.api.parser.tagobject.TagObjectReadResponseParser;
 import com.darksci.pardot.api.parser.user.UserAbilitiesParser;
 import com.darksci.pardot.api.parser.user.UserCookieParser;
+import com.darksci.pardot.api.parser.user.UserCreateResponseParser;
 import com.darksci.pardot.api.parser.user.UserQueryResponseParser;
 import com.darksci.pardot.api.parser.user.UserReadResponseParser;
 import com.darksci.pardot.api.parser.visitor.VisitorQueryResponseParser;
@@ -148,6 +149,7 @@ import com.darksci.pardot.api.response.tagobject.TagObjectQueryResponse;
 import com.darksci.pardot.api.response.user.Cookie;
 import com.darksci.pardot.api.response.user.User;
 import com.darksci.pardot.api.response.user.UserAbilitiesResponse;
+import com.darksci.pardot.api.response.user.UserCreateResponse;
 import com.darksci.pardot.api.response.user.UserQueryResponse;
 import com.darksci.pardot.api.response.visitor.Visitor;
 import com.darksci.pardot.api.response.visitor.VisitorQueryResponse;
@@ -380,7 +382,7 @@ public class PardotClient implements AutoCloseable {
      * @return Parsed api response.
      */
     public User userCreate(final UserCreateRequest request) {
-        return submitRequest(request, new UserReadResponseParser());
+        return submitRequest(request, new UserCreateResponseParser()).getUser();
     }
 
     /**

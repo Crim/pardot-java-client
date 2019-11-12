@@ -15,30 +15,17 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.darksci.pardot.api.response.user;
+package com.darksci.pardot.api.rest.mutator;
+
+import org.apache.http.client.methods.HttpPost;
 
 /**
- * Represents a Pardot User.
+ * Interface that allows for making changes to the outbound HttpPost prior to sending the request.
  */
-public class UserReadResponse {
-
+public interface RequestInterceptor {
     /**
-     * The user instance.
+     * Allows for modifying the outbound HttpPost prior to sending the request.
+     * @param httpPost The HttpPost instance about to be executed.
      */
-    private User user;
-
-    /**
-     * User instance.
-     * @return user.
-     */
-    public User getUser() {
-        return user;
-    }
-
-    @Override
-    public String toString() {
-        return "UserReadResponse{"
-            + "user=" + user
-            + '}';
-    }
+    void beforePost(final HttpPost httpPost);
 }

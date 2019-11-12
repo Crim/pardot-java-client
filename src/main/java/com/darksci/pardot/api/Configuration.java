@@ -17,6 +17,11 @@
 
 package com.darksci.pardot.api;
 
+import com.darksci.pardot.api.rest.mutator.NoopRequestInterceptor;
+import com.darksci.pardot.api.rest.mutator.RequestInterceptor;
+
+import java.util.Objects;
+
 /**
  * Configure your Pardot API credentials.
  *
@@ -44,6 +49,18 @@ public class Configuration {
     // If you want to override the Pardot API url or version.
     private String pardotApiHost = "https://pi.pardot.com/api";
     private String pardotApiVersion = "3";
+
+    /**
+     * Optional setting to skip validating Pardot's SSL certificate.
+     * There should be no real valid use case for this option other then use against
+     * development environments.
+     */
+    private boolean ignoreInvalidSslCertificates = false;
+
+    /**
+     * Optional interface to allow for modifying the outbound Http Post request prior to sending it.
+     */
+    private RequestInterceptor requestInterceptor = new NoopRequestInterceptor();
 
     /**
      * Constructor.
@@ -115,6 +132,39 @@ public class Configuration {
         return this;
     }
 
+    /**
+     * Allows for overriding the Pardot Api hostname.
+     *
+     * @param pardotApiHost the Pardot API hostname to use.
+     * @return Configuration instance.
+     */
+    public Configuration withPardotApiHost(final String pardotApiHost) {
+        this.pardotApiHost = pardotApiHost;
+        return this;
+    }
+
+    /**
+     * Allows for injecting a Http Request mutator instance.
+     *
+     * @param requestInterceptor Implementation to use.
+     * @return Configuration instance.
+     */
+    public Configuration withRequestMutator(final RequestInterceptor requestInterceptor) {
+        Objects.requireNonNull(requestInterceptor);
+        this.requestInterceptor = requestInterceptor;
+        return this;
+    }
+
+    /**
+     * Skip all validation of SSL Certificates.  This is insecure and highly discouraged!
+     *
+     * @return Configuration instance.
+     */
+    public Configuration useInsecureSslCertificates() {
+        this.ignoreInvalidSslCertificates = true;
+        return this;
+    }
+
     public String getProxyHost() {
         return proxyHost;
     }
@@ -139,10 +189,6 @@ public class Configuration {
         return pardotApiHost;
     }
 
-    public void setPardotApiHost(final String pardotApiHost) {
-        this.pardotApiHost = pardotApiHost;
-    }
-
     public String getPardotApiVersion() {
         return pardotApiVersion;
     }
@@ -157,6 +203,14 @@ public class Configuration {
 
     public void setApiKey(final String apiKey) {
         this.apiKey = apiKey;
+    }
+
+    public boolean getIgnoreInvalidSslCertificates() {
+        return ignoreInvalidSslCertificates;
+    }
+
+    public RequestInterceptor getRequestInterceptor() {
+        return requestInterceptor;
     }
 
     @Override

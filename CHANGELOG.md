@@ -4,7 +4,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 1.1.0 (UNRELEASED)
 
-- Adds support for user create end point.
+- Adds support for additional user end points.
+- Adds `RequestInterceptor` interface to allow for end-user manipulation of requests prior to being sent over the wire. 
 
 #### Internal Dependency Updates
 - org.apache.httpcomponents:httpclent from 4.5.6 to 4.5.10

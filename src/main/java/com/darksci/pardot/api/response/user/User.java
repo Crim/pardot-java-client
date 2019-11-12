@@ -38,6 +38,11 @@ public class User {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updatedAt;
 
+    /**
+     * Activation details, if available.
+     */
+    private Activation activation;
+
     public User() {
     }
 
@@ -75,6 +80,14 @@ public class User {
 
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
+    }
+
+    /**
+     * User activation details, if available.
+     * @return user activation details.
+     */
+    public Activation getActivation() {
+        return activation;
     }
 
     @Override

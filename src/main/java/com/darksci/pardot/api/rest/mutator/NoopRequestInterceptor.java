@@ -15,30 +15,16 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.darksci.pardot.api.response.user;
+package com.darksci.pardot.api.rest.mutator;
+
+import org.apache.http.client.methods.HttpPost;
 
 /**
- * Represents a Pardot User.
+ * Default implementation makes no modifications.
  */
-public class UserReadResponse {
-
-    /**
-     * The user instance.
-     */
-    private User user;
-
-    /**
-     * User instance.
-     * @return user.
-     */
-    public User getUser() {
-        return user;
-    }
-
+public class NoopRequestInterceptor implements RequestInterceptor {
     @Override
-    public String toString() {
-        return "UserReadResponse{"
-            + "user=" + user
-            + '}';
+    public void beforePost(final HttpPost httpPost) {
+        // Noop.
     }
 }

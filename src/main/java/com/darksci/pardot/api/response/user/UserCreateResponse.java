@@ -18,9 +18,9 @@
 package com.darksci.pardot.api.response.user;
 
 /**
- * Represents a Pardot User.
+ * Represents a Pardot User create response.
  */
-public class UserReadResponse {
+public class UserCreateResponse {
 
     /**
      * The user instance.
@@ -37,7 +37,7 @@ public class UserReadResponse {
 
     @Override
     public String toString() {
-        return "UserReadResponse{"
+        return "UserCreateResponse{"
             + "user=" + user
             + '}';
     }
