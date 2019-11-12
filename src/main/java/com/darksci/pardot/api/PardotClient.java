@@ -57,6 +57,7 @@ import com.darksci.pardot.api.parser.visitor.VisitorReadResponseParser;
 import com.darksci.pardot.api.parser.visitoractivity.VisitorActivityQueryResponseParser;
 import com.darksci.pardot.api.parser.visitoractivity.VisitorActivityReadResponseParser;
 import com.darksci.pardot.api.request.Request;
+import com.darksci.pardot.api.request.UserDefinedRequest;
 import com.darksci.pardot.api.request.account.AccountReadRequest;
 import com.darksci.pardot.api.request.campaign.CampaignCreateRequest;
 import com.darksci.pardot.api.request.campaign.CampaignQueryRequest;
@@ -873,6 +874,18 @@ public class PardotClient implements AutoCloseable {
      */
     public VisitorActivity visitorActivityRead(final VisitorActivityReadRequest request) {
         return submitRequest(request, new VisitorActivityReadResponseParser());
+    }
+
+    /**
+     * Entry point for adhoc user defined requests.
+     *
+     * @param request Defines the request to made against the API.
+     * @param <Self> The class type that extends this so we can return the appropriate value.
+     * @param <ResponseObject> Parsed return type.
+     * @return parsed response.
+     */
+    public <Self, ResponseObject> ResponseObject userDefinedRequest(final UserDefinedRequest<Self, ResponseObject> request) {
+        return submitRequest(request, request.getResponseParser());
     }
 
     /**

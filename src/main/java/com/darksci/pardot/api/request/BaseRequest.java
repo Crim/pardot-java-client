@@ -24,25 +24,25 @@ import java.util.Map;
 
 /**
  * Base Request Properties.
- * @param <T> The class type that extends this so we can return the appropriate value.
+ * @param <Self> The class type that extends this so we can return the appropriate value.
  */
-public abstract class BaseRequest<T> implements Request {
+public abstract class BaseRequest<Self> implements Request {
     // Param holder
     private Map<String, Object> params = new HashMap<>();
 
     @SuppressWarnings("unchecked")
-    protected <T> T getParam(final String name) {
-        return (T) params.getOrDefault(name, null);
+    protected <Self> Self getParam(final String name) {
+        return (Self) params.getOrDefault(name, null);
     }
 
     @SuppressWarnings("unchecked")
-    protected T setParam(final String name, Object value) {
+    protected Self setParam(final String name, Object value) {
         if (value == null) {
             params.remove(name);
         } else {
             params.put(name, value);
         }
-        return (T) this;
+        return (Self) this;
     }
 
     /**
@@ -51,13 +51,13 @@ public abstract class BaseRequest<T> implements Request {
      * @param booleanValue Boolean value to store.
      * @return BaseRequest
      */
-    protected T setBooleanParam(final String parameterName, final boolean booleanValue) {
+    protected Self setBooleanParam(final String parameterName, final boolean booleanValue) {
         // We store a Boolean, which when toString() is called returns 'true' or 'false'
         // which inredirectly gets us the result we want.
         return setParam(parameterName, booleanValue);
     }
 
-    protected T withCollectionParam(final String name, final Object value) {
+    protected Self withCollectionParam(final String name, final Object value) {
         // Sanity test, if we got passed null, we should remove the collection
         if (value == null) {
             // This should remove it.
@@ -81,11 +81,11 @@ public abstract class BaseRequest<T> implements Request {
     }
 
     @SuppressWarnings("unchecked")
-    protected T withCollectionParams(final String name, Collection<?> values) {
+    protected Self withCollectionParams(final String name, Collection<?> values) {
         for (final Object value: values) {
             withCollectionParam(name, value);
         }
-        return (T) this;
+        return (Self) this;
     }
 
     /**
