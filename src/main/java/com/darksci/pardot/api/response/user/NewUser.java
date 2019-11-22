@@ -28,7 +28,10 @@ public class NewUser {
     private String firstName;
     private String lastName;
     private String jobTitle;
+
+    // Role can be set EITHER by Id or Name.
     private Long roleId;
+    private String role;
 
     private String phone = null;
     private String url = null;
@@ -74,6 +77,24 @@ public class NewUser {
 
     public void setRoleId(final Long roleId) {
         this.roleId = roleId;
+
+        // Null out role name.
+        if (roleId != null) {
+            this.role = null;
+        }
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(final String role) {
+        this.role = role;
+
+        // Null out roleId
+        if (role != null) {
+            roleId = null;
+        }
     }
 
     public String getPhone() {
