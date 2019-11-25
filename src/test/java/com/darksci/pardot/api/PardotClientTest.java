@@ -75,6 +75,7 @@ import com.darksci.pardot.api.request.user.UserCreateRequest;
 import com.darksci.pardot.api.request.user.UserDeleteRequest;
 import com.darksci.pardot.api.request.user.UserQueryRequest;
 import com.darksci.pardot.api.request.user.UserReadRequest;
+import com.darksci.pardot.api.request.user.UserUpdateRoleRequest;
 import com.darksci.pardot.api.request.visitor.VisitorAssignRequest;
 import com.darksci.pardot.api.request.visitor.VisitorQueryRequest;
 import com.darksci.pardot.api.request.visitor.VisitorReadRequest;
@@ -111,7 +112,6 @@ import com.darksci.pardot.api.response.tagobject.TagObjectQueryResponse;
 import com.darksci.pardot.api.response.user.Cookie;
 import com.darksci.pardot.api.response.user.User;
 import com.darksci.pardot.api.response.user.UserAbilitiesResponse;
-import com.darksci.pardot.api.response.user.UserCreateResponse;
 import com.darksci.pardot.api.response.user.UserQueryResponse;
 import com.darksci.pardot.api.response.visitor.Visitor;
 import com.darksci.pardot.api.response.visitor.VisitorQueryResponse;
@@ -130,7 +130,6 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -335,6 +334,45 @@ public class PardotClientTest {
 
         final boolean result = client.userDelete(deleteRequest);
         assertTrue("Response should be true", result);
+    }
+
+    /**
+     * Attempt to delete an existing user.
+     */
+    @Test
+    public void userUpdateRoleByIdTest() {
+        final long originalRoleId = 4L;
+        final String originalRoleName = "Sales";
+
+        final long updatedRoleId = 5L;
+        final String updatedRoleName = "Sales Manager";
+
+        final UserCreateRequest createRequest = new UserCreateRequest()
+            .withEmail("test" + System.currentTimeMillis() + "@salesforce.com")
+            .withFirstName("First")
+            .withLastName("Last")
+            .withJobTitle("Job Title")
+            .withPhone("123-123-1234")
+            .withUrl("http:/www.example.com")
+            .withPasswordExpireable(false)
+            .withRoleId(originalRoleId)
+            .withTimezone(DateTimeZone.UTC);
+
+        final User response = client.userCreate(createRequest);
+        assertNotNull("Should not be null", response);
+
+        // Validate assumption of role
+        assertEquals(originalRoleName, response.getRole());
+
+        // Now attempt to updated
+        final UserUpdateRoleRequest updateRoleRequest = new UserUpdateRoleRequest()
+            .withUserId(response.getId())
+            .withRoleId(updatedRoleId);
+
+        final User updatedUser = client.userUpdateRole(updateRoleRequest);
+
+        // Validate role was updated
+        assertEquals(updatedRoleName, updatedUser.getRole());
     }
 
     /**

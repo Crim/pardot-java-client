@@ -115,6 +115,7 @@ import com.darksci.pardot.api.request.user.UserCreateRequest;
 import com.darksci.pardot.api.request.user.UserDeleteRequest;
 import com.darksci.pardot.api.request.user.UserQueryRequest;
 import com.darksci.pardot.api.request.user.UserReadRequest;
+import com.darksci.pardot.api.request.user.UserUpdateRoleRequest;
 import com.darksci.pardot.api.request.visitor.VisitorAssignRequest;
 import com.darksci.pardot.api.request.visitor.VisitorQueryRequest;
 import com.darksci.pardot.api.request.visitor.VisitorReadRequest;
@@ -151,7 +152,6 @@ import com.darksci.pardot.api.response.tagobject.TagObjectQueryResponse;
 import com.darksci.pardot.api.response.user.Cookie;
 import com.darksci.pardot.api.response.user.User;
 import com.darksci.pardot.api.response.user.UserAbilitiesResponse;
-import com.darksci.pardot.api.response.user.UserCreateResponse;
 import com.darksci.pardot.api.response.user.UserQueryResponse;
 import com.darksci.pardot.api.response.visitor.Visitor;
 import com.darksci.pardot.api.response.visitor.VisitorQueryResponse;
@@ -395,6 +395,15 @@ public class PardotClient implements AutoCloseable {
      */
     public User userCreate(final UserCreateRequest request) {
         return submitRequest(request, new UserCreateResponseParser()).getUser();
+    }
+
+    /**
+     * Make API request to update role on a Pardot user.
+     * @param request Request definition.
+     * @return Parsed api response containing the updated user record.
+     */
+    public User userUpdateRole(final UserUpdateRoleRequest request) {
+        return submitRequest(request, new UserReadResponseParser());
     }
 
     /**

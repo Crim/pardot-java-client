@@ -114,8 +114,7 @@ public class UserCreateRequest extends BaseRequest<UserCreateRequest> {
      * @return UserCreateRequest builder.
      */
     public UserCreateRequest withRoleId(final Long roleId) {
-        setParam("role", roleId);
-        return this;
+        return setParam("role", roleId);
     }
 
     /**
