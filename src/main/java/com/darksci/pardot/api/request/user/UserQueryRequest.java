@@ -41,5 +41,4 @@ public class UserQueryRequest extends BaseQueryRequest<UserQueryRequest> {
     public UserQueryRequest withSortById() {
         return super.withSortById();
     }
-
 }

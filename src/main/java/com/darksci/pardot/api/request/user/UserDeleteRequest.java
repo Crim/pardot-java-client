@@ -20,36 +20,35 @@ package com.darksci.pardot.api.request.user;
 import com.darksci.pardot.api.request.BaseRequest;
 
 /**
- * Used to generate a User read request.
+ * For deleting existing users from Pardot.
  */
-public class UserReadRequest extends BaseRequest<UserReadRequest> {
-
+public class UserDeleteRequest extends BaseRequest<UserDeleteRequest> {
     @Override
     public String getApiEndpoint() {
-        return "user/do/read";
+        return "user/do/delete";
     }
 
     /**
      * Returns the data for the user specified by email.
      * @param email The email address of the target user.
-     * @return UserReadRequest builder.
+     * @return UserDeleteRequest builder.
      */
-    public UserReadRequest selectByEmail(final String email) {
+    public UserDeleteRequest deleteByEmail(final String email) {
         if (email != null) {
-            selectById(null);
+            deleteById(null);
         }
         return setParam("email", email);
     }
 
     /**
      * Returns the data for the user specified by id.
-     * @param id The Pardot ID of the target user.
-     * @return UserReadRequest builder.
+     * @param userId The Pardot ID of the target user to delete
+     * @return UserDeleteRequest builder.
      */
-    public UserReadRequest selectById(final Long id) {
-        if (id != null) {
-            selectByEmail(null);
+    public UserDeleteRequest deleteById(final Long userId) {
+        if (userId != null) {
+            deleteByEmail(null);
         }
-        return setParam("id", id);
+        return setParam("id", userId);
     }
 }

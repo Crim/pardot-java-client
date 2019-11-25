@@ -72,6 +72,7 @@ import com.darksci.pardot.api.request.tagobject.TagObjectType;
 import com.darksci.pardot.api.request.user.UserAbilitiesRequest;
 import com.darksci.pardot.api.request.user.UserCookieRequest;
 import com.darksci.pardot.api.request.user.UserCreateRequest;
+import com.darksci.pardot.api.request.user.UserDeleteRequest;
 import com.darksci.pardot.api.request.user.UserQueryRequest;
 import com.darksci.pardot.api.request.user.UserReadRequest;
 import com.darksci.pardot.api.request.visitor.VisitorAssignRequest;
@@ -129,6 +130,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -162,6 +164,12 @@ public class PardotClientTest {
             properties.getProperty("password"),
             properties.getProperty("user_key")
         );
+        if (properties.getProperty("api_host") != null) {
+            testConfig
+                .withPardotApiHost(properties.getProperty("api_host"))
+                .useInsecureSslCertificates();
+
+        }
         logger.info("Config: {}", testConfig);
 
         // Create client
@@ -258,7 +266,7 @@ public class PardotClientTest {
     @Test
     public void userCreateTest() {
         final UserCreateRequest createRequest = new UserCreateRequest()
-            .withEmail("test" + System.currentTimeMillis() + "@example.com")
+            .withEmail("test" + System.currentTimeMillis() + "@salesforce.com")
             .withFirstName("First")
             .withLastName("Last")
             .withJobTitle("Job Title")
@@ -271,6 +279,62 @@ public class PardotClientTest {
         final User response = client.userCreate(createRequest);
         assertNotNull("Should not be null", response);
         logger.info("Response: {}", response);
+    }
+
+    /**
+     * Attempt to delete an existing user.
+     */
+    @Test
+    public void userDeleteByEmailTest() {
+        final String email = "test" + System.currentTimeMillis() + "@salesforce.com";
+
+        final UserCreateRequest createRequest = new UserCreateRequest()
+            .withEmail(email)
+            .withFirstName("First")
+            .withLastName("Last")
+            .withJobTitle("Job Title")
+            .withPhone("123-123-1234")
+            .withUrl("http:/www.example.com")
+            .withPasswordExpireable(false)
+            .withRoleId(4L)
+            .withTimezone(DateTimeZone.UTC);
+
+        final User response = client.userCreate(createRequest);
+        assertNotNull("Should not be null", response);
+
+        // Now attempt to delete it
+        final UserDeleteRequest deleteRequest = new UserDeleteRequest()
+            .deleteByEmail(email);
+
+        final boolean result = client.userDelete(deleteRequest);
+        assertTrue("Response should be true", result);
+    }
+
+    /**
+     * Attempt to delete an existing user.
+     */
+    @Test
+    public void userDeleteByIdTest() {
+        final UserCreateRequest createRequest = new UserCreateRequest()
+            .withEmail("test" + System.currentTimeMillis() + "@salesforce.com")
+            .withFirstName("First")
+            .withLastName("Last")
+            .withJobTitle("Job Title")
+            .withPhone("123-123-1234")
+            .withUrl("http:/www.example.com")
+            .withPasswordExpireable(false)
+            .withRoleId(4L)
+            .withTimezone(DateTimeZone.UTC);
+
+        final User response = client.userCreate(createRequest);
+        assertNotNull("Should not be null", response);
+
+        // Now attempt to delete it
+        final UserDeleteRequest deleteRequest = new UserDeleteRequest()
+            .deleteById(response.getId());
+
+        final boolean result = client.userDelete(deleteRequest);
+        assertTrue("Response should be true", result);
     }
 
     /**

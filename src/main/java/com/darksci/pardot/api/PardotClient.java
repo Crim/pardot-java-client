@@ -112,6 +112,7 @@ import com.darksci.pardot.api.request.tagobject.TagObjectReadRequest;
 import com.darksci.pardot.api.request.user.UserAbilitiesRequest;
 import com.darksci.pardot.api.request.user.UserCookieRequest;
 import com.darksci.pardot.api.request.user.UserCreateRequest;
+import com.darksci.pardot.api.request.user.UserDeleteRequest;
 import com.darksci.pardot.api.request.user.UserQueryRequest;
 import com.darksci.pardot.api.request.user.UserReadRequest;
 import com.darksci.pardot.api.request.visitor.VisitorAssignRequest;
@@ -375,6 +376,16 @@ public class PardotClient implements AutoCloseable {
      */
     public User userRead(final UserReadRequest request) {
         return submitRequest(request, new UserReadResponseParser());
+    }
+
+    /**
+     * Make API request to delete a specific user.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public boolean userDelete(final UserDeleteRequest request) {
+        submitRequest(request, new StringResponseParser());
+        return true;
     }
 
     /**

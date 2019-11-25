@@ -75,6 +75,10 @@ public class NewUser {
         return roleId;
     }
 
+    /**
+     * You can set the user's role by Id OR Name.
+     * @param roleId Id of the role to set.
+     */
     public void setRoleId(final Long roleId) {
         this.roleId = roleId;
 
@@ -88,6 +92,10 @@ public class NewUser {
         return role;
     }
 
+    /**
+     * You can set the user's role by Name or Id.
+     * @param role Name of the role to set.
+     */
     public void setRole(final String role) {
         this.role = role;
 
