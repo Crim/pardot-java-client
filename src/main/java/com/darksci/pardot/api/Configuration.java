@@ -144,12 +144,12 @@ public class Configuration {
     }
 
     /**
-     * Allows for injecting a Http Request mutator instance.
+     * Allows for injecting a Http Request Interceptor instance.
      *
      * @param requestInterceptor Implementation to use.
      * @return Configuration instance.
      */
-    public Configuration withRequestMutator(final RequestInterceptor requestInterceptor) {
+    public Configuration withRequestInterceptor(final RequestInterceptor requestInterceptor) {
         Objects.requireNonNull(requestInterceptor);
         this.requestInterceptor = requestInterceptor;
         return this;

@@ -17,14 +17,8 @@
 
 package com.darksci.pardot.api.rest.mutator;
 
-import org.apache.http.client.methods.HttpPost;
-
 /**
  * Default implementation makes no modifications.
  */
 public class NoopRequestInterceptor implements RequestInterceptor {
-    @Override
-    public void beforePost(final HttpPost httpPost) {
-        // Noop.
-    }
 }

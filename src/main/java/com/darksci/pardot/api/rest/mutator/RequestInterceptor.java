@@ -17,15 +17,32 @@
 
 package com.darksci.pardot.api.rest.mutator;
 
-import org.apache.http.client.methods.HttpPost;
+import java.util.Map;
 
 /**
- * Interface that allows for making changes to the outbound HttpPost prior to sending the request.
+ * Interface that allows for making changes to the outbound API request prior to sending the request.
  */
 public interface RequestInterceptor {
+
     /**
-     * Allows for modifying the outbound HttpPost prior to sending the request.
-     * @param httpPost The HttpPost instance about to be executed.
+     * Passed a mutable Map of request parameters prior to sending the request.
+     * Adding, removing, or modifying any members in this map will alter the values
+     * sent in the request.
+     *
+     * @param requestParameters Mutable map representing request parameter values.
      */
-    void beforePost(final HttpPost httpPost);
+    default void modifyRequestParameters(final Map<String, String> requestParameters) {
+        // Nothing to modify.
+    }
+
+    /**
+     * Passed a mutable Map of request headers prior to sending the request.
+     * Adding, removing, or modifying any members in this map will alter the values
+     * sent in the request headers.
+     *
+     * @param requestHeaders Mutable map representing request header values.
+     */
+    default void modifyHeaders(final Map<String, String> requestHeaders) {
+        // Nothing to modify.
+    }
 }

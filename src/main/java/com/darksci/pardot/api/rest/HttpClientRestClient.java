@@ -54,6 +54,7 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -248,6 +249,9 @@ public class HttpClientRestClient implements RestClient {
         try {
             final HttpPost post = new HttpPost(url);
 
+            // Pass request parameters through interceptor.
+            requestInterceptor.modifyRequestParameters(postParams);
+
             // Define required auth params
             final List<NameValuePair> params = new ArrayList<>();
             params.add(new BasicNameValuePair("user_key", configuration.getUserKey()));
@@ -261,8 +265,10 @@ public class HttpClientRestClient implements RestClient {
             }
             post.setEntity(new UrlEncodedFormEntity(params));
 
-            // Pass thru interceptor interface
-            requestInterceptor.beforePost(post);
+            // Pass headers through interceptor interface
+            final Map<String, String> headers = new HashMap<>();
+            requestInterceptor.modifyHeaders(headers);
+            headers.forEach(post::addHeader);
 
             // Debug logging
             logger.info("Executing request {} with {}", post.getRequestLine(), filterSensitiveParams(params));
