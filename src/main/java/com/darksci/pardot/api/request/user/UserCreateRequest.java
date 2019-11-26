@@ -45,10 +45,16 @@ public class UserCreateRequest extends BaseRequest<UserCreateRequest> {
             .withFirstName(user.getFirstName())
             .withLastName(user.getLastName())
             .withJobTitle(user.getJobTitle())
-            .withRoleId(user.getRoleId())
             .withPhone(user.getPhone())
             .withUrl(user.getUrl())
             .withPasswordExpireable(user.isPasswordExpirable());
+
+        // Role from Id or Name
+        if (user.getRoleId() != null) {
+            withRoleId(user.getRoleId());
+        } else {
+            withRole(user.getRole());
+        }
 
         // Optional Timezone
         if (user.getTimezone() != null) {
@@ -125,6 +131,16 @@ public class UserCreateRequest extends BaseRequest<UserCreateRequest> {
      */
     public UserCreateRequest withRoleId(final Long roleId) {
         return setParam("role", roleId);
+    }
+
+    /**
+     * Define the Role field on the user.
+     *
+     * @param roleName name of role to be assigned to user.
+     * @return UserCreateRequest builder.
+     */
+    public UserCreateRequest withRole(final String roleName) {
+        return setParam("role", roleName);
     }
 
     /**
