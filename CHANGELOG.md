@@ -43,6 +43,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     } 
 ```
 
+```java
+    /**
+     * Example usage of the above class:
+     */
+    PardotClient apiClient = new PardotClient(new Configuration("username", "password", "api-key"));
+
+    // Construct custom request class instance
+    MyTestRequest myCustomRequest = new MyTestRequest()
+        .setParam("id", 123L)
+        .setParam("request_param_name_here", "SomeValue");
+
+    // Execute the request and get the parsed response returned
+    MyCustomReturnObject parsedApiResponse = apiClient.userDefinedRequest(myCustomRequest);
+```
+
 #### Internal Dependency Updates
 - org.apache.httpcomponents:httpclent from 4.5.6 to 4.5.10
 - org.apache.logging.log4j from 2.11.0 to 2.12.1
