@@ -96,7 +96,8 @@ public class EmailSendOneToOneRequest extends BaseRequest<EmailSendOneToOneReque
     }
 
     /**
-     * Should the email be sent from the Prospect's assigned user?
+     * Define if the email will be sent from the Prospect's assigned user.
+     *
      * @param sendFromAssignedUser True to send from Prospect's assigned user, false if not.
      * @return RequestBuilder
      */

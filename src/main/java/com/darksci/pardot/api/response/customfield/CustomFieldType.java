@@ -46,13 +46,17 @@ public enum CustomFieldType {
     }
 
     /**
-     * @return Display name for activity type.
+     * Human-readable/display name for the field type.
+     *
+     * @return Display name for field type.
      */
     public String getName() {
         return name;
     }
 
     /**
+     * Internal integer value for the field type.
+     *
      * @return Integer value of type.
      */
     public int getValue() {

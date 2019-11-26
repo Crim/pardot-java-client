@@ -46,6 +46,8 @@ public class TagQueryResponse {
         }
 
         /**
+         * The Tags returned by the API.
+         *
          * @return Tag results.
          */
         public List<Tag> getTags() {

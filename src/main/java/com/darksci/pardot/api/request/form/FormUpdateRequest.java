@@ -29,7 +29,7 @@ public class FormUpdateRequest extends BaseRequest<FormUpdateRequest> {
     }
 
     /**
-     * Define the id of the form to update
+     * Define the id of the form to update.
      * @param id The id of the form to update.
      * @return FormUpdateRequest builder.
      */

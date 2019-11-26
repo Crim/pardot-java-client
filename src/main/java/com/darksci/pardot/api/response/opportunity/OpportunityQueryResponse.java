@@ -46,6 +46,8 @@ public class OpportunityQueryResponse {
         }
 
         /**
+         * The opportunities returned over the API.
+         *
          * @return Opportunity results.
          */
         public List<Opportunity> getOpportunities() {

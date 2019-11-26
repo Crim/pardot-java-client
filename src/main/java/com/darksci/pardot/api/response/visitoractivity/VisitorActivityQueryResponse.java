@@ -46,6 +46,8 @@ public class VisitorActivityQueryResponse {
         }
 
         /**
+         * Visitor Activities returned from the API.
+         *
          * @return Visitor Activity results.
          */
         public List<VisitorActivity> getVisitorActivities() {

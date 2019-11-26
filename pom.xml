@@ -55,7 +55,7 @@
         <!-- Specify which Checkstyle ruleset to use -->
         <checkstyle.ruleset>build/checkstyle-v1.0.xml</checkstyle.ruleset>
         <checkstyle.plugin.version>3.0.0</checkstyle.plugin.version>
-        <checkstyle.version>8.0</checkstyle.version>
+        <checkstyle.version>8.18</checkstyle.version>
 
         <!-- Log4J Version -->
         <log4j2.version>2.12.1</log4j2.version>

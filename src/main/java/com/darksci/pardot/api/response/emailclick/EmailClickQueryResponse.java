@@ -46,6 +46,8 @@ public class EmailClickQueryResponse {
         }
 
         /**
+         * Email Clicks returned by the API.
+         *
          * @return Email Click results.
          */
         public List<EmailClick> getEmailClicks() {

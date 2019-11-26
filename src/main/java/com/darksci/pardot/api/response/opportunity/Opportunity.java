@@ -93,6 +93,8 @@ public class Opportunity {
     }
 
     /**
+     * List of Prospects related to this opportunity.
+     *
      * @return related prospects.
      */
     public List<Prospect> getProspects() {
@@ -103,6 +105,8 @@ public class Opportunity {
     }
 
     /**
+     * The Opportunity Activities associated.
+     *
      * @return related opportunity visitor activities.
      */
     public List<VisitorActivity> getOpportunityActivities() {

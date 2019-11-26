@@ -46,7 +46,9 @@ public class FormQueryResponse {
         }
 
         /**
-         * @return Campaign results.
+         * Forms returned by the API.
+         *
+         * @return ImmutableList of Forms returned by the API.
          */
         public List<Form> getForms() {
             if (forms == null) {

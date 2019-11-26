@@ -60,12 +60,18 @@ public enum VisitorActivityType {
     private final int value;
     private final String name;
 
+    /**
+     * Constructor.
+     * @param value Integer value of the enum.
+     * @param name String value of the enum.
+     */
     VisitorActivityType(final int value, final String name) {
         this.value = value;
         this.name = name;
     }
 
     /**
+     * The human-readable/display name for the activity type.
      * @return Display name for activity type.
      */
     public String getName() {
@@ -73,6 +79,7 @@ public enum VisitorActivityType {
     }
 
     /**
+     * The internal integer value representing the activity type.
      * @return Integer value of type.
      */
     public int getValue() {

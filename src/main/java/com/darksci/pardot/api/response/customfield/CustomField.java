@@ -85,6 +85,8 @@ public class CustomField {
     }
 
     /**
+     * Field type of the CustomField.
+     *
      * @return Enum representing field type.
      */
     public CustomFieldType getFieldtype() {
