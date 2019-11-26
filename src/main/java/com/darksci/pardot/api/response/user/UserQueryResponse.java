@@ -46,6 +46,8 @@ public class UserQueryResponse {
         }
 
         /**
+         * Users returned by the API.
+         *
          * @return User results.
          */
         public List<User> getUsers() {

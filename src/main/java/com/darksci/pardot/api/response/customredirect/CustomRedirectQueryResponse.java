@@ -46,6 +46,8 @@ public class CustomRedirectQueryResponse {
         }
 
         /**
+         * Custom Redirects returned by the API.
+         *
          * @return Custom Redirect results.
          */
         public List<CustomRedirect> getCustomRedirects() {

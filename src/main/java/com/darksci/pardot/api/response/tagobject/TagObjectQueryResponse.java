@@ -46,7 +46,9 @@ public class TagObjectQueryResponse {
         }
 
         /**
-         * @return Tag results.
+         * Objects that have been tagged as returned by the API.
+         *
+         * @return TagObject results.
          */
         public List<TagObject> getTagObjects() {
             if (tagObjects == null) {

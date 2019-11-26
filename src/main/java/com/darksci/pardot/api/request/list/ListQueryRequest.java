@@ -42,7 +42,8 @@ public class ListQueryRequest extends BaseQueryRequest<ListQueryRequest> {
     }
 
     /**
-     * Filter by list name
+     * Filter by list name.
+     *
      * @param name Name to search for.
      * @return ListQueryRequest instance.
      */

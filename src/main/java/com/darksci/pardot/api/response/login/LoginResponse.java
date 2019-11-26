@@ -35,10 +35,12 @@ public class LoginResponse {
     }
 
     /**
+     * The API will respond with which API the current user should use.
+     *
      * @return API Version returned by login.
      */
     public String getApiVersion() {
-        // Only allow 3 or 4.  Pardots encoding of this is not very friendly w/ jackson.
+        // Only allow 3 or 4.  How the API encodes this is not very friendly w/ jackson.
         if (!"4".equals(apiVersion)) {
             apiVersion = "3";
         }

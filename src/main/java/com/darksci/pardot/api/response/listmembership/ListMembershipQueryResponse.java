@@ -47,6 +47,8 @@ public class ListMembershipQueryResponse {
         }
 
         /**
+         * ListMemberships returned by the API.
+         *
          * @return related list memberships.
          */
         public List<ListMembership> getListMemberships() {

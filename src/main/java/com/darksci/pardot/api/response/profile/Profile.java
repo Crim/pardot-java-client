@@ -37,6 +37,8 @@ public class Profile {
     }
 
     /**
+     * Profile Criterias associated to this Profile.
+     *
      * @return Associated profile criteria.
      */
     public List<ProfileCriteria> getProfileCriteria() {

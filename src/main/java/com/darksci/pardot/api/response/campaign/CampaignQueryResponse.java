@@ -46,6 +46,8 @@ public class CampaignQueryResponse {
         }
 
         /**
+         * Campaigns returned by the API.
+         *
          * @return Campaign results.
          */
         public List<Campaign> getCampaigns() {

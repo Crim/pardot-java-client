@@ -46,7 +46,8 @@ public abstract class BaseRequest<T> implements Request {
     }
 
     /**
-     * Utility method to set a boolean parameter, converts boolean into string "true"/"false"
+     * Utility method to set a boolean parameter, converts boolean into string "true"/"false".
+     *
      * @param parameterName Name of the parameter to set.
      * @param booleanValue Boolean value to store.
      * @return BaseRequest

@@ -25,12 +25,17 @@ import java.util.Map;
 public interface Request {
 
     /**
-     * @return The name of the end point this request uses. Example: "campaign", "user", etc..
+     * Defines th URL that this request makes requests against, not including the Host of the API.
+     * Example: "prospect/do/read"
+     *
+     * @return The URL of the end point this request uses. Example: "prospect/do/read"
      */
     String getApiEndpoint();
 
     /**
-     * @return correctly formatted request parameters.
+     * Key/Value pairs of request parameters to be sent as part of the request to Pardot's API.
+     *
+     * @return Request parameter key/value pairs.
      */
     Map<String, String> getRequestParameters();
 }

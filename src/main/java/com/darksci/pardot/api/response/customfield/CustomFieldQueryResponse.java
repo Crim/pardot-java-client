@@ -46,6 +46,8 @@ public class CustomFieldQueryResponse {
         }
 
         /**
+         * Custom Fields returned by the API.
+         *
          * @return Custom Field results.
          */
         public List<CustomField> getCustomFields() {

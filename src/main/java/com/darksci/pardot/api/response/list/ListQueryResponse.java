@@ -46,6 +46,8 @@ public class ListQueryResponse {
         }
 
         /**
+         * Lists returned by the API.
+         *
          * @return List results.
          */
         public List<com.darksci.pardot.api.response.list.List> getLists() {

@@ -46,6 +46,8 @@ public class VisitorQueryResponse {
         }
 
         /**
+         * Visitors returned by the API.
+         *
          * @return Visitor results.
          */
         public List<Visitor> getVisitors() {

@@ -47,7 +47,9 @@ public class ProspectQueryResponse {
         }
 
         /**
-         * @return Prospect results.
+         * Prospects returned by the API.
+         *
+         * @return Immutable list of Prospects returned by the API.
          */
         public List<Prospect> getProspects() {
             if (prospects == null) {

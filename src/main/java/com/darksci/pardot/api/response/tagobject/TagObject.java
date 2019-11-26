@@ -41,6 +41,8 @@ public class TagObject {
     }
 
     /**
+     * Type Name of the object that has been tagged.
+     *
      * @return Type as returned by the API in string format.
      */
     public String getTypeName() {
@@ -48,6 +50,8 @@ public class TagObject {
     }
 
     /**
+     * Type of object that has been tagged.
+     *
      * @return Enum representing the type.
      */
     public TagObjectType getType() {

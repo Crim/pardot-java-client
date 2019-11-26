@@ -245,6 +245,8 @@ public class PardotClient implements AutoCloseable {
     }
 
     /**
+     * Returns the API configuration instance.
+     *
      * @return Return Pardot API Configuration.
      */
     public Configuration getConfiguration() {
@@ -297,7 +299,8 @@ public class PardotClient implements AutoCloseable {
     }
 
     /**
-     * Make login request
+     * Execute login request.
+     *
      * @param request Login request definition.
      * @return LoginResponse returned from server.
      * @throws LoginFailedException if credentials are invalid.

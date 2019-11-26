@@ -48,6 +48,8 @@ public class EmailTemplateListOneToOneResponse {
         }
 
         /**
+         * Email Templates returned by the API.
+         *
          * @return Email Template results.
          */
         public List<EmailTemplate> getEmailTemplates() {
