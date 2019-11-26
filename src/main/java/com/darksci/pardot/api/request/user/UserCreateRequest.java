@@ -1,5 +1,5 @@
 /**
- * Copyright 2017, 2018 Stephen Powis https://github.com/Crim/pardot-java-client
+ * Copyright 2017, 2018, 2019 Stephen Powis https://github.com/Crim/pardot-java-client
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
@@ -63,6 +63,8 @@ public class UserCreateRequest extends BaseRequest<UserCreateRequest> {
     }
 
     /**
+     * Define the Email field on the user.
+     * 
      * @param email email address of user.
      * @return UserCreateRequet builder.
      */
@@ -83,6 +85,8 @@ public class UserCreateRequest extends BaseRequest<UserCreateRequest> {
     }
 
     /**
+     * Define the First Name field on the user.
+     *
      * @param firstName first_name of user.
      * @return UserCreateRequest builder.
      */
@@ -92,6 +96,8 @@ public class UserCreateRequest extends BaseRequest<UserCreateRequest> {
     }
 
     /**
+     * Define the Last Name field on the user.
+     *
      * @param lastName last name of user.
      * @return UserCreateRequest builder.
      */
@@ -101,6 +107,8 @@ public class UserCreateRequest extends BaseRequest<UserCreateRequest> {
     }
 
     /**
+     * Define the Job Title field on the user.
+     *
      * @param jobTitle job title of user.
      * @return UserCreateRequest builder.
      */
@@ -110,6 +118,8 @@ public class UserCreateRequest extends BaseRequest<UserCreateRequest> {
     }
 
     /**
+     * Define the RoleId field on the user.
+     *
      * @param roleId roleId for new user.
      * @return UserCreateRequest builder.
      */
@@ -118,6 +128,8 @@ public class UserCreateRequest extends BaseRequest<UserCreateRequest> {
     }
 
     /**
+     * Define the Phone field on the user.
+     *
      * @param phone phone of user.
      * @return UserCreateRequest builder.
      */
@@ -127,6 +139,8 @@ public class UserCreateRequest extends BaseRequest<UserCreateRequest> {
     }
 
     /**
+     * Define the URL field on the user.
+     *
      * @param url url of user.
      * @return UserCreateRequest builder.
      */
@@ -136,6 +150,8 @@ public class UserCreateRequest extends BaseRequest<UserCreateRequest> {
     }
 
     /**
+     * Define if the User's password should expire.
+     *
      * @param isExpirable does the users password expire?
      * @return UserCreateRequest builder.
      */
@@ -145,6 +161,8 @@ public class UserCreateRequest extends BaseRequest<UserCreateRequest> {
     }
 
     /**
+     * Define the Timezone field on the user.
+     *
      * @param timezoneString timezone for the user.
      * @return UserCreateRequest builder.
      */
@@ -154,6 +172,8 @@ public class UserCreateRequest extends BaseRequest<UserCreateRequest> {
     }
 
     /**
+     * Define the Timezone field on the user.
+     *
      * @param dateTimeZone timezone for the user.
      * @return UserCreateRequest builder.
      */
@@ -163,6 +183,8 @@ public class UserCreateRequest extends BaseRequest<UserCreateRequest> {
     }
 
     /**
+     * Define the CRM User field on the user.
+     *
      * @param crmUsername crm username for the user.
      * @return UserCreateRequest builder.
      */
