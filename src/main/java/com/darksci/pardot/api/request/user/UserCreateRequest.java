@@ -64,7 +64,7 @@ public class UserCreateRequest extends BaseRequest<UserCreateRequest> {
 
     /**
      * Define the Email field on the user.
-     * 
+     *
      * @param email email address of user.
      * @return UserCreateRequet builder.
      */

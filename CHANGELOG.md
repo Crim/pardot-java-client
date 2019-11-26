@@ -5,7 +5,43 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## 1.1.0 (UNRELEASED)
 
 - Adds support for additional user end points.
-- Adds `RequestInterceptor` interface to allow for end-user manipulation of requests prior to being sent over the wire. 
+- Adds `RequestInterceptor` interface to allow for end-user manipulation of requests prior to being sent over the wire.
+- Adds `UserDefinedRequest` interface to allow for customizing/defining your own API requests.
+
+```java
+    /**
+     * Example of defining a Custom API endpoint request.  The methods required to be implemented are
+     * defined below with examples.
+     *
+     * You can make use of the methods defined on the parent 'BaseRequest' class to set request parameter
+     * as needed.
+     */
+    public class MyTestRequest extends UserDefinedRequest<MyTestRequest, MyCustomReturnObject> {
+        /**
+         * Given the API's response String, this method should parse it into a more easily consumed object.
+         * Alternatively, it could just return the API's response string.
+         *
+         * @return An object that represents the parsed API response.
+         */
+        @Override
+        public ResponseParser<MyCustomReturnObject> getResponseParser() {
+            return (apiResponseStringapiResponseString) -> {
+                // Your own custom parsing Logic.
+                return new MyCustomReturnObject(apiResponseString);
+            };
+        }
+
+        /**
+         * The API endpoint URL string.
+         *
+         * @return The API endpoint URL string.
+         */
+        @Override
+        public String getApiEndpoint() {
+            return "/prospect/query";
+        }
+    } 
+```
 
 #### Internal Dependency Updates
 - org.apache.httpcomponents:httpclent from 4.5.6 to 4.5.10
