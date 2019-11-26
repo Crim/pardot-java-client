@@ -1,5 +1,5 @@
 /**
- * Copyright 2017, 2018 Stephen Powis https://github.com/Crim/pardot-java-client
+ * Copyright 2017, 2018, 2019 Stephen Powis https://github.com/Crim/pardot-java-client
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
@@ -35,10 +35,12 @@ public class LoginResponse {
     }
 
     /**
+     * The API will respond with which API the current user should use.
+     *
      * @return API Version returned by login.
      */
     public String getApiVersion() {
-        // Only allow 3 or 4.  Pardots encoding of this is not very friendly w/ jackson.
+        // Only allow 3 or 4.  How the API encodes this is not very friendly w/ jackson.
         if (!"4".equals(apiVersion)) {
             apiVersion = "3";
         }

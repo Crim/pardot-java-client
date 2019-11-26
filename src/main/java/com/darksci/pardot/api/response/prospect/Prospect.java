@@ -1,5 +1,5 @@
 /**
- * Copyright 2017, 2018 Stephen Powis https://github.com/Crim/pardot-java-client
+ * Copyright 2017, 2018, 2019 Stephen Powis https://github.com/Crim/pardot-java-client
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
@@ -334,6 +334,8 @@ public class Prospect {
     }
 
     /**
+     * The most recent VisitorActivity associated with this Prospect, if available.
+     *
      * @return Last VisitorActivity, if defined.
      */
     public VisitorActivity getLastActivity() {
@@ -350,7 +352,8 @@ public class Prospect {
     }
 
     /**
-     * Utility method to get custom field value
+     * Utility method to get custom field value.
+     *
      * @param customFieldName Field to retrieve value for.
      * @return Value of the custom field.
      */
@@ -373,7 +376,9 @@ public class Prospect {
     }
 
     /**
-     * @return Associated visitor activites, or empty list if none.
+     * Visitor Activities associated with this prospect.
+     *
+     * @return Associated visitor activities, or empty list if none.
      */
     public List<VisitorActivity> getVisitorActivities() {
         if (visitorActivities == null) {
@@ -383,6 +388,8 @@ public class Prospect {
     }
 
     /**
+     * Lists this Prospect is a member of.
+     *
      * @return List subscriptions.
      */
     public List<ListSubscription> getListSubscriptions() {
@@ -393,6 +400,8 @@ public class Prospect {
     }
 
     /**
+     * Visitor records associated with this Prospect.
+     *
      * @return Associated visitors.
      */
     public List<Visitor> getVisitors() {

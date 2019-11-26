@@ -1,5 +1,5 @@
 /**
- * Copyright 2017, 2018 Stephen Powis https://github.com/Crim/pardot-java-client
+ * Copyright 2017, 2018, 2019 Stephen Powis https://github.com/Crim/pardot-java-client
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
@@ -25,12 +25,17 @@ import java.util.Map;
 public interface Request {
 
     /**
-     * @return The name of the end point this request uses. Example: "campaign", "user", etc..
+     * Defines th URL that this request makes requests against, not including the Host of the API.
+     * Example: "prospect/do/read"
+     *
+     * @return The URL of the end point this request uses. Example: "prospect/do/read"
      */
     String getApiEndpoint();
 
     /**
-     * @return correctly formatted request parameters.
+     * Key/Value pairs of request parameters to be sent as part of the request to Pardot's API.
+     *
+     * @return Request parameter key/value pairs.
      */
     Map<String, String> getRequestParameters();
 }

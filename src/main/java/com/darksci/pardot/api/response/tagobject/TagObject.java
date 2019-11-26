@@ -1,5 +1,5 @@
 /**
- * Copyright 2017, 2018 Stephen Powis https://github.com/Crim/pardot-java-client
+ * Copyright 2017, 2018, 2019 Stephen Powis https://github.com/Crim/pardot-java-client
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
@@ -41,6 +41,8 @@ public class TagObject {
     }
 
     /**
+     * Type Name of the object that has been tagged.
+     *
      * @return Type as returned by the API in string format.
      */
     public String getTypeName() {
@@ -48,6 +50,8 @@ public class TagObject {
     }
 
     /**
+     * Type of object that has been tagged.
+     *
      * @return Enum representing the type.
      */
     public TagObjectType getType() {

@@ -1,5 +1,5 @@
 /**
- * Copyright 2017, 2018 Stephen Powis https://github.com/Crim/pardot-java-client
+ * Copyright 2017, 2018, 2019 Stephen Powis https://github.com/Crim/pardot-java-client
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
@@ -46,6 +46,8 @@ public class ListQueryResponse {
         }
 
         /**
+         * Lists returned by the API.
+         *
          * @return List results.
          */
         public List<com.darksci.pardot.api.response.list.List> getLists() {

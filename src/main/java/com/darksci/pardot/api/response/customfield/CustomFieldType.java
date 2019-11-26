@@ -1,5 +1,5 @@
 /**
- * Copyright 2017, 2018 Stephen Powis https://github.com/Crim/pardot-java-client
+ * Copyright 2017, 2018, 2019 Stephen Powis https://github.com/Crim/pardot-java-client
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
@@ -46,13 +46,17 @@ public enum CustomFieldType {
     }
 
     /**
-     * @return Display name for activity type.
+     * Human-readable/display name for the field type.
+     *
+     * @return Display name for field type.
      */
     public String getName() {
         return name;
     }
 
     /**
+     * Internal integer value for the field type.
+     *
      * @return Integer value of type.
      */
     public int getValue() {
