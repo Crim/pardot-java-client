@@ -4,6 +4,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 1.1.0 (UNRELEASED)
 
+#### Bugfixes
+- [Issue-35](https://github.com/Crim/pardot-java-client/issues/35) Submit POST parameters using UTF-8 charset by default. 
+
 #### Internal Dependency Updates
 - org.apache.httpcomponents:httpclent from 4.5.6 to 4.5.10
 - org.apache.logging.log4j from 2.11.0 to 2.12.1
