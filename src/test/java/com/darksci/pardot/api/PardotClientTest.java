@@ -118,6 +118,7 @@ import com.darksci.pardot.api.response.visitor.VisitorQueryResponse;
 import com.darksci.pardot.api.response.visitoractivity.VisitorActivity;
 import com.darksci.pardot.api.response.visitoractivity.VisitorActivityQueryResponse;
 import org.joda.time.DateTimeZone;
+import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -165,7 +166,7 @@ public class PardotClientTest {
         );
         if (properties.getProperty("api_host") != null) {
             testConfig
-                .withPardotApiHost(properties.getProperty("api_host"))
+                .setPardotApiHost(properties.getProperty("api_host"))
                 .useInsecureSslCertificates();
 
         }
@@ -407,7 +408,7 @@ public class PardotClientTest {
     public void campaignCreateTest() {
         // Define campaign
         final Campaign campaign = new Campaign();
-        campaign.setName("API Test Campaign " + System.currentTimeMillis());
+        campaign.setName("API 新　Test Campaign " + System.currentTimeMillis());
         campaign.setCost(31337);
 
         // Create request
@@ -630,8 +631,9 @@ public class PardotClientTest {
      */
     @Test
     public void emailSendListTest() {
-        final long campaignId = 14885;
-        final long listId = 33173;
+        final long campaignId = 1;
+        final long listId = 5;
+        final DateTime scheduledTime = DateTime.now().plusDays(2);
 
         EmailSendListRequest request = new EmailSendListRequest()
             .withListId(listId)
@@ -639,12 +641,12 @@ public class PardotClientTest {
             .withFromNameAndEmail("Test User", "no-reply@example.com")
             .withReplyToEmail("no-reply@example.com")
             .withName("Test List Email Send " + System.currentTimeMillis())
-            .withOperationalEmail(true)
             .withSubject("Test Email From Api")
             .withTag("Tag 1")
             .withTag("Tag 2")
-            .withTextContent("Hello %%first_name%%!")
-            .withHtmlContent("<html><body><h1>Hello %%first_name%%!</h1></body></html>");
+            .withTextContent("Hello %%first_name%%! %%unsubscribe%%")
+            .withHtmlContent("<html><body><h1>Hello %%first_name%%! %%unsubscribe%% </h1></body></html>")
+            .withScheduledTime(scheduledTime);
 
         final Email response = client.emailSendList(request);
         assertNotNull("Should not be null", response);

@@ -48,6 +48,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -263,7 +264,7 @@ public class HttpClientRestClient implements RestClient {
             for (Map.Entry<String, String> entry : postParams.entrySet()) {
                 params.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
             }
-            post.setEntity(new UrlEncodedFormEntity(params));
+            post.setEntity(new UrlEncodedFormEntity(params, StandardCharsets.UTF_8));
 
             // Pass headers through interceptor interface
             final Map<String, String> headers = new HashMap<>();

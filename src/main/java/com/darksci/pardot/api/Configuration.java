@@ -189,6 +189,11 @@ public class Configuration {
         return pardotApiHost;
     }
 
+    public Configuration setPardotApiHost(final String pardotApiHost) {
+        this.pardotApiHost = pardotApiHost;
+        return this;
+    }
+
     public String getPardotApiVersion() {
         return pardotApiVersion;
     }
@@ -205,12 +210,12 @@ public class Configuration {
         this.apiKey = apiKey;
     }
 
-    public boolean getIgnoreInvalidSslCertificates() {
-        return ignoreInvalidSslCertificates;
-    }
-
     public RequestInterceptor getRequestInterceptor() {
         return requestInterceptor;
+    }
+
+    public boolean getIgnoreInvalidSslCertificates() {
+        return ignoreInvalidSslCertificates;
     }
 
     @Override

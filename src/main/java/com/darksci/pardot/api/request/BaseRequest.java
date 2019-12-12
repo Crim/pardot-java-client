@@ -17,6 +17,9 @@
 
 package com.darksci.pardot.api.request;
 
+import org.joda.time.DateTime;
+
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -43,6 +46,17 @@ public abstract class BaseRequest<Self> implements Request {
             params.put(name, value);
         }
         return (Self) this;
+    }
+
+    @SuppressWarnings("unchecked")
+    protected T setParam(final String name, final DateTime value) {
+        if (value == null) {
+            params.remove(name);
+        } else {
+            final String dateStr = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").format(value.toDate());
+            return setParam(name, dateStr);
+        }
+        return (T) this;
     }
 
     /**
