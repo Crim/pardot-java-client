@@ -43,7 +43,7 @@ public class EmailSendListRequest extends BaseRequest<EmailSendListRequest> {
     }
 
     /**
-     * Defiine Name and Email to send the email using.
+     * Define Name and Email to send the email using.
      * @param fromName The name of the sending user.
      * @param fromEmail The email of the sending user.
      * @return RequestBuilder
