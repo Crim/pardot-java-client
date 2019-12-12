@@ -13,14 +13,6 @@ requesting it.
 **Note** Use this library at your own risk!  Currently there are no known issues, but as an **unofficial** library,
  there are no guarantees.  
  
-## Important Breaking Change to Pardot API
-
-As of October 31, 2018 Pardot is disabling the TLS 1.0 encryption protocol.  This means that versions of this library
-**prior to 1.0.0** will cease to be able to connect to the Pardot Api.
-
-Version 1.0.0 updates the library to use TLS 1.1 and 1.2 protocols. Everyone is encouraged to update
-the library prior to October 31st 2018.
-
 ## How to use this library
 
 This client library is released on Maven Central.  Add a new dependency to your project's POM file:
@@ -29,7 +21,7 @@ This client library is released on Maven Central.  Add a new dependency to your 
 <dependency>
     <groupId>com.darksci</groupId>
     <artifactId>pardot-api-client</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
 ```
 
@@ -229,6 +221,14 @@ Official Documentation: [VisitorActivities](http://developer.pardot.com/kb/api-v
 
 - Query
 - Read
+
+## Important Breaking Change to Pardot API
+
+As of October 31, 2018 Pardot is disabling the TLS 1.0 encryption protocol.  This means that versions of this library
+**prior to 1.0.0** will cease to be able to connect to the Pardot Api.
+
+Version 1.0.0+ updates the library to use TLS 1.1 and 1.2 protocols. Everyone is encouraged to update
+the library prior to October 31st 2018.
 
 ## How to Contribute 
 
