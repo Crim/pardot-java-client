@@ -157,6 +157,12 @@ public class PardotClientTest {
             properties.getProperty("password"),
             properties.getProperty("user_key")
         );
+        if (properties.getProperty("api_host") != null) {
+            testConfig
+                .setPardotApiHost(properties.getProperty("api_host"))
+                .useInsecureSslCertificates();
+
+        }
         logger.info("Config: {}", testConfig);
 
         // Create client
@@ -269,7 +275,7 @@ public class PardotClientTest {
     public void campaignCreateTest() {
         // Define campaign
         final Campaign campaign = new Campaign();
-        campaign.setName("API Test Campaign " + System.currentTimeMillis());
+        campaign.setName("API 新　Test Campaign " + System.currentTimeMillis());
         campaign.setCost(31337);
 
         // Create request
