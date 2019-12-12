@@ -42,6 +42,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLContext;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -196,7 +198,7 @@ public class HttpClientRestClient implements RestClient {
             for (Map.Entry<String, String> entry : postParams.entrySet()) {
                 params.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
             }
-            post.setEntity(new UrlEncodedFormEntity(params));
+            post.setEntity(new UrlEncodedFormEntity(params, StandardCharsets.UTF_8));
 
             logger.info("Executing request {} with {}", post.getRequestLine(), filterSensitiveParams(params));
 
