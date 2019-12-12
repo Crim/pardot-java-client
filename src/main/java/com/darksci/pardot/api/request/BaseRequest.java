@@ -49,7 +49,7 @@ public abstract class BaseRequest<T> implements Request {
     }
 
     @SuppressWarnings("unchecked")
-    protected T setParam(final String name, DateTime value) {
+    protected T setParam(final String name, final DateTime value) {
         if (value == null) {
             params.remove(name);
         } else {
