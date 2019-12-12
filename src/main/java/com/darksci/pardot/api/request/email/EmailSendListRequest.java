@@ -20,6 +20,7 @@ package com.darksci.pardot.api.request.email;
 import com.darksci.pardot.api.request.BaseRequest;
 import org.joda.time.DateTime;
 
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -43,7 +44,7 @@ public class EmailSendListRequest extends BaseRequest<EmailSendListRequest> {
     }
 
     /**
-     * Defiine Name and Email to send the email using.
+     * Define Name and Email to send the email using.
      * @param fromName The name of the sending user.
      * @param fromEmail The email of the sending user.
      * @return RequestBuilder
