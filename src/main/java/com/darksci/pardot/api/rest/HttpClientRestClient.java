@@ -31,6 +31,7 @@ import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.socket.LayeredConnectionSocketFactory;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -40,10 +41,18 @@ import org.apache.http.ssl.SSLContexts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -85,12 +94,32 @@ public class HttpClientRestClient implements RestClient {
         // Create default SSLContext
         final SSLContext sslcontext = SSLContexts.createDefault();
 
+        // Initialize ssl context with configured key and trust managers.
+        try {
+            sslcontext.init(new KeyManager[0], getTrustManagers(), new SecureRandom());
+        } catch (final KeyManagementException exception) {
+            throw new RuntimeException(exception.getMessage(), exception);
+        }
+
+        // Create hostname verifier instance.
+        final HostnameVerifier hostnameVerifier;
+        // Emit an warning letting everyone know we're using an insecure configuration.
+        if (configuration.getIgnoreInvalidSslCertificates()) {
+            logger.warn("Using insecure configuration, skipping server-side certificate validation checks.");
+
+            // If we're configured to ignore invalid certificates, use the Noop verifier.
+            hostnameVerifier = NoopHostnameVerifier.INSTANCE;
+        } else {
+            // Use default implementation
+            hostnameVerifier = SSLConnectionSocketFactory.getDefaultHostnameVerifier();
+        }
+
         // Allow TLSv1_1 and TLSv1_2 protocols
         final LayeredConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(
             sslcontext,
             new String[] { "TLSv1.1", "TLSv1.2" },
             null,
-            SSLConnectionSocketFactory.getDefaultHostnameVerifier()
+            hostnameVerifier
         );
 
         // Setup client builder
@@ -134,6 +163,31 @@ public class HttpClientRestClient implements RestClient {
 
         // build http client
         httpClient = clientBuilder.build();
+    }
+
+    /**
+     * Based on Client Configuration, construct TrustManager instances to use.
+     * @return Array of 0 or more TrustManager instances.
+     */
+    private TrustManager[] getTrustManagers() {
+        try {
+            final TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+
+            // If client configuration is set to ignore invalid certificates
+            if (configuration.getIgnoreInvalidSslCertificates()) {
+                // Initialize ssl context with a TrustManager instance that just accepts everything blindly.
+                // HIGHLY INSECURE / NOT RECOMMENDED!
+                return new TrustManager[]{ new NoopTrustManager() };
+
+                // If client configuration has a trust store defined.
+            } else {
+                // use default TrustManager instances
+                trustManagerFactory.init((KeyStore) null);
+                return trustManagerFactory.getTrustManagers();
+            }
+        } catch (final KeyStoreException | NoSuchAlgorithmException exception) {
+            throw new RuntimeException(exception.getMessage(), exception);
+        }
     }
 
     @Override

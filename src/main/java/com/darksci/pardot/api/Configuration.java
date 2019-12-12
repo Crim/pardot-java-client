@@ -46,6 +46,13 @@ public class Configuration {
     private String pardotApiVersion = "3";
 
     /**
+     * Optional setting to skip validating Pardot's SSL certificate.
+     * There should be no real valid use case for this option other then use against
+     * development environments.
+     */
+    private boolean ignoreInvalidSslCertificates = false;
+
+    /**
      * Constructor.
      * @param email Pardot user's email address.
      * @param password Pardot user's password.
@@ -139,8 +146,9 @@ public class Configuration {
         return pardotApiHost;
     }
 
-    public void setPardotApiHost(final String pardotApiHost) {
+    public Configuration setPardotApiHost(final String pardotApiHost) {
         this.pardotApiHost = pardotApiHost;
+        return this;
     }
 
     public String getPardotApiVersion() {
@@ -157,6 +165,20 @@ public class Configuration {
 
     public void setApiKey(final String apiKey) {
         this.apiKey = apiKey;
+    }
+
+    /**
+     * Skip all validation of SSL Certificates.  This is insecure and highly discouraged!
+     *
+     * @return Configuration instance.
+     */
+    public Configuration useInsecureSslCertificates() {
+        this.ignoreInvalidSslCertificates = true;
+        return this;
+    }
+
+    public boolean getIgnoreInvalidSslCertificates() {
+        return ignoreInvalidSslCertificates;
     }
 
     @Override

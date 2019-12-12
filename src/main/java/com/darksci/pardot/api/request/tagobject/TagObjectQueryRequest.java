@@ -18,8 +18,6 @@
 package com.darksci.pardot.api.request.tagobject;
 
 import com.darksci.pardot.api.request.BaseQueryRequest;
-import com.darksci.pardot.api.request.DateParameter;
-import com.darksci.pardot.api.request.tag.TagQueryRequest;
 
 /**
  * Defines a TagObject Query Request.
