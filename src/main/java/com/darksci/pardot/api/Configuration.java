@@ -133,17 +133,6 @@ public class Configuration {
     }
 
     /**
-     * Allows for overriding the Pardot Api hostname.
-     *
-     * @param pardotApiHost the Pardot API hostname to use.
-     * @return Configuration instance.
-     */
-    public Configuration withPardotApiHost(final String pardotApiHost) {
-        this.pardotApiHost = pardotApiHost;
-        return this;
-    }
-
-    /**
      * Allows for injecting a Http Request Interceptor instance.
      *
      * @param requestInterceptor Implementation to use.
@@ -189,25 +178,43 @@ public class Configuration {
         return pardotApiHost;
     }
 
+    /**
+     * Allows for overriding the Pardot Api hostname.
+     *
+     * @param pardotApiHost the Pardot API hostname to use.
+     * @return Configuration instance.
+     */
     public Configuration setPardotApiHost(final String pardotApiHost) {
         this.pardotApiHost = pardotApiHost;
         return this;
+    }
+
+    /**
+     * Allows for overriding the Pardot Api hostname.
+     *
+     * @param pardotApiHost the Pardot API hostname to use.
+     * @return Configuration instance.
+     */
+    public Configuration withPardotApiHost(final String pardotApiHost) {
+        return setPardotApiHost(pardotApiHost);
     }
 
     public String getPardotApiVersion() {
         return pardotApiVersion;
     }
 
-    public void setPardotApiVersion(final String pardotApiVersion) {
+    public Configuration setPardotApiVersion(final String pardotApiVersion) {
         this.pardotApiVersion = pardotApiVersion;
+        return this;
     }
 
     public String getApiKey() {
         return apiKey;
     }
 
-    public void setApiKey(final String apiKey) {
+    public Configuration setApiKey(final String apiKey) {
         this.apiKey = apiKey;
+        return this;
     }
 
     public RequestInterceptor getRequestInterceptor() {
