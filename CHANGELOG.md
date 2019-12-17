@@ -2,7 +2,7 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 1.1.0 (UNRELEASED)
+## 1.0.1 (12/12/2019)
 
 - Adds support for additional user end points.
 - Adds `RequestInterceptor` interface to allow for end-user manipulation of requests prior to being sent over the wire.
@@ -65,7 +65,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 #### Internal Dependency Updates
 - org.apache.httpcomponents:httpclent from 4.5.6 to 4.5.10
 - org.apache.logging.log4j from 2.11.0 to 2.12.1
-- com.fasterxml.jackson.core:ackson-databind from 2.9.9 to 2.10.0
+- com.fasterxml.jackson.core:jackson-databind from 2.9.9 to 2.10.1
 
 ## 1.0.0 (08/19/2018)
 ### Breaking Change 
