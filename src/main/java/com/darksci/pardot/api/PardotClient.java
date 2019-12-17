@@ -48,6 +48,8 @@ import com.darksci.pardot.api.parser.tag.TagReadResponseParser;
 import com.darksci.pardot.api.parser.tagobject.TagObjectQueryResponseParser;
 import com.darksci.pardot.api.parser.tagobject.TagObjectReadResponseParser;
 import com.darksci.pardot.api.parser.user.UserAbilitiesParser;
+import com.darksci.pardot.api.parser.user.UserCookieParser;
+import com.darksci.pardot.api.parser.user.UserCreateResponseParser;
 import com.darksci.pardot.api.parser.user.UserQueryResponseParser;
 import com.darksci.pardot.api.parser.user.UserReadResponseParser;
 import com.darksci.pardot.api.parser.visitor.VisitorQueryResponseParser;
@@ -55,6 +57,7 @@ import com.darksci.pardot.api.parser.visitor.VisitorReadResponseParser;
 import com.darksci.pardot.api.parser.visitoractivity.VisitorActivityQueryResponseParser;
 import com.darksci.pardot.api.parser.visitoractivity.VisitorActivityReadResponseParser;
 import com.darksci.pardot.api.request.Request;
+import com.darksci.pardot.api.request.UserDefinedRequest;
 import com.darksci.pardot.api.request.account.AccountReadRequest;
 import com.darksci.pardot.api.request.campaign.CampaignCreateRequest;
 import com.darksci.pardot.api.request.campaign.CampaignQueryRequest;
@@ -107,8 +110,12 @@ import com.darksci.pardot.api.request.tag.TagReadRequest;
 import com.darksci.pardot.api.request.tagobject.TagObjectQueryRequest;
 import com.darksci.pardot.api.request.tagobject.TagObjectReadRequest;
 import com.darksci.pardot.api.request.user.UserAbilitiesRequest;
+import com.darksci.pardot.api.request.user.UserCookieRequest;
+import com.darksci.pardot.api.request.user.UserCreateRequest;
+import com.darksci.pardot.api.request.user.UserDeleteRequest;
 import com.darksci.pardot.api.request.user.UserQueryRequest;
 import com.darksci.pardot.api.request.user.UserReadRequest;
+import com.darksci.pardot.api.request.user.UserUpdateRoleRequest;
 import com.darksci.pardot.api.request.visitor.VisitorAssignRequest;
 import com.darksci.pardot.api.request.visitor.VisitorQueryRequest;
 import com.darksci.pardot.api.request.visitor.VisitorReadRequest;
@@ -142,6 +149,7 @@ import com.darksci.pardot.api.response.tag.Tag;
 import com.darksci.pardot.api.response.tag.TagQueryResponse;
 import com.darksci.pardot.api.response.tagobject.TagObject;
 import com.darksci.pardot.api.response.tagobject.TagObjectQueryResponse;
+import com.darksci.pardot.api.response.user.Cookie;
 import com.darksci.pardot.api.response.user.User;
 import com.darksci.pardot.api.response.user.UserAbilitiesResponse;
 import com.darksci.pardot.api.response.user.UserQueryResponse;
@@ -356,11 +364,48 @@ public class PardotClient implements AutoCloseable {
     }
 
     /**
+     * Make API request to read the login cookie of the currently authenticated user.
+     * @param request Requet definition.
+     * @return Parsed api response.
+     */
+    public Cookie userCookie(final UserCookieRequest request) {
+        return submitRequest(request, new UserCookieParser());
+    }
+
+    /**
      * Make API request to read a specific user.
      * @param request Request definition.
      * @return Parsed api response.
      */
     public User userRead(final UserReadRequest request) {
+        return submitRequest(request, new UserReadResponseParser());
+    }
+
+    /**
+     * Make API request to delete a specific user.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public boolean userDelete(final UserDeleteRequest request) {
+        submitRequest(request, new StringResponseParser());
+        return true;
+    }
+
+    /**
+     * Make API request to create a new user.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public User userCreate(final UserCreateRequest request) {
+        return submitRequest(request, new UserCreateResponseParser()).getUser();
+    }
+
+    /**
+     * Make API request to update role on a Pardot user.
+     * @param request Request definition.
+     * @return Parsed api response containing the updated user record.
+     */
+    public User userUpdateRole(final UserUpdateRoleRequest request) {
         return submitRequest(request, new UserReadResponseParser());
     }
 
@@ -855,10 +900,21 @@ public class PardotClient implements AutoCloseable {
     }
 
     /**
+     * Entry point for adhoc user defined requests.
+     *
+     * @param request Defines the request to made against the API.
+     * @param <Self> The class type that extends this so we can return the appropriate value.
+     * @param <ResponseObject> Parsed return type.
+     * @return parsed response.
+     */
+    public <Self, ResponseObject> ResponseObject userDefinedRequest(final UserDefinedRequest<Self, ResponseObject> request) {
+        return submitRequest(request, request.getResponseParser());
+    }
+
+    /**
      * Clean up instance, releasing any resources held internally.
      */
     public void close() {
         getRestClient().close();
     }
-
 }

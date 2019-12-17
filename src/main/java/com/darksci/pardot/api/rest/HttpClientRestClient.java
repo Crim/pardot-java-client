@@ -20,6 +20,7 @@ package com.darksci.pardot.api.rest;
 import com.darksci.pardot.api.Configuration;
 import com.darksci.pardot.api.request.Request;
 import com.darksci.pardot.api.rest.handlers.RestResponseHandler;
+import com.darksci.pardot.api.rest.interceptor.RequestInterceptor;
 import org.apache.http.HttpHost;
 import org.apache.http.NameValuePair;
 import org.apache.http.auth.AuthScope;
@@ -54,6 +55,7 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -74,6 +76,10 @@ public class HttpClientRestClient implements RestClient {
      */
     private CloseableHttpClient httpClient;
 
+    /**
+     * To allow for custom modifications to request prior to submitting it.
+     */
+    private RequestInterceptor requestInterceptor;
 
     /**
      * Constructor.
@@ -90,6 +96,9 @@ public class HttpClientRestClient implements RestClient {
     public void init(final Configuration configuration) {
         // Save reference to configuration
         this.configuration = configuration;
+
+        // Load RequestMutator instance from configuration.
+        requestInterceptor = configuration.getRequestInterceptor();
 
         // Create default SSLContext
         final SSLContext sslcontext = SSLContexts.createDefault();
@@ -241,6 +250,9 @@ public class HttpClientRestClient implements RestClient {
         try {
             final HttpPost post = new HttpPost(url);
 
+            // Pass request parameters through interceptor.
+            requestInterceptor.modifyRequestParameters(postParams);
+
             // Define required auth params
             final List<NameValuePair> params = new ArrayList<>();
             params.add(new BasicNameValuePair("user_key", configuration.getUserKey()));
@@ -254,15 +266,21 @@ public class HttpClientRestClient implements RestClient {
             }
             post.setEntity(new UrlEncodedFormEntity(params, StandardCharsets.UTF_8));
 
+            // Pass headers through interceptor interface
+            final Map<String, String> headers = new HashMap<>();
+            requestInterceptor.modifyHeaders(headers);
+            headers.forEach(post::addHeader);
+
+            // Debug logging
             logger.info("Executing request {} with {}", post.getRequestLine(), filterSensitiveParams(params));
 
             // Execute and return
             return httpClient.execute(post, responseHandler);
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (final ClientProtocolException exception) {
+            logger.error("Caught ClientProtocolException: {}", exception.getMessage(), exception);
+        } catch (final IOException exception) {
             // Typically this is a parse error.
-            e.printStackTrace();
+            logger.error("Caught IOException: {}", exception.getMessage(), exception);
         } finally {
             // Only close at end
             //httpClient.close();

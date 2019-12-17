@@ -2,6 +2,97 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.1.0 (12/17/2019)
+
+- Removed `org.apache.logging.log4j` dependency, instead relying on the org.slf4j logging interface/facade dependency explicitly.
+  - If your project was depending on this transitive dependency you may need to add it to your own project:
+
+  ```
+  <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+      <version>2.12.1</version>
+  </dependency>
+  <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <version>2.12.1</version>
+  </dependency>
+  <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-slf4j-impl</artifactId>
+      <version>2.12.1</version>
+  </dependency>
+  ```
+  
+- Adds support for additional user end points.
+- Adds [RequestInterceptor](src/main/java/com/darksci/pardot/api/rest/interceptor/RequestInterceptor.java) interface to allow for end-user manipulation of requests prior to being sent over the wire.
+- Adds [UserDefinedRequest](src/main/java/com/darksci/pardot/api/request/UserDefinedRequest.java) interface to allow for customizing/defining your own API requests.
+
+```java
+    /**
+     * Example of defining a Custom API endpoint request.  The methods required to be implemented are
+     * defined below with examples.
+     *
+     * You can make use of the methods defined on the parent 'BaseRequest' class to set request parameter
+     * as needed.
+     */
+    public class MyTestRequest extends UserDefinedRequest<MyTestRequest, MyCustomReturnObject> {
+        /**
+         * Given the API's response String, this method should parse it into a more easily consumed object.
+         * Alternatively, it could just return the API's response string.
+         *
+         * @return An object that represents the parsed API response.
+         */
+        @Override
+        public ResponseParser<MyCustomReturnObject> getResponseParser() {
+            return (apiResponseStringapiResponseString) -> {
+                // Your own custom parsing Logic.
+                return new MyCustomReturnObject(apiResponseString);
+            };
+        }
+
+        /**
+         * The API endpoint URL string.
+         *
+         * @return The API endpoint URL string.
+         */
+        @Override
+        public String getApiEndpoint() {
+            return "/prospect/query";
+        }
+       
+        /**
+         * Set the Id property.
+         */ 
+        public MyTestRequest withId(final long id) {
+            return setParam("id", id);
+        } 
+
+        /**
+         * Set other property.
+         */ 
+        public MyTestRequest withOtherProperty(final String value) {
+            return setParam("other", value);
+        }
+    } 
+```
+
+```java
+    /**
+     * Example usage of the above class:
+     */
+    PardotClient apiClient = new PardotClient(new Configuration("username", "password", "api-key"));
+
+    // Construct custom request class instance
+    MyTestRequest myCustomRequest = new MyTestRequest()
+        .withId(123L)
+        .withOtherProperty("SomeValue");
+
+    // Execute the request and get the parsed response returned
+    MyCustomReturnObject parsedApiResponse = apiClient.userDefinedRequest(myCustomRequest);
+```
+
 ## 1.0.1 (12/12/2019)
 
 #### Bugfixes

@@ -15,16 +15,15 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.darksci.pardot.api.request.user;
+package com.darksci.pardot.api.request;
 
-import com.darksci.pardot.api.request.BaseRequest;
+import com.darksci.pardot.api.parser.ResponseParser;
 
 /**
- * Used to generate a User Abilities request.
+ * To be used with user defined API end points.
+ * @param <Self> The class type that extends this so we can return the appropriate value.
+ * @param <ResponseObject> Parsed response type.
  */
-public class UserAbilitiesRequest extends BaseRequest<UserAbilitiesRequest> {
-    @Override
-    public String getApiEndpoint() {
-        return "user/do/abilities";
-    }
+public abstract class UserDefinedRequest<Self, ResponseObject> extends BaseRequest<Self> {
+    public abstract ResponseParser<ResponseObject> getResponseParser();
 }

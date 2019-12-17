@@ -15,16 +15,21 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.darksci.pardot.api.request.user;
+package com.darksci.pardot.api.parser.user;
 
-import com.darksci.pardot.api.request.BaseRequest;
+import com.darksci.pardot.api.parser.JacksonFactory;
+import com.darksci.pardot.api.parser.ResponseParser;
+import com.darksci.pardot.api.response.user.Cookie;
+import com.darksci.pardot.api.response.user.UserCookieResponse;
+
+import java.io.IOException;
 
 /**
- * Used to generate a User Abilities request.
+ * Parses a user/doCookie request.
  */
-public class UserAbilitiesRequest extends BaseRequest<UserAbilitiesRequest> {
+public class UserCookieParser implements ResponseParser<Cookie> {
     @Override
-    public String getApiEndpoint() {
-        return "user/do/abilities";
+    public Cookie parseResponse(final String responseStr) throws IOException {
+        return JacksonFactory.newInstance().readValue(responseStr, UserCookieResponse.class).getCookie();
     }
 }

@@ -15,16 +15,21 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.darksci.pardot.api.request.user;
+package com.darksci.pardot.api.parser.user;
 
-import com.darksci.pardot.api.request.BaseRequest;
+import com.darksci.pardot.api.parser.JacksonFactory;
+import com.darksci.pardot.api.parser.ResponseParser;
+import com.darksci.pardot.api.response.user.UserCreateResponse;
+
+import java.io.IOException;
 
 /**
- * Used to generate a User Abilities request.
+ * Handles parsing UserRead API responses into POJOs.
  */
-public class UserAbilitiesRequest extends BaseRequest<UserAbilitiesRequest> {
+public class UserCreateResponseParser implements ResponseParser<UserCreateResponse> {
+
     @Override
-    public String getApiEndpoint() {
-        return "user/do/abilities";
+    public UserCreateResponse parseResponse(final String responseStr) throws IOException {
+        return JacksonFactory.newInstance().readValue(responseStr, UserCreateResponse.class);
     }
 }

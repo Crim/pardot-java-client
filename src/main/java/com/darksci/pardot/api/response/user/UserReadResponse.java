@@ -22,9 +22,23 @@ package com.darksci.pardot.api.response.user;
  */
 public class UserReadResponse {
 
+    /**
+     * The user instance.
+     */
     private User user;
 
+    /**
+     * User instance.
+     * @return user.
+     */
     public User getUser() {
         return user;
+    }
+
+    @Override
+    public String toString() {
+        return "UserReadResponse{"
+            + "user=" + user
+            + '}';
     }
 }

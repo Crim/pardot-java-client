@@ -15,16 +15,29 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.darksci.pardot.api.request.user;
+package com.darksci.pardot.api.parser.user;
 
-import com.darksci.pardot.api.request.BaseRequest;
+import com.darksci.pardot.api.parser.BaseResponseParserTest;
+import com.darksci.pardot.api.response.user.UserAbilitiesResponse;
+import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-/**
- * Used to generate a User Abilities request.
- */
-public class UserAbilitiesRequest extends BaseRequest<UserAbilitiesRequest> {
-    @Override
-    public String getApiEndpoint() {
-        return "user/do/abilities";
+import java.io.IOException;
+
+import static org.junit.Assert.assertEquals;
+
+public class UserAbilitiesParserResponseTest extends BaseResponseParserTest {
+    private static final Logger logger = LoggerFactory.getLogger(UserAbilitiesParserResponseTest.class);
+
+    @Test
+    public void test() throws IOException {
+        final String input = readFile("userAbilities.xml");
+        final UserAbilitiesResponse.Result result = new UserAbilitiesParser().parseResponse(input);
+        logger.info("result: {}", result);
+
+        assertEquals("Should have 189 results", 189, (int) result.getTotalResults());
+        assertEquals("Check first entry", "marketing:emails:emails:transactionalsend", result.getCredentials().get(0));
+        assertEquals("Check last entry", "marketing:engagementstudio:engagementprogram:delete", result.getCredentials().get(188));
     }
 }

@@ -32,10 +32,16 @@ public class User {
     private String lastName;
     private String jobTitle;
     private String role;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updatedAt;
+
+    /**
+     * Activation details, if available.
+     */
+    private Activation activation;
 
     public User() {
     }
@@ -74,6 +80,54 @@ public class User {
 
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
+    }
+
+    /**
+     * User activation details, if available.
+     * @return user activation details.
+     */
+    public Activation getActivation() {
+        return activation;
+    }
+
+    public void setId(final Long id) {
+        this.id = id;
+    }
+
+    public void setAccount(final Long account) {
+        this.account = account;
+    }
+
+    public void setEmail(final String email) {
+        this.email = email;
+    }
+
+    public void setFirstName(final String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(final String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setJobTitle(final String jobTitle) {
+        this.jobTitle = jobTitle;
+    }
+
+    public void setRole(final String role) {
+        this.role = role;
+    }
+
+    public void setCreatedAt(final LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setUpdatedAt(final LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public void setActivation(final Activation activation) {
+        this.activation = activation;
     }
 
     @Override

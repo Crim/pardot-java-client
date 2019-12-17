@@ -20,11 +20,35 @@ package com.darksci.pardot.api.request.user;
 import com.darksci.pardot.api.request.BaseRequest;
 
 /**
- * Used to generate a User Abilities request.
+ * For deleting existing users from Pardot.
  */
-public class UserAbilitiesRequest extends BaseRequest<UserAbilitiesRequest> {
+public class UserDeleteRequest extends BaseRequest<UserDeleteRequest> {
     @Override
     public String getApiEndpoint() {
-        return "user/do/abilities";
+        return "user/do/delete";
+    }
+
+    /**
+     * Returns the data for the user specified by email.
+     * @param email The email address of the target user.
+     * @return UserDeleteRequest builder.
+     */
+    public UserDeleteRequest deleteByEmail(final String email) {
+        if (email != null) {
+            deleteById(null);
+        }
+        return setParam("email", email);
+    }
+
+    /**
+     * Returns the data for the user specified by id.
+     * @param userId The Pardot ID of the target user to delete
+     * @return UserDeleteRequest builder.
+     */
+    public UserDeleteRequest deleteById(final Long userId) {
+        if (userId != null) {
+            deleteByEmail(null);
+        }
+        return setParam("id", userId);
     }
 }

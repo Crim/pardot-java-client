@@ -15,16 +15,36 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.darksci.pardot.api.request.user;
-
-import com.darksci.pardot.api.request.BaseRequest;
+package com.darksci.pardot.api.response.user;
 
 /**
- * Used to generate a User Abilities request.
+ * Represents activation details.
  */
-public class UserAbilitiesRequest extends BaseRequest<UserAbilitiesRequest> {
+public class Activation {
+    private String hash;
+    private String url;
+
+    public String getHash() {
+        return hash;
+    }
+
+    public void setHash(final String hash) {
+        this.hash = hash;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(final String url) {
+        this.url = url;
+    }
+
     @Override
-    public String getApiEndpoint() {
-        return "user/do/abilities";
+    public String toString() {
+        return "Activation{"
+            + "hash='" + hash + '\''
+            + ", url='" + url + '\''
+            + '}';
     }
 }

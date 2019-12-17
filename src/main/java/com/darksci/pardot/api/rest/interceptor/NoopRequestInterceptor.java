@@ -15,16 +15,10 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.darksci.pardot.api.request.user;
-
-import com.darksci.pardot.api.request.BaseRequest;
+package com.darksci.pardot.api.rest.interceptor;
 
 /**
- * Used to generate a User Abilities request.
+ * Default implementation makes no modifications.
  */
-public class UserAbilitiesRequest extends BaseRequest<UserAbilitiesRequest> {
-    @Override
-    public String getApiEndpoint() {
-        return "user/do/abilities";
-    }
+public class NoopRequestInterceptor implements RequestInterceptor {
 }

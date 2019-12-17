@@ -28,7 +28,7 @@ import java.util.Map;
 abstract class ProspectModifyRequest<T> extends BaseRequest<T> {
 
     /**
-     * Define the campaign you want to create in pardot.
+     * Define the prospect you want to create in pardot.
      * @param prospect The prospect you want to create in pardot.
      * @return CampaignCreateRequest builder.
      */

@@ -15,16 +15,30 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.darksci.pardot.api.request.user;
-
-import com.darksci.pardot.api.request.BaseRequest;
+package com.darksci.pardot.api.response.user;
 
 /**
- * Used to generate a User Abilities request.
+ * Represents a Pardot User create response.
  */
-public class UserAbilitiesRequest extends BaseRequest<UserAbilitiesRequest> {
+public class UserCreateResponse {
+
+    /**
+     * The user instance.
+     */
+    private User user;
+
+    /**
+     * User instance.
+     * @return user.
+     */
+    public User getUser() {
+        return user;
+    }
+
     @Override
-    public String getApiEndpoint() {
-        return "user/do/abilities";
+    public String toString() {
+        return "UserCreateResponse{"
+            + "user=" + user
+            + '}';
     }
 }

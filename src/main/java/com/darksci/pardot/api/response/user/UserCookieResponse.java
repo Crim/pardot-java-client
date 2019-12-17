@@ -15,16 +15,23 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.darksci.pardot.api.request.user;
-
-import com.darksci.pardot.api.request.BaseRequest;
+package com.darksci.pardot.api.response.user;
 
 /**
- * Used to generate a User Abilities request.
+ * Represents a User cookie response.
  */
-public class UserAbilitiesRequest extends BaseRequest<UserAbilitiesRequest> {
+public class UserCookieResponse {
+
+    private Cookie cookie;
+
+    public Cookie getCookie() {
+        return cookie;
+    }
+
     @Override
-    public String getApiEndpoint() {
-        return "user/do/abilities";
+    public String toString() {
+        return "UserCookieResponse{"
+            + "cookie=" + cookie
+            + '}';
     }
 }

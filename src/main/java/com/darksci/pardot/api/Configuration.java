@@ -17,6 +17,11 @@
 
 package com.darksci.pardot.api;
 
+import com.darksci.pardot.api.rest.interceptor.NoopRequestInterceptor;
+import com.darksci.pardot.api.rest.interceptor.RequestInterceptor;
+
+import java.util.Objects;
+
 /**
  * Configure your Pardot API credentials.
  *
@@ -51,6 +56,11 @@ public class Configuration {
      * development environments.
      */
     private boolean ignoreInvalidSslCertificates = false;
+
+    /**
+     * Optional interface to allow for modifying the outbound Http Post request prior to sending it.
+     */
+    private RequestInterceptor requestInterceptor = new NoopRequestInterceptor();
 
     /**
      * Constructor.
@@ -122,6 +132,28 @@ public class Configuration {
         return this;
     }
 
+    /**
+     * Allows for injecting a Http Request Interceptor instance.
+     *
+     * @param requestInterceptor Implementation to use.
+     * @return Configuration instance.
+     */
+    public Configuration withRequestInterceptor(final RequestInterceptor requestInterceptor) {
+        Objects.requireNonNull(requestInterceptor);
+        this.requestInterceptor = requestInterceptor;
+        return this;
+    }
+
+    /**
+     * Skip all validation of SSL Certificates.  This is insecure and highly discouraged!
+     *
+     * @return Configuration instance.
+     */
+    public Configuration useInsecureSslCertificates() {
+        this.ignoreInvalidSslCertificates = true;
+        return this;
+    }
+
     public String getProxyHost() {
         return proxyHost;
     }
@@ -146,35 +178,47 @@ public class Configuration {
         return pardotApiHost;
     }
 
+    /**
+     * Allows for overriding the Pardot Api hostname.
+     *
+     * @param pardotApiHost the Pardot API hostname to use.
+     * @return Configuration instance.
+     */
     public Configuration setPardotApiHost(final String pardotApiHost) {
         this.pardotApiHost = pardotApiHost;
         return this;
+    }
+
+    /**
+     * Allows for overriding the Pardot Api hostname.
+     *
+     * @param pardotApiHost the Pardot API hostname to use.
+     * @return Configuration instance.
+     */
+    public Configuration withPardotApiHost(final String pardotApiHost) {
+        return setPardotApiHost(pardotApiHost);
     }
 
     public String getPardotApiVersion() {
         return pardotApiVersion;
     }
 
-    public void setPardotApiVersion(final String pardotApiVersion) {
+    public Configuration setPardotApiVersion(final String pardotApiVersion) {
         this.pardotApiVersion = pardotApiVersion;
+        return this;
     }
 
     public String getApiKey() {
         return apiKey;
     }
 
-    public void setApiKey(final String apiKey) {
+    public Configuration setApiKey(final String apiKey) {
         this.apiKey = apiKey;
+        return this;
     }
 
-    /**
-     * Skip all validation of SSL Certificates.  This is insecure and highly discouraged!
-     *
-     * @return Configuration instance.
-     */
-    public Configuration useInsecureSslCertificates() {
-        this.ignoreInvalidSslCertificates = true;
-        return this;
+    public RequestInterceptor getRequestInterceptor() {
+        return requestInterceptor;
     }
 
     public boolean getIgnoreInvalidSslCertificates() {
