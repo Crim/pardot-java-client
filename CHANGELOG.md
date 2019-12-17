@@ -2,12 +2,12 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 1.1.0 (UNRELEASED)
+## 1.1.0 (12/17/2019)
 
-- Removes org.apache.logging.log4j dependency, instead relying explicitly on the org.slf4j logging interface/facade.
-  - If your project was depending on this transitive dependency you may need to explicitly add it to your own project:
+- Removed `org.apache.logging.log4j` dependency, instead relying on the org.slf4j logging interface/facade dependency explicitly.
+  - If your project was depending on this transitive dependency you may need to add it to your own project:
 
-  `
+  ```
   <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-api</artifactId>
@@ -23,13 +23,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
       <artifactId>log4j-slf4j-impl</artifactId>
       <version>2.12.1</version>
   </dependency>
-  `
-  
-  
+  ```
   
 - Adds support for additional user end points.
-- Adds `RequestInterceptor` interface to allow for end-user manipulation of requests prior to being sent over the wire.
-- Adds `UserDefinedRequest` interface to allow for customizing/defining your own API requests.
+- Adds [RequestInterceptor](src/main/java/com/darksci/pardot/api/rest/interceptor/RequestInterceptor.java) interface to allow for end-user manipulation of requests prior to being sent over the wire.
+- Adds [UserDefinedRequest](src/main/java/com/darksci/pardot/api/request/UserDefinedRequest.java) interface to allow for customizing/defining your own API requests.
 
 ```java
     /**
@@ -63,6 +61,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
         public String getApiEndpoint() {
             return "/prospect/query";
         }
+       
+        /**
+         * Set the Id property.
+         */ 
+        public MyTestRequest withId(final long id) {
+            return setParam("id", id);
+        } 
+
+        /**
+         * Set other property.
+         */ 
+        public MyTestRequest withOtherProperty(final String value) {
+            return setParam("other", value);
+        }
     } 
 ```
 
@@ -74,8 +86,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
     // Construct custom request class instance
     MyTestRequest myCustomRequest = new MyTestRequest()
-        .setParam("id", 123L)
-        .setParam("request_param_name_here", "SomeValue");
+        .withId(123L)
+        .withOtherProperty("SomeValue");
 
     // Execute the request and get the parsed response returned
     MyCustomReturnObject parsedApiResponse = apiClient.userDefinedRequest(myCustomRequest);

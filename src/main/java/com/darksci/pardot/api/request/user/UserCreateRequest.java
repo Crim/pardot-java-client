@@ -69,8 +69,7 @@ public class UserCreateRequest extends BaseRequest<UserCreateRequest> {
      * @return UserCreateRequet builder.
      */
     public UserCreateRequest withEmail(final String email) {
-        setParam("email", email);
-        return this;
+        return setParam("email", email);
     }
 
     /**
@@ -91,8 +90,7 @@ public class UserCreateRequest extends BaseRequest<UserCreateRequest> {
      * @return UserCreateRequest builder.
      */
     public UserCreateRequest withFirstName(final String firstName) {
-        setParam("first_name", firstName);
-        return this;
+        return setParam("first_name", firstName);
     }
 
     /**
@@ -102,8 +100,7 @@ public class UserCreateRequest extends BaseRequest<UserCreateRequest> {
      * @return UserCreateRequest builder.
      */
     public UserCreateRequest withLastName(final String lastName) {
-        setParam("last_name", lastName);
-        return this;
+        return setParam("last_name", lastName);
     }
 
     /**
@@ -113,8 +110,7 @@ public class UserCreateRequest extends BaseRequest<UserCreateRequest> {
      * @return UserCreateRequest builder.
      */
     public UserCreateRequest withJobTitle(final String jobTitle) {
-        setParam("job_title", jobTitle);
-        return this;
+        return setParam("job_title", jobTitle);
     }
 
     /**
@@ -134,8 +130,7 @@ public class UserCreateRequest extends BaseRequest<UserCreateRequest> {
      * @return UserCreateRequest builder.
      */
     public UserCreateRequest withPhone(final String phone) {
-        setParam("phone", phone);
-        return this;
+        return setParam("phone", phone);
     }
 
     /**
@@ -145,8 +140,7 @@ public class UserCreateRequest extends BaseRequest<UserCreateRequest> {
      * @return UserCreateRequest builder.
      */
     public UserCreateRequest withUrl(final String url) {
-        setParam("url", url);
-        return this;
+        return setParam("url", url);
     }
 
     /**
@@ -156,8 +150,7 @@ public class UserCreateRequest extends BaseRequest<UserCreateRequest> {
      * @return UserCreateRequest builder.
      */
     public UserCreateRequest withPasswordExpireable(final Boolean isExpirable) {
-        setBooleanParam("is_password_expirable", isExpirable);
-        return this;
+        return setBooleanParam("is_password_expirable", isExpirable);
     }
 
     /**
@@ -167,8 +160,7 @@ public class UserCreateRequest extends BaseRequest<UserCreateRequest> {
      * @return UserCreateRequest builder.
      */
     public UserCreateRequest withTimezone(final String timezoneString) {
-        setParam("timezone", timezoneString);
-        return this;
+        return setParam("timezone", timezoneString);
     }
 
     /**
@@ -178,8 +170,7 @@ public class UserCreateRequest extends BaseRequest<UserCreateRequest> {
      * @return UserCreateRequest builder.
      */
     public UserCreateRequest withTimezone(final DateTimeZone dateTimeZone) {
-        withTimezone(dateTimeZone.getID());
-        return this;
+        return withTimezone(dateTimeZone.getID());
     }
 
     /**
@@ -189,8 +180,7 @@ public class UserCreateRequest extends BaseRequest<UserCreateRequest> {
      * @return UserCreateRequest builder.
      */
     public UserCreateRequest withCrmUsername(final String crmUsername) {
-        setParam("crm_username", crmUsername);
-        return this;
+        return setParam("crm_username", crmUsername);
     }
 
     /**
@@ -201,7 +191,6 @@ public class UserCreateRequest extends BaseRequest<UserCreateRequest> {
      * @return UserCreateRequest builder.
      */
     public UserCreateRequest withSendActivationEmail(final boolean sendEmail) {
-        setBooleanParam("send_activation", sendEmail);
-        return this;
+        return setBooleanParam("send_activation", sendEmail);
     }
 }
