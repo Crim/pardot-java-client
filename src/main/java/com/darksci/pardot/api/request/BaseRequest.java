@@ -49,14 +49,14 @@ public abstract class BaseRequest<Self> implements Request {
     }
 
     @SuppressWarnings("unchecked")
-    protected T setParam(final String name, final DateTime value) {
+    protected Self setParam(final String name, final DateTime value) {
         if (value == null) {
             params.remove(name);
         } else {
             final String dateStr = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").format(value.toDate());
             return setParam(name, dateStr);
         }
-        return (T) this;
+        return (Self) this;
     }
 
     /**

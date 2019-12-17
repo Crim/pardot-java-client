@@ -2,7 +2,7 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 1.0.1 (12/12/2019)
+## 1.1.0 (UNRELEASED)
 
 - Adds support for additional user end points.
 - Adds `RequestInterceptor` interface to allow for end-user manipulation of requests prior to being sent over the wire.
@@ -57,6 +57,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     // Execute the request and get the parsed response returned
     MyCustomReturnObject parsedApiResponse = apiClient.userDefinedRequest(myCustomRequest);
 ```
+
+## 1.0.1 (12/12/2019)
 
 #### Bugfixes
 - [Issue-35](https://github.com/Crim/pardot-java-client/issues/35) Submit POST parameters using UTF-8 charset by default.

@@ -36,8 +36,4 @@ class NoopTrustManager implements X509TrustManager {
     public X509Certificate[] getAcceptedIssuers() {
         return new X509Certificate[0];
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 6387449d54614852ff53d06bb256b3cfd3ad3769
