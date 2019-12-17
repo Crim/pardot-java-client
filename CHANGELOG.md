@@ -4,6 +4,29 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 1.1.0 (UNRELEASED)
 
+- Removes org.apache.logging.log4j dependency, instead relying explicitly on the org.slf4j logging interface/facade.
+  - If your project was depending on this transitive dependency you may need to explicitly add it to your own project:
+
+  `
+  <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+      <version>2.12.1</version>
+  </dependency>
+  <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <version>2.12.1</version>
+  </dependency>
+  <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-slf4j-impl</artifactId>
+      <version>2.12.1</version>
+  </dependency>
+  `
+  
+  
+  
 - Adds support for additional user end points.
 - Adds `RequestInterceptor` interface to allow for end-user manipulation of requests prior to being sent over the wire.
 - Adds `UserDefinedRequest` interface to allow for customizing/defining your own API requests.
