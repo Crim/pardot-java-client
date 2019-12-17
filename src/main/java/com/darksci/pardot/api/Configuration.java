@@ -17,8 +17,8 @@
 
 package com.darksci.pardot.api;
 
-import com.darksci.pardot.api.rest.mutator.NoopRequestInterceptor;
-import com.darksci.pardot.api.rest.mutator.RequestInterceptor;
+import com.darksci.pardot.api.rest.interceptor.NoopRequestInterceptor;
+import com.darksci.pardot.api.rest.interceptor.RequestInterceptor;
 
 import java.util.Objects;
 

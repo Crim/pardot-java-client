@@ -15,34 +15,10 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.darksci.pardot.api.rest.mutator;
-
-import java.util.Map;
+package com.darksci.pardot.api.rest.interceptor;
 
 /**
- * Interface that allows for making changes to the outbound API request prior to sending the request.
+ * Default implementation makes no modifications.
  */
-public interface RequestInterceptor {
-
-    /**
-     * Passed a mutable Map of request parameters prior to sending the request.
-     * Adding, removing, or modifying any members in this map will alter the values
-     * sent in the request.
-     *
-     * @param requestParameters Mutable map representing request parameter values.
-     */
-    default void modifyRequestParameters(final Map<String, String> requestParameters) {
-        // Nothing to modify.
-    }
-
-    /**
-     * Passed a mutable Map of request headers prior to sending the request.
-     * Adding, removing, or modifying any members in this map will alter the values
-     * sent in the request headers.
-     *
-     * @param requestHeaders Mutable map representing request header values.
-     */
-    default void modifyHeaders(final Map<String, String> requestHeaders) {
-        // Nothing to modify.
-    }
+public class NoopRequestInterceptor implements RequestInterceptor {
 }
