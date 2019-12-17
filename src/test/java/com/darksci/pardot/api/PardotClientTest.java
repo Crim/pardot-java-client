@@ -170,7 +170,6 @@ public class PardotClientTest {
                 .useInsecureSslCertificates();
 
         }
-        logger.info("Config: {}", testConfig);
 
         // Create client
         client = new PardotClient(testConfig);

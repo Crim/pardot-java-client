@@ -66,6 +66,7 @@ public enum TagObjectType {
 
     /**
      * get name associated with value.
+     * @return name associated with value.
      */
     public String getName() {
         return name;
