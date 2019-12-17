@@ -246,7 +246,7 @@ public class HttpClientRestClient implements RestClient {
      * @param <T> The type that ResponseHandler returns.
      * @return Parsed response.
      */
-    private <T> T submitRequest(final String url, Map<String, String> postParams, final ResponseHandler<T> responseHandler) throws IOException {
+    private <T> T submitRequest(final String url, final Map<String, String> postParams, final ResponseHandler<T> responseHandler) throws IOException {
         try {
             final HttpPost post = new HttpPost(url);
 
