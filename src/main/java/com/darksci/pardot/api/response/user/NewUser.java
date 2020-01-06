@@ -43,32 +43,36 @@ public class NewUser {
         return email;
     }
 
-    public void setEmail(final String email) {
+    public NewUser setEmail(final String email) {
         this.email = email;
+        return this;
     }
 
     public String getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(final String firstName) {
+    public NewUser setFirstName(final String firstName) {
         this.firstName = firstName;
+        return this;
     }
 
     public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(final String lastName) {
+    public NewUser setLastName(final String lastName) {
         this.lastName = lastName;
+        return this;
     }
 
     public String getJobTitle() {
         return jobTitle;
     }
 
-    public void setJobTitle(final String jobTitle) {
+    public NewUser setJobTitle(final String jobTitle) {
         this.jobTitle = jobTitle;
+        return this;
     }
 
     public Long getRoleId() {
@@ -79,13 +83,14 @@ public class NewUser {
      * You can set the user's role by Id OR Name.
      * @param roleId Id of the role to set.
      */
-    public void setRoleId(final Long roleId) {
+    public NewUser setRoleId(final Long roleId) {
         this.roleId = roleId;
 
         // Null out role name.
         if (roleId != null) {
             this.role = null;
         }
+        return this;
     }
 
     public String getRole() {
@@ -96,53 +101,59 @@ public class NewUser {
      * You can set the user's role by Name or Id.
      * @param role Name of the role to set.
      */
-    public void setRole(final String role) {
+    public NewUser setRole(final String role) {
         this.role = role;
 
         // Null out roleId
         if (role != null) {
             roleId = null;
         }
+        return this;
     }
 
     public String getPhone() {
         return phone;
     }
 
-    public void setPhone(final String phone) {
+    public NewUser setPhone(final String phone) {
         this.phone = phone;
+        return this;
     }
 
     public String getUrl() {
         return url;
     }
 
-    public void setUrl(final String url) {
+    public NewUser setUrl(final String url) {
         this.url = url;
+        return this;
     }
 
     public DateTimeZone getTimezone() {
         return timezone;
     }
 
-    public void setTimezone(final DateTimeZone timezone) {
+    public NewUser setTimezone(final DateTimeZone timezone) {
         this.timezone = timezone;
+        return this;
     }
 
     public boolean isPasswordExpirable() {
         return isPasswordExpirable;
     }
 
-    public void setPasswordExpirable(final boolean passwordExpirable) {
+    public NewUser setPasswordExpirable(final boolean passwordExpirable) {
         isPasswordExpirable = passwordExpirable;
+        return this;
     }
 
     public String getCrmUsername() {
         return crmUsername;
     }
 
-    public void setCrmUsername(final String crmUsername) {
+    public NewUser setCrmUsername(final String crmUsername) {
         this.crmUsername = crmUsername;
+        return this;
     }
 
     @Override

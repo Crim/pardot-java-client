@@ -2,6 +2,9 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.1.1 (12/19/2019)
+- Fixed bug in User create endpoint where setting a new user's role could only be set via a RoleId.  Now you can set the role by name or id.
+
 ## 1.1.0 (12/17/2019)
 
 - Removed `org.apache.logging.log4j` dependency, instead relying on the org.slf4j logging interface/facade dependency explicitly.

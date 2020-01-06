@@ -272,7 +272,7 @@ public class PardotClientTest {
             .withPhone("123-123-1234")
             .withUrl("http:/www.example.com")
             .withPasswordExpireable(false)
-            .withRoleId(4L)
+            .withRole(4L)
             .withTimezone(DateTimeZone.UTC);
 
         final User response = client.userCreate(createRequest);
@@ -295,7 +295,7 @@ public class PardotClientTest {
             .withPhone("123-123-1234")
             .withUrl("http:/www.example.com")
             .withPasswordExpireable(false)
-            .withRoleId(4L)
+            .withRole(4L)
             .withTimezone(DateTimeZone.UTC);
 
         final User response = client.userCreate(createRequest);
@@ -322,7 +322,7 @@ public class PardotClientTest {
             .withPhone("123-123-1234")
             .withUrl("http:/www.example.com")
             .withPasswordExpireable(false)
-            .withRoleId(4L)
+            .withRole(4L)
             .withTimezone(DateTimeZone.UTC);
 
         final User response = client.userCreate(createRequest);
@@ -355,7 +355,7 @@ public class PardotClientTest {
             .withPhone("123-123-1234")
             .withUrl("http:/www.example.com")
             .withPasswordExpireable(false)
-            .withRoleId(originalRoleId)
+            .withRole(originalRoleId)
             .withTimezone(DateTimeZone.UTC);
 
         final User response = client.userCreate(createRequest);
@@ -391,7 +391,7 @@ public class PardotClientTest {
      * Attempt to read campaign.
      */
     @Test
-    public void campaignReadTest() throws IOException {
+    public void campaignReadTest() {
         CampaignReadRequest request = new CampaignReadRequest()
             .selectById(14885L);
 
@@ -746,7 +746,7 @@ public class PardotClientTest {
      * Attempt to read campaign.
      */
     @Test
-    public void formReadTest() throws IOException {
+    public void formReadTest() {
         final FormReadRequest request = new FormReadRequest()
             .selectById(1L);
 
@@ -1111,8 +1111,6 @@ public class PardotClientTest {
 
         // Issue request
         final boolean response = client.prospectDelete(request);
-
-        assertNotNull("Should not be null", response);
         logger.info("Response: {}", response);
     }
 
@@ -1247,8 +1245,8 @@ public class PardotClientTest {
 
         final TagObject response = client.tagObjectRead(request);
         assertNotNull("Should not be null", response);
-        response.getType();
-        response.getTypeName();
+        assertNotNull(response.getType());
+        assertNotNull(response.getTypeName());
         logger.info("Response: {}", response);
     }
 

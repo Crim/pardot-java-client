@@ -18,6 +18,7 @@
 package com.darksci.pardot.api.rest;
 
 import com.darksci.pardot.api.Configuration;
+import com.darksci.pardot.api.ConnectionFailedException;
 import com.darksci.pardot.api.request.Request;
 import com.darksci.pardot.api.rest.handlers.RestResponseHandler;
 import com.darksci.pardot.api.rest.interceptor.RequestInterceptor;
@@ -48,6 +49,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import java.io.IOException;
+import java.net.ConnectException;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
@@ -245,6 +247,7 @@ public class HttpClientRestClient implements RestClient {
      * @param responseHandler The response Handler to use to parse the response
      * @param <T> The type that ResponseHandler returns.
      * @return Parsed response.
+     * @throws ConnectionFailedException if remote server does not accept connection.
      */
     private <T> T submitRequest(final String url, final Map<String, String> postParams, final ResponseHandler<T> responseHandler) throws IOException {
         try {
@@ -261,7 +264,7 @@ public class HttpClientRestClient implements RestClient {
             }
 
             // Attach submitRequest params
-            for (Map.Entry<String, String> entry : postParams.entrySet()) {
+            for (final Map.Entry<String, String> entry : postParams.entrySet()) {
                 params.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
             }
             post.setEntity(new UrlEncodedFormEntity(params, StandardCharsets.UTF_8));
@@ -278,6 +281,12 @@ public class HttpClientRestClient implements RestClient {
             return httpClient.execute(post, responseHandler);
         } catch (final ClientProtocolException exception) {
             logger.error("Caught ClientProtocolException: {}", exception.getMessage(), exception);
+        } catch (final ConnectException connectException) {
+            // Signals that an error occurred while attempting to connect a
+            // socket to a remote address and port.  Typically, the connection
+            // was refused remotely (e.g., no process is listening on the
+            // remote address/port).
+            throw new ConnectionFailedException(connectException.getMessage(), connectException);
         } catch (final IOException exception) {
             // Typically this is a parse error.
             logger.error("Caught IOException: {}", exception.getMessage(), exception);

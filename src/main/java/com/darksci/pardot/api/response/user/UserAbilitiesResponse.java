@@ -69,7 +69,10 @@ public class UserAbilitiesResponse {
 
             @Override
             public String toString() {
-                return credentials.toString();
+                if (credentials != null) {
+                    return credentials.toString();
+                }
+                return "[]";
             }
         }
     }
