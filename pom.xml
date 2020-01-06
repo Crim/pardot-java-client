@@ -6,7 +6,7 @@
 
     <groupId>com.darksci</groupId>
     <artifactId>pardot-api-client</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
     <packaging>jar</packaging>
 
     <!-- Require Maven 3.5.0 -->

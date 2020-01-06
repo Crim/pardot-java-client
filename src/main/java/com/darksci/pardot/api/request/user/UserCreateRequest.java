@@ -45,10 +45,18 @@ public class UserCreateRequest extends BaseRequest<UserCreateRequest> {
             .withFirstName(user.getFirstName())
             .withLastName(user.getLastName())
             .withJobTitle(user.getJobTitle())
-            .withRoleId(user.getRoleId())
             .withPhone(user.getPhone())
             .withUrl(user.getUrl())
             .withPasswordExpireable(user.isPasswordExpirable());
+
+        // Determine if role is being passed as a name or id.
+        if (user.getRoleId() != null) {
+            // RoleId is not null, so let's use that.
+            withRole(user.getRoleId());
+        } else if (user.getRole() != null) {
+            // Role Name is not null, so lets use that.
+            withRole(user.getRole());
+        }
 
         // Optional Timezone
         if (user.getTimezone() != null) {
@@ -114,13 +122,44 @@ public class UserCreateRequest extends BaseRequest<UserCreateRequest> {
     }
 
     /**
-     * Define the RoleId field on the user.
+     * Define the Role field on the user by the role's id.
      *
      * @param roleId roleId for new user.
      * @return UserCreateRequest builder.
+     * @deprecated see withRole(Long)
      */
     public UserCreateRequest withRoleId(final Long roleId) {
-        return setParam("role", roleId);
+        return withRole(roleId);
+    }
+
+    /**
+     * Define the Role field on the user by name of the role.
+     *
+     * @param roleName name of the role for new user.
+     * @return UserCreateRequest builder.
+     */
+    public UserCreateRequest withRole(final String roleName) {
+        // If roleName was passed
+        if (roleName != null ) {
+            // Clear out role_id property.
+            setParam("role_id", null);
+        }
+        return setParam("role_name", roleName);
+    }
+
+    /**
+     * Define the Role field on the user by name of the role.
+     *
+     * @param roleId id of the role for new user.
+     * @return UserCreateRequest builder.
+     */
+    public UserCreateRequest withRole(final Long roleId) {
+        // If roleId was passed
+        if (roleId != null) {
+            // Clear out role_name property.
+            setParam("role_name", null);
+        }
+        return setParam("role_id", roleId);
     }
 
     /**
