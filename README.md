@@ -251,6 +251,16 @@ user friendly Plain Old Java Objects (POJOs).
 [Crim](https://github.com/crim)
 [LoRez](https://github.com/lorez)
 
+## Releasing
+Steps for performing a release:
+
+1. Update release version: `mvn versions:set -DnewVersion=X.Y.Z`
+2. Validate and then commit version: `mvn versions:commit`
+3. Update CHANGELOG and README files.
+4. Merge to master.
+5. Deploy to Maven Central: mvn clean deploy -P release
+7. Create release on Github project, uploading JAR artifacts.
+
 ## Changelog
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
