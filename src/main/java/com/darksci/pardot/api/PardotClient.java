@@ -121,7 +121,9 @@ import com.darksci.pardot.api.request.visitor.VisitorQueryRequest;
 import com.darksci.pardot.api.request.visitor.VisitorReadRequest;
 import com.darksci.pardot.api.request.visitoractivity.VisitorActivityQueryRequest;
 import com.darksci.pardot.api.request.visitoractivity.VisitorActivityReadRequest;
+import com.darksci.pardot.api.response.ErrorCode;
 import com.darksci.pardot.api.response.ErrorResponse;
+import com.darksci.pardot.api.response.ResponseOrError;
 import com.darksci.pardot.api.response.account.Account;
 import com.darksci.pardot.api.response.campaign.Campaign;
 import com.darksci.pardot.api.response.campaign.CampaignQueryResponse;
@@ -164,6 +166,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.Optional;
 
 /**
  * Interface for Pardot's API.
@@ -206,7 +209,7 @@ public class PardotClient implements AutoCloseable {
         this.restClient = restClient;
     }
 
-    private <T> T submitRequest(final Request request, ResponseParser<T> responseParser) {
+    private <T> ResponseOrError<T> submitRequest(final Request request, ResponseParser<T> responseParser) {
         // Ugly hack,
         // avoid doing login check if we're doing a login request.
         if (!(request instanceof LoginRequest)) {
@@ -236,15 +239,17 @@ public class PardotClient implements AutoCloseable {
                     // Parse error response
                     final ErrorResponse error = new ErrorResponseParser().parseResponse(restResponse.getResponseStr());
 
-                    // throw exception
-                    throw new InvalidRequestException(error.getMessage(), error.getCode());
-                } catch (IOException exception) {
+                    // Return error response.
+                    return ResponseOrError.newError(error);
+                } catch (final IOException exception) {
                     throw new ParserException(exception.getMessage(), exception);
                 }
             }
             try {
-                return responseParser.parseResponse(restResponse.getResponseStr());
-            } catch (IOException exception) {
+                return ResponseOrError.newSuccess(
+                    responseParser.parseResponse(restResponse.getResponseStr())
+                );
+            } catch (final IOException exception) {
                 throw new ParserException(exception.getMessage(), exception);
             }
         }
@@ -283,26 +288,23 @@ public class PardotClient implements AutoCloseable {
      * Check to see if we're already logged in and have an API key.
      * If no existing API key is found, this will attempt to authenticate and
      * get a new API key.
+     * @throws LoginFailedException if credentials are invalid.
      */
     private void checkLogin() {
         if (configuration.getApiKey() != null) {
             return;
         }
-        // Otherwise attempt to authenticate.
-        try {
-            final LoginResponse response = login(new LoginRequest()
-                .withEmail(configuration.getEmail())
-                .withPassword(configuration.getPassword())
-            );
 
-            // If we have an API key.
-            if (response.getApiKey() != null) {
-                // Set it.
-                getConfiguration().setApiKey(response.getApiKey());
-            }
-        } catch (final InvalidRequestException exception) {
-            // If we get an InvalidRequest Exception
-            throw new LoginFailedException(exception.getMessage(), exception.getErrorCode(), exception);
+        // Otherwise attempt to authenticate.
+        final LoginResponse response = login(new LoginRequest()
+            .withEmail(configuration.getEmail())
+            .withPassword(configuration.getPassword())
+        );
+
+        // If we have an API key.
+        if (response.getApiKey() != null) {
+            // Set it.
+            getConfiguration().setApiKey(response.getApiKey());
         }
     }
 
@@ -313,27 +315,30 @@ public class PardotClient implements AutoCloseable {
      * @return LoginResponse returned from server.
      * @throws LoginFailedException if credentials are invalid.
      */
-    public LoginResponse login(LoginRequest request) {
-        try {
-            final LoginResponse loginResponse = submitRequest(request, new LoginResponseParser());
+    public LoginResponse login(final LoginRequest request) {
+        final LoginResponse loginResponse = submitRequest(request, new LoginResponseParser())
+            .handleError((errorResponse) -> {
+                // If authentication error response
+                if (errorResponse.getCode() == ErrorCode.INVALID_API_OR_USER_KEY.getCode()) {
+                    // Throw specific login failed exception.
+                    throw new LoginFailedException(errorResponse.getMessage(), errorResponse.getCode());
+                }
+                // Otherwise throw generic exception.
+                throw new InvalidRequestException(errorResponse.getMessage(), errorResponse.getCode());
+            });
 
-            // If we have a version mis-match.
-            if (!loginResponse.getApiVersion().equals(getConfiguration().getPardotApiVersion())) {
-                // Log what we're doing
-                logger.info(
-                    "Upgrading API version from {} to {}",
-                    getConfiguration().getPardotApiVersion(),
-                    loginResponse.getApiVersion());
+        // If we have a version mis-match.
+        if (!loginResponse.getApiVersion().equals(getConfiguration().getPardotApiVersion())) {
+            // Log what we're doing
+            logger.info(
+                "Upgrading API version from {} to {}",
+                getConfiguration().getPardotApiVersion(),
+                loginResponse.getApiVersion());
 
-                // Update configuration
-                getConfiguration().setPardotApiVersion(loginResponse.getApiVersion());
-            }
-
-            return loginResponse;
-        } catch (final InvalidRequestException exception) {
-            // Throw more specific exception
-            throw new LoginFailedException(exception.getMessage(), exception.getErrorCode(), exception);
+            // Update configuration
+            getConfiguration().setPardotApiVersion(loginResponse.getApiVersion());
         }
+        return loginResponse;
     }
 
     /**
@@ -342,7 +347,8 @@ public class PardotClient implements AutoCloseable {
      * @return Parsed api response.
      */
     public Account accountRead(final AccountReadRequest request) {
-        return submitRequest(request, new AccountReadResponseParser());
+        return submitRequest(request, new AccountReadResponseParser())
+            .orElseThrowInvalidRequestException();
     }
 
     /**
@@ -351,7 +357,8 @@ public class PardotClient implements AutoCloseable {
      * @return Parsed user query response.
      */
     public UserQueryResponse.Result userQuery(final UserQueryRequest request) {
-        return submitRequest(request, new UserQueryResponseParser());
+        return submitRequest(request, new UserQueryResponseParser())
+            .orElseThrowInvalidRequestException();
     }
 
     /**
@@ -360,7 +367,8 @@ public class PardotClient implements AutoCloseable {
      * @return Parsed api response.
      */
     public UserAbilitiesResponse.Result userAbilities(final UserAbilitiesRequest request) {
-        return submitRequest(request, new UserAbilitiesParser());
+        return submitRequest(request, new UserAbilitiesParser())
+            .orElseThrowInvalidRequestException();
     }
 
     /**
@@ -369,7 +377,8 @@ public class PardotClient implements AutoCloseable {
      * @return Parsed api response.
      */
     public Cookie userCookie(final UserCookieRequest request) {
-        return submitRequest(request, new UserCookieParser());
+        return submitRequest(request, new UserCookieParser())
+            .orElseThrowInvalidRequestException();
     }
 
     /**
@@ -377,8 +386,16 @@ public class PardotClient implements AutoCloseable {
      * @param request Request definition.
      * @return Parsed api response.
      */
-    public User userRead(final UserReadRequest request) {
-        return submitRequest(request, new UserReadResponseParser());
+    public Optional<User> userRead(final UserReadRequest request) {
+        return Optional.ofNullable(
+            submitRequest(request, new UserReadResponseParser())
+                .handle((result) -> result, (errorResponse) -> {
+                    if (errorResponse.getCode() == ErrorCode.INVALID_USER_ID.getCode()) {
+                        return null;
+                    }
+                    throw new InvalidRequestException(errorResponse.getMessage(), errorResponse.getCode());
+                })
+        );
     }
 
     /**
@@ -397,7 +414,9 @@ public class PardotClient implements AutoCloseable {
      * @return Parsed api response.
      */
     public User userCreate(final UserCreateRequest request) {
-        return submitRequest(request, new UserCreateResponseParser()).getUser();
+        return submitRequest(request, new UserCreateResponseParser())
+            .orElseThrowInvalidRequestException()
+            .getUser();
     }
 
     /**

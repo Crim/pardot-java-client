@@ -1023,11 +1023,24 @@ public class PardotClientTest {
      * Test reading prospect by id.
      */
     @Test
-    public void prospectReadTest() {
+    public void prospectReadByIdTest() {
         final long prospectId = 191208284;
 
         final Prospect response = client.prospectRead(new ProspectReadRequest()
             .selectById(prospectId)
+        );
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test reading prospect by email.
+     */
+    @Test
+    public void prospectReadByEmailTest() {
+        final String email = "dne@example.com";
+        final Prospect response = client.prospectRead(new ProspectReadRequest()
+            .selectByEmail(email)
         );
         assertNotNull("Should not be null", response);
         logger.info("Response: {}", response);
