@@ -4,21 +4,29 @@ import com.darksci.pardot.api.InvalidRequestException;
 
 import java.util.NoSuchElementException;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
  * Represents either a successful response from the API, or an error response.
- *
- * Modeled heavily against JDK 1.9's Optional interface.
  */
-public class ResponseOrError<T> {
+public class Result<T> {
     private final T value;
     private final ErrorResponse errorResponse;
 
-    private ResponseOrError(final T response, final ErrorResponse errorResponse) {
+    /**
+     * Private constructor.  Use factory methods.  {@link Result#newSuccess} {@link Result#newFailure}
+     * @param response Success result object.
+     * @param errorResponse error result.
+     */
+    private Result(final T response, final ErrorResponse errorResponse) {
+        if (response != null && errorResponse != null) {
+            throw new IllegalArgumentException("You may not pass both parameters as non-null");
+        } else if (response == null && errorResponse == null) {
+            throw new IllegalArgumentException("You may not pass both parameters as null");
+        }
+
         this.value = response;
         this.errorResponse = errorResponse;
     }
@@ -29,8 +37,8 @@ public class ResponseOrError<T> {
      * @param <T> Type of the response object.
      * @return new ResultOrError instance.
      */
-    public static <T> ResponseOrError<T> newSuccess(final T response) {
-        return new ResponseOrError<>(Objects.requireNonNull(response), null);
+    public static <T> Result<T> newSuccess(final T response) {
+        return new Result<>(Objects.requireNonNull(response), null);
     }
 
     /**
@@ -39,8 +47,8 @@ public class ResponseOrError<T> {
      * @param <T> Type of the response object.
      * @return new ResultOrError instance.
      */
-    public static <T> ResponseOrError<T> newError(final ErrorResponse errorResponse) {
-        return new ResponseOrError<>(null, Objects.requireNonNull(errorResponse));
+    public static <T> Result<T> newFailure(final ErrorResponse errorResponse) {
+        return new Result<>(null, Objects.requireNonNull(errorResponse));
     }
 
     /**
@@ -49,10 +57,10 @@ public class ResponseOrError<T> {
      *
      * @return the non-{@code null} value described by this {@code Optional}
      * @throws NoSuchElementException if no success response is present
-     * @see ResponseOrError#isPresent()
+     * @see Result#isSuccess()
      */
     public T get() {
-        if (errorResponse != null) {
+        if (!isSuccess()) {
             throw new NoSuchElementException("Cannot access response as there was an error");
         }
         return value;
@@ -63,10 +71,10 @@ public class ResponseOrError<T> {
      * Otherwise throws {@code NoSuchElementException}.
      * @return ErrorResponse from API.
      * @throws NoSuchElementException if no error response is present.
-     * @see ResponseOrError#hasError()
+     * @see Result#isFailure() ()
      */
-    public ErrorResponse getError() {
-        if (errorResponse == null) {
+    public ErrorResponse getFailure() {
+        if (isSuccess()) {
             throw new NoSuchElementException("Cannot access response as there was an error");
         }
         return errorResponse;
@@ -77,26 +85,29 @@ public class ResponseOrError<T> {
      *
      * @return {@code true} if there is a value present, otherwise {@code false}
      */
-    public boolean isPresent() {
+    public boolean isSuccess() {
         return value != null;
     }
 
     /**
-     * Return {@code true} if there is a successful result from the API present, otherwise {@code false}.
+     * Return {@code true} if there is a failure result from the API present, otherwise {@code false}.
      *
      * @return {@code true} if there is a value present, otherwise {@code false}
      */
-    public boolean hasResult() {
-        return isPresent();
+    public boolean isFailure() {
+        return !isSuccess();
     }
 
     /**
-     * Return {@code true} if there is an error result from the API present, otherwise {@code false}.
-     *
-     * @return {@code true} if there is a value present, otherwise {@code false}
+     * Returns the success value if present, otherwise returns the default value.
+     * @param defaultValue value to be returned if no success value is present.
+     * @return Success value if present, otherwise returns the default value.
      */
-    public boolean hasError() {
-        return !isPresent();
+    public T getOrDefault(final T defaultValue) {
+        if (isSuccess()) {
+            return get();
+        }
+        return defaultValue;
     }
 
     /**
@@ -106,7 +117,7 @@ public class ResponseOrError<T> {
      * @param errorResponseConsumer called if there is an error response.
      */
     public T handle(Function<? super T, T> successConsumer, Function<ErrorResponse, T> errorResponseConsumer) {
-        if (value != null) {
+        if (isSuccess()) {
             return successConsumer.apply(value);
         } else {
             return errorResponseConsumer.apply(errorResponse);
@@ -119,7 +130,7 @@ public class ResponseOrError<T> {
      * @param errorResponseConsumer called if there is an error response.
      */
     public T handleError(Function<ErrorResponse, T> errorResponseConsumer) {
-        if (value != null) {
+        if (isSuccess()) {
             return value;
         } else {
             return errorResponseConsumer.apply(errorResponse);
@@ -127,18 +138,28 @@ public class ResponseOrError<T> {
     }
 
     /**
-     * If a value is present, invoke the specified consumer with the value,
+     * If a success value is present, invoke the specified consumer with the value,
      * otherwise do nothing.
      *
      * @param consumer block to be executed if a value is present
-     * @throws NullPointerException if value is present and {@code consumer} is
-     * null
-     *
-     * @deprecated to be removed if no usage found.
+     * @throws NullPointerException if value is present and {@code consumer} is null
      */
-    public void ifPresent(Consumer<? super T> consumer) {
-        if (value != null) {
+    public void ifSuccess(final Consumer<? super T> consumer) {
+        if (isSuccess()) {
             consumer.accept(value);
+        }
+    }
+
+    /**
+     * If an error value is present, invoke the specified consumer with the error value,
+     * otherwise do nothing.
+     *
+     * @param consumer block to be executed if a value is present
+     * @throws NullPointerException if value is present and {@code consumer} is null
+     */
+    public void ifError(final Consumer<? super ErrorResponse> consumer) {
+        if (isFailure()) {
+            consumer.accept(getFailure());
         }
     }
 
