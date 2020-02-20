@@ -3,7 +3,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 1.1.2 (02/20/2020)
-- Fixed bug preventing the library from auto-renewing a session when it expires.
+
+#### Bugfixes
+- [ISSUE-45](https://github.com/Crim/pardot-java-client/issues/45) Fixed bug preventing the library from auto-renewing a session when it expires.
+
+#### Internal Dependency Updates
+- Upgraded Jackson from version 2.10.1 to 2.10.2.
+- Upgraded HttpComponents Client from version 4.5.10 to 4.5.11.
+- Upgraded SLF4J from version 1.7.29 to 1.7.30.
 
 ## 1.1.1 (01/07/2020)
 - Fixed bug in User create endpoint where setting a new user's role could only be set via a RoleId.  Now you can set the role by name or id.
@@ -105,7 +112,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - [Issue-35](https://github.com/Crim/pardot-java-client/issues/35) Submit POST parameters using UTF-8 charset by default.
 - [Issue-36](https://github.com/Crim/pardot-java-client/issues/36) Sending email with the scheduled_time was broken due to improperly formatted value. 
 
-#### Internal Dependency Updates
+
 - org.apache.httpcomponents:httpclent from 4.5.6 to 4.5.10
 - org.apache.logging.log4j from 2.11.0 to 2.12.1
 - com.fasterxml.jackson.core:jackson-databind from 2.9.9 to 2.10.1
