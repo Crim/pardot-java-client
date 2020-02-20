@@ -3,7 +3,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 1.1.2 (02/20/2020)
-
 #### Bugfixes
 - [ISSUE-45](https://github.com/Crim/pardot-java-client/issues/45) Fixed bug preventing the library from auto-renewing a session when it expires.
 
