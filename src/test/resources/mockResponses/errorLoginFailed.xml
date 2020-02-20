@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rsp stat="fail" version="1.0">
+    <err code="15">Login failed</err>
+</rsp>

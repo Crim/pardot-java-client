@@ -15,24 +15,35 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.darksci.pardot.api.parser;
-
-import util.TestHelper;
-
-import java.io.IOException;
+package com.darksci.pardot.api.response;
 
 /**
- * Base Test class to abstract common code.
+ * List of Pardot API Response Error Codes.
+ *
+ * Incomplete List.
  */
-public abstract class BaseResponseParserTest {
+public enum ErrorCode {
+    // Returned if API Session becomes invalid.
+    INVALID_API_OR_USER_KEY(1),
+    INVALID_ACTION(2),
+    INVALID_PROSPECT_ID(3),
+    INVALID_PROSPECT_EMAIL_ADDRESS(4),
+    INVALID_USER_ID(10),
+    INVALID_ID(11),
+    // Returned if authentication credentials are invalid.
+    LOGIN_FAILED(15),
+    INVALID_CAMPAIGN_ID(38),
+    EMAIL_ADDRESS_IS_ALREADY_IN_USE(54),
+    INVALID_LIST_ID(55),
+    INVALID_EMAIL_FORMAT(65);
 
-    /**
-     * Utility method to help load mock responses from resources.
-     * @param fileName file name to load from resources
-     * @return The contents of the file, as a UTF-8 string.
-     * @throws IOException on error reading from resource file.
-     */
-    public String readFile(final String fileName) throws IOException {
-        return TestHelper.readFile("mockResponses/" + fileName);
+    private final int code;
+
+    ErrorCode(final int code) {
+        this.code = code;
+    }
+
+    public int getCode() {
+        return code;
     }
 }

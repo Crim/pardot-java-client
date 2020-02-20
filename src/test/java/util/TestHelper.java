@@ -15,16 +15,18 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.darksci.pardot.api.parser;
+package util;
 
-import util.TestHelper;
+import org.apache.commons.codec.Charsets;
+import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
+import java.net.URL;
 
 /**
- * Base Test class to abstract common code.
+ * Collection of Helper methods for tests.
  */
-public abstract class BaseResponseParserTest {
+public class TestHelper {
 
     /**
      * Utility method to help load mock responses from resources.
@@ -32,7 +34,8 @@ public abstract class BaseResponseParserTest {
      * @return The contents of the file, as a UTF-8 string.
      * @throws IOException on error reading from resource file.
      */
-    public String readFile(final String fileName) throws IOException {
-        return TestHelper.readFile("mockResponses/" + fileName);
+    public static String readFile(final String fileName) throws IOException {
+        final URL inputFile = TestHelper.class.getClassLoader().getResource(fileName);
+        return IOUtils.toString(inputFile, Charsets.UTF_8);
     }
 }

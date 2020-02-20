@@ -2,6 +2,9 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.1.2 (02/20/2020)
+- Fixed bug preventing the library from auto-renewing a session when it expires.
+
 ## 1.1.1 (01/07/2020)
 - Fixed bug in User create endpoint where setting a new user's role could only be set via a RoleId.  Now you can set the role by name or id.
 
