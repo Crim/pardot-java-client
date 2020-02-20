@@ -121,6 +121,7 @@ import com.darksci.pardot.api.request.visitor.VisitorQueryRequest;
 import com.darksci.pardot.api.request.visitor.VisitorReadRequest;
 import com.darksci.pardot.api.request.visitoractivity.VisitorActivityQueryRequest;
 import com.darksci.pardot.api.request.visitoractivity.VisitorActivityReadRequest;
+import com.darksci.pardot.api.response.ErrorCode;
 import com.darksci.pardot.api.response.ErrorResponse;
 import com.darksci.pardot.api.response.account.Account;
 import com.darksci.pardot.api.response.campaign.Campaign;
@@ -236,9 +237,19 @@ public class PardotClient implements AutoCloseable {
                     // Parse error response
                     final ErrorResponse error = new ErrorResponseParser().parseResponse(restResponse.getResponseStr());
 
+                    // Inspect error code
+                    if (ErrorCode.INVALID_API_OR_USER_KEY.getCode() == error.getCode()) {
+                        // This means the user session has expired.  Lets attempt to renew it.
+                        configuration.setApiKey(null);
+                        checkLogin();
+
+                        // Replay original request
+                        return submitRequest(request, responseParser);
+                    }
+
                     // throw exception
                     throw new InvalidRequestException(error.getMessage(), error.getCode());
-                } catch (IOException exception) {
+                } catch (final IOException exception) {
                     throw new ParserException(exception.getMessage(), exception);
                 }
             }
