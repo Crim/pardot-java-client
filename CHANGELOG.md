@@ -3,7 +3,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 1.1.2 (02/20/2020)
-- Fixed bug preventing the library from auto-renewing a session when it expires.
+#### Bugfixes
+- [ISSUE-45](https://github.com/Crim/pardot-java-client/issues/45) Fixed bug preventing the library from auto-renewing a session when it expires.
+
+#### Internal Dependency Updates
+- Upgraded Jackson from version 2.10.1 to 2.10.2.
+- Upgraded HttpComponents Client from version 4.5.10 to 4.5.11.
+- Upgraded SLF4J from version 1.7.29 to 1.7.30.
 
 ## 1.1.1 (01/07/2020)
 - Fixed bug in User create endpoint where setting a new user's role could only be set via a RoleId.  Now you can set the role by name or id.
