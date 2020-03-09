@@ -19,8 +19,10 @@ package com.darksci.pardot.api;
 
 import com.darksci.pardot.api.request.login.LoginRequest;
 import com.darksci.pardot.api.request.tag.TagReadRequest;
+import com.darksci.pardot.api.request.user.UserReadRequest;
 import com.darksci.pardot.api.response.login.LoginResponse;
 import com.darksci.pardot.api.response.tag.Tag;
+import com.darksci.pardot.api.response.user.User;
 import com.darksci.pardot.api.rest.RestClient;
 import com.darksci.pardot.api.rest.RestResponse;
 import org.junit.Before;
@@ -33,6 +35,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -72,7 +75,6 @@ public class PardotClientTest {
 
         // Create instance using mock dependencies.
         pardotClient = new PardotClient(apiConfig, mockRestClient);
-
     }
 
     /**
@@ -243,7 +245,61 @@ public class PardotClientTest {
         pardotClient.tagRead(tagReadRequest);
     }
 
-    private RestResponse createRestResponseFromFile(final String filename, int httpCode) {
+    /**
+     * Verify behavior when attempting to retrieve a user by id, but the API returns an 'invalid user id' error.
+     * The result should be an empty optional.
+     */
+    @Test
+    public void userRead_invalidUserId_returnsEmptyOptional() {
+        // All login to succeed.
+        mockSuccessfulLogin();
+
+        // Mock responses from RestClient/Api Server.
+        // When we request for a user read, we should get a does not exist API error.
+        // This should force an empty optional to be returned.
+        when(mockRestClient.submitRequest(isA(UserReadRequest.class)))
+            .thenReturn(
+                // First call should return an invalid API key response.
+                createRestResponseFromFile("userRead_invalidUserId.xml", 200)
+            );
+
+        final Optional<User> response = pardotClient.userRead(new UserReadRequest());
+
+        assertNotNull("Should not be null", response);
+        assertFalse("Should not be present", response.isPresent());
+    }
+
+    /**
+     * Verify behavior when attempting to retrieve a user by id, but the API returns an 'invalid user id' error.
+     * The result should be an empty optional.
+     */
+    @Test
+    public void userRead_validUserId_returnsPopulatedOptional() {
+        // All login to succeed.
+        mockSuccessfulLogin();
+
+        // Mock responses from RestClient/Api Server.
+        // When we request for a user read, we should get a does not exist API error.
+        // This should force an empty optional to be returned.
+        when(mockRestClient.submitRequest(isA(UserReadRequest.class)))
+            .thenReturn(
+                // First call should return a valid user response.
+                createRestResponseFromFile("userRead.xml", 200)
+            );
+
+        final Optional<User> response = pardotClient.userRead(new UserReadRequest());
+
+        assertNotNull("Should not be null", response);
+        assertTrue("Should be present", response.isPresent());
+    }
+
+    /**
+     * Helper method to generate a RestResponse as loaded from a mockResponse resource file.
+     * @param filename file containing the mock response.
+     * @param httpCode Http response code to mock.
+     * @return RestResponse instance.
+     */
+    private RestResponse createRestResponseFromFile(final String filename, final int httpCode) {
         try {
             return new RestResponse(
                 TestHelper.readFile("mockResponses/" + filename),
@@ -254,9 +310,21 @@ public class PardotClientTest {
         }
     }
 
+    /**
+     * Helper method to verify no further interactions occurred.
+     */
     private void verifyNoMoreRestClientInteractions() {
+        // init() should always be called.
         verify(mockRestClient, times(1))
             .init(apiConfig);
+
+        // Verify no others.
         verifyNoMoreInteractions(mockRestClient);
+    }
+
+    private void mockSuccessfulLogin() {
+        // Mock successful login response from RestClient/Api Server.
+        when(mockRestClient.submitRequest(isA(LoginRequest.class)))
+            .thenReturn(createRestResponseFromFile("login.xml", 200));
     }
 }

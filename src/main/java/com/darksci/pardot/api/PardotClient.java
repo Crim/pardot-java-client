@@ -330,7 +330,7 @@ public class PardotClient implements AutoCloseable {
         final LoginResponse loginResponse = submitRequest(request, new LoginResponseParser())
             .handleError((errorResponse) -> {
                 // If authentication error response
-                if (errorResponse.getCode() == ErrorCode.INVALID_API_OR_USER_KEY.getCode()) {
+                if (ErrorCode.LOGIN_FAILED.getCode() == errorResponse.getCode()) {
                     // Throw specific login failed exception.
                     throw new LoginFailedException(errorResponse.getMessage(), errorResponse.getCode());
                 }
