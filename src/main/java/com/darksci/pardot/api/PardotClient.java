@@ -240,6 +240,16 @@ public class PardotClient implements AutoCloseable {
                     // Parse error response
                     final ErrorResponse error = new ErrorResponseParser().parseResponse(restResponse.getResponseStr());
 
+                    // Inspect error code
+                    if (ErrorCode.INVALID_API_OR_USER_KEY.getCode() == error.getCode()) {
+                        // This means the user session has expired.  Lets attempt to renew it.
+                        configuration.setApiKey(null);
+                        checkLogin();
+
+                        // Replay original request
+                        return submitRequest(request, responseParser);
+                    }
+
                     // Return error response.
                     return Result.newFailure(error);
                 } catch (final IOException exception) {
