@@ -74,9 +74,11 @@ public class ProspectReadResponseParserTest extends BaseResponseParserTest {
 
         // Validate custom fields
         assertNotNull("Should have non-null custom fields", prospect.getCustomFields());
-        assertEquals("Should have 2 custom fields", 2, prospect.getCustomFields().size());
+        assertEquals("Should have 3 custom fields", 3, prospect.getCustomFields().size());
         assertEquals("Should have first custom field value", "my custom field value", prospect.getCustomField("MyCustom_Field"));
         assertEquals("Should have second custom field value", "my other custom field value", prospect.getCustomField("MyOtherCustom_Field"));
+        assertEquals("Should have object custom field value", "{value=abc}", prospect.getCustomField("Add_Prospect01"));
+        assertEquals("Should have object custom field values", "abc", prospect.getCustomFieldValues("Add_Prospect01").get("value"));
 
         // Validate assigned To user
         assertNotNull("Assigned To is not null", prospect.getAssignedTo());

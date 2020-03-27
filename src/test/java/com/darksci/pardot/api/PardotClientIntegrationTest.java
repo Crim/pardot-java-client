@@ -128,6 +128,9 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import static org.junit.Assert.assertEquals;
@@ -1064,6 +1067,14 @@ public class PardotClientIntegrationTest {
         prospect.setFirstName("Test");
         prospect.setLastName("User");
         prospect.setCity("Some City");
+
+        java.util.List<String> values = new ArrayList<>();
+        values.add("val1");
+        values.add("val2");
+        Map<String, Object> customFields = new HashMap<>();
+        customFields.put("custom", values);
+
+        prospect.setCustomField("custom", customFields);
 
         final ProspectUpsertRequest request = new ProspectUpsertRequest()
             .withProspect(prospect);
