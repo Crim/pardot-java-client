@@ -17,6 +17,7 @@
 
 package com.darksci.pardot.api.response.prospect;
 
+import com.darksci.pardot.api.ParserException;
 import com.darksci.pardot.api.parser.PardotBooleanSerializer;
 import com.darksci.pardot.api.response.campaign.Campaign;
 import com.darksci.pardot.api.response.list.ListSubscription;
@@ -122,7 +123,7 @@ public class Prospect {
     private LastActivity lastActivity;
 
     // Custom fields
-    private Map<String, String> customFields = new HashMap<>();
+    private Map<String, Object> customFields = new HashMap<>();
 
     // Related Objects
     private Campaign campaign;
@@ -347,7 +348,7 @@ public class Prospect {
 
     // Custom fields
     @JsonAnyGetter
-    public Map<String, String> getCustomFields() {
+    public Map<String, Object> getCustomFields() {
         return customFields;
     }
 
@@ -358,11 +359,15 @@ public class Prospect {
      * @return Value of the custom field.
      */
     public String getCustomField(final String customFieldName) {
-        return getCustomFields().get(customFieldName);
+        return String.valueOf(customFields.get(customFieldName));
+    }
+
+    public Map<String, String> getCustomFieldValues(final String customFieldName) {
+        return (Map<String, String>) customFields.get(customFieldName);
     }
 
     @JsonAnySetter
-    public void setCustomField(final String fieldName, final String fieldValue) {
+    public void setCustomField(final String fieldName, final Object fieldValue) {
         customFields.put(fieldName, fieldValue);
     }
 
