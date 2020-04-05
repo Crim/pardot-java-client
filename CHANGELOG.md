@@ -3,7 +3,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 2.0.0 (03/05/2020)
-- [ISSUE-102](https://github.com/Crim/pardot-java-client/pull/52) Improve support for record multiple fields. 
+- [ISSUE-50](https://github.com/Crim/pardot-java-client/issues/50) Improve support for record multiple fields. 
 
 ### Breaking Change
 
