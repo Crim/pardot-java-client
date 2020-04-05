@@ -65,7 +65,7 @@ abstract class ProspectModifyRequest<T> extends BaseRequest<T> {
 
         // Loop through and set custom fields
         if (prospect.getCustomFields() != null) {
-            for (Map.Entry<String, Object> entry: prospect.getCustomFields().entrySet()) {
+            for (Map.Entry<String, String> entry: prospect.getCustomFields().entrySet()) {
                 setParam(entry.getKey(), entry.getValue());
             }
         }
