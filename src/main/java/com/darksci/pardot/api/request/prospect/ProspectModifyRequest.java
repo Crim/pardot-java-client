@@ -18,6 +18,7 @@
 package com.darksci.pardot.api.request.prospect;
 
 import com.darksci.pardot.api.request.BaseRequest;
+import com.darksci.pardot.api.response.customfield.ProspectCustomFieldValue;
 import com.darksci.pardot.api.response.prospect.Prospect;
 
 import java.util.Map;
@@ -65,8 +66,18 @@ abstract class ProspectModifyRequest<T> extends BaseRequest<T> {
 
         // Loop through and set custom fields
         if (prospect.getCustomFields() != null) {
-            for (Map.Entry<String, Object> entry: prospect.getCustomFields().entrySet()) {
-                setParam(entry.getKey(), entry.getValue());
+            for (ProspectCustomFieldValue customFieldValue : prospect.getCustomFields().values()) {
+                // For single value custom fields.
+                if (!customFieldValue.hasMultipleValues()) {
+                    setParam(customFieldValue.getFieldName(), customFieldValue.getValue());
+                } else {
+                    // For multiple value fields, send as field_name_<index> = value
+                    int fieldIndex = 0;
+                    for (final String value : customFieldValue.getValues()) {
+                        setParam(customFieldValue.getFieldName() + "_" + fieldIndex, value);
+                        fieldIndex++;
+                    }
+                }
             }
         }
 

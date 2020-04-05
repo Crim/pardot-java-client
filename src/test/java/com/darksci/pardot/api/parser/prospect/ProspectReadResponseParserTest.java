@@ -30,6 +30,7 @@ import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class ProspectReadResponseParserTest extends BaseResponseParserTest {
     private static final Logger logger = LoggerFactory.getLogger(ProspectReadResponseParserTest.class);
@@ -75,10 +76,20 @@ public class ProspectReadResponseParserTest extends BaseResponseParserTest {
         // Validate custom fields
         assertNotNull("Should have non-null custom fields", prospect.getCustomFields());
         assertEquals("Should have 3 custom fields", 3, prospect.getCustomFields().size());
+
+        assertTrue("Should have custom field", prospect.hasCustomField("MyCustom_Field"));
         assertEquals("Should have first custom field value", "my custom field value", prospect.getCustomField("MyCustom_Field"));
+        assertTrue("Should have custom field", prospect.hasCustomField("MyOtherCustom_Field"));
         assertEquals("Should have second custom field value", "my other custom field value", prospect.getCustomField("MyOtherCustom_Field"));
-        assertEquals("Should have object custom field value", "{value=abc}", prospect.getCustomField("Add_Prospect01"));
-        assertEquals("Should have object custom field values", "abc", prospect.getCustomFieldValues("Add_Prospect01").get("value"));
+
+        // Check MultiSelectField
+        assertTrue("Should have custom field", prospect.hasCustomField("CustomMultiSelectField"));
+        assertEquals("First value should be returned when calling getCustomField()", "value0", prospect.getCustomField("CustomMultiSelectField"));
+
+        assertEquals("Should have 3 values", 3, prospect.getCustomFieldValues("CustomMultiSelectField").size());
+        assertEquals("Should have first value", "value0", prospect.getCustomFieldValues("CustomMultiSelectField").get(0));
+        assertEquals("Should have second value", "value1", prospect.getCustomFieldValues("CustomMultiSelectField").get(1));
+        assertEquals("Should have third value", "value2", prospect.getCustomFieldValues("CustomMultiSelectField").get(2));
 
         // Validate assigned To user
         assertNotNull("Assigned To is not null", prospect.getAssignedTo());

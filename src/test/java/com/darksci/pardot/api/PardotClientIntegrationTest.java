@@ -1027,7 +1027,7 @@ public class PardotClientIntegrationTest {
      */
     @Test
     public void prospectReadTest() {
-        final long prospectId = 191208284;
+        final long prospectId = 59164595L;
 
         final Prospect response = client.prospectRead(new ProspectReadRequest()
             .selectById(prospectId)
@@ -1061,29 +1061,87 @@ public class PardotClientIntegrationTest {
      * Test creating prospect.
      */
     @Test
-    public void prospectUpsertTest() {
+    public void prospectCreateTest_withMultiSelect_setSingleValue() {
+        final String multiSelectCustomFieldName = "CustomMultiSelectFIeld";
+
         final Prospect prospect = new Prospect();
         prospect.setEmail("random-email" + System.currentTimeMillis() + "@example.com");
         prospect.setFirstName("Test");
         prospect.setLastName("User");
         prospect.setCity("Some City");
 
+        prospect.setCustomField(multiSelectCustomFieldName + "_0", "MultiValue0");
+        prospect.setCustomField(multiSelectCustomFieldName + "_1", "MultiValue1");
+        prospect.setCustomField(multiSelectCustomFieldName + "_2", "MultiValue2");
+
+        final ProspectCreateRequest request = new ProspectCreateRequest()
+            .withProspect(prospect);
+
+        // Issue request
+        final Prospect response = client.prospectCreate(request);
+
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+        try {
+            assertEquals("First value returned", "MultiValue0", response.getCustomField(multiSelectCustomFieldName));
+            assertEquals("Should have 3 values", 3, response.getCustomFieldValues(multiSelectCustomFieldName).size());
+            assertEquals("Should have value1", "MultiValue0", response.getCustomFieldValues(multiSelectCustomFieldName).get(0));
+            assertEquals("Should have value2", "MultiValue1", response.getCustomFieldValues(multiSelectCustomFieldName).get(1));
+            assertEquals("Should have value3", "MultiValue2", response.getCustomFieldValues(multiSelectCustomFieldName).get(2));
+        } finally {
+            // Cleanup / Delete test prospect.
+            client.prospectDelete(new ProspectDeleteRequest().withProspectId(response.getId()));
+        }
+    }
+
+    /**
+     * Test creating prospect.
+     */
+    @Test
+    public void prospectUpsertTest() {
+        final String multiSelectCustomFieldName = "CustomMultiSelectFIeld";
+        final String customFieldName = "MyCustom_Field";
+
+        final Prospect prospect = new Prospect();
+        prospect.setEmail("random-email" + System.currentTimeMillis() + "@example.com");
+        prospect.setFirstName("Test");
+        prospect.setLastName("User");
+        prospect.setCity("Some City");
+
+        // Multi select field
         java.util.List<String> values = new ArrayList<>();
         values.add("val1");
         values.add("val2");
-        Map<String, Object> customFields = new HashMap<>();
-        customFields.put("custom", values);
+        prospect.setCustomField(multiSelectCustomFieldName, values);
+        prospect.appendCustomFieldValue(multiSelectCustomFieldName, "val3");
 
-        prospect.setCustomField("custom", customFields);
+        // Custom field
+        prospect.setCustomField(customFieldName, "custom field value here");
 
         final ProspectUpsertRequest request = new ProspectUpsertRequest()
             .withProspect(prospect);
 
         // Issue request
         final Prospect response = client.prospectUpsert(request);
-
-        assertNotNull("Should not be null", response);
         logger.info("Response: {}", response);
+        try {
+            assertNotNull("Should not be null", response);
+
+            assertNotNull(response.getId());
+
+            // Check multi value
+            assertEquals("First value returned", "val1", response.getCustomField(multiSelectCustomFieldName));
+            assertEquals("Should have 2 values", 3, response.getCustomFieldValues(multiSelectCustomFieldName).size());
+            assertEquals("Should have value1", "val1", response.getCustomFieldValues(multiSelectCustomFieldName).get(0));
+            assertEquals("Should have value2", "val2", response.getCustomFieldValues(multiSelectCustomFieldName).get(1));
+            assertEquals("Should have value3", "val3", response.getCustomFieldValues(multiSelectCustomFieldName).get(2));
+
+            // Check custom field
+            assertEquals("CustomField set", "custom field value here", response.getCustomField(customFieldName));
+        } finally {
+            // Cleanup / Delete test prospect.
+            client.prospectDelete(new ProspectDeleteRequest().withProspectId(response.getId()));
+        }
     }
 
     /**

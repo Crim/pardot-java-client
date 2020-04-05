@@ -17,6 +17,8 @@
 
 package com.darksci.pardot.api.parser;
 
+import com.darksci.pardot.api.parser.prospect.ProspectCustomFieldDeserializer;
+import com.darksci.pardot.api.response.customfield.ProspectCustomFieldValue;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
@@ -31,14 +33,25 @@ import java.text.SimpleDateFormat;
 public class JacksonFactory {
 
     /**
+     * Cache mapper instance.
+     */
+    private static final XmlMapper instance = newInstance();
+
+    /**
      * Creates properly configured Jackson XML Mapper instances.
      * @return XmlMapper instance.
      */
     public static XmlMapper newInstance() {
+        if (instance != null) {
+            return instance;
+        }
+
         // Create new mapper
         final JacksonXmlModule module = new JacksonXmlModule();
         module.setDefaultUseWrapper(false);
-        XmlMapper mapper = new XmlMapper(module);
+        module.addDeserializer(ProspectCustomFieldValue.class, new ProspectCustomFieldDeserializer());
+
+        final XmlMapper mapper = new XmlMapper(module);
 
         // Configure it
         mapper
