@@ -2,6 +2,20 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.0.0 (03/05/2020)
+- [ISSUE-50](https://github.com/Crim/pardot-java-client/issues/50) Improve support for record multiple fields. 
+
+### Breaking Change
+
+In order to better support record multiple value custom fields, the accessor on `Prospect` for `getCustomFields()` has been changed **FROM**  
+`public Map<String, String> getCustomFields()` **TO** `public Map<String, ProspectCustomFieldValue> getCustomFields()`
+
+For custom fields which are NOT record multiple value custom fields the accessor `public String getCustomField(final String customFieldName)` method will continue to return the stored value for the custom field.
+
+For custom fields which ARE record multiple value custom fields the accessor `public String getCustomField(final String customFieldName)` method will only return the first stored value.  You can use the new accessor 
+`public List<String> getCustomFieldValues(final String customFieldName)` to get all stored values for record multiple value custom fields.  
+
+
 ## 1.1.2 (02/20/2020)
 #### Bugfixes
 - [ISSUE-45](https://github.com/Crim/pardot-java-client/issues/45) Fixed bug preventing the library from auto-renewing a session when it expires.
