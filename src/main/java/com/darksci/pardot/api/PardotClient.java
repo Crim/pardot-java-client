@@ -221,7 +221,9 @@ public class PardotClient implements AutoCloseable {
         String responseStr = restResponse.getResponseStr();
 
         // If we have a valid response
-        logger.info("Response: {}", restResponse);
+        if (!(request instanceof LoginRequest)) {
+            logger.info("Response: {}", restResponse);
+        }
 
         // Check for invalid http status codes
         if (responseCode >= 200 && responseCode < 300) {
