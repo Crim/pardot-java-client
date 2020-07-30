@@ -32,7 +32,7 @@ import static org.junit.Assert.assertNotNull;
  * Tests parsing Dynamic Content Query api responses.
  */
 public class DynamicContentReadResponseParserTest extends BaseResponseParserTest {
-    private static final Logger logger = LoggerFactory.getLogger(DynamicContentQueryResponseParserTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(DynamicContentReadResponseParserTest.class);
 
     /**
      * Validates we can parse a dynamic content query response A-OK.
