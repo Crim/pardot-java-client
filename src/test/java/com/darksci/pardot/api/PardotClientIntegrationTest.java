@@ -30,6 +30,8 @@ import com.darksci.pardot.api.request.customfield.CustomFieldReadRequest;
 import com.darksci.pardot.api.request.customfield.CustomFieldUpdateRequest;
 import com.darksci.pardot.api.request.customredirect.CustomRedirectQueryRequest;
 import com.darksci.pardot.api.request.customredirect.CustomRedirectReadRequest;
+import com.darksci.pardot.api.request.dynamiccontent.DynamicContentQueryRequest;
+import com.darksci.pardot.api.request.dynamiccontent.DynamicContentReadRequest;
 import com.darksci.pardot.api.request.email.EmailReadRequest;
 import com.darksci.pardot.api.request.email.EmailSendListRequest;
 import com.darksci.pardot.api.request.email.EmailSendOneToOneRequest;
@@ -89,6 +91,8 @@ import com.darksci.pardot.api.response.customfield.CustomFieldQueryResponse;
 import com.darksci.pardot.api.response.customfield.CustomFieldType;
 import com.darksci.pardot.api.response.customredirect.CustomRedirect;
 import com.darksci.pardot.api.response.customredirect.CustomRedirectQueryResponse;
+import com.darksci.pardot.api.response.dynamiccontent.DynamicContent;
+import com.darksci.pardot.api.response.dynamiccontent.DynamicContentQueryResponse;
 import com.darksci.pardot.api.response.email.Email;
 import com.darksci.pardot.api.response.email.EmailStatsResponse;
 import com.darksci.pardot.api.response.emailclick.EmailClickQueryResponse;
@@ -557,7 +561,7 @@ public class PardotClientIntegrationTest {
     }
 
     /**
-     * Attempt to read custom field.
+     * Attempt to read custom redirect.
      */
     @Test
     public void customRedirectReadTest() {
@@ -566,6 +570,32 @@ public class PardotClientIntegrationTest {
             .selectById(customRedirectId);
 
         final CustomRedirect response = client.customRedirectRead(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Attempt to query dynamic content.
+     */
+    @Test
+    public void dynamicContentQueryTest() {
+        DynamicContentQueryRequest request = new DynamicContentQueryRequest();
+
+        final DynamicContentQueryResponse.Result response = client.dynamicContentQuery(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Attempt to read dynamic content.
+     */
+    @Test
+    public void dynamicContentReadTest() {
+        final long id = 752;
+        DynamicContentReadRequest request = new DynamicContentReadRequest()
+            .selectById(id);
+
+        final DynamicContent response = client.dynamicContentRead(request);
         assertNotNull("Should not be null", response);
         logger.info("Response: {}", response);
     }
