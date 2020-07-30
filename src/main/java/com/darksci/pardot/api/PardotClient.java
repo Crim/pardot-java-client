@@ -27,6 +27,8 @@ import com.darksci.pardot.api.parser.customfield.CustomFieldQueryResponseParser;
 import com.darksci.pardot.api.parser.customfield.CustomFieldReadResponseParser;
 import com.darksci.pardot.api.parser.customredirect.CustomRedirectQueryResponseParser;
 import com.darksci.pardot.api.parser.customredirect.CustomRedirectReadResponseParser;
+import com.darksci.pardot.api.parser.dynamiccontent.DynamicContentQueryResponseParser;
+import com.darksci.pardot.api.parser.dynamiccontent.DynamicContentReadResponseParser;
 import com.darksci.pardot.api.parser.email.EmailReadResponseParser;
 import com.darksci.pardot.api.parser.email.EmailStatsResponseParser;
 import com.darksci.pardot.api.parser.emailclick.EmailClickQueryResponseParser;
@@ -70,6 +72,8 @@ import com.darksci.pardot.api.request.customfield.CustomFieldReadRequest;
 import com.darksci.pardot.api.request.customfield.CustomFieldUpdateRequest;
 import com.darksci.pardot.api.request.customredirect.CustomRedirectQueryRequest;
 import com.darksci.pardot.api.request.customredirect.CustomRedirectReadRequest;
+import com.darksci.pardot.api.request.dynamiccontent.DynamicContentQueryRequest;
+import com.darksci.pardot.api.request.dynamiccontent.DynamicContentReadRequest;
 import com.darksci.pardot.api.request.email.EmailReadRequest;
 import com.darksci.pardot.api.request.email.EmailSendListRequest;
 import com.darksci.pardot.api.request.email.EmailSendOneToOneRequest;
@@ -130,6 +134,8 @@ import com.darksci.pardot.api.response.customfield.CustomField;
 import com.darksci.pardot.api.response.customfield.CustomFieldQueryResponse;
 import com.darksci.pardot.api.response.customredirect.CustomRedirect;
 import com.darksci.pardot.api.response.customredirect.CustomRedirectQueryResponse;
+import com.darksci.pardot.api.response.dynamiccontent.DynamicContent;
+import com.darksci.pardot.api.response.dynamiccontent.DynamicContentQueryResponse;
 import com.darksci.pardot.api.response.email.Email;
 import com.darksci.pardot.api.response.email.EmailStatsResponse;
 import com.darksci.pardot.api.response.emailclick.EmailClickQueryResponse;
@@ -518,6 +524,24 @@ public class PardotClient implements AutoCloseable {
      */
     public CustomRedirect customRedirectRead(final CustomRedirectReadRequest request) {
         return submitRequest(request, new CustomRedirectReadResponseParser());
+    }
+
+    /**
+     * Make API request to query for one or more dynamic contents.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public DynamicContentQueryResponse.Result dynamicContentQuery(final DynamicContentQueryRequest request) {
+        return submitRequest(request, new DynamicContentQueryResponseParser());
+    }
+
+    /**
+     * Make API request to read a specific dynamic content.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public DynamicContent dynamicContentRead(final DynamicContentReadRequest request) {
+        return submitRequest(request, new DynamicContentReadResponseParser());
     }
 
     /**

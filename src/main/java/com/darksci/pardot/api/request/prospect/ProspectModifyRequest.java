@@ -21,8 +21,6 @@ import com.darksci.pardot.api.request.BaseRequest;
 import com.darksci.pardot.api.response.customfield.ProspectCustomFieldValue;
 import com.darksci.pardot.api.response.prospect.Prospect;
 
-import java.util.Map;
-
 /**
  * Abstract shared code between Create, Update, and Upsert Prospect operations.
  */

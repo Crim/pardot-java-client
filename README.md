@@ -21,7 +21,7 @@ This client library is released on Maven Central.  Add a new dependency to your 
 <dependency>
     <groupId>com.darksci</groupId>
     <artifactId>pardot-api-client</artifactId>
-    <version>2.0.0</version>
+    <version>2.1.0</version>
 </dependency>
 ```
 
@@ -120,6 +120,12 @@ Official Documentation: [Custom Fields](http://developer.pardot.com/kb/api-versi
 
 ### Custom Redirects
 Official Documentation: [Custom Redirects](http://developer.pardot.com/kb/api-version-3/custom-redirects/)
+
+- Query
+- Read
+
+### Dynamic Content
+Official Documentation: [Dynamic Content](http://developer.pardot.com/kb/api-version-3/dynamic-content/)
 
 - Query
 - Read
