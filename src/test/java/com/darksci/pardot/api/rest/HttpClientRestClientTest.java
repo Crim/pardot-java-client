@@ -18,7 +18,7 @@
 package com.darksci.pardot.api.rest;
 
 import categories.IntegrationTest;
-import com.darksci.pardot.api.Configuration;
+import com.darksci.pardot.api.config.Configuration;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.experimental.categories.Category;

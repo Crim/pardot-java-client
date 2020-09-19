@@ -17,8 +17,8 @@
 
 package com.darksci.pardot.api.rest;
 
-import com.darksci.pardot.api.Configuration;
 import com.darksci.pardot.api.ConnectionFailedException;
+import com.darksci.pardot.api.config.Configuration;
 import com.darksci.pardot.api.request.Request;
 import com.darksci.pardot.api.rest.handlers.RestResponseHandler;
 import com.darksci.pardot.api.rest.interceptor.RequestInterceptor;

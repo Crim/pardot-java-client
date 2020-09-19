@@ -17,6 +17,7 @@
 
 package com.darksci.pardot.api;
 
+import com.darksci.pardot.api.config.Configuration;
 import com.darksci.pardot.api.request.login.LoginRequest;
 import com.darksci.pardot.api.request.tag.TagReadRequest;
 import com.darksci.pardot.api.response.login.LoginResponse;

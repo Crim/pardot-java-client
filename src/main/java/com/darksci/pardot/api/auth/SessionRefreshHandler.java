@@ -17,8 +17,24 @@
 
 package com.darksci.pardot.api.auth;
 
-public interface CredentialHandler {
-
+/**
+ * Interface for handling renewing session authentication tokens.
+ */
+public interface SessionRefreshHandler {
+    /**
+     * Is the current token valid.
+     * @return True if set, false if not set.
+     */
     boolean isValid();
+
+    /**
+     * Resets token.
+     */
+    void clearToken();
+
+    /**
+     * Refresh/Renew authentication token.
+     * @return True on success, false on failure to renew.
+     */
     boolean refreshCredentials();
 }

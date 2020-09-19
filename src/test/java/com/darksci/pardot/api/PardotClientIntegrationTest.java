@@ -18,6 +18,7 @@
 package com.darksci.pardot.api;
 
 import categories.IntegrationTest;
+import com.darksci.pardot.api.config.Configuration;
 import com.darksci.pardot.api.request.login.LoginRequest;
 import com.darksci.pardot.api.response.login.LoginResponse;
 import org.junit.Test;

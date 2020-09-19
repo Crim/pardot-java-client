@@ -17,6 +17,9 @@
 
 package com.darksci.pardot.api.config;
 
+/**
+ * Defines properties for connecting to Pardot API via a Proxy.
+ */
 public class ProxyConfiguration {
     // Optional Proxy Configuration
     private final String host;
@@ -28,7 +31,9 @@ public class ProxyConfiguration {
     private final String password;
 
     /**
-     * Not configured constructor.
+     * Empty constructor.
+     * Calling this will populate an un-configured instance, meaning no proxy will be used
+     * to make connections to the Pardot API.
      */
     public ProxyConfiguration() {
         this(null, 0, null, null, null);
@@ -36,11 +41,11 @@ public class ProxyConfiguration {
 
     /**
      * Constructor.
-     * @param host
-     * @param port
-     * @param scheme
-     * @param username
-     * @param password
+     * @param host Hostname of the proxy to connect to.
+     * @param port Port of the proxy to connect to.
+     * @param scheme Scheme of the proxy, supported values are 'HTTP' or 'HTTPS'
+     * @param username Username for a proxy which requires authentication. Pass NULL if no authentication required.
+     * @param password Password for a proxy which requires authentication. Pass NULL if no authentication required.
      */
     public ProxyConfiguration(final String host, final int port, final String scheme, final String username, final String password) {
         this.host = host;

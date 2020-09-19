@@ -20,7 +20,6 @@ package com.darksci.pardot.api.parser.login;
 import com.darksci.pardot.api.parser.JacksonFactory;
 import com.darksci.pardot.api.parser.ResponseParser;
 import com.darksci.pardot.api.response.login.SsoLoginErrorResponse;
-import com.darksci.pardot.api.response.login.SsoLoginResponse;
 
 import java.io.IOException;
 

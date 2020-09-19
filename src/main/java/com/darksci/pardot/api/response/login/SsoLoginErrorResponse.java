@@ -21,12 +21,17 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- *
+ * Represents an Error response from attempting to authenticate via Salesforce SSO.
  */
 public class SsoLoginErrorResponse {
     private final String error;
     private final String description;
 
+    /**
+     * Constructor.
+     * @param error Error type.
+     * @param description Error description.
+     */
     @JsonCreator
     public SsoLoginErrorResponse(
         @JsonProperty("error") final String error,

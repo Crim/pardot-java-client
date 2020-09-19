@@ -17,6 +17,11 @@
 
 package com.darksci.pardot.api.config;
 
+import java.util.Objects;
+
+/**
+ * Defines credentials for authenticating to Pardot API using Salesforce SSO.
+ */
 public class SsoLoginCredentials {
     // Immutable values.
     private final String username;
@@ -28,12 +33,26 @@ public class SsoLoginCredentials {
     // Updated after authentication.
     private String accessToken = null;
 
-    public SsoLoginCredentials(final String username, final String password, final String clientId, final String clientSecret, final String businessUnitId) {
-        this.username = username;
-        this.password = password;
-        this.clientId = clientId;
-        this.clientSecret = clientSecret;
-        this.businessUnitId = businessUnitId;
+    /**
+     * Constructor.
+     * @param username Salesforce username.
+     * @param password Salesforce password.
+     * @param clientId Connected App client or consumer Id.
+     * @param clientSecret Connected App client or consumer secret.
+     * @param businessUnitId Pardot Business Unit Id to connect to.
+     */
+    public SsoLoginCredentials(
+        final String username,
+        final String password,
+        final String clientId,
+        final String clientSecret,
+        final String businessUnitId) {
+
+        this.username = Objects.requireNonNull(username);
+        this.password = Objects.requireNonNull(password);
+        this.clientId = Objects.requireNonNull(clientId);
+        this.clientSecret = Objects.requireNonNull(clientSecret);
+        this.businessUnitId = Objects.requireNonNull(businessUnitId);
     }
 
     public String getUsername() {
@@ -62,6 +81,10 @@ public class SsoLoginCredentials {
 
     public void setAccessToken(final String accessToken) {
         this.accessToken = accessToken;
+    }
+
+    public void clearAccessToken() {
+        setAccessToken(null);
     }
 
     public String getBusinessUnitId() {

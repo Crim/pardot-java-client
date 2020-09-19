@@ -17,12 +17,6 @@
 
 package com.darksci.pardot.api;
 
-import com.darksci.pardot.api.request.DateParameter;
-import com.darksci.pardot.api.request.account.AccountReadRequest;
-import com.darksci.pardot.api.request.campaign.CampaignQueryRequest;
-import com.darksci.pardot.api.response.account.Account;
-import com.darksci.pardot.api.response.campaign.CampaignQueryResponse;
-
 /**
  * Just a simple example code showing basic usage.
  */

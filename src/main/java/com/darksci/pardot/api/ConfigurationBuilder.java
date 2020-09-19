@@ -17,6 +17,7 @@
 
 package com.darksci.pardot.api;
 
+import com.darksci.pardot.api.config.Configuration;
 import com.darksci.pardot.api.config.LoginType;
 import com.darksci.pardot.api.config.PasswordLoginCredentials;
 import com.darksci.pardot.api.config.ProxyConfiguration;
@@ -26,11 +27,12 @@ import com.darksci.pardot.api.rest.interceptor.RequestInterceptor;
 
 import java.util.Objects;
 
-import static com.darksci.pardot.api.config.LoginType.*;
 import static com.darksci.pardot.api.config.LoginType.SSO;
+import static com.darksci.pardot.api.config.LoginType.USERNAME_PASSWORD;
 
 /**
- * Configuration Builder.
+ * Pardot API Client Configuration Builder.
+ * Used to construct {@link Configuration} instances.
  */
 public class ConfigurationBuilder {
     private LoginType loginType;
@@ -64,13 +66,15 @@ public class ConfigurationBuilder {
     // Optional interface to allow for modifying the outbound Http Post request prior to sending it.
     private RequestInterceptor requestInterceptor = new NoopRequestInterceptor();
 
-
     /**
-     * For configuring legacy Username, Password, and Userkey api login.
+     * For configuring authenticating to the Pardot API using legacy Username, Password, and UserKey values.
+     *
      * @param username Pardot user's email address or username.
      * @param password Pardot user's password.
      * @param userKey Pardot user's userKey.
      * @return Builder instance.
+     * @deprecated Pardot is removing Username and Password authentication, replacing it with
+     *             Salesforce SSO Authentication: {@link ConfigurationBuilder#withSsoLogin}
      */
     public ConfigurationBuilder withUsernameAndPasswordLogin(final String username, final String password, final String userKey) {
         this.loginType = USERNAME_PASSWORD;
@@ -81,6 +85,18 @@ public class ConfigurationBuilder {
         return this;
     }
 
+    /**
+     * For configuring authenticating to the Pardot API using legacy Username, Password, and UserKey values.
+     *
+     * @param username Salesforce username.
+     * @param password Salesforce user's password.
+     * @param clientId Connected Application client or consumer Id.
+     * @param clientSecret Connected Application client or consumer secret.
+     * @param businessUnitId Id of the Pardot business unit to connect to.
+     * @return Builder instance.
+     * @deprecated Pardot is removing Username and Password authentication, replacing it with
+     *             Salesforce SSO Authentication: {@link ConfigurationBuilder#withSsoLogin}
+     */
     public ConfigurationBuilder withSsoLogin(final String username, final String password, final String clientId, final String clientSecret, final String businessUnitId) {
         this.loginType = SSO;
         this.email = Objects.requireNonNull(username);
@@ -187,7 +203,11 @@ public class ConfigurationBuilder {
     }
 
     /**
-     * Configure library to use different Pardot API Version.
+     * Allows for explicitly configuring library to use different Pardot API Version.
+     * The default is to start with API version 3, and if the library detects that version 4 is
+     * required, it will automatically upgrade to version 4 as needed.
+     *
+     * @param apiVersion Define the API version to use.  Supported values are "3" or "4".
      * @return Builder instance.
      */
     public ConfigurationBuilder withApiVersion(final String apiVersion) {
@@ -196,8 +216,20 @@ public class ConfigurationBuilder {
     }
 
     /**
-     * Disable all validation of SSL Certificates.  This is insecure and highly discouraged!
+     * Disable all validation of SSL Certificates.
+     * Disabling validations is insecure and highly discouraged!
      *
+     * @return Builder instance.
+     */
+    public ConfigurationBuilder withIgnoreInvalidSslCertificates() {
+        return withIgnoreInvalidSslCertificates(true);
+    }
+
+    /**
+     * Configuration validation of SSL Certificates. Disabling validations is insecure and highly discouraged!
+     *
+     * @param ignoreInvalidSslCertificates Pass a value of true to disable SSL certificate validation.
+     *                                     Pass a value of false to enable SSL certificate validation.
      * @return Builder instance.
      */
     public ConfigurationBuilder withIgnoreInvalidSslCertificates(final boolean ignoreInvalidSslCertificates) {
@@ -216,12 +248,18 @@ public class ConfigurationBuilder {
         return this;
     }
 
+    /**
+     * Create {@link Configuration} instance using properties defined on the builder.
+     * @return Configuration instance.
+     */
     public Configuration build() {
-        // Create proxy config
+        // Create optional proxy config
         final ProxyConfiguration proxyConfiguration;
         if (proxyHost == null) {
+            // Creates an empty ProxyConfiguration object (not configured).
             proxyConfiguration = new ProxyConfiguration();
         } else {
+            // Creates a ProxyConfiguration instance with appropriate values.
             proxyConfiguration = new ProxyConfiguration(
                 proxyHost,
                 proxyPort,
@@ -230,22 +268,21 @@ public class ConfigurationBuilder {
                 proxyPassword
             );
         }
-        final PasswordLoginCredentials passwordLoginCredentials;
-        final SsoLoginCredentials ssoLoginCredentials;
+        PasswordLoginCredentials passwordLoginCredentials = null;
+        SsoLoginCredentials ssoLoginCredentials = null;
 
         switch (loginType) {
             case SSO:
-                passwordLoginCredentials = null;
                 ssoLoginCredentials = new SsoLoginCredentials(email, password, ssoClientId, ssoClientSecret, businessUnitId);
                 break;
             case USERNAME_PASSWORD:
                 passwordLoginCredentials = new PasswordLoginCredentials(email, password, userKey);
-                ssoLoginCredentials = null;
                 break;
             default:
                 throw new IllegalStateException("Undefined Login type!");
         }
 
+        // Create instance.
         return new Configuration(
             loginType,
             ssoLoginCredentials,

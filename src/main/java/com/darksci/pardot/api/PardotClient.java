@@ -17,10 +17,10 @@
 
 package com.darksci.pardot.api;
 
-import com.darksci.pardot.api.auth.CredentialHandler;
-import com.darksci.pardot.api.auth.PasswordCredentialHandler;
-import com.darksci.pardot.api.auth.SsoCredentialHandler;
-import com.darksci.pardot.api.config.LoginType;
+import com.darksci.pardot.api.auth.PasswordSessionRefreshHandler;
+import com.darksci.pardot.api.auth.SessionRefreshHandler;
+import com.darksci.pardot.api.auth.SsoSessionRefreshHandler;
+import com.darksci.pardot.api.config.Configuration;
 import com.darksci.pardot.api.parser.ErrorResponseParser;
 import com.darksci.pardot.api.parser.ResponseParser;
 import com.darksci.pardot.api.parser.StringResponseParser;
@@ -194,7 +194,7 @@ public class PardotClient implements AutoCloseable {
      */
     private final Configuration configuration;
 
-    private final CredentialHandler credentialHandler;
+    private final SessionRefreshHandler sessionRefreshHandler;
 
     /**
      * Underlying RestClient to use.
@@ -237,9 +237,9 @@ public class PardotClient implements AutoCloseable {
         this.restClient = restClient;
 
         if (configuration.isUsingPasswordAuthentication()) {
-            credentialHandler = new PasswordCredentialHandler(configuration.getPasswordLoginCredentials(), this);
+            sessionRefreshHandler = new PasswordSessionRefreshHandler(configuration.getPasswordLoginCredentials(), this);
         } else if (configuration.isUsingSsoAuthentication()) {
-            credentialHandler = new SsoCredentialHandler(configuration.getSsoLoginCredentials(), this);
+            sessionRefreshHandler = new SsoSessionRefreshHandler(configuration.getSsoLoginCredentials(), this);
         } else {
             throw new IllegalStateException("Unhandled Authentication Type!");
         }
@@ -280,7 +280,7 @@ public class PardotClient implements AutoCloseable {
                     // Inspect error code
                     if (configuration.isUsingPasswordAuthentication() && ErrorCode.INVALID_API_OR_USER_KEY.getCode() == error.getCode()) {
                         // This means the user session has expired.  Lets attempt to renew it.
-                        configuration.getPasswordLoginCredentials().clearApiKey();
+                        sessionRefreshHandler.clearToken();
                         checkLogin();
 
                         // Replay original request
@@ -355,18 +355,20 @@ public class PardotClient implements AutoCloseable {
      * get a new API key.
      */
     private void checkLogin() {
-        if (credentialHandler.isValid()) {
+        if (sessionRefreshHandler.isValid()) {
             return;
         }
-        credentialHandler.refreshCredentials();
+        sessionRefreshHandler.refreshCredentials();
     }
 
     /**
-     * Execute login request.
+     * Execute login request using Pardot Username and Password authentication.
      *
      * @param request Login request definition.
      * @return LoginResponse returned from server.
      * @throws LoginFailedException if credentials are invalid.
+     * @deprecated Pardot is removing Username and Password authentication, it has been replaced
+     *             with SSO authentication. {@link PardotClient#login(SsoLoginRequest)}
      */
     public LoginResponse login(final LoginRequest request) {
         try {
@@ -391,6 +393,13 @@ public class PardotClient implements AutoCloseable {
         }
     }
 
+    /**
+     * Execute login request using Salesforce SSO authentication.
+     *
+     * @param request Login request definition.
+     * @return SsoLoginResponse returned from server.
+     * @throws LoginFailedException if credentials are invalid.
+     */
     public SsoLoginResponse login(final SsoLoginRequest request) {
         try {
             return submitRequest(request, new SsoLoginResponseParser());

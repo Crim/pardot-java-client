@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- *
+ * Represents a success response from Authenticating via Salesforce SSO.
  */
 public class SsoLoginResponse {
     private final String accessToken;
@@ -31,6 +31,15 @@ public class SsoLoginResponse {
     private final String issuedAt;
     private final String signature;
 
+    /**
+     * Constructor.
+     * @param accessToken user's access token.
+     * @param instanceUrl Instance the user belongs to.
+     * @param id Reference to user's record/
+     * @param tokenType Type of token.
+     * @param issuedAt When the token was issued.
+     * @param signature Signature of the response.
+     */
     @JsonCreator
     public SsoLoginResponse(
         @JsonProperty("access_token") final String accessToken,

@@ -18,9 +18,9 @@
 package com.darksci.pardot.api;
 
 import categories.IntegrationTest;
+import com.darksci.pardot.api.config.Configuration;
 import com.darksci.pardot.api.request.login.SsoLoginRequest;
 import com.darksci.pardot.api.response.login.SsoLoginResponse;
-
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.slf4j.Logger;

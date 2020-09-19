@@ -17,6 +17,7 @@
 
 package com.darksci.pardot.api;
 
+import com.darksci.pardot.api.config.Configuration;
 import com.darksci.pardot.api.request.account.AccountReadRequest;
 import com.darksci.pardot.api.request.campaign.CampaignCreateRequest;
 import com.darksci.pardot.api.request.campaign.CampaignQueryRequest;
@@ -122,14 +123,11 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Properties;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

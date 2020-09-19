@@ -17,31 +17,17 @@
 
 package com.darksci.pardot.api.request.login;
 
-import com.darksci.pardot.api.config.SsoLoginCredentials;
 import com.darksci.pardot.api.request.BaseRequest;
-import com.darksci.pardot.api.request.Request;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 
 /**
- *
+ * Defines a request to Salesforce's SSO Authentication end points.
  */
 public class SsoLoginRequest extends BaseRequest<SsoLoginRequest> implements LoginRequestMarker {
+    /**
+     * Constructor.
+     */
     public SsoLoginRequest() {
         withGrantType("password");
-    }
-
-    public SsoLoginRequest(final SsoLoginCredentials credentials) {
-        this();
-        Objects.requireNonNull(credentials);
-        withClientId(credentials.getClientId());
-        withClientSecret(credentials.getClientSecret());
-        withUsername(credentials.getUsername());
-        withPassword(credentials.getPassword());
     }
 
     public SsoLoginRequest withClientId(final String clientId) {

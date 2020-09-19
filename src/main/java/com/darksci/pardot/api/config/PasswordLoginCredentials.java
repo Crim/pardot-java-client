@@ -17,6 +17,11 @@
 
 package com.darksci.pardot.api.config;
 
+/**
+ * Defines credentials for authenticating to Pardot API using Pardot username and password.
+ * @deprecated This method of authentication to be removed by Pardot.  To be replaced with
+ *             Salesforce SSO authentication {@link SsoLoginCredentials}.
+ */
 public class PasswordLoginCredentials {
     // Immutable Fields.
     private final String username;
@@ -26,6 +31,12 @@ public class PasswordLoginCredentials {
     // Updated after authenticated.
     private String apiKey = null;
 
+    /**
+     * Constructor.
+     * @param username Pardot username or email address.
+     * @param password Pardot user's password.
+     * @param userKey Pardot user's user_key.
+     */
     public PasswordLoginCredentials(final String username, final String password, final String userKey) {
         this.username = username;
         this.password = password;
@@ -66,9 +77,8 @@ public class PasswordLoginCredentials {
         if (hasApiKey()) {
             apiKeyDisplay = "-API-KEY-SET-";
         } else {
-             apiKeyDisplay = "-NO-API-KEY-SET-";
+            apiKeyDisplay = "-NO-API-KEY-SET-";
         }
-
 
         return "PasswordLoginCredentials{"
             + "username='" + username + '\''

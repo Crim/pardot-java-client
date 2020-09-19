@@ -18,10 +18,10 @@
 package com.darksci.pardot.api.auth;
 
 import categories.IntegrationTest;
-import com.darksci.pardot.api.Configuration;
 import com.darksci.pardot.api.ConfigurationBuilder;
 import com.darksci.pardot.api.LoginFailedException;
 import com.darksci.pardot.api.PardotClient;
+import com.darksci.pardot.api.config.Configuration;
 import com.darksci.pardot.api.rest.HttpClientRestClient;
 import com.darksci.pardot.api.rest.RestClient;
 import org.junit.Test;
@@ -36,7 +36,7 @@ import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 @Category(IntegrationTest.class)
-public class SsoCredentialHandlerIntegrationTest {
+public class SsoSessionRefreshHandlerIntegrationTest {
 
     private Configuration testConfig;
     private PardotClient pardotClient;
@@ -52,7 +52,7 @@ public class SsoCredentialHandlerIntegrationTest {
         final RestClient restClient = new HttpClientRestClient();
         restClient.init(testConfig);
 
-        final SsoCredentialHandler handler = new SsoCredentialHandler(
+        final SsoSessionRefreshHandler handler = new SsoSessionRefreshHandler(
             testConfig.getSsoLoginCredentials(),
             pardotClient
         );
@@ -80,7 +80,7 @@ public class SsoCredentialHandlerIntegrationTest {
         final RestClient restClient = new HttpClientRestClient();
         restClient.init(testConfig);
 
-        final SsoCredentialHandler handler = new SsoCredentialHandler(
+        final SsoSessionRefreshHandler handler = new SsoSessionRefreshHandler(
             testConfig.getSsoLoginCredentials(),
             pardotClient
         );

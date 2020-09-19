@@ -15,15 +15,10 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.darksci.pardot.api;
+package com.darksci.pardot.api.config;
 
-import com.darksci.pardot.api.config.LoginType;
-import com.darksci.pardot.api.config.PasswordLoginCredentials;
-import com.darksci.pardot.api.config.ProxyConfiguration;
-import com.darksci.pardot.api.config.SsoLoginCredentials;
-import com.darksci.pardot.api.rest.interceptor.NoopRequestInterceptor;
+import com.darksci.pardot.api.ConfigurationBuilder;
 import com.darksci.pardot.api.rest.interceptor.RequestInterceptor;
-import org.apache.http.auth.UsernamePasswordCredentials;
 
 import java.util.Objects;
 
@@ -56,11 +51,32 @@ public class Configuration {
      */
     private final RequestInterceptor requestInterceptor;
 
+    /**
+     * Creates a new ConfigurationBuilder instance.
+     * @return ConfigurationBuilder instance.
+     */
     public static ConfigurationBuilder newBuilder() {
         return new ConfigurationBuilder();
     }
 
-    public Configuration(final PasswordLoginCredentials passwordLoginCredentials, final ProxyConfiguration proxyConfiguration, final String pardotApiHost, final String pardotApiVersion, final boolean ignoreInvalidSslCertificates, final RequestInterceptor requestInterceptor) {
+    /**
+     * Constructor.
+     * Note: Use {@link ConfigurationBuilder} to create instances instead of calling this constructor.
+     *
+     * @param passwordLoginCredentials Defines Pardot password Authentication credentials.
+     * @param proxyConfiguration Defines Proxy Configuration.
+     * @param pardotApiHost Defines Pardot API Host.
+     * @param pardotApiVersion Defines Pardot API version.
+     * @param ignoreInvalidSslCertificates Should SSL certificates be validated.
+     * @param requestInterceptor Defines request interceptor instance.
+     */
+    public Configuration(
+        final PasswordLoginCredentials passwordLoginCredentials,
+        final ProxyConfiguration proxyConfiguration,
+        final String pardotApiHost,
+        final String pardotApiVersion,
+        final boolean ignoreInvalidSslCertificates,
+        final RequestInterceptor requestInterceptor) {
         this(
             LoginType.USERNAME_PASSWORD,
             null,
@@ -73,7 +89,24 @@ public class Configuration {
         );
     }
 
-    public Configuration(final SsoLoginCredentials ssoLoginCredentials, final ProxyConfiguration proxyConfiguration, final String pardotApiHost, final String pardotApiVersion, final boolean ignoreInvalidSslCertificates, final RequestInterceptor requestInterceptor) {
+    /**
+     * Constructor.
+     * Note: Use {@link ConfigurationBuilder} to create instances instead of calling this constructor.
+     *
+     * @param ssoLoginCredentials Defines Salesforce SSO Authentication credentials.
+     * @param proxyConfiguration Defines Proxy Configuration.
+     * @param pardotApiHost Defines Pardot API Host.
+     * @param pardotApiVersion Defines Pardot API version.
+     * @param ignoreInvalidSslCertificates Should SSL certificates be validated.
+     * @param requestInterceptor Defines request interceptor instance.
+     */
+    public Configuration(
+        final SsoLoginCredentials ssoLoginCredentials,
+        final ProxyConfiguration proxyConfiguration,
+        final String pardotApiHost,
+        final String pardotApiVersion,
+        final boolean ignoreInvalidSslCertificates,
+        final RequestInterceptor requestInterceptor) {
         this(
             LoginType.SSO,
             ssoLoginCredentials,
@@ -86,15 +119,37 @@ public class Configuration {
         );
     }
 
-    public Configuration(final LoginType loginType, final SsoLoginCredentials ssoLoginCredentials, final PasswordLoginCredentials passwordLoginCredentials, final ProxyConfiguration proxyConfiguration, final String pardotApiHost, final String pardotApiVersion, final boolean ignoreInvalidSslCertificates, final RequestInterceptor requestInterceptor) {
-        this.loginType = loginType;
+    /**
+     * Constructor.
+     * Note: Use {@link ConfigurationBuilder} to create instances instead of calling this constructor.
+     *
+     * @param loginType Type of login.
+     * @param ssoLoginCredentials Defines Salesforce SSO Authentication credentials.
+     * @param passwordLoginCredentials Defines Pardot password Authentication credentials.
+     * @param proxyConfiguration Defines Proxy Configuration.
+     * @param pardotApiHost Defines Pardot API Host.
+     * @param pardotApiVersion Defines Pardot API version.
+     * @param ignoreInvalidSslCertificates Should SSL certificates be validated.
+     * @param requestInterceptor Defines request interceptor instance.
+     */
+    public Configuration(
+        final LoginType loginType,
+        final SsoLoginCredentials ssoLoginCredentials,
+        final PasswordLoginCredentials passwordLoginCredentials,
+        final ProxyConfiguration proxyConfiguration,
+        final String pardotApiHost,
+        final String pardotApiVersion,
+        final boolean ignoreInvalidSslCertificates,
+        final RequestInterceptor requestInterceptor) {
+
+        this.loginType = Objects.requireNonNull(loginType);
         this.ssoLoginCredentials = ssoLoginCredentials;
         this.passwordLoginCredentials = passwordLoginCredentials;
-        this.proxyConfiguration = proxyConfiguration;
-        this.pardotApiHost = pardotApiHost;
-        this.pardotApiVersion = pardotApiVersion;
+        this.proxyConfiguration = Objects.requireNonNull(proxyConfiguration);
+        this.pardotApiHost = Objects.requireNonNull(pardotApiHost);
+        this.pardotApiVersion = Objects.requireNonNull(pardotApiVersion);
         this.ignoreInvalidSslCertificates = ignoreInvalidSslCertificates;
-        this.requestInterceptor = requestInterceptor;
+        this.requestInterceptor = Objects.requireNonNull(requestInterceptor);
     }
 
     public boolean isUsingPasswordAuthentication() {
@@ -109,6 +164,10 @@ public class Configuration {
         return loginType;
     }
 
+    /**
+     * Get defined Salesforce SSO Credentials configuration details.
+     * @return PasswordLoginCredentials configuration instance.
+     */
     public SsoLoginCredentials getSsoLoginCredentials() {
         if (ssoLoginCredentials == null) {
             throw new IllegalStateException("Cannot access SsoLoginCredentials if configured to use " + loginType + " authentication!");
@@ -116,6 +175,10 @@ public class Configuration {
         return ssoLoginCredentials;
     }
 
+    /**
+     * Get defined Pardot PasswordLogin Credentials configuration details.
+     * @return PasswordLoginCredentials configuration instance.
+     */
     public PasswordLoginCredentials getPasswordLoginCredentials() {
         if (passwordLoginCredentials == null) {
             throw new IllegalStateException("Cannot access PasswordLoginCredentials if configured to use " + loginType + " authentication!");

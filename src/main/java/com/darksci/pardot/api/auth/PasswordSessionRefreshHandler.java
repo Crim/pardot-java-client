@@ -26,19 +26,45 @@ import com.darksci.pardot.api.response.login.LoginResponse;
 
 import java.util.Objects;
 
-public class PasswordCredentialHandler implements CredentialHandler {
+/**
+ * Handles refreshing/renewing sessions using Pardot's Username and Password authentication scheme.
+ */
+public class PasswordSessionRefreshHandler implements SessionRefreshHandler {
     private final PasswordLoginCredentials credentials;
     private final PardotClient client;
 
-    public PasswordCredentialHandler(final PasswordLoginCredentials credentials, final PardotClient client) {
+    /**
+     * Constructor.
+     * @param credentials Configured credentials to use for renewing a session.
+     * @param client Underlying PardotClient to make requests using.
+     */
+    public PasswordSessionRefreshHandler(final PasswordLoginCredentials credentials, final PardotClient client) {
         this.credentials = Objects.requireNonNull(credentials);
         this.client = Objects.requireNonNull(client);
     }
 
+    /**
+     * Does a valid session exist.
+     * @return True if yes, false if not.
+     */
+    @Override
     public boolean isValid() {
         return credentials.hasApiKey();
     }
 
+    /**
+     * Clear saved Session token.
+     */
+    @Override
+    public void clearToken() {
+        credentials.clearApiKey();
+    }
+
+    /**
+     * Refresh session token.
+     * @return true on success, false on error.
+     */
+    @Override
     public boolean refreshCredentials() {
         // Otherwise attempt to authenticate.
         try {
@@ -57,7 +83,6 @@ public class PasswordCredentialHandler implements CredentialHandler {
             // If we get an InvalidRequest Exception
             throw new LoginFailedException(exception.getMessage(), exception.getErrorCode(), exception);
         }
-
         return false;
     }
 }
