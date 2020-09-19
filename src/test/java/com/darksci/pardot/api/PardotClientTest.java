@@ -63,16 +63,16 @@ public class PardotClientTest {
         final String userEmail = "user@example.com";
         final String userPassword = "NotARealPassword";
         final String userKey = "NotARealUserKey";
-        apiConfig = Configuration.newBuilder()
-            .withUsernameAndPasswordLogin(userEmail, userPassword, userKey)
-            .build();
+
+        final ConfigurationBuilder builder = Configuration.newBuilder()
+            .withUsernameAndPasswordLogin(userEmail, userPassword, userKey);
+        apiConfig = builder.build();
 
         // Create mock RestClient
         mockRestClient = mock(RestClient.class);
 
         // Create instance using mock dependencies.
         pardotClient = new PardotClient(apiConfig, mockRestClient);
-
     }
 
     /**

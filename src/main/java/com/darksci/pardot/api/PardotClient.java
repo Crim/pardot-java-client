@@ -206,25 +206,33 @@ public class PardotClient implements AutoCloseable {
      */
     private boolean isInitialized = false;
 
+
     /**
      * Default Constructor.
-     * @param configuration Pardot Api Configuration.
+     * @param configurationBuilder Pardot Api Configuration Builder instance.
      */
-    public PardotClient(final Configuration configuration) {
-        this(configuration, new HttpClientRestClient());
-    }
-
     public PardotClient(final ConfigurationBuilder configurationBuilder) {
-        this(Objects.requireNonNull(configurationBuilder).build());
+        this(configurationBuilder, new HttpClientRestClient());
     }
 
     /**
      * Constructor for injecting a RestClient implementation.
      * Typically only used in testing.
-     * @param configuration Pardot Api Configuration.
+     * @param configurationBuilder Pardot Api Configuration Builder instance.
      * @param restClient RestClient implementation to use.
      */
-    public PardotClient(final Configuration configuration, final RestClient restClient) {
+    public PardotClient(final ConfigurationBuilder configurationBuilder, final RestClient restClient) {
+        this(Objects.requireNonNull(configurationBuilder).build(), Objects.requireNonNull(restClient));
+    }
+
+    /**
+     * Package protected constructor for when you need to keep a referene to the actual
+     * configuration instance being used.  Typically for test use cases only.
+     *
+     * @param configuration Pardot API Configuration instance.
+     * @param restClient RestClient implementation to use.
+     */
+    PardotClient(final Configuration configuration, final RestClient restClient) {
         this.configuration = configuration;
         this.restClient = restClient;
 

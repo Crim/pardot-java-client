@@ -20,7 +20,6 @@ package com.darksci.pardot.api;
 import categories.IntegrationTest;
 import com.darksci.pardot.api.request.login.LoginRequest;
 import com.darksci.pardot.api.response.login.LoginResponse;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.slf4j.Logger;
@@ -46,7 +45,7 @@ public class PardotClientIntegrationTest extends AbstractPardotClientIntegration
     private static final Logger logger = LoggerFactory.getLogger(PardotClientIntegrationTest.class);
 
     @Override
-    Configuration createConfiguration() throws IOException {
+    ConfigurationBuilder createConfiguration() throws IOException {
         final InputStream inputStream = getClass().getClassLoader().getResourceAsStream("test_credentials.properties");
 
         // Load properties
@@ -69,7 +68,7 @@ public class PardotClientIntegrationTest extends AbstractPardotClientIntegration
         }
 
         // Create client
-        return configBuilder.build();
+        return configBuilder;
     }
 
     /**
