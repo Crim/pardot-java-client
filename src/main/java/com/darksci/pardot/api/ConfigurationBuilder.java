@@ -26,6 +26,7 @@ public class ConfigurationBuilder {
     // Configuration properties for SSO login.
     private String ssoClientId;
     private String ssoClientSecret;
+    private String businessUnitId;
 
     // Optional Proxy Configuration
     private String proxyHost = null;
@@ -63,12 +64,13 @@ public class ConfigurationBuilder {
         return this;
     }
 
-    public ConfigurationBuilder withSsoLogin(final String username, final String password, final String clientId, final String clientSecret) {
+    public ConfigurationBuilder withSsoLogin(final String username, final String password, final String clientId, final String clientSecret, final String businessUnitId) {
         this.loginType = SSO;
         this.email = Objects.requireNonNull(username);
         this.password = Objects.requireNonNull(password);
         this.ssoClientId = Objects.requireNonNull(clientId);
         this.ssoClientSecret = Objects.requireNonNull(clientSecret);
+        this.businessUnitId = Objects.requireNonNull(businessUnitId);
         return this;
     }
 
@@ -217,7 +219,7 @@ public class ConfigurationBuilder {
         switch (loginType) {
             case SSO:
                 passwordLoginCredentials = null;
-                ssoLoginCredentials = new SsoLoginCredentials(email, password, ssoClientId, ssoClientSecret);
+                ssoLoginCredentials = new SsoLoginCredentials(email, password, ssoClientId, ssoClientSecret, businessUnitId);
                 break;
             case USERNAME_PASSWORD:
                 passwordLoginCredentials = new PasswordLoginCredentials(email, password, userKey);

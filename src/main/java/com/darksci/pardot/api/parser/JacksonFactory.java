@@ -21,6 +21,7 @@ import com.darksci.pardot.api.parser.prospect.ProspectCustomFieldDeserializer;
 import com.darksci.pardot.api.response.customfield.ProspectCustomFieldValue;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
@@ -35,15 +36,28 @@ public class JacksonFactory {
     /**
      * Cache mapper instance.
      */
-    private static final XmlMapper instance = newInstance();
+    private static final XmlMapper xmlInstance = newInstance();
+    private static final JsonMapper jsonInstance = newJsonInstance();
+
+    /**
+     * Creates properly configured Jackson JSON Mapper instances.
+     * @return JsonMapper instance.
+     */
+    public static JsonMapper newJsonInstance() {
+        if (jsonInstance != null) {
+            return jsonInstance;
+        }
+
+        return new JsonMapper();
+    }
 
     /**
      * Creates properly configured Jackson XML Mapper instances.
      * @return XmlMapper instance.
      */
     public static XmlMapper newInstance() {
-        if (instance != null) {
-            return instance;
+        if (xmlInstance != null) {
+            return xmlInstance;
         }
 
         // Create new mapper

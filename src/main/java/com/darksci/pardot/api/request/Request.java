@@ -38,4 +38,12 @@ public interface Request {
      * @return Request parameter key/value pairs.
      */
     Map<String, String> getRequestParameters();
+
+    /**
+     * Allows for overriding the host targetted by the request.
+     * @return Defaults to return null, use the configured Pardot API host.
+     */
+    default String getApiHostname() {
+        return null;
+    }
 }

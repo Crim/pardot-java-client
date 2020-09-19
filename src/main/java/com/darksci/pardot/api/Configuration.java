@@ -110,7 +110,7 @@ public class Configuration {
     }
 
     public SsoLoginCredentials getSsoLoginCredentials() {
-        if (passwordLoginCredentials == null) {
+        if (ssoLoginCredentials == null) {
             throw new IllegalStateException("Cannot access SsoLoginCredentials if configured to use " + loginType + " authentication!");
         }
         return ssoLoginCredentials;

@@ -22,7 +22,7 @@ import com.darksci.pardot.api.request.BaseRequest;
 /**
  * Make a login request to API.
  */
-public class LoginRequest extends BaseRequest<LoginRequest> {
+public class LoginRequest extends BaseRequest<LoginRequest> implements LoginRequestMarker {
 
     @Override
     public String getApiEndpoint() {
@@ -31,6 +31,10 @@ public class LoginRequest extends BaseRequest<LoginRequest> {
 
     public LoginRequest withEmail(final String email) {
         return setParam("email", email);
+    }
+
+    public LoginRequest withUsername(final String username) {
+        return withEmail(username);
     }
 
     public LoginRequest withPassword(final String password) {

@@ -17,6 +17,9 @@
 
 package com.darksci.pardot.api;
 
+import com.darksci.pardot.api.auth.CredentialHandler;
+import com.darksci.pardot.api.auth.PasswordCredentialHandler;
+import com.darksci.pardot.api.auth.SsoCredentialHandler;
 import com.darksci.pardot.api.config.LoginType;
 import com.darksci.pardot.api.parser.ErrorResponseParser;
 import com.darksci.pardot.api.parser.ResponseParser;
@@ -42,6 +45,8 @@ import com.darksci.pardot.api.parser.list.ListReadResponseParser;
 import com.darksci.pardot.api.parser.listmembership.ListMembershipQueryResponseParser;
 import com.darksci.pardot.api.parser.listmembership.ListMembershipReadResponseParser;
 import com.darksci.pardot.api.parser.login.LoginResponseParser;
+import com.darksci.pardot.api.parser.login.SsoLoginErrorResponseParser;
+import com.darksci.pardot.api.parser.login.SsoLoginResponseParser;
 import com.darksci.pardot.api.parser.opportunity.OpportunityQueryResponseParser;
 import com.darksci.pardot.api.parser.opportunity.OpportunityReadResponseParser;
 import com.darksci.pardot.api.parser.prospect.ProspectQueryResponseParser;
@@ -96,6 +101,8 @@ import com.darksci.pardot.api.request.listmembership.ListMembershipQueryRequest;
 import com.darksci.pardot.api.request.listmembership.ListMembershipReadRequest;
 import com.darksci.pardot.api.request.listmembership.ListMembershipUpdateRequest;
 import com.darksci.pardot.api.request.login.LoginRequest;
+import com.darksci.pardot.api.request.login.LoginRequestMarker;
+import com.darksci.pardot.api.request.login.SsoLoginRequest;
 import com.darksci.pardot.api.request.opportunity.OpportunityCreateRequest;
 import com.darksci.pardot.api.request.opportunity.OpportunityDeleteRequest;
 import com.darksci.pardot.api.request.opportunity.OpportunityQueryRequest;
@@ -149,6 +156,8 @@ import com.darksci.pardot.api.response.list.ListMembership;
 import com.darksci.pardot.api.response.list.ListQueryResponse;
 import com.darksci.pardot.api.response.listmembership.ListMembershipQueryResponse;
 import com.darksci.pardot.api.response.login.LoginResponse;
+import com.darksci.pardot.api.response.login.SsoLoginErrorResponse;
+import com.darksci.pardot.api.response.login.SsoLoginResponse;
 import com.darksci.pardot.api.response.opportunity.Opportunity;
 import com.darksci.pardot.api.response.opportunity.OpportunityQueryResponse;
 import com.darksci.pardot.api.response.prospect.Prospect;
@@ -185,6 +194,8 @@ public class PardotClient implements AutoCloseable {
      */
     private final Configuration configuration;
 
+    private final CredentialHandler credentialHandler;
+
     /**
      * Underlying RestClient to use.
      */
@@ -200,8 +211,7 @@ public class PardotClient implements AutoCloseable {
      * @param configuration Pardot Api Configuration.
      */
     public PardotClient(final Configuration configuration) {
-        this.configuration = configuration;
-        this.restClient = new HttpClientRestClient();
+        this(configuration, new HttpClientRestClient());
     }
 
     public PardotClient(final ConfigurationBuilder configurationBuilder) {
@@ -217,12 +227,20 @@ public class PardotClient implements AutoCloseable {
     public PardotClient(final Configuration configuration, final RestClient restClient) {
         this.configuration = configuration;
         this.restClient = restClient;
+
+        if (configuration.isUsingPasswordAuthentication()) {
+            credentialHandler = new PasswordCredentialHandler(configuration.getPasswordLoginCredentials(), this);
+        } else if (configuration.isUsingSsoAuthentication()) {
+            credentialHandler = new SsoCredentialHandler(configuration.getSsoLoginCredentials(), this);
+        } else {
+            throw new IllegalStateException("Unhandled Authentication Type!");
+        }
     }
 
     private <T> T submitRequest(final Request request, ResponseParser<T> responseParser) {
         // Ugly hack,
         // avoid doing login check if we're doing a login request.
-        if (!(request instanceof LoginRequest)) {
+        if (!(request instanceof LoginRequestMarker)) {
             // Check for auth token
             checkLogin();
         }
@@ -233,7 +251,7 @@ public class PardotClient implements AutoCloseable {
         String responseStr = restResponse.getResponseStr();
 
         // If we have a valid response
-        if (!(request instanceof LoginRequest)) {
+        if (!(request instanceof LoginRequestMarker)) {
             logger.info("Response: {}", restResponse);
         }
 
@@ -245,7 +263,7 @@ public class PardotClient implements AutoCloseable {
                 responseStr = "";
             }
 
-            // High level check for error response
+            // High level check for Pardot error responses
             if (responseStr.contains("<rsp stat=\"fail\"")) {
                 try {
                     // Parse error response
@@ -256,6 +274,14 @@ public class PardotClient implements AutoCloseable {
                         // This means the user session has expired.  Lets attempt to renew it.
                         configuration.getPasswordLoginCredentials().clearApiKey();
                         checkLogin();
+
+                        // Replay original request
+                        return submitRequest(request, responseParser);
+                    } else if (ErrorCode.WRONG_API_VERSION.getCode() == error.getCode() && ! "4".equals(configuration.getPardotApiVersion())) {
+                        logger.info("Detected API version 4 should be used, retrying request with API Version 4.");
+
+                        // Upgrade to version 4
+                        configuration.setPardotApiVersion("4");
 
                         // Replay original request
                         return submitRequest(request, responseParser);
@@ -272,7 +298,18 @@ public class PardotClient implements AutoCloseable {
             } catch (IOException exception) {
                 throw new ParserException(exception.getMessage(), exception);
             }
+
+        // Handle SSO Login Failures
+        } else if (request instanceof SsoLoginRequest) {
+            // Attempt to parse SSO Error Response.
+            try {
+                final SsoLoginErrorResponse errorResponse = new SsoLoginErrorResponseParser().parseResponse(responseStr);
+                throw new LoginFailedException("[" + errorResponse.getError() + "] " + errorResponse.getDescription(), responseCode);
+            } catch (final IOException exception) {
+                throw new ParserException(exception.getMessage(), exception);
+            }
         }
+
         // Otherwise throw an exception.
         throw new InvalidRequestException("Invalid http response code from server: " + restResponse.getHttpCode(), restResponse.getHttpCode());
     }
@@ -310,38 +347,10 @@ public class PardotClient implements AutoCloseable {
      * get a new API key.
      */
     private void checkLogin() {
-        if (configuration.isUsingPasswordAuthentication()) {
-            checkPasswordLogin();
-        } else if (configuration.isUsingSsoAuthentication()) {
-            checkSsoLogin();
-        }
-    }
-
-    private void checkSsoLogin() {
-        // TODO handle SSO
-        throw new RuntimeException("Not implemented yet");
-    }
-
-    private void checkPasswordLogin() {
-        if (configuration.getPasswordLoginCredentials().hasApiKey()) {
+        if (credentialHandler.isValid()) {
             return;
         }
-        // Otherwise attempt to authenticate.
-        try {
-            final LoginResponse response = login(new LoginRequest()
-                .withEmail(configuration.getPasswordLoginCredentials().getUsername())
-                .withPassword(configuration.getPasswordLoginCredentials().getPassword())
-            );
-
-            // If we have an API key.
-            if (response.getApiKey() != null) {
-                // Set it.
-                getConfiguration().getPasswordLoginCredentials().setApiKey(response.getApiKey());
-            }
-        } catch (final InvalidRequestException exception) {
-            // If we get an InvalidRequest Exception
-            throw new LoginFailedException(exception.getMessage(), exception.getErrorCode(), exception);
-        }
+        credentialHandler.refreshCredentials();
     }
 
     /**
@@ -351,7 +360,7 @@ public class PardotClient implements AutoCloseable {
      * @return LoginResponse returned from server.
      * @throws LoginFailedException if credentials are invalid.
      */
-    public LoginResponse login(LoginRequest request) {
+    public LoginResponse login(final LoginRequest request) {
         try {
             final LoginResponse loginResponse = submitRequest(request, new LoginResponseParser());
 
@@ -368,6 +377,15 @@ public class PardotClient implements AutoCloseable {
             }
 
             return loginResponse;
+        } catch (final InvalidRequestException exception) {
+            // Throw more specific exception
+            throw new LoginFailedException(exception.getMessage(), exception.getErrorCode(), exception);
+        }
+    }
+
+    public SsoLoginResponse login(final SsoLoginRequest request) {
+        try {
+            return submitRequest(request, new SsoLoginResponseParser());
         } catch (final InvalidRequestException exception) {
             // Throw more specific exception
             throw new LoginFailedException(exception.getMessage(), exception.getErrorCode(), exception);

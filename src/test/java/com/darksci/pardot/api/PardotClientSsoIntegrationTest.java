@@ -1,28 +1,9 @@
-/**
- * Copyright 2017, 2018, 2019, 2020 Stephen Powis https://github.com/Crim/pardot-java-client
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
- * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit
- * persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
- * Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
- * WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
- * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
- * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
-
 package com.darksci.pardot.api;
 
-import categories.IntegrationTest;
-import com.darksci.pardot.api.request.login.LoginRequest;
-import com.darksci.pardot.api.response.login.LoginResponse;
-import org.junit.Before;
+import com.darksci.pardot.api.request.login.SsoLoginRequest;
+import com.darksci.pardot.api.response.login.SsoLoginResponse;
+
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,20 +15,14 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
 
 /**
- * Integration/End-to-End test over HttpClientRestClient.
- *
- * You can run these tests by creating a file under test/resources/test_credentials.properties with 3 values:
- * username=your_pardot_username
- * password=your_pardot_password
- * user_key=your_pardot_userkey
+ * Test cases using SSO Login method.
  */
-@Category(IntegrationTest.class)
-public class PardotClientIntegrationTest extends AbstractPardotClientIntegrationTest {
-    private static final Logger logger = LoggerFactory.getLogger(PardotClientIntegrationTest.class);
+public class PardotClientSsoIntegrationTest extends AbstractPardotClientIntegrationTest {
+    private static final Logger logger = LoggerFactory.getLogger(PardotClientSsoIntegrationTest.class);
 
     @Override
-    Configuration createConfiguration() throws IOException {
-        final InputStream inputStream = getClass().getClassLoader().getResourceAsStream("test_credentials.properties");
+    public Configuration createConfiguration() throws IOException {
+        final InputStream inputStream = getClass().getClassLoader().getResourceAsStream("test_sso_credentials.properties");
 
         // Load properties
         Properties properties = new Properties();
@@ -56,10 +31,12 @@ public class PardotClientIntegrationTest extends AbstractPardotClientIntegration
 
         // Build new configuration
         final ConfigurationBuilder configBuilder = Configuration.newBuilder()
-            .withUsernameAndPasswordLogin(
+            .withSsoLogin(
                 properties.getProperty("username"),
                 properties.getProperty("password"),
-                properties.getProperty("user_key")
+                properties.getProperty("client_id"),
+                properties.getProperty("client_secret"),
+                properties.getProperty("business_unit_id")
             );
 
         if (properties.getProperty("api_host") != null) {
@@ -77,14 +54,16 @@ public class PardotClientIntegrationTest extends AbstractPardotClientIntegration
      */
     @Test
     public void loginTest() {
-        final LoginResponse response = client.login(new LoginRequest()
-            .withEmail(testConfig.getPasswordLoginCredentials().getUsername())
-            .withPassword(testConfig.getPasswordLoginCredentials().getPassword())
+        final SsoLoginResponse response = client.login(new SsoLoginRequest()
+            .withUsername(testConfig.getSsoLoginCredentials().getUsername())
+            .withPassword(testConfig.getSsoLoginCredentials().getPassword())
+            .withClientId(testConfig.getSsoLoginCredentials().getClientId())
+            .withClientSecret(testConfig.getSsoLoginCredentials().getClientSecret())
         );
 
         logger.info("Response: {}", response);
         assertNotNull("Should not be null", response);
-        assertNotNull("Should have non-null property", response.getApiKey());
+        assertNotNull("Should have non-null property", response.getAccessToken());
     }
 
     /**
@@ -92,9 +71,11 @@ public class PardotClientIntegrationTest extends AbstractPardotClientIntegration
      */
     @Test
     public void loginErrorTest() {
-        final LoginRequest request = new LoginRequest()
-            .withEmail("invalid-user")
-            .withPassword("invalid-pass");
+        final SsoLoginRequest request = new SsoLoginRequest()
+            .withUsername(testConfig.getSsoLoginCredentials().getUsername())
+            .withPassword(testConfig.getSsoLoginCredentials().getPassword())
+            .withClientId("bad-id")
+            .withClientSecret("bad-secret");
 
         assertThrows(LoginFailedException.class, () -> client.login(request));
     }

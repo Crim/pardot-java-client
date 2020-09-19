@@ -242,7 +242,7 @@ public class HttpClientRestClient implements RestClient {
      * @return The parsed API response.
      */
     private <T> T submitRequest(final Request request, final ResponseHandler<T> responseHandler) throws IOException {
-        final String url = constructApiUrl(request.getApiEndpoint());
+        final String url = constructApiUrl(request);
         return submitRequest(url, request.getRequestParameters(), responseHandler);
     }
 
@@ -276,9 +276,6 @@ public class HttpClientRestClient implements RestClient {
                         new BasicNameValuePair("api_key", configuration.getPasswordLoginCredentials().getApiKey())
                     );
                 }
-            } else if (configuration.isUsingSsoAuthentication()) {
-                // TODO HANDLE
-                throw new RuntimeException("Not implemented yet");
             }
 
             // Attach submitRequest params
@@ -291,6 +288,12 @@ public class HttpClientRestClient implements RestClient {
             final Map<String, String> headers = new HashMap<>();
             requestInterceptor.modifyHeaders(headers);
             headers.forEach(post::addHeader);
+
+            // If doing SSO Authentication, append authentication header
+            if (configuration.isUsingSsoAuthentication()) {
+                post.addHeader("Authorization", "Bearer " + configuration.getSsoLoginCredentials().getAccessToken());
+                post.addHeader("Pardot-Business-Unit-Id", configuration.getSsoLoginCredentials().getBusinessUnitId());
+            }
 
             // Debug logging
             logger.info("Executing request {} with {}", post.getRequestLine(), filterSensitiveParams(params));
@@ -317,14 +320,17 @@ public class HttpClientRestClient implements RestClient {
 
     /**
      * Internal helper method for generating URLs w/ the appropriate API host and API version.
-     * @param endPoint The end point you want to hit.
+     * @param request Request we want to execute.
      * @return Constructed URL for the end point.
      */
-    private String constructApiUrl(final String endPoint) {
-        return configuration.getPardotApiHost()
-            + "/" + endPoint
-            + "/version/"
-            + configuration.getPardotApiVersion();
+    private String constructApiUrl(final Request request) {
+        if (request.getApiHostname() == null) {
+            return configuration.getPardotApiHost()
+                + "/" + request.getApiEndpoint()
+                + "/version/"
+                + configuration.getPardotApiVersion();
+        }
+        return request.getApiHostname() + request.getApiEndpoint();
     }
 
     /**
@@ -334,7 +340,7 @@ public class HttpClientRestClient implements RestClient {
      */
     private List<NameValuePair> filterSensitiveParams(final List<NameValuePair> inputParams) {
         // Define sensitive fields
-        final String[] sensitiveFields = new String[] { "user_key", "password", "api_key" };
+        final String[] sensitiveFields = new String[] { "user_key", "password", "api_key", "client_secret" };
 
         // Create a copy of the list
         final List<NameValuePair> copiedList = new ArrayList<>();
