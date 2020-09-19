@@ -17,6 +17,7 @@
 
 package com.darksci.pardot.api;
 
+import com.darksci.pardot.api.config.LoginType;
 import com.darksci.pardot.api.parser.ErrorResponseParser;
 import com.darksci.pardot.api.parser.ResponseParser;
 import com.darksci.pardot.api.parser.StringResponseParser;
@@ -171,6 +172,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Interface for Pardot's API.
@@ -200,6 +202,10 @@ public class PardotClient implements AutoCloseable {
     public PardotClient(final Configuration configuration) {
         this.configuration = configuration;
         this.restClient = new HttpClientRestClient();
+    }
+
+    public PardotClient(final ConfigurationBuilder configurationBuilder) {
+        this(Objects.requireNonNull(configurationBuilder).build());
     }
 
     /**
@@ -246,9 +252,9 @@ public class PardotClient implements AutoCloseable {
                     final ErrorResponse error = new ErrorResponseParser().parseResponse(restResponse.getResponseStr());
 
                     // Inspect error code
-                    if (ErrorCode.INVALID_API_OR_USER_KEY.getCode() == error.getCode()) {
+                    if (configuration.isUsingPasswordAuthentication() && ErrorCode.INVALID_API_OR_USER_KEY.getCode() == error.getCode()) {
                         // This means the user session has expired.  Lets attempt to renew it.
-                        configuration.setApiKey(null);
+                        configuration.getPasswordLoginCredentials().clearApiKey();
                         checkLogin();
 
                         // Replay original request
@@ -304,20 +310,33 @@ public class PardotClient implements AutoCloseable {
      * get a new API key.
      */
     private void checkLogin() {
-        if (configuration.getApiKey() != null) {
+        if (configuration.isUsingPasswordAuthentication()) {
+            checkPasswordLogin();
+        } else if (configuration.isUsingSsoAuthentication()) {
+            checkSsoLogin();
+        }
+    }
+
+    private void checkSsoLogin() {
+        // TODO handle SSO
+        throw new RuntimeException("Not implemented yet");
+    }
+
+    private void checkPasswordLogin() {
+        if (configuration.getPasswordLoginCredentials().hasApiKey()) {
             return;
         }
         // Otherwise attempt to authenticate.
         try {
             final LoginResponse response = login(new LoginRequest()
-                .withEmail(configuration.getEmail())
-                .withPassword(configuration.getPassword())
+                .withEmail(configuration.getPasswordLoginCredentials().getUsername())
+                .withPassword(configuration.getPasswordLoginCredentials().getPassword())
             );
 
             // If we have an API key.
             if (response.getApiKey() != null) {
                 // Set it.
-                getConfiguration().setApiKey(response.getApiKey());
+                getConfiguration().getPasswordLoginCredentials().setApiKey(response.getApiKey());
             }
         } catch (final InvalidRequestException exception) {
             // If we get an InvalidRequest Exception

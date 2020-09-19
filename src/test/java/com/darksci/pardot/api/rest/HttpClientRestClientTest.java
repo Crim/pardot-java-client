@@ -49,11 +49,13 @@ public class HttpClientRestClientTest {
         inputStream.close();
 
         // Load in config
-        testConfig = new Configuration(
-            properties.getProperty("username"),
-            properties.getProperty("password"),
-            properties.getProperty("user_key")
-        );
+        testConfig = Configuration.newBuilder()
+            .withUsernameAndPasswordLogin(
+                properties.getProperty("username"),
+                properties.getProperty("password"),
+                properties.getProperty("user_key")
+            )
+            .build();
 
         logger.info("Config: {}", testConfig);
 

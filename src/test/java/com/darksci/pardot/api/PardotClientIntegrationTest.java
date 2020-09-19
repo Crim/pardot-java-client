@@ -163,26 +163,29 @@ public class PardotClientIntegrationTest {
         properties.load(inputStream);
         inputStream.close();
 
-        // Load in config
-        testConfig = new Configuration(
-            properties.getProperty("username"),
-            properties.getProperty("password"),
-            properties.getProperty("user_key")
-        );
-        if (properties.getProperty("api_host") != null) {
-            testConfig
-                .setPardotApiHost(properties.getProperty("api_host"))
-                .useInsecureSslCertificates();
+        // Build new configuration
+        final ConfigurationBuilder configBuilder = Configuration.newBuilder()
+            .withUsernameAndPasswordLogin(
+                properties.getProperty("username"),
+                properties.getProperty("password"),
+                properties.getProperty("user_key")
+            );
 
+        if (properties.getProperty("api_host") != null) {
+            configBuilder
+                .withPardotApiHost(properties.getProperty("api_host"))
+                .withIgnoreInvalidSslCertificates(true);
         }
 
         // Create client
+        testConfig = configBuilder.build();
         client = new PardotClient(testConfig);
     }
 
     @After
     public void tearDown() {
         testConfig = null;
+        client.close();
     }
 
     /**
@@ -191,8 +194,8 @@ public class PardotClientIntegrationTest {
     @Test
     public void loginTest() {
         final LoginResponse response = client.login(new LoginRequest()
-            .withEmail(testConfig.getEmail())
-            .withPassword(testConfig.getPassword())
+            .withEmail(testConfig.getPasswordLoginCredentials().getUsername())
+            .withPassword(testConfig.getPasswordLoginCredentials().getPassword())
         );
 
         logger.info("Response: {}", response);

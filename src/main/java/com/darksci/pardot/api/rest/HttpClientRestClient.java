@@ -115,7 +115,7 @@ public class HttpClientRestClient implements RestClient {
         // Create hostname verifier instance.
         final HostnameVerifier hostnameVerifier;
         // Emit an warning letting everyone know we're using an insecure configuration.
-        if (configuration.getIgnoreInvalidSslCertificates()) {
+        if (configuration.isIgnoreInvalidSslCertificates()) {
             logger.warn("Using insecure configuration, skipping server-side certificate validation checks.");
 
             // If we're configured to ignore invalid certificates, use the Noop verifier.
@@ -144,21 +144,27 @@ public class HttpClientRestClient implements RestClient {
         final RequestConfig.Builder requestConfigBuilder = RequestConfig.custom();
 
         // If we have a configured proxy host
-        if (configuration.getProxyHost() != null) {
+        if (configuration.hasProxyConfigured()) {
             // Define proxy host
             final HttpHost proxyHost = new HttpHost(
-                configuration.getProxyHost(),
-                configuration.getProxyPort(),
-                configuration.getProxyScheme()
+                configuration.getProxyConfiguration().getHost(),
+                configuration.getProxyConfiguration().getPort(),
+                configuration.getProxyConfiguration().getScheme()
             );
 
             // If we have proxy auth enabled
-            if (configuration.getProxyUsername() != null) {
+            if (configuration.getProxyConfiguration().isAuthenticationRequired()) {
                 // Create credential provider
                 final CredentialsProvider credsProvider = new BasicCredentialsProvider();
                 credsProvider.setCredentials(
-                    new AuthScope(configuration.getProxyHost(), configuration.getProxyPort()),
-                    new UsernamePasswordCredentials(configuration.getProxyUsername(), configuration.getProxyPassword())
+                    new AuthScope(
+                        configuration.getProxyConfiguration().getHost(),
+                        configuration.getProxyConfiguration().getPort()
+                    ),
+                    new UsernamePasswordCredentials(
+                        configuration.getProxyConfiguration().getUsername(),
+                        configuration.getProxyConfiguration().getPassword()
+                    )
                 );
 
                 // Attach Credentials provider to client builder.
@@ -185,7 +191,7 @@ public class HttpClientRestClient implements RestClient {
             final TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
 
             // If client configuration is set to ignore invalid certificates
-            if (configuration.getIgnoreInvalidSslCertificates()) {
+            if (configuration.isIgnoreInvalidSslCertificates()) {
                 // Initialize ssl context with a TrustManager instance that just accepts everything blindly.
                 // HIGHLY INSECURE / NOT RECOMMENDED!
                 return new TrustManager[]{ new NoopTrustManager() };
@@ -258,9 +264,21 @@ public class HttpClientRestClient implements RestClient {
 
             // Define required auth params
             final List<NameValuePair> params = new ArrayList<>();
-            params.add(new BasicNameValuePair("user_key", configuration.getUserKey()));
-            if (configuration.getApiKey() != null) {
-                params.add(new BasicNameValuePair("api_key", configuration.getApiKey()));
+
+            // If using Username and Password auth.
+            if (configuration.isUsingPasswordAuthentication()) {
+                params.add(
+                    new BasicNameValuePair("user_key", configuration.getPasswordLoginCredentials().getUserKey())
+                );
+
+                if (configuration.getPasswordLoginCredentials().hasApiKey()) {
+                    params.add(
+                        new BasicNameValuePair("api_key", configuration.getPasswordLoginCredentials().getApiKey())
+                    );
+                }
+            } else if (configuration.isUsingSsoAuthentication()) {
+                // TODO HANDLE
+                throw new RuntimeException("Not implemented yet");
             }
 
             // Attach submitRequest params

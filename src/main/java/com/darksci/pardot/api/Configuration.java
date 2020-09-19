@@ -17,186 +17,126 @@
 
 package com.darksci.pardot.api;
 
+import com.darksci.pardot.api.config.LoginType;
+import com.darksci.pardot.api.config.PasswordLoginCredentials;
+import com.darksci.pardot.api.config.ProxyConfiguration;
+import com.darksci.pardot.api.config.SsoLoginCredentials;
 import com.darksci.pardot.api.rest.interceptor.NoopRequestInterceptor;
 import com.darksci.pardot.api.rest.interceptor.RequestInterceptor;
+import org.apache.http.auth.UsernamePasswordCredentials;
 
 import java.util.Objects;
 
 /**
- * Configure your Pardot API credentials.
- *
- * Also allows for configuring an optional proxy with or without authentication.
+ * Defines API Client Configuration.
+ * Use {@link ConfigurationBuilder} to create instances of these.
  */
 public class Configuration {
-    private final String email;
-    private final String password;
-    private final String userKey;
+    // Login Details.
+    private final LoginType loginType;
+    private final SsoLoginCredentials ssoLoginCredentials;
+    private final PasswordLoginCredentials passwordLoginCredentials;
 
-    /**
-     * Optionally you can re-use an existing known good api key.
-     */
-    private String apiKey = null;
-
-    // Optional Proxy Configuration
-    private String proxyHost = null;
-    private int proxyPort = 0;
-    private String proxyScheme = "HTTP";
-
-    // Optional Proxy Authentication.
-    private String proxyUsername = null;
-    private String proxyPassword = null;
+    // Proxy Configuration
+    private final ProxyConfiguration proxyConfiguration;
 
     // If you want to override the Pardot API url or version.
-    private String pardotApiHost = "https://pi.pardot.com/api";
-    private String pardotApiVersion = "3";
+    private final String pardotApiHost;
+    private String pardotApiVersion;
 
     /**
      * Optional setting to skip validating Pardot's SSL certificate.
      * There should be no real valid use case for this option other then use against
      * development environments.
      */
-    private boolean ignoreInvalidSslCertificates = false;
+    private final boolean ignoreInvalidSslCertificates;
 
     /**
      * Optional interface to allow for modifying the outbound Http Post request prior to sending it.
      */
-    private RequestInterceptor requestInterceptor = new NoopRequestInterceptor();
+    private final RequestInterceptor requestInterceptor;
 
-    /**
-     * Constructor.
-     * @param email Pardot user's email address.
-     * @param password Pardot user's password.
-     * @param userKey Pardot user's userKey.
-     */
-    public Configuration(final String email, final String password, final String userKey) {
-        this.email = email;
-        this.password = password;
-        this.userKey = userKey;
+    public static ConfigurationBuilder newBuilder() {
+        return new ConfigurationBuilder();
     }
 
-    public String getEmail() {
-        return email;
+    public Configuration(final PasswordLoginCredentials passwordLoginCredentials, final ProxyConfiguration proxyConfiguration, final String pardotApiHost, final String pardotApiVersion, final boolean ignoreInvalidSslCertificates, final RequestInterceptor requestInterceptor) {
+        this(
+            LoginType.USERNAME_PASSWORD,
+            null,
+            passwordLoginCredentials,
+            proxyConfiguration,
+            pardotApiHost,
+            pardotApiVersion,
+            ignoreInvalidSslCertificates,
+            requestInterceptor
+        );
     }
 
-    public String getPassword() {
-        return password;
+    public Configuration(final SsoLoginCredentials ssoLoginCredentials, final ProxyConfiguration proxyConfiguration, final String pardotApiHost, final String pardotApiVersion, final boolean ignoreInvalidSslCertificates, final RequestInterceptor requestInterceptor) {
+        this(
+            LoginType.SSO,
+            ssoLoginCredentials,
+            null,
+            proxyConfiguration,
+            pardotApiHost,
+            pardotApiVersion,
+            ignoreInvalidSslCertificates,
+            requestInterceptor
+        );
     }
 
-    public String getUserKey() {
-        return userKey;
-    }
-
-    /**
-     * Allow setting optional proxy configuration.
-     *
-     * @param proxyHost Host for the proxy to use.
-     * @param proxyPort Post for the proxy to use.
-     * @param proxyScheme Scheme to use, HTTP/HTTPS
-     * @return Configuration instance.
-     */
-    public Configuration useProxy(final String proxyHost, final int proxyPort, final String proxyScheme) {
-        this.proxyHost = proxyHost;
-        this.proxyPort = proxyPort;
-        this.proxyScheme = proxyScheme;
-        return this;
-    }
-
-    /**
-     * Allow setting credentials for a proxy that requires authentication.
-     *
-     * @param proxyUsername Username for proxy.
-     * @param proxyPassword Password for proxy.
-     * @return Configuration instance.
-     */
-    public Configuration useProxyAuthentication(final String proxyUsername, final String proxyPassword) {
-        this.proxyUsername = proxyUsername;
-        this.proxyPassword = proxyPassword;
-        return this;
-    }
-
-    /**
-     * Configure library to use Pardot Api Version 4.
-     * @return Configuration instance.
-     */
-    public Configuration withApiVersion4() {
-        this.pardotApiVersion = "4";
-        return this;
-    }
-
-    /**
-     * Configure library to use Pardot Api Version 4.
-     * @return Configuration instance.
-     */
-    public Configuration withApiVersion3() {
-        this.pardotApiVersion = "3";
-        return this;
-    }
-
-    /**
-     * Allows for injecting a Http Request Interceptor instance.
-     *
-     * @param requestInterceptor Implementation to use.
-     * @return Configuration instance.
-     */
-    public Configuration withRequestInterceptor(final RequestInterceptor requestInterceptor) {
-        Objects.requireNonNull(requestInterceptor);
+    public Configuration(final LoginType loginType, final SsoLoginCredentials ssoLoginCredentials, final PasswordLoginCredentials passwordLoginCredentials, final ProxyConfiguration proxyConfiguration, final String pardotApiHost, final String pardotApiVersion, final boolean ignoreInvalidSslCertificates, final RequestInterceptor requestInterceptor) {
+        this.loginType = loginType;
+        this.ssoLoginCredentials = ssoLoginCredentials;
+        this.passwordLoginCredentials = passwordLoginCredentials;
+        this.proxyConfiguration = proxyConfiguration;
+        this.pardotApiHost = pardotApiHost;
+        this.pardotApiVersion = pardotApiVersion;
+        this.ignoreInvalidSslCertificates = ignoreInvalidSslCertificates;
         this.requestInterceptor = requestInterceptor;
-        return this;
     }
 
-    /**
-     * Skip all validation of SSL Certificates.  This is insecure and highly discouraged!
-     *
-     * @return Configuration instance.
-     */
-    public Configuration useInsecureSslCertificates() {
-        this.ignoreInvalidSslCertificates = true;
-        return this;
+    public boolean isUsingPasswordAuthentication() {
+        return LoginType.USERNAME_PASSWORD == loginType;
     }
 
-    public String getProxyHost() {
-        return proxyHost;
+    public boolean isUsingSsoAuthentication() {
+        return LoginType.SSO == loginType;
     }
 
-    public int getProxyPort() {
-        return proxyPort;
+    public LoginType getLoginType() {
+        return loginType;
     }
 
-    public String getProxyScheme() {
-        return proxyScheme;
+    public SsoLoginCredentials getSsoLoginCredentials() {
+        if (passwordLoginCredentials == null) {
+            throw new IllegalStateException("Cannot access SsoLoginCredentials if configured to use " + loginType + " authentication!");
+        }
+        return ssoLoginCredentials;
     }
 
-    public String getProxyUsername() {
-        return proxyUsername;
+    public PasswordLoginCredentials getPasswordLoginCredentials() {
+        if (passwordLoginCredentials == null) {
+            throw new IllegalStateException("Cannot access PasswordLoginCredentials if configured to use " + loginType + " authentication!");
+        }
+        return passwordLoginCredentials;
     }
 
-    public String getProxyPassword() {
-        return proxyPassword;
+    public boolean hasProxyConfigured() {
+        return proxyConfiguration.isConfigured();
+    }
+
+    public ProxyConfiguration getProxyConfiguration() {
+        return proxyConfiguration;
+    }
+
+    public boolean isIgnoreInvalidSslCertificates() {
+        return ignoreInvalidSslCertificates;
     }
 
     public String getPardotApiHost() {
         return pardotApiHost;
-    }
-
-    /**
-     * Allows for overriding the Pardot Api hostname.
-     *
-     * @param pardotApiHost the Pardot API hostname to use.
-     * @return Configuration instance.
-     */
-    public Configuration setPardotApiHost(final String pardotApiHost) {
-        this.pardotApiHost = pardotApiHost;
-        return this;
-    }
-
-    /**
-     * Allows for overriding the Pardot Api hostname.
-     *
-     * @param pardotApiHost the Pardot API hostname to use.
-     * @return Configuration instance.
-     */
-    public Configuration withPardotApiHost(final String pardotApiHost) {
-        return setPardotApiHost(pardotApiHost);
     }
 
     public String getPardotApiVersion() {
@@ -208,43 +148,21 @@ public class Configuration {
         return this;
     }
 
-    public String getApiKey() {
-        return apiKey;
-    }
-
-    public Configuration setApiKey(final String apiKey) {
-        this.apiKey = apiKey;
-        return this;
-    }
-
     public RequestInterceptor getRequestInterceptor() {
         return requestInterceptor;
     }
 
-    public boolean getIgnoreInvalidSslCertificates() {
-        return ignoreInvalidSslCertificates;
-    }
-
     @Override
     public String toString() {
-        final StringBuilder stringBuilder = new StringBuilder("Configuration{")
-            .append("email='").append(email).append('\'')
-            .append(", password='XXXXX'")
-            .append(", userKey='").append(userKey.substring(0,3)).append("...'");
-
-        if (proxyHost != null) {
-            stringBuilder
-                .append(", proxy='").append(proxyScheme).append("://");
-
-            // Append configured proxy auth details
-            if (proxyUsername != null) {
-                stringBuilder.append(proxyUsername).append(':').append("XXXXXXX@");
-            }
-
-            stringBuilder.append(proxyHost).append(":").append(proxyPort).append('\'');
-        }
-        stringBuilder.append('}');
-
-        return stringBuilder.toString();
+        return "Configuration{"
+            + "loginType=" + loginType
+            + ", ssoLoginCredentials=" + ssoLoginCredentials
+            + ", passwordLoginCredentials=" + passwordLoginCredentials
+            + ", proxyConfiguration=" + proxyConfiguration
+            + ", pardotApiHost='" + pardotApiHost + '\''
+            + ", pardotApiVersion='" + pardotApiVersion + '\''
+            + ", ignoreInvalidSslCertificates=" + ignoreInvalidSslCertificates
+            + ", requestInterceptor=" + requestInterceptor
+            + '}';
     }
 }

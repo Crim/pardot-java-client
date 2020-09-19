@@ -63,7 +63,9 @@ public class PardotClientTest {
         final String userEmail = "user@example.com";
         final String userPassword = "NotARealPassword";
         final String userKey = "NotARealUserKey";
-        apiConfig = new Configuration(userEmail, userPassword, userKey);
+        apiConfig = Configuration.newBuilder()
+            .withUsernameAndPasswordLogin(userEmail, userPassword, userKey)
+            .build();
 
         // Create mock RestClient
         mockRestClient = mock(RestClient.class);
@@ -80,8 +82,8 @@ public class PardotClientTest {
     public void smokeTestDirectLoginRequest() {
         // Construct request.
         final LoginRequest loginRequest = new LoginRequest()
-            .withEmail(apiConfig.getEmail())
-            .withPassword(apiConfig.getPassword());
+            .withEmail(apiConfig.getPasswordLoginCredentials().getUsername())
+            .withPassword(apiConfig.getPasswordLoginCredentials().getPassword());
 
         // Mock response
         when(mockRestClient.submitRequest(isA(LoginRequest.class)))
@@ -112,7 +114,7 @@ public class PardotClientTest {
     @Test
     public void testIndirectLogin() {
         // Sanity test
-        assertNull("ApiKey should start as null prior to login", apiConfig.getApiKey());
+        assertNull("ApiKey should start as null prior to login", apiConfig.getPasswordLoginCredentials().getApiKey());
 
         // Construct request to query a tag
         // This exact request isn't really relevant. Just that it will trigger
@@ -135,8 +137,8 @@ public class PardotClientTest {
         assertEquals("Standard Tag", response.getName());
 
         // Validate we updated our ApiConfig based on the login.
-        assertNotNull("ApiKey should no longer be null", apiConfig.getApiKey());
-        assertEquals("DontWorryIDidNotCheckInARealHash", apiConfig.getApiKey());
+        assertNotNull("ApiKey should no longer be null", apiConfig.getPasswordLoginCredentials().getApiKey());
+        assertEquals("DontWorryIDidNotCheckInARealHash", apiConfig.getPasswordLoginCredentials().getApiKey());
 
         // Verify mock interactions
         verify(mockRestClient, times(1))
@@ -158,7 +160,7 @@ public class PardotClientTest {
     @Test
     public void testReAuthenticationOnSessionTimeout() {
         // Lets set a dummy Authentication Key to simulate already having a valid session
-        apiConfig.setApiKey("OriginalDummyKey");
+        apiConfig.getPasswordLoginCredentials().setApiKey("OriginalDummyKey");
 
         // Construct request to query a tag
         // This exact request isn't really relevant. Just that it will trigger
@@ -188,8 +190,8 @@ public class PardotClientTest {
         assertEquals("Standard Tag", response.getName());
 
         // Validate we updated our ApiConfig based on the login.
-        assertNotNull("ApiKey should no longer be null", apiConfig.getApiKey());
-        assertEquals("DontWorryIDidNotCheckInARealHash", apiConfig.getApiKey());
+        assertNotNull("ApiKey should no longer be null", apiConfig.getPasswordLoginCredentials().getApiKey());
+        assertEquals("DontWorryIDidNotCheckInARealHash", apiConfig.getPasswordLoginCredentials().getApiKey());
 
         // Verify mock interactions
         verify(mockRestClient, times(1))
@@ -213,7 +215,7 @@ public class PardotClientTest {
     @Test
     public void testReAuthenticationOnSessionTimeout_triggersInvalidCredentials() {
         // Lets set a dummy Authentication Key to simulate already having a valid session
-        apiConfig.setApiKey("OriginalDummyKey");
+        apiConfig.getPasswordLoginCredentials().setApiKey("OriginalDummyKey");
 
         // Construct request to query a tag
         // This exact request isn't really relevant. Just that it will trigger
