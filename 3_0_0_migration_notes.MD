@@ -18,7 +18,7 @@ final PardotClient client = new PardotClient(configuration);
 **Should now look like this**
 ```java
 final ConfigurationBuilder configuration = Configuration.newBuilder()
-    // NOTE: Authenticating using this method will cease to function after Feb. 1 2020.
+    // NOTE: Authenticating using this method will cease to function after ~ Feb. 1 2021.
     //       See section below about migrating to SSO authentication.
     .withUsernameAndPasswordLogin(
         "YourPardotUsername",
