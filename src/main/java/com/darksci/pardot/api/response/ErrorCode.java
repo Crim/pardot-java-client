@@ -37,7 +37,12 @@ public enum ErrorCode {
     INVALID_LIST_ID(55),
     INVALID_EMAIL_FORMAT(65),
     // Returned if requested with API Version 3, but required to use Version 4.
-    WRONG_API_VERSION(88);
+    WRONG_API_VERSION(88),
+    MISSING_REQUIRED_HEADER(181),
+    INVALID_HEADER(182),
+    // Returned if SSO session Access Token becomes invalid.
+    INVALID_ACCESS_TOKEN(184),
+    INVALID_TENANT_ID(185);
 
     private final int code;
 

@@ -94,8 +94,6 @@ public class ConfigurationBuilder {
      * @param clientSecret Connected Application client or consumer secret.
      * @param businessUnitId Id of the Pardot business unit to connect to.
      * @return Builder instance.
-     * @deprecated Pardot is removing Username and Password authentication, replacing it with
-     *             Salesforce SSO Authentication: {@link ConfigurationBuilder#withSsoLogin}
      */
     public ConfigurationBuilder withSsoLogin(final String username, final String password, final String clientId, final String clientSecret, final String businessUnitId) {
         this.loginType = SSO;

@@ -20,7 +20,9 @@ package com.darksci.pardot.api;
 import categories.IntegrationTest;
 import com.darksci.pardot.api.config.Configuration;
 import com.darksci.pardot.api.request.login.LoginRequest;
+import com.darksci.pardot.api.request.tag.TagQueryRequest;
 import com.darksci.pardot.api.response.login.LoginResponse;
+import com.darksci.pardot.api.response.tag.TagQueryResponse;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.slf4j.Logger;
@@ -98,6 +100,22 @@ public class PardotClientIntegrationTest extends AbstractPardotClientIntegration
 
         assertThrows(LoginFailedException.class, () -> client.login(request));
     }
+
+    /**
+     * Inject a bad access_token, forcing the library to renew the session.
+     */
+    @Test
+    public void sessionRenewTest_injectBadApiKeynToForceSessionRenew() {
+        // Inject a bad access token
+        testConfig.getPasswordLoginCredentials().setApiKey("BAD-VALUE");
+
+        // Execute query, this should force a bad auth response from pardot,
+        // which then triggers renewing the apiKey, and then re-playing the tag query request.
+        final TagQueryRequest request = new TagQueryRequest();
+        final TagQueryResponse.Result result = client.tagQuery(request);
+        logger.info("Result: {}", result);
+    }
+
 
     @Test
     @Override

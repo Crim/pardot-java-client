@@ -194,6 +194,9 @@ public class PardotClient implements AutoCloseable {
      */
     private final Configuration configuration;
 
+    /**
+     * Handles renewing an authentication session when it expires.
+     */
     private final SessionRefreshHandler sessionRefreshHandler;
 
     /**
@@ -206,13 +209,15 @@ public class PardotClient implements AutoCloseable {
      */
     private boolean isInitialized = false;
 
-
     /**
      * Default Constructor.
      * @param configurationBuilder Pardot Api Configuration Builder instance.
      */
     public PardotClient(final ConfigurationBuilder configurationBuilder) {
-        this(configurationBuilder, new HttpClientRestClient());
+        this(
+            configurationBuilder,
+            new HttpClientRestClient()
+        );
     }
 
     /**
@@ -222,19 +227,22 @@ public class PardotClient implements AutoCloseable {
      * @param restClient RestClient implementation to use.
      */
     public PardotClient(final ConfigurationBuilder configurationBuilder, final RestClient restClient) {
-        this(Objects.requireNonNull(configurationBuilder).build(), Objects.requireNonNull(restClient));
+        this(
+            Objects.requireNonNull(configurationBuilder).build(),
+            Objects.requireNonNull(restClient)
+        );
     }
 
     /**
-     * Package protected constructor for when you need to keep a referene to the actual
+     * Package protected constructor for when you need to keep a reference to the actual
      * configuration instance being used.  Typically for test use cases only.
      *
      * @param configuration Pardot API Configuration instance.
      * @param restClient RestClient implementation to use.
      */
     PardotClient(final Configuration configuration, final RestClient restClient) {
-        this.configuration = configuration;
-        this.restClient = restClient;
+        this.configuration = Objects.requireNonNull(configuration);
+        this.restClient = Objects.requireNonNull(restClient);
 
         if (configuration.isUsingPasswordAuthentication()) {
             sessionRefreshHandler = new PasswordSessionRefreshHandler(configuration.getPasswordLoginCredentials(), this);
@@ -270,56 +278,68 @@ public class PardotClient implements AutoCloseable {
                 // Avoid NPE
                 responseStr = "";
             }
+        }
 
-            // High level check for Pardot error responses
-            if (responseStr.contains("<rsp stat=\"fail\"")) {
-                try {
-                    // Parse error response
-                    final ErrorResponse error = new ErrorResponseParser().parseResponse(restResponse.getResponseStr());
+        // High level check for Pardot error responses
+        if (responseStr.contains("<rsp stat=\"fail\"")) {
+            try {
+                // Parse error response
+                final ErrorResponse error = new ErrorResponseParser().parseResponse(restResponse.getResponseStr());
 
-                    // Inspect error code
-                    if (configuration.isUsingPasswordAuthentication() && ErrorCode.INVALID_API_OR_USER_KEY.getCode() == error.getCode()) {
-                        // This means the user session has expired.  Lets attempt to renew it.
-                        sessionRefreshHandler.clearToken();
-                        checkLogin();
+                // Handle various error codes
+                // Session expiration error codes.
+                if (
+                    ErrorCode.INVALID_API_OR_USER_KEY.getCode() == error.getCode() ||
+                    ErrorCode.INVALID_ACCESS_TOKEN.getCode() == error.getCode()
+                ) {
+                    // This means the user session has expired.  Lets attempt to renew it.
+                    sessionRefreshHandler.clearToken();
+                    checkLogin();
 
-                        // Replay original request
-                        return submitRequest(request, responseParser);
-                    } else if (ErrorCode.WRONG_API_VERSION.getCode() == error.getCode() && ! "4".equals(configuration.getPardotApiVersion())) {
-                        logger.info("Detected API version 4 should be used, retrying request with API Version 4.");
+                    // Replay original request
+                    return submitRequest(request, responseParser);
+                } else if (ErrorCode.WRONG_API_VERSION.getCode() == error.getCode() && ! "4".equals(configuration.getPardotApiVersion())) {
+                    // This means we requested api version 3, but the account requires api version 4
+                    // Lets transparently switch to version 4 and re-send the request.
+                    logger.info("Detected API version 4 should be used, retrying request with API Version 4.");
 
-                        // Upgrade to version 4
-                        configuration.setPardotApiVersion("4");
+                    // Upgrade to version 4
+                    configuration.setPardotApiVersion("4");
 
-                        // Replay original request
-                        return submitRequest(request, responseParser);
-                    }
-
-                    // throw exception
-                    throw new InvalidRequestException(error.getMessage(), error.getCode());
-                } catch (final IOException exception) {
-                    throw new ParserException(exception.getMessage(), exception);
+                    // Replay original request
+                    return submitRequest(request, responseParser);
                 }
-            }
-            try {
-                return responseParser.parseResponse(restResponse.getResponseStr());
-            } catch (IOException exception) {
-                throw new ParserException(exception.getMessage(), exception);
-            }
-
-        // Handle SSO Login Failures
-        } else if (request instanceof SsoLoginRequest) {
-            // Attempt to parse SSO Error Response.
-            try {
-                final SsoLoginErrorResponse errorResponse = new SsoLoginErrorResponseParser().parseResponse(responseStr);
-                throw new LoginFailedException("[" + errorResponse.getError() + "] " + errorResponse.getDescription(), responseCode);
+                // throw exception
+                throw new InvalidRequestException(error.getMessage(), error.getCode());
             } catch (final IOException exception) {
                 throw new ParserException(exception.getMessage(), exception);
             }
         }
 
-        // Otherwise throw an exception.
-        throw new InvalidRequestException("Invalid http response code from server: " + restResponse.getHttpCode(), restResponse.getHttpCode());
+        // If not a success response code
+        if (responseCode < 200 || responseCode >= 300) {
+            // Handle SSO Login Failures
+            if (request instanceof SsoLoginRequest) {
+                // Attempt to parse SSO Error Response.
+                try {
+                    final SsoLoginErrorResponse errorResponse = new SsoLoginErrorResponseParser().parseResponse(responseStr);
+                    throw new LoginFailedException("[" + errorResponse.getError() + "] " + errorResponse.getDescription(), responseCode);
+                } catch (final IOException exception) {
+                    throw new ParserException(exception.getMessage(), exception);
+                }
+            }
+
+            // throw an exception.
+            throw new InvalidRequestException("Invalid http response code from server: " + restResponse.getHttpCode(), restResponse.getHttpCode());
+        }
+
+        // Attempt to parse successful response.
+        try {
+            return responseParser.parseResponse(restResponse.getResponseStr());
+        } catch (final IOException exception) {
+            // Unparsable response value?
+            throw new ParserException(exception.getMessage(), exception);
+        }
     }
 
     /**
@@ -404,7 +424,11 @@ public class PardotClient implements AutoCloseable {
         try {
             return submitRequest(request, new SsoLoginResponseParser());
         } catch (final InvalidRequestException exception) {
-            // Throw more specific exception
+            // Rethrow login failed exceptions as-is.
+            if (exception instanceof LoginFailedException) {
+                throw exception;
+            }
+            // Otherwise throw a more specific exception
             throw new LoginFailedException(exception.getMessage(), exception.getErrorCode(), exception);
         }
     }

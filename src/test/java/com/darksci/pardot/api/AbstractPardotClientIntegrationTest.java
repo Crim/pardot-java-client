@@ -119,6 +119,7 @@ import com.darksci.pardot.api.response.visitor.Visitor;
 import com.darksci.pardot.api.response.visitor.VisitorQueryResponse;
 import com.darksci.pardot.api.response.visitoractivity.VisitorActivity;
 import com.darksci.pardot.api.response.visitoractivity.VisitorActivityQueryResponse;
+import com.darksci.pardot.api.rest.HttpClientRestClient;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.After;
@@ -146,7 +147,7 @@ abstract class AbstractPardotClientIntegrationTest {
         // Create client
         final ConfigurationBuilder builder = createConfiguration();
         testConfig = builder.build();
-        client = new PardotClient(builder);
+        client = new PardotClient(testConfig, new HttpClientRestClient());
     }
 
     @After

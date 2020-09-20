@@ -25,9 +25,7 @@ import com.darksci.pardot.api.response.tag.Tag;
 import com.darksci.pardot.api.rest.RestClient;
 import com.darksci.pardot.api.rest.RestResponse;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import util.TestHelper;
 
 import java.io.IOException;
@@ -35,6 +33,7 @@ import java.io.IOException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.mock;
@@ -44,13 +43,9 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 /**
- * Unit testing over PardotClient.
+ * Unit testing over PardotClient using Pardot Username and Password Authentication scheme.
  */
-public class PardotClientTest {
-    // By default expect no exception.
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
-
+public class PardotClient_UsernameAndPasswordAuthTest {
     // Dependencies
     private Configuration apiConfig;
     private RestClient mockRestClient;
@@ -77,7 +72,7 @@ public class PardotClientTest {
     }
 
     /**
-     * Smoke test over login requests.
+     * Smoke test over username & password authentication login requests.
      */
     @Test
     public void smokeTestDirectLoginRequest() {
@@ -236,10 +231,10 @@ public class PardotClientTest {
         when(mockRestClient.submitRequest(isA(LoginRequest.class)))
             .thenReturn(createRestResponseFromFile("errorLoginFailed.xml", 200));
 
-
         // Call method under test, this should throw an exception
-        expectedException.expect(LoginFailedException.class);
-        pardotClient.tagRead(tagReadRequest);
+        assertThrows(LoginFailedException.class, () -> {
+            pardotClient.tagRead(tagReadRequest);
+        });
     }
 
     private RestResponse createRestResponseFromFile(final String filename, int httpCode) {
