@@ -18,6 +18,8 @@ final PardotClient client = new PardotClient(configuration);
 **Should now look like this**
 ```java
 final ConfigurationBuilder configuration = Configuration.newBuilder()
+    // NOTE: Authenticating using this method will cease to function after Feb. 1 2020.
+    //       See section below about migrating to SSO authentication.
     .withUsernameAndPasswordLogin(
         "YourPardotUsername",
         "YourPardotPassword",
@@ -25,11 +27,10 @@ final ConfigurationBuilder configuration = Configuration.newBuilder()
     );
 
 // Call other methods on configuration instance as needed to complete configuration.
-
 final PardotClient client = new PardotClient(configuration);
 ```
 
-### Pardot Username and Password Authentication Scheme deprecrated in favor of Salesforce SSO Authentication.
+### Pardot Username and Password Authentication Scheme deprecated in favor of Salesforce SSO Authentication.
 
 From February 1, 2021 Pardot is removing the now legacy Pardot Username and Password authentication scheme ([Salesforce EOL Notice](https://help.salesforce.com/articleView?id=000353746&type=1&mode=1&language=en_US&utm_source=techcomms&utm_medium=email&utm_campaign=eol)).
 
