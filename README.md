@@ -4,9 +4,18 @@
 
 ## What is it? 
 
-This library intends to be a fluent style API client for Pardot's API (version 3 and 4).
+This library is a fluent style API client for Pardot's API (version 3 and 4).
 
-**Note** It currently is not fully featured/fully implemented. If there is a feature/end point that you
+## Important Breaking Change to Pardot API
+
+From February 1, 2021 Pardot is removing the ability to authenticate to the Pardot API using your Pardot username, password, and userkey ([Salesforce EOL Notice](https://help.salesforce.com/articleView?id=000353746&type=1&mode=1&language=en_US&utm_source=techcomms&utm_medium=email&utm_campaign=eol)).
+This means that versions of this library **prior to 3.0.0** will cease to be able to authenticate to the Pardot Api without upgrading to version 3.0.0 or newer
+and changing your authentication method to Salesforce SSO. 
+
+Everyone is encouraged to update the library prior to February 1, 2021. Please read the [2.x.x -> 3.0.0 Migration Guide](3_0_0_migration_notes.MD) 
+which details the changes required to upgrade.
+
+**Note** While most of Pardot's API is supported by this library, if there is a feature/end point that you
 need that is not yet implemented, please read the **[How to Contribute](#how-to-contribute)** section, or **[Create an issue](https://github.com/Crim/pardot-java-client/issues)** 
 requesting it. 
 
@@ -21,23 +30,31 @@ This client library is released on Maven Central.  Add a new dependency to your 
 <dependency>
     <groupId>com.darksci</groupId>
     <artifactId>pardot-api-client</artifactId>
-    <version>2.1.0</version>
+    <version>3.0.0</version>
 </dependency>
 ```
 
-Example Code:
+Example Code using Salesforce SSO Authentication:
 ```java
 /*
- * Create a new configuration object with your Pardot credentials.
+ * Create a new configuration object with your Salesforce SSO credentials.
  *
  * This configuration also allows you to define some optional details on your connection,
  * such as using an outbound proxy (authenticated or not).
  */
-final Configuration configuration = new Configuration("YourPardotUserNameHere", "PardotPassword", "UserKey");
+final ConfigurationBuilder configuration = Configuration.newBuilder()
+    .withSsoLogin(
+        "YourSalesforceUsername",
+        "YourSalesforcePassword",
+        "YourConnectedAppClientId",
+        "YourConnectedAppClientSecret",
+        "YourPardotBusinessUnitId"
+    );
 
 /*
- * Optionally select which API version to use, if none is explicitly selected
- * the library will default to version 3.
+ * Optionally you can explicitly select which API version to use. If none is explicitly selected
+ * the library will default to version 3, but the library will automatically upgrade to version
+ * 4 if required to do so.
  */
 configuration.withApiVersion3();
 
@@ -57,7 +74,6 @@ final PardotClient client = new PardotClient(configuration);
  */
 final AccountReadRequest accountReadRequest = new AccountReadRequest();
 final Account account = client.accountRead(accountReadRequest);
-
 
 /*
  * Or lets do a more complex Campaign search.
@@ -80,7 +96,6 @@ Or Using the Try-With-Resources Pattern:
 /*
  * Since PardotClient implements Autoclosable, you can also use the try-with-resources pattern.
  */
-final Configuration configuration = new Configuration("YourPardotUserNameHere", "PardotPassword", "UserKey");
 try (final PardotClient client = new PardotClient(configuration)) {
     // Use client instance as needed
     client.accountRead(new AccountReadRequest());
@@ -94,13 +109,13 @@ try (final PardotClient client = new PardotClient(configuration)) {
 ### Authentication
 Official Documentation: [Authentication](http://developer.pardot.com/#authentication)
 
-Authenticating with Pardot's API using your Pardot Username, Password, and User Token.  
+- Authenticating with Pardot's API using your Salesforce SSO Username, Password, and Connected Application details. [See Example](src/main/java/com/darksci/pardot/api/Example.java#L37).
+- Legacy authentication using your Pardot Username, Password, and User Token. [See Example](src/main/java/com/darksci/pardot/api/Example.java#L98). 
 
 ### Accounts
 Official Documentation: [Accounts](http://developer.pardot.com/kb/api-version-3/accounts/)
 
 - Read
-
 
 ### Campaigns
 Official Documentation: [Campaigns](http://developer.pardot.com/kb/api-version-3/campaigns/)
@@ -227,14 +242,6 @@ Official Documentation: [VisitorActivities](http://developer.pardot.com/kb/api-v
 
 - Query
 - Read
-
-## Important Breaking Change to Pardot API
-
-As of October 31, 2018 Pardot is disabling the TLS 1.0 encryption protocol.  This means that versions of this library
-**prior to 1.0.0** will cease to be able to connect to the Pardot Api.
-
-Version 1.0.0+ updates the library to use TLS 1.1 and 1.2 protocols. Everyone is encouraged to update
-the library prior to October 31st 2018.
 
 ## How to Contribute 
 
