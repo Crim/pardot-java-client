@@ -291,10 +291,9 @@ public class PardotClient implements AutoCloseable {
 
                 // Handle various error codes
                 // Session expiration error codes.
-                if (
-                    ErrorCode.INVALID_API_OR_USER_KEY.getCode() == error.getCode() ||
-                    ErrorCode.INVALID_ACCESS_TOKEN.getCode() == error.getCode()
-                ) {
+                if (ErrorCode.INVALID_API_OR_USER_KEY.getCode() == error.getCode()
+                    || ErrorCode.INVALID_ACCESS_TOKEN.getCode() == error.getCode()) {
+                    
                     // This means the user session has expired.  Lets attempt to renew it.
                     sessionRefreshHandler.clearToken();
                     checkLogin();
