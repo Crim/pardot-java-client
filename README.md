@@ -9,10 +9,9 @@ This library is a fluent style API client for Pardot's API (version 3 and 4).
 ## Important Breaking Change to Pardot API
 
 From February 1, 2021 Pardot is removing the ability to authenticate to the Pardot API using your Pardot username, password, and userkey ([Salesforce EOL Notice](https://help.salesforce.com/articleView?id=000353746&type=1&mode=1&language=en_US&utm_source=techcomms&utm_medium=email&utm_campaign=eol)).
-This means that versions of this library **prior to 3.0.0** will cease to be able to authenticate to the Pardot Api without upgrading to version 3.0.0 or newer
-and changing your authentication method to Salesforce SSO. 
+This means that versions of this library **prior to 3.0.0** will cease to be able to authenticate to the Pardot Api.
 
-Everyone is encouraged to update the library prior to February 1, 2021. Please read the [2.x.x -> 3.0.0 Migration Guide](3_0_0_migration_notes.MD) 
+Everyone is encouraged to update the library to version **3.0.0 or newer** and switch to using Salesforce SSO authentication prior to February 1, 2021. Please read the [2.x.x -> 3.0.0 Migration Guide](3_0_0_migration_notes.MD) 
 which details the changes required to upgrade.
 
 **Note** While most of Pardot's API is supported by this library, if there is a feature/end point that you
