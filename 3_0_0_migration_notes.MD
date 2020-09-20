@@ -46,3 +46,5 @@ final ConfigurationBuilder configuration = Configuration.newBuilder()
     );
 final PardotClient client = new PardotClient(configuration);
 ```
+
+See [Offical Pardot Developer Documentation](https://developer.pardot.com/kb/authentication/) for details on how to obtain the above required properties.

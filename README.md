@@ -107,7 +107,7 @@ try (final PardotClient client = new PardotClient(configuration)) {
 ## What Features are implemented?
 
 ### Authentication
-Official Documentation: [Authentication](http://developer.pardot.com/#authentication)
+Official Documentation: [Authentication](https://developer.pardot.com/kb/authentication/)
 
 - Authenticating with Pardot's API using your Salesforce SSO Username, Password, and Connected Application details. [See Example](src/main/java/com/darksci/pardot/api/Example.java#L37).
 - Legacy authentication using your Pardot Username, Password, and User Token. [See Example](src/main/java/com/darksci/pardot/api/Example.java#L98). 
