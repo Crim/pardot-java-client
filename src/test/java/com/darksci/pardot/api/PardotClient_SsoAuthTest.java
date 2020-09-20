@@ -18,10 +18,8 @@
 package com.darksci.pardot.api;
 
 import com.darksci.pardot.api.config.Configuration;
-import com.darksci.pardot.api.request.login.LoginRequest;
 import com.darksci.pardot.api.request.login.SsoLoginRequest;
 import com.darksci.pardot.api.request.tag.TagReadRequest;
-import com.darksci.pardot.api.response.login.LoginResponse;
 import com.darksci.pardot.api.response.login.SsoLoginResponse;
 import com.darksci.pardot.api.response.tag.Tag;
 import com.darksci.pardot.api.rest.RestClient;
@@ -36,7 +34,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;

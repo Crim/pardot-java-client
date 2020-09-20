@@ -17,5 +17,9 @@
 
 package com.darksci.pardot.api.request.login;
 
+/**
+ * Interface to act as a market for Request objects which are login requests.
+ * Used to easily identify these requests without having to reference each individual class directly.
+ */
 public interface LoginRequestMarker {
 }
