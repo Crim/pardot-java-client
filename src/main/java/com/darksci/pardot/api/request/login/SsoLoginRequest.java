@@ -20,24 +20,42 @@ package com.darksci.pardot.api.request.login;
 import com.darksci.pardot.api.request.BaseRequest;
 
 /**
- * Make a login request to API.
+ * Defines a request to Salesforce's SSO Authentication end points.
  */
-public class LoginRequest extends BaseRequest<LoginRequest> implements LoginRequestMarker {
+public class SsoLoginRequest extends BaseRequest<SsoLoginRequest> implements LoginRequestMarker {
+    /**
+     * Constructor.
+     */
+    public SsoLoginRequest() {
+        withGrantType("password");
+    }
+
+    public SsoLoginRequest withClientId(final String clientId) {
+        return setParam("client_id", clientId);
+    }
+
+    public SsoLoginRequest withClientSecret(final String clientSecret) {
+        return setParam("client_secret", clientSecret);
+    }
+
+    public SsoLoginRequest withUsername(final String username) {
+        return setParam("username", username);
+    }
+
+    public SsoLoginRequest withPassword(final String password) {
+        return setParam("password", password);
+    }
+
+    public SsoLoginRequest withGrantType(final String grantType) {
+        return setParam("grant_type", grantType);
+    }
 
     @Override
     public String getApiEndpoint() {
-        return "login";
+        return "/services/oauth2/token";
     }
 
-    public LoginRequest withEmail(final String email) {
-        return setParam("email", email);
-    }
-
-    public LoginRequest withUsername(final String username) {
-        return withEmail(username);
-    }
-
-    public LoginRequest withPassword(final String password) {
-        return setParam("password", password);
+    public String getApiHostname() {
+        return "https://login.salesforce.com";
     }
 }

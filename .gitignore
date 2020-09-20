@@ -4,3 +4,4 @@ target/
 
 ## Ignore credentials for running integration tests
 src/test/resources/test_credentials.properties
+src/test/resources/*_credentials.properties

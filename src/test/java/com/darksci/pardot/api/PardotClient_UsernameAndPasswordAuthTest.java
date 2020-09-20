@@ -17,6 +17,7 @@
 
 package com.darksci.pardot.api;
 
+import com.darksci.pardot.api.config.Configuration;
 import com.darksci.pardot.api.request.login.LoginRequest;
 import com.darksci.pardot.api.request.tag.TagReadRequest;
 import com.darksci.pardot.api.response.login.LoginResponse;
@@ -24,9 +25,7 @@ import com.darksci.pardot.api.response.tag.Tag;
 import com.darksci.pardot.api.rest.RestClient;
 import com.darksci.pardot.api.rest.RestResponse;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import util.TestHelper;
 
 import java.io.IOException;
@@ -34,6 +33,7 @@ import java.io.IOException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.mock;
@@ -43,13 +43,9 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 /**
- * Unit testing over PardotClient.
+ * Unit testing over PardotClient using Pardot Username and Password Authentication scheme.
  */
-public class PardotClientTest {
-    // By default expect no exception.
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
-
+public class PardotClient_UsernameAndPasswordAuthTest {
     // Dependencies
     private Configuration apiConfig;
     private RestClient mockRestClient;
@@ -63,25 +59,27 @@ public class PardotClientTest {
         final String userEmail = "user@example.com";
         final String userPassword = "NotARealPassword";
         final String userKey = "NotARealUserKey";
-        apiConfig = new Configuration(userEmail, userPassword, userKey);
+
+        final ConfigurationBuilder builder = Configuration.newBuilder()
+            .withUsernameAndPasswordLogin(userEmail, userPassword, userKey);
+        apiConfig = builder.build();
 
         // Create mock RestClient
         mockRestClient = mock(RestClient.class);
 
         // Create instance using mock dependencies.
         pardotClient = new PardotClient(apiConfig, mockRestClient);
-
     }
 
     /**
-     * Smoke test over login requests.
+     * Smoke test over username & password authentication login requests.
      */
     @Test
     public void smokeTestDirectLoginRequest() {
         // Construct request.
         final LoginRequest loginRequest = new LoginRequest()
-            .withEmail(apiConfig.getEmail())
-            .withPassword(apiConfig.getPassword());
+            .withEmail(apiConfig.getPasswordLoginCredentials().getUsername())
+            .withPassword(apiConfig.getPasswordLoginCredentials().getPassword());
 
         // Mock response
         when(mockRestClient.submitRequest(isA(LoginRequest.class)))
@@ -112,7 +110,7 @@ public class PardotClientTest {
     @Test
     public void testIndirectLogin() {
         // Sanity test
-        assertNull("ApiKey should start as null prior to login", apiConfig.getApiKey());
+        assertNull("ApiKey should start as null prior to login", apiConfig.getPasswordLoginCredentials().getApiKey());
 
         // Construct request to query a tag
         // This exact request isn't really relevant. Just that it will trigger
@@ -135,8 +133,8 @@ public class PardotClientTest {
         assertEquals("Standard Tag", response.getName());
 
         // Validate we updated our ApiConfig based on the login.
-        assertNotNull("ApiKey should no longer be null", apiConfig.getApiKey());
-        assertEquals("DontWorryIDidNotCheckInARealHash", apiConfig.getApiKey());
+        assertNotNull("ApiKey should no longer be null", apiConfig.getPasswordLoginCredentials().getApiKey());
+        assertEquals("DontWorryIDidNotCheckInARealHash", apiConfig.getPasswordLoginCredentials().getApiKey());
 
         // Verify mock interactions
         verify(mockRestClient, times(1))
@@ -158,7 +156,7 @@ public class PardotClientTest {
     @Test
     public void testReAuthenticationOnSessionTimeout() {
         // Lets set a dummy Authentication Key to simulate already having a valid session
-        apiConfig.setApiKey("OriginalDummyKey");
+        apiConfig.getPasswordLoginCredentials().setApiKey("OriginalDummyKey");
 
         // Construct request to query a tag
         // This exact request isn't really relevant. Just that it will trigger
@@ -188,8 +186,8 @@ public class PardotClientTest {
         assertEquals("Standard Tag", response.getName());
 
         // Validate we updated our ApiConfig based on the login.
-        assertNotNull("ApiKey should no longer be null", apiConfig.getApiKey());
-        assertEquals("DontWorryIDidNotCheckInARealHash", apiConfig.getApiKey());
+        assertNotNull("ApiKey should no longer be null", apiConfig.getPasswordLoginCredentials().getApiKey());
+        assertEquals("DontWorryIDidNotCheckInARealHash", apiConfig.getPasswordLoginCredentials().getApiKey());
 
         // Verify mock interactions
         verify(mockRestClient, times(1))
@@ -213,7 +211,7 @@ public class PardotClientTest {
     @Test
     public void testReAuthenticationOnSessionTimeout_triggersInvalidCredentials() {
         // Lets set a dummy Authentication Key to simulate already having a valid session
-        apiConfig.setApiKey("OriginalDummyKey");
+        apiConfig.getPasswordLoginCredentials().setApiKey("OriginalDummyKey");
 
         // Construct request to query a tag
         // This exact request isn't really relevant. Just that it will trigger
@@ -233,10 +231,10 @@ public class PardotClientTest {
         when(mockRestClient.submitRequest(isA(LoginRequest.class)))
             .thenReturn(createRestResponseFromFile("errorLoginFailed.xml", 200));
 
-
         // Call method under test, this should throw an exception
-        expectedException.expect(LoginFailedException.class);
-        pardotClient.tagRead(tagReadRequest);
+        assertThrows(LoginFailedException.class, () -> {
+            pardotClient.tagRead(tagReadRequest);
+        });
     }
 
     private RestResponse createRestResponseFromFile(final String filename, int httpCode) {

@@ -2,6 +2,12 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.0.0 (UNRELEASED)
+- [ISSUE-58](https://github.com/Crim/pardot-java-client/issues/58) Add support for Salesforce SSO authentication.
+
+### Breaking Change
+See [3.0.0 Migration Notes](3_0_0_migration_notes.MD) for details on breaking changes and how to upgrade.
+
 ## 2.1.0 (07/30/2020)
 - [ISSUE-56](https://github.com/Crim/pardot-java-client/issues/56) Adds support for Dynamic Content.
 

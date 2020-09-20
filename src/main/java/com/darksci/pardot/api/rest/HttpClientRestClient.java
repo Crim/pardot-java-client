@@ -17,8 +17,8 @@
 
 package com.darksci.pardot.api.rest;
 
-import com.darksci.pardot.api.Configuration;
 import com.darksci.pardot.api.ConnectionFailedException;
+import com.darksci.pardot.api.config.Configuration;
 import com.darksci.pardot.api.request.Request;
 import com.darksci.pardot.api.rest.handlers.RestResponseHandler;
 import com.darksci.pardot.api.rest.interceptor.RequestInterceptor;
@@ -115,7 +115,7 @@ public class HttpClientRestClient implements RestClient {
         // Create hostname verifier instance.
         final HostnameVerifier hostnameVerifier;
         // Emit an warning letting everyone know we're using an insecure configuration.
-        if (configuration.getIgnoreInvalidSslCertificates()) {
+        if (configuration.isIgnoreInvalidSslCertificates()) {
             logger.warn("Using insecure configuration, skipping server-side certificate validation checks.");
 
             // If we're configured to ignore invalid certificates, use the Noop verifier.
@@ -144,21 +144,27 @@ public class HttpClientRestClient implements RestClient {
         final RequestConfig.Builder requestConfigBuilder = RequestConfig.custom();
 
         // If we have a configured proxy host
-        if (configuration.getProxyHost() != null) {
+        if (configuration.hasProxyConfigured()) {
             // Define proxy host
             final HttpHost proxyHost = new HttpHost(
-                configuration.getProxyHost(),
-                configuration.getProxyPort(),
-                configuration.getProxyScheme()
+                configuration.getProxyConfiguration().getHost(),
+                configuration.getProxyConfiguration().getPort(),
+                configuration.getProxyConfiguration().getScheme()
             );
 
             // If we have proxy auth enabled
-            if (configuration.getProxyUsername() != null) {
+            if (configuration.getProxyConfiguration().isAuthenticationRequired()) {
                 // Create credential provider
                 final CredentialsProvider credsProvider = new BasicCredentialsProvider();
                 credsProvider.setCredentials(
-                    new AuthScope(configuration.getProxyHost(), configuration.getProxyPort()),
-                    new UsernamePasswordCredentials(configuration.getProxyUsername(), configuration.getProxyPassword())
+                    new AuthScope(
+                        configuration.getProxyConfiguration().getHost(),
+                        configuration.getProxyConfiguration().getPort()
+                    ),
+                    new UsernamePasswordCredentials(
+                        configuration.getProxyConfiguration().getUsername(),
+                        configuration.getProxyConfiguration().getPassword()
+                    )
                 );
 
                 // Attach Credentials provider to client builder.
@@ -185,7 +191,7 @@ public class HttpClientRestClient implements RestClient {
             final TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
 
             // If client configuration is set to ignore invalid certificates
-            if (configuration.getIgnoreInvalidSslCertificates()) {
+            if (configuration.isIgnoreInvalidSslCertificates()) {
                 // Initialize ssl context with a TrustManager instance that just accepts everything blindly.
                 // HIGHLY INSECURE / NOT RECOMMENDED!
                 return new TrustManager[]{ new NoopTrustManager() };
@@ -236,7 +242,7 @@ public class HttpClientRestClient implements RestClient {
      * @return The parsed API response.
      */
     private <T> T submitRequest(final Request request, final ResponseHandler<T> responseHandler) throws IOException {
-        final String url = constructApiUrl(request.getApiEndpoint());
+        final String url = constructApiUrl(request);
         return submitRequest(url, request.getRequestParameters(), responseHandler);
     }
 
@@ -258,9 +264,18 @@ public class HttpClientRestClient implements RestClient {
 
             // Define required auth params
             final List<NameValuePair> params = new ArrayList<>();
-            params.add(new BasicNameValuePair("user_key", configuration.getUserKey()));
-            if (configuration.getApiKey() != null) {
-                params.add(new BasicNameValuePair("api_key", configuration.getApiKey()));
+
+            // If using Username and Password auth.
+            if (configuration.isUsingPasswordAuthentication()) {
+                params.add(
+                    new BasicNameValuePair("user_key", configuration.getPasswordLoginCredentials().getUserKey())
+                );
+
+                if (configuration.getPasswordLoginCredentials().hasApiKey()) {
+                    params.add(
+                        new BasicNameValuePair("api_key", configuration.getPasswordLoginCredentials().getApiKey())
+                    );
+                }
             }
 
             // Attach submitRequest params
@@ -273,6 +288,12 @@ public class HttpClientRestClient implements RestClient {
             final Map<String, String> headers = new HashMap<>();
             requestInterceptor.modifyHeaders(headers);
             headers.forEach(post::addHeader);
+
+            // If doing SSO Authentication, append authentication header
+            if (configuration.isUsingSsoAuthentication()) {
+                post.addHeader("Authorization", "Bearer " + configuration.getSsoLoginCredentials().getAccessToken());
+                post.addHeader("Pardot-Business-Unit-Id", configuration.getSsoLoginCredentials().getBusinessUnitId());
+            }
 
             // Debug logging
             logger.info("Executing request {} with {}", post.getRequestLine(), filterSensitiveParams(params));
@@ -299,14 +320,17 @@ public class HttpClientRestClient implements RestClient {
 
     /**
      * Internal helper method for generating URLs w/ the appropriate API host and API version.
-     * @param endPoint The end point you want to hit.
+     * @param request Request we want to execute.
      * @return Constructed URL for the end point.
      */
-    private String constructApiUrl(final String endPoint) {
-        return configuration.getPardotApiHost()
-            + "/" + endPoint
-            + "/version/"
-            + configuration.getPardotApiVersion();
+    private String constructApiUrl(final Request request) {
+        if (request.getApiHostname() == null) {
+            return configuration.getPardotApiHost()
+                + "/" + request.getApiEndpoint()
+                + "/version/"
+                + configuration.getPardotApiVersion();
+        }
+        return request.getApiHostname() + request.getApiEndpoint();
     }
 
     /**
@@ -316,7 +340,7 @@ public class HttpClientRestClient implements RestClient {
      */
     private List<NameValuePair> filterSensitiveParams(final List<NameValuePair> inputParams) {
         // Define sensitive fields
-        final String[] sensitiveFields = new String[] { "user_key", "password", "api_key" };
+        final String[] sensitiveFields = new String[] { "user_key", "password", "api_key", "client_secret" };
 
         // Create a copy of the list
         final List<NameValuePair> copiedList = new ArrayList<>();

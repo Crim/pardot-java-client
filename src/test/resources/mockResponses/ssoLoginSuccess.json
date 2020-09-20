@@ -1,0 +1,8 @@
+{
+  "access_token":"ACCESS_TOKEN_HERE",
+  "instance_url":"https://test.my.salesforce.com",
+  "id":"https://login.salesforce.com/id/00DD/005B00",
+  "token_type":"Bearer",
+  "issued_at":"1600482897925",
+  "signature":"SIGNATURE-HERE"
+}

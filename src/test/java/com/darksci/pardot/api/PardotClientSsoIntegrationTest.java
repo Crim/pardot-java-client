@@ -19,9 +19,9 @@ package com.darksci.pardot.api;
 
 import categories.IntegrationTest;
 import com.darksci.pardot.api.config.Configuration;
-import com.darksci.pardot.api.request.login.LoginRequest;
+import com.darksci.pardot.api.request.login.SsoLoginRequest;
 import com.darksci.pardot.api.request.tag.TagQueryRequest;
-import com.darksci.pardot.api.response.login.LoginResponse;
+import com.darksci.pardot.api.response.login.SsoLoginResponse;
 import com.darksci.pardot.api.response.tag.TagQueryResponse;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -36,20 +36,15 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
 
 /**
- * Integration/End-to-End test over HttpClientRestClient.
- *
- * You can run these tests by creating a file under test/resources/test_credentials.properties with 3 values:
- * username=your_pardot_username
- * password=your_pardot_password
- * user_key=your_pardot_userkey
+ * Test cases using SSO Login method.
  */
 @Category(IntegrationTest.class)
-public class PardotClientIntegrationTest extends AbstractPardotClientIntegrationTest {
-    private static final Logger logger = LoggerFactory.getLogger(PardotClientIntegrationTest.class);
+public class PardotClientSsoIntegrationTest extends AbstractPardotClientIntegrationTest {
+    private static final Logger logger = LoggerFactory.getLogger(PardotClientSsoIntegrationTest.class);
 
     @Override
-    ConfigurationBuilder createConfiguration() throws IOException {
-        final InputStream inputStream = getClass().getClassLoader().getResourceAsStream("test_credentials.properties");
+    public ConfigurationBuilder createConfiguration() throws IOException {
+        final InputStream inputStream = getClass().getClassLoader().getResourceAsStream("test_sso_credentials.properties");
 
         // Load properties
         Properties properties = new Properties();
@@ -58,10 +53,12 @@ public class PardotClientIntegrationTest extends AbstractPardotClientIntegration
 
         // Build new configuration
         final ConfigurationBuilder configBuilder = Configuration.newBuilder()
-            .withUsernameAndPasswordLogin(
+            .withSsoLogin(
                 properties.getProperty("username"),
                 properties.getProperty("password"),
-                properties.getProperty("user_key")
+                properties.getProperty("client_id"),
+                properties.getProperty("client_secret"),
+                properties.getProperty("business_unit_id")
             );
 
         if (properties.getProperty("api_host") != null) {
@@ -79,14 +76,16 @@ public class PardotClientIntegrationTest extends AbstractPardotClientIntegration
      */
     @Test
     public void loginTest() {
-        final LoginResponse response = client.login(new LoginRequest()
-            .withEmail(testConfig.getPasswordLoginCredentials().getUsername())
-            .withPassword(testConfig.getPasswordLoginCredentials().getPassword())
+        final SsoLoginResponse response = client.login(new SsoLoginRequest()
+            .withUsername(testConfig.getSsoLoginCredentials().getUsername())
+            .withPassword(testConfig.getSsoLoginCredentials().getPassword())
+            .withClientId(testConfig.getSsoLoginCredentials().getClientId())
+            .withClientSecret(testConfig.getSsoLoginCredentials().getClientSecret())
         );
 
         logger.info("Response: {}", response);
         assertNotNull("Should not be null", response);
-        assertNotNull("Should have non-null property", response.getApiKey());
+        assertNotNull("Should have non-null property", response.getAccessToken());
     }
 
     /**
@@ -94,9 +93,11 @@ public class PardotClientIntegrationTest extends AbstractPardotClientIntegration
      */
     @Test
     public void loginErrorTest() {
-        final LoginRequest request = new LoginRequest()
-            .withEmail("invalid-user")
-            .withPassword("invalid-pass");
+        final SsoLoginRequest request = new SsoLoginRequest()
+            .withUsername(testConfig.getSsoLoginCredentials().getUsername())
+            .withPassword(testConfig.getSsoLoginCredentials().getPassword())
+            .withClientId("bad-id")
+            .withClientSecret("bad-secret");
 
         assertThrows(LoginFailedException.class, () -> client.login(request));
     }
@@ -105,17 +106,16 @@ public class PardotClientIntegrationTest extends AbstractPardotClientIntegration
      * Inject a bad access_token, forcing the library to renew the session.
      */
     @Test
-    public void sessionRenewTest_injectBadApiKeynToForceSessionRenew() {
+    public void sessionRenewTest_injectBadAccessTokenToForceSessionRenew() {
         // Inject a bad access token
-        testConfig.getPasswordLoginCredentials().setApiKey("BAD-VALUE");
+        testConfig.getSsoLoginCredentials().setAccessToken("BAD-VALUE");
 
         // Execute query, this should force a bad auth response from pardot,
-        // which then triggers renewing the apiKey, and then re-playing the tag query request.
+        // which then triggers renewing the SSO token, and then re-playing the tag query request.
         final TagQueryRequest request = new TagQueryRequest();
         final TagQueryResponse.Result result = client.tagQuery(request);
         logger.info("Result: {}", result);
     }
-
 
     @Test
     @Override
