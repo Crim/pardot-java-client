@@ -6,7 +6,7 @@
 
     <groupId>com.darksci</groupId>
     <artifactId>pardot-api-client</artifactId>
-    <version>1.1.2</version>
+    <version>3.0.0</version>
     <packaging>jar</packaging>
 
     <!-- Require Maven 3.5.0 -->
@@ -47,7 +47,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!-- Jackson version -->
-        <jackson.version>2.10.2</jackson.version>
+        <jackson.version>2.11.1</jackson.version>
 
         <!-- Define which version of junit you'll be running -->
         <junit.version>4.13</junit.version>
@@ -58,7 +58,7 @@
         <checkstyle.version>8.29</checkstyle.version>
 
         <!-- Log4J Version -->
-        <log4j2.version>2.12.1</log4j2.version>
+        <log4j2.version>2.13.3</log4j2.version>
         <slf4j.version>1.7.30</slf4j.version>
 
         <!-- test toggling -->
@@ -76,7 +76,7 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.5.11</version>
+            <version>4.5.12</version>
         </dependency>
 
         <!-- For parsing XML responses to POJOs -->
@@ -345,6 +345,9 @@
                                 <goals>
                                     <goal>jar</goal>
                                 </goals>
+                                <configuration>
+                                    <source>8</source>
+                                </configuration>
                             </execution>
                         </executions>
                     </plugin>

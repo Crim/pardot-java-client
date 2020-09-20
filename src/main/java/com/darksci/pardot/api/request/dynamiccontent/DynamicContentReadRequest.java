@@ -15,29 +15,21 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.darksci.pardot.api.request.login;
+package com.darksci.pardot.api.request.dynamiccontent;
 
 import com.darksci.pardot.api.request.BaseRequest;
 
 /**
- * Make a login request to API.
+ * Used to generate a Dynamic Content read request.
  */
-public class LoginRequest extends BaseRequest<LoginRequest> implements LoginRequestMarker {
+public class DynamicContentReadRequest extends BaseRequest<DynamicContentReadRequest> {
 
     @Override
     public String getApiEndpoint() {
-        return "login";
+        return "dynamicContent/do/read";
     }
 
-    public LoginRequest withEmail(final String email) {
-        return setParam("email", email);
-    }
-
-    public LoginRequest withUsername(final String username) {
-        return withEmail(username);
-    }
-
-    public LoginRequest withPassword(final String password) {
-        return setParam("password", password);
+    public DynamicContentReadRequest selectById(final Long id) {
+        return setParam("id", id);
     }
 }

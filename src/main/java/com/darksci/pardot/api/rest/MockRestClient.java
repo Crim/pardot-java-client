@@ -17,7 +17,7 @@
 
 package com.darksci.pardot.api.rest;
 
-import com.darksci.pardot.api.Configuration;
+import com.darksci.pardot.api.config.Configuration;
 import com.darksci.pardot.api.request.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

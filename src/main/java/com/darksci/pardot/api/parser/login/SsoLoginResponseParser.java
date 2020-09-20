@@ -15,29 +15,20 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.darksci.pardot.api.request.login;
+package com.darksci.pardot.api.parser.login;
 
-import com.darksci.pardot.api.request.BaseRequest;
+import com.darksci.pardot.api.parser.JacksonFactory;
+import com.darksci.pardot.api.parser.ResponseParser;
+import com.darksci.pardot.api.response.login.SsoLoginResponse;
+
+import java.io.IOException;
 
 /**
- * Make a login request to API.
+ * Parses successful SSO login responses.
  */
-public class LoginRequest extends BaseRequest<LoginRequest> implements LoginRequestMarker {
-
+public class SsoLoginResponseParser implements ResponseParser<SsoLoginResponse> {
     @Override
-    public String getApiEndpoint() {
-        return "login";
-    }
-
-    public LoginRequest withEmail(final String email) {
-        return setParam("email", email);
-    }
-
-    public LoginRequest withUsername(final String username) {
-        return withEmail(username);
-    }
-
-    public LoginRequest withPassword(final String password) {
-        return setParam("password", password);
+    public SsoLoginResponse parseResponse(final String responseStr) throws IOException {
+        return JacksonFactory.newJsonInstance().readValue(responseStr, SsoLoginResponse.class);
     }
 }

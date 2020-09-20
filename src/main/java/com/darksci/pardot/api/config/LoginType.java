@@ -15,29 +15,9 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.darksci.pardot.api.request.login;
+package com.darksci.pardot.api.config;
 
-import com.darksci.pardot.api.request.BaseRequest;
-
-/**
- * Make a login request to API.
- */
-public class LoginRequest extends BaseRequest<LoginRequest> implements LoginRequestMarker {
-
-    @Override
-    public String getApiEndpoint() {
-        return "login";
-    }
-
-    public LoginRequest withEmail(final String email) {
-        return setParam("email", email);
-    }
-
-    public LoginRequest withUsername(final String username) {
-        return withEmail(username);
-    }
-
-    public LoginRequest withPassword(final String password) {
-        return setParam("password", password);
-    }
+public enum LoginType {
+    USERNAME_PASSWORD,
+    SSO;
 }

@@ -2,6 +2,33 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.0.0 (UNRELEASED)
+- [ISSUE-58](https://github.com/Crim/pardot-java-client/issues/58) Add support for Salesforce SSO authentication.
+
+### Breaking Change
+See [3.0.0 Migration Notes](3_0_0_migration_notes.MD) for details on breaking changes and how to upgrade.
+
+## 2.1.0 (07/30/2020)
+- [ISSUE-56](https://github.com/Crim/pardot-java-client/issues/56) Adds support for Dynamic Content.
+
+#### Internal Dependency Updates
+- Upgraded Jackson from version 2.10.2 to 2.11.1.
+- Upgraded HttpComponents Client from version 4.5.11 to 4.5.12.
+
+## 2.0.0 (03/05/2020)
+- [ISSUE-50](https://github.com/Crim/pardot-java-client/issues/50) Improve support for record multiple fields. 
+
+### Breaking Change
+
+In order to better support record multiple value custom fields, the accessor on `Prospect` for `getCustomFields()` has been changed **FROM**  
+`public Map<String, String> getCustomFields()` **TO** `public Map<String, ProspectCustomFieldValue> getCustomFields()`
+
+For custom fields which are NOT record multiple value custom fields the accessor `public String getCustomField(final String customFieldName)` method will continue to return the stored value for the custom field.
+
+For custom fields which ARE record multiple value custom fields the accessor `public String getCustomField(final String customFieldName)` method will only return the first stored value.  You can use the new accessor 
+`public List<String> getCustomFieldValues(final String customFieldName)` to get all stored values for record multiple value custom fields.  
+
+
 ## 1.1.2 (02/20/2020)
 #### Bugfixes
 - [ISSUE-45](https://github.com/Crim/pardot-java-client/issues/45) Fixed bug preventing the library from auto-renewing a session when it expires.

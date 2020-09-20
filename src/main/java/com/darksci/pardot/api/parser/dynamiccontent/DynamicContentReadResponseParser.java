@@ -15,29 +15,22 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.darksci.pardot.api.request.login;
+package com.darksci.pardot.api.parser.dynamiccontent;
 
-import com.darksci.pardot.api.request.BaseRequest;
+import com.darksci.pardot.api.parser.JacksonFactory;
+import com.darksci.pardot.api.parser.ResponseParser;
+import com.darksci.pardot.api.response.dynamiccontent.DynamicContent;
+import com.darksci.pardot.api.response.dynamiccontent.DynamicContentReadResponse;
+
+import java.io.IOException;
 
 /**
- * Make a login request to API.
+ * Handles parsing DynamicContent Read API responses into POJOs.
  */
-public class LoginRequest extends BaseRequest<LoginRequest> implements LoginRequestMarker {
+public class DynamicContentReadResponseParser implements ResponseParser<DynamicContent> {
 
     @Override
-    public String getApiEndpoint() {
-        return "login";
-    }
-
-    public LoginRequest withEmail(final String email) {
-        return setParam("email", email);
-    }
-
-    public LoginRequest withUsername(final String username) {
-        return withEmail(username);
-    }
-
-    public LoginRequest withPassword(final String password) {
-        return setParam("password", password);
+    public DynamicContent parseResponse(final String responseStr) throws IOException {
+        return JacksonFactory.newInstance().readValue(responseStr, DynamicContentReadResponse.class).getDynamicContent();
     }
 }

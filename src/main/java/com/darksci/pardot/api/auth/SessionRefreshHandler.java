@@ -15,29 +15,26 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.darksci.pardot.api.request.login;
-
-import com.darksci.pardot.api.request.BaseRequest;
+package com.darksci.pardot.api.auth;
 
 /**
- * Make a login request to API.
+ * Interface for handling renewing session authentication tokens.
  */
-public class LoginRequest extends BaseRequest<LoginRequest> implements LoginRequestMarker {
+public interface SessionRefreshHandler {
+    /**
+     * Is the current token valid.
+     * @return True if set, false if not set.
+     */
+    boolean isValid();
 
-    @Override
-    public String getApiEndpoint() {
-        return "login";
-    }
+    /**
+     * Resets token.
+     */
+    void clearToken();
 
-    public LoginRequest withEmail(final String email) {
-        return setParam("email", email);
-    }
-
-    public LoginRequest withUsername(final String username) {
-        return withEmail(username);
-    }
-
-    public LoginRequest withPassword(final String password) {
-        return setParam("password", password);
-    }
+    /**
+     * Refresh/Renew authentication token.
+     * @return True on success, false on failure to renew.
+     */
+    boolean refreshCredentials();
 }

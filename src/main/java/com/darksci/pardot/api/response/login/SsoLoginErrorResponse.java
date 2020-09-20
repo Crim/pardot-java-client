@@ -15,29 +15,44 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.darksci.pardot.api.request.login;
+package com.darksci.pardot.api.response.login;
 
-import com.darksci.pardot.api.request.BaseRequest;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Make a login request to API.
+ * Represents an Error response from attempting to authenticate via Salesforce SSO.
  */
-public class LoginRequest extends BaseRequest<LoginRequest> implements LoginRequestMarker {
+public class SsoLoginErrorResponse {
+    private final String error;
+    private final String description;
+
+    /**
+     * Constructor.
+     * @param error Error type.
+     * @param description Error description.
+     */
+    @JsonCreator
+    public SsoLoginErrorResponse(
+        @JsonProperty("error") final String error,
+        @JsonProperty("error_description") final String description) {
+        this.error = error;
+        this.description = description;
+    }
+
+    public String getError() {
+        return error;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 
     @Override
-    public String getApiEndpoint() {
-        return "login";
-    }
-
-    public LoginRequest withEmail(final String email) {
-        return setParam("email", email);
-    }
-
-    public LoginRequest withUsername(final String username) {
-        return withEmail(username);
-    }
-
-    public LoginRequest withPassword(final String password) {
-        return setParam("password", password);
+    public String toString() {
+        return "SsoLoginErrorResponse{"
+            + "error='" + error + '\''
+            + ", description='" + description + '\''
+            + '}';
     }
 }

@@ -15,29 +15,39 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.darksci.pardot.api.request.login;
+package com.darksci.pardot.api.request.dynamiccontent;
 
-import com.darksci.pardot.api.request.BaseRequest;
+import com.darksci.pardot.api.request.BaseQueryRequest;
+import com.darksci.pardot.api.request.DateParameter;
 
 /**
- * Make a login request to API.
+ * Used to query DynamicContent over the Pardot API.
  */
-public class LoginRequest extends BaseRequest<LoginRequest> implements LoginRequestMarker {
-
+public class DynamicContentQueryRequest extends BaseQueryRequest<DynamicContentQueryRequest> {
     @Override
     public String getApiEndpoint() {
-        return "login";
+        return "dynamicContent/do/query";
     }
 
-    public LoginRequest withEmail(final String email) {
-        return setParam("email", email);
+    // Filter Options
+    public DynamicContentQueryRequest withUpdatedAfter(final DateParameter dateParameter) {
+        return super.withUpdatedAfter(dateParameter);
     }
 
-    public LoginRequest withUsername(final String username) {
-        return withEmail(username);
+    public DynamicContentQueryRequest withUpdatedBefore(final DateParameter dateParameter) {
+        return super.withUpdatedBefore(dateParameter);
     }
 
-    public LoginRequest withPassword(final String password) {
-        return setParam("password", password);
+    // Sorting Options
+    public DynamicContentQueryRequest withSortById() {
+        return super.withSortById();
+    }
+
+    public DynamicContentQueryRequest withSortByCreatedAt() {
+        return super.withSortByCreatedAt();
+    }
+
+    public DynamicContentQueryRequest withSortByUpdatedAt() {
+        return super.withSortByUpdatedAt();
     }
 }

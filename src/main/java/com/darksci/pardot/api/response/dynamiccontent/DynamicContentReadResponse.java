@@ -15,29 +15,25 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.darksci.pardot.api.request.login;
+package com.darksci.pardot.api.response.dynamiccontent;
 
-import com.darksci.pardot.api.request.BaseRequest;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 /**
- * Make a login request to API.
+ * Represents API response for a dynamic content read request.
  */
-public class LoginRequest extends BaseRequest<LoginRequest> implements LoginRequestMarker {
+public class DynamicContentReadResponse {
+    @JacksonXmlProperty(localName = "dynamicContent")
+    private DynamicContent dynamicContent;
+
+    public DynamicContent getDynamicContent() {
+        return dynamicContent;
+    }
 
     @Override
-    public String getApiEndpoint() {
-        return "login";
-    }
-
-    public LoginRequest withEmail(final String email) {
-        return setParam("email", email);
-    }
-
-    public LoginRequest withUsername(final String username) {
-        return withEmail(username);
-    }
-
-    public LoginRequest withPassword(final String password) {
-        return setParam("password", password);
+    public String toString() {
+        return "DynamicContentReadResponse{"
+            + "dynamicContent=" + dynamicContent
+            + '}';
     }
 }

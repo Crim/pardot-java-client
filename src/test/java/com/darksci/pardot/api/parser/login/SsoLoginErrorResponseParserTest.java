@@ -15,29 +15,33 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.darksci.pardot.api.request.login;
+package com.darksci.pardot.api.parser.login;
 
-import com.darksci.pardot.api.request.BaseRequest;
+import com.darksci.pardot.api.parser.BaseResponseParserTest;
+import com.darksci.pardot.api.response.login.SsoLoginErrorResponse;
+import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-/**
- * Make a login request to API.
- */
-public class LoginRequest extends BaseRequest<LoginRequest> implements LoginRequestMarker {
+import java.io.IOException;
 
-    @Override
-    public String getApiEndpoint() {
-        return "login";
-    }
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
-    public LoginRequest withEmail(final String email) {
-        return setParam("email", email);
-    }
+public class SsoLoginErrorResponseParserTest extends BaseResponseParserTest {
+    private static final Logger logger = LoggerFactory.getLogger(SsoLoginErrorResponseParserTest.class);
 
-    public LoginRequest withUsername(final String username) {
-        return withEmail(username);
-    }
+    /**
+     * Validates we can parse an SSO Login error response.
+     */
+    @Test
+    public void testParse() throws IOException {
+        final String input = readFile("ssoLoginFailed.json");
+        final SsoLoginErrorResponse response = new SsoLoginErrorResponseParser().parseResponse(input);
+        logger.info("Result: {}", response);
 
-    public LoginRequest withPassword(final String password) {
-        return setParam("password", password);
+        assertNotNull("Should not be null", response);
+        assertEquals("invalid_client_id", response.getError());
+        assertEquals("client identifier invalid", response.getDescription());
     }
 }
