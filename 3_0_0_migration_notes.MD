@@ -47,4 +47,4 @@ final ConfigurationBuilder configuration = Configuration.newBuilder()
 final PardotClient client = new PardotClient(configuration);
 ```
 
-See [Offical Pardot Developer Documentation](https://developer.pardot.com/kb/authentication/) for details on how to obtain the above required properties.
+See [Offical Pardot Developer Documentation](https://developer.pardot.com/kb/authentication/) and [Salesforce OAuth Setup](https://help.salesforce.com/articleView?id=remoteaccess_oauth_flows.htm) for details on how to obtain the above required properties.
