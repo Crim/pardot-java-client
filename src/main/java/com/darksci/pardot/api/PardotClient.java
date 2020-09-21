@@ -21,9 +21,9 @@ import com.darksci.pardot.api.auth.PasswordSessionRefreshHandler;
 import com.darksci.pardot.api.auth.SessionRefreshHandler;
 import com.darksci.pardot.api.auth.SsoSessionRefreshHandler;
 import com.darksci.pardot.api.config.Configuration;
+import com.darksci.pardot.api.parser.DeleteResponseParser;
 import com.darksci.pardot.api.parser.ErrorResponseParser;
 import com.darksci.pardot.api.parser.ResponseParser;
-import com.darksci.pardot.api.parser.StringResponseParser;
 import com.darksci.pardot.api.parser.account.AccountReadResponseParser;
 import com.darksci.pardot.api.parser.campaign.CampaignQueryResponseParser;
 import com.darksci.pardot.api.parser.campaign.CampaignReadResponseParser;
@@ -256,9 +256,8 @@ public class PardotClient implements AutoCloseable {
         }
     }
 
-    private <T> Result<T> submitRequest(final Request request, ResponseParser<T> responseParser) {
-        // Ugly hack,
-        // avoid doing login check if we're doing a login request.
+    private <T> Result<T> submitRequest(final Request request, final ResponseParser<T> responseParser) {
+        // Avoid doing login check if we're doing a login request.
         if (!(request instanceof LoginRequestMarker)) {
             // Check for auth token
             checkLogin();
@@ -269,7 +268,7 @@ public class PardotClient implements AutoCloseable {
         final int responseCode = restResponse.getHttpCode();
         String responseStr = restResponse.getResponseStr();
 
-        // If we have a valid response
+        // Don't log out responses from Login requests to avoid leaking sensitive details.
         if (!(request instanceof LoginRequestMarker)) {
             logger.info("Response: {}", restResponse);
         }
@@ -287,7 +286,7 @@ public class PardotClient implements AutoCloseable {
         if (responseStr.contains("<rsp stat=\"fail\"")) {
             try {
                 // Parse error response
-                final ErrorResponse error = new ErrorResponseParser().parseResponse(restResponse.getResponseStr());
+                final ErrorResponse error = new ErrorResponseParser().parseResponse(responseStr);
 
                 // Handle various error codes
                 // Session expiration error codes.
@@ -301,11 +300,11 @@ public class PardotClient implements AutoCloseable {
                     // Replay original request
                     return submitRequest(request, responseParser);
                 } else if (ErrorCode.WRONG_API_VERSION.getCode() == error.getCode() && ! "4".equals(configuration.getPardotApiVersion())) {
-                    // This means we requested api version 3, but the account requires api version 4
+                    // This means we execute a request against api version 3, but the account requires api version 4.
                     // Lets transparently switch to version 4 and re-send the request.
                     logger.info("Detected API version 4 should be used, retrying request with API Version 4.");
 
-                    // Upgrade to version 4
+                    // Upgrade to version 4.
                     configuration.setPardotApiVersion("4");
 
                     // Replay original request
@@ -330,10 +329,12 @@ public class PardotClient implements AutoCloseable {
                     throw new ParserException(exception.getMessage(), exception);
                 }
             }
-            // throw an exception.
+            // We got an error http response code, but the API didn't return an error response....
+            // Not sure this scenario exists, but lets throw an exception.
             throw new InvalidRequestException("Invalid http response code from server: " + restResponse.getHttpCode(), restResponse.getHttpCode());
         }
 
+        // Attempt to parse and return a Success result.
         try {
             return Result.newSuccess(
                 responseParser.parseResponse(restResponse.getResponseStr())
@@ -348,7 +349,7 @@ public class PardotClient implements AutoCloseable {
      *
      * @return Return Pardot API Configuration.
      */
-    public Configuration getConfiguration() {
+    Configuration getConfiguration() {
         return configuration;
     }
 
@@ -427,7 +428,6 @@ public class PardotClient implements AutoCloseable {
      */
     public SsoLoginResponse login(final SsoLoginRequest request) {
         try {
-            // TODO validate
             return submitRequest(request, new SsoLoginResponseParser()).get();
         } catch (final InvalidRequestException exception) {
             // Rethrow login failed exceptions as-is.
@@ -494,11 +494,10 @@ public class PardotClient implements AutoCloseable {
     /**
      * Make API request to delete a specific user.
      * @param request Request definition.
-     * @return Parsed api response.
+     * @return Result instance containing boolean true if a success, or an ErrorResponse if an error occurred.
      */
-    public boolean userDelete(final UserDeleteRequest request) {
-        submitRequest(request, new StringResponseParser());
-        return true;
+    public Result<Boolean> userDelete(final UserDeleteRequest request) {
+        return submitRequest(request, new DeleteResponseParser());
     }
 
     /**
@@ -535,12 +534,12 @@ public class PardotClient implements AutoCloseable {
     /**
      * Make API request to read a specific campaign.
      * @param request Request definition.
-     * @return Optional<Campaign> that was selected.
+     * @return Optional of Campaign that was selected.
      */
     public Optional<Campaign> campaignRead(final CampaignReadRequest request) {
         return optionalUnlessErrorCode(
             submitRequest(request, new CampaignReadResponseParser()),
-            ErrorCode.INVALID_CAMPAIGN_ID
+            ErrorCode.INVALID_ID
         );
     }
 
@@ -580,7 +579,6 @@ public class PardotClient implements AutoCloseable {
      * @return Parsed api response.
      */
     public Optional<CustomField> customFieldRead(final CustomFieldReadRequest request) {
-        // TODO double check this error code.
         return optionalUnlessErrorCode(
             submitRequest(request, new CustomFieldReadResponseParser()),
             ErrorCode.INVALID_ID
@@ -610,12 +608,10 @@ public class PardotClient implements AutoCloseable {
     /**
      * Make API request to delete a custom field.
      * @param request Request definition.
-     * @return true if success, false if error.
+     * @return Result instance containing boolean true if a success, or an ErrorResponse if an error occurred.
      */
-    public boolean customFieldDelete(final CustomFieldDeleteRequest request) {
-        // TODO validate delete end points
-        submitRequest(request, new StringResponseParser());
-        return true;
+    public Result<Boolean> customFieldDelete(final CustomFieldDeleteRequest request) {
+        return submitRequest(request, new DeleteResponseParser());
     }
 
     /**
@@ -634,7 +630,6 @@ public class PardotClient implements AutoCloseable {
      * @return Parsed api response.
      */
     public Optional<CustomRedirect> customRedirectRead(final CustomRedirectReadRequest request) {
-        // TODO validate error code
         return optionalUnlessErrorCode(
             submitRequest(request, new CustomRedirectReadResponseParser()),
             ErrorCode.INVALID_ID
@@ -669,7 +664,6 @@ public class PardotClient implements AutoCloseable {
      * @return Parsed api response.
      */
     public Optional<Email> emailRead(final EmailReadRequest request) {
-        // TODO validate error code
         return optionalUnlessErrorCode(
             submitRequest(request, new EmailReadResponseParser()),
             ErrorCode.INVALID_ID
@@ -682,7 +676,6 @@ public class PardotClient implements AutoCloseable {
      * @return Parsed api response.
      */
     public Optional<EmailStatsResponse.Stats> emailStats(final EmailStatsRequest request) {
-        // TODO validate error code
         return optionalUnlessErrorCode(
             submitRequest(request, new EmailStatsResponseParser()),
             ErrorCode.INVALID_ID
@@ -725,10 +718,9 @@ public class PardotClient implements AutoCloseable {
      * @return Parsed api response.
      */
     public Optional<EmailTemplate> emailTemplateRead(final EmailTemplateReadRequest request) {
-        // TODO validate error code
         return optionalUnlessErrorCode(
             submitRequest(request, new EmailTemplateReadResponseParser()),
-            ErrorCode.INVALID_ID
+            ErrorCode.INVALID_ID, ErrorCode.INVALID_EMAIL_TEMPLATE
         );
     }
 
@@ -754,11 +746,10 @@ public class PardotClient implements AutoCloseable {
     /**
      * Make API request to delete a form.
      * @param request Request definition.
-     * @return Parsed api response.
+     * @return Result instance containing boolean true if a success, or an ErrorResponse if an error occurred.
      */
-    public boolean formDelete(final FormDeleteRequest request) {
-        submitRequest(request, new StringResponseParser());
-        return true;
+    public Result<Boolean> formDelete(final FormDeleteRequest request) {
+        return submitRequest(request, new DeleteResponseParser());
     }
 
     /**
@@ -777,7 +768,6 @@ public class PardotClient implements AutoCloseable {
      * @return Parsed api response.
      */
     public Optional<Form> formRead(final FormReadRequest request) {
-        // TODO validate error code
         return optionalUnlessErrorCode(
             submitRequest(request, new FormReadResponseParser()),
             ErrorCode.INVALID_ID
@@ -810,7 +800,6 @@ public class PardotClient implements AutoCloseable {
      * @return Parsed api response.
      */
     public Optional<List> listRead(final ListReadRequest request) {
-        // TODO validate
         return optionalUnlessErrorCode(
             submitRequest(request, new ListReadResponseParser()),
             ErrorCode.INVALID_ID
@@ -853,10 +842,9 @@ public class PardotClient implements AutoCloseable {
      * @return Parsed api response.
      */
     public Optional<ListMembership> listMembershipRead(final ListMembershipReadRequest request) {
-        // TODO validate
         return optionalUnlessErrorCode(
             submitRequest(request, new ListMembershipReadResponseParser()),
-            ErrorCode.INVALID_LIST_ID
+            ErrorCode.INVALID_LIST_ID, ErrorCode.INVALID_ID
         );
     }
 
@@ -896,10 +884,9 @@ public class PardotClient implements AutoCloseable {
      * @return Parsed api response.
      */
     public Optional<Opportunity> opportunityRead(final OpportunityReadRequest request) {
-        // TODO validate
         return optionalUnlessErrorCode(
             submitRequest(request, new OpportunityReadResponseParser()),
-            ErrorCode.INVALID_ID
+            ErrorCode.INVALID_ID, ErrorCode.INVALID_OPPORTUNITY_ID
         );
     }
 
@@ -926,21 +913,19 @@ public class PardotClient implements AutoCloseable {
     /**
      * Make API request to delete an opportunity.
      * @param request Request definition.
-     * @return Parsed api response.
+     * @return Result instance containing boolean true if a success, or an ErrorResponse if an error occurred.
      */
-    public boolean opportunityDelete(final OpportunityDeleteRequest request) {
-        submitRequest(request, new StringResponseParser());
-        return true;
+    public Result<Boolean> opportunityDelete(final OpportunityDeleteRequest request) {
+        return submitRequest(request, new DeleteResponseParser());
     }
 
     /**
      * Make API request to un-delete an opportunity.
      * @param request Request definition.
-     * @return Parsed api response.
+     * @return Result instance containing boolean true if a success, or an ErrorResponse if an error occurred.
      */
-    public boolean opportunityUndelete(final OpportunityUndeleteRequest request) {
-        submitRequest(request, new StringResponseParser());
-        return true;
+    public Result<Boolean> opportunityUndelete(final OpportunityUndeleteRequest request) {
+        return submitRequest(request, new DeleteResponseParser());
     }
 
     /**
@@ -949,7 +934,6 @@ public class PardotClient implements AutoCloseable {
      * @return Parsed api response.
      */
     public Optional<Prospect> prospectRead(final ProspectReadRequest request) {
-        // TODO validate
         return optionalUnlessErrorCode(
             submitRequest(request, new ProspectReadResponseParser()),
             ErrorCode.INVALID_ID, ErrorCode.INVALID_PROSPECT_ID, ErrorCode.INVALID_PROSPECT_EMAIL_ADDRESS
@@ -999,11 +983,10 @@ public class PardotClient implements AutoCloseable {
     /**
      * Make API request to delete prospects.
      * @param request Request definition.
-     * @return true if success, false if error.
+     * @return Result instance containing boolean true if a success, or an ErrorResponse if an error occurred.
      */
-    public boolean prospectDelete(final ProspectDeleteRequest request) {
-        submitRequest(request, new StringResponseParser());
-        return true;
+    public Result<Boolean> prospectDelete(final ProspectDeleteRequest request) {
+        return submitRequest(request, new DeleteResponseParser());
     }
 
     /**
@@ -1042,7 +1025,6 @@ public class PardotClient implements AutoCloseable {
      * @return Parsed api response.
      */
     public Optional<Tag> tagRead(final TagReadRequest request) {
-        // TODO validate
         return optionalUnlessErrorCode(
             submitRequest(request, new TagReadResponseParser()),
             ErrorCode.INVALID_ID
@@ -1065,7 +1047,6 @@ public class PardotClient implements AutoCloseable {
      * @return Parsed api response.
      */
     public Optional<TagObject> tagObjectRead(final TagObjectReadRequest request) {
-        // TODO validate
         return optionalUnlessErrorCode(
             submitRequest(request, new TagObjectReadResponseParser()),
             ErrorCode.INVALID_ID
@@ -1098,10 +1079,9 @@ public class PardotClient implements AutoCloseable {
      * @return Parsed api response
      */
     public Optional<Visitor> visitorRead(final VisitorReadRequest request) {
-        // TODO validate
         return optionalUnlessErrorCode(
             submitRequest(request, new VisitorReadResponseParser()),
-            ErrorCode.INVALID_ID
+            ErrorCode.INVALID_ID, ErrorCode.INVALID_VISITOR_ID
         );
     }
 
@@ -1121,7 +1101,6 @@ public class PardotClient implements AutoCloseable {
      * @return Parsed api response
      */
     public Optional<VisitorActivity> visitorActivityRead(final VisitorActivityReadRequest request) {
-        // TODO validate
         return optionalUnlessErrorCode(
             submitRequest(request, new VisitorActivityReadResponseParser()),
             ErrorCode.INVALID_ID
@@ -1152,7 +1131,7 @@ public class PardotClient implements AutoCloseable {
      * @param result API result.
      * @param errorCodes Error codes to allow returning an Optional.empty() for.
      * @param <T> Underlying result object.
-     * @return Optional<T> unless an error code not passed is given.
+     * @return Optional unless an error code not passed is given.
      */
     private <T> Optional<T> optionalUnlessErrorCode(final Result<T> result, final ErrorCode ... errorCodes) {
         return Optional.ofNullable(

@@ -1,3 +1,20 @@
+/**
+ * Copyright 2017, 2018, 2019, 2020 Stephen Powis https://github.com/Crim/pardot-java-client
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
+ * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit
+ * persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
+ * Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ * WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+ * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
 package com.darksci.pardot.api.response;
 
 import com.darksci.pardot.api.InvalidRequestException;
@@ -10,6 +27,7 @@ import java.util.function.Supplier;
 
 /**
  * Represents either a successful response from the API, or an error response.
+ * @param <T> The return type for successful responses.
  */
 public class Result<T> {
     private final T value;
@@ -115,8 +133,9 @@ public class Result<T> {
      *
      * @param successConsumer called if there is a successful response.
      * @param errorResponseConsumer called if there is an error response.
+     * @return On success, call and return value from success handler.  On error, call and return value from error handler.
      */
-    public T handle(Function<? super T, T> successConsumer, Function<ErrorResponse, T> errorResponseConsumer) {
+    public T handle(final Function<? super T, T> successConsumer, final Function<ErrorResponse, T> errorResponseConsumer) {
         if (isSuccess()) {
             return successConsumer.apply(value);
         } else {
@@ -128,8 +147,10 @@ public class Result<T> {
      * For handling response values.
      *
      * @param errorResponseConsumer called if there is an error response.
+     * @return On success, return the success result, otherwise calls the error handler and returns
+     *         the value it generates.
      */
-    public T handleError(Function<ErrorResponse, T> errorResponseConsumer) {
+    public T handleError(final Function<ErrorResponse, T> errorResponseConsumer) {
         if (isSuccess()) {
             return value;
         } else {
@@ -167,7 +188,6 @@ public class Result<T> {
      * If a value is present, returns the value, otherwise throws an exception
      * produced by the exception supplying function.
      *
-     * @apiNote
      * A method reference to the exception constructor with an empty argument
      * list can be used as the supplier. For example,
      * {@code IllegalStateException::new}
@@ -180,7 +200,7 @@ public class Result<T> {
      * @throws NullPointerException if no value is present and the exception
      *          supplying function is {@code null}
      */
-    public <X extends Throwable> T orElseThrow(Supplier<? extends X> exceptionSupplier) throws X {
+    public <X extends Throwable> T orElseThrow(final Supplier<? extends X> exceptionSupplier) throws X {
         if (value != null) {
             return value;
         } else {
@@ -192,10 +212,8 @@ public class Result<T> {
      * If a value is present, returns the value, otherwise throws an exception
      * produced by the exception supplying function.
      *
-     * @apiNote
      * A method reference to the exception constructor with an empty argument
-     * list can be used as the supplier. For example,
-     * {@code IllegalStateException::new}
+     * list can be used as the supplier. For example {@code IllegalStateException::new}
      *
      * @param <X> Type of the exception to be thrown
      * @return the value, if present

@@ -15,30 +15,17 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.darksci.pardot.api;
+package com.darksci.pardot.api.parser;
+
+import java.io.IOException;
 
 /**
- * Represents when a request is invalid.
+ * Delete requests are expected to return http code 204 with a null response.
+ * If this gets a null responseStr, return true.
  */
-public class InvalidRequestException extends RuntimeException {
-    private final int errorCode;
-
-    /**
-     * Constructor.
-     * @param message Error message returned by Pardot API.
-     * @param errorCode Error code returned by Pardot API.
-     */
-    public InvalidRequestException(final String message, final int errorCode) {
-        super(message);
-        this.errorCode = errorCode;
-    }
-
-    public InvalidRequestException(final String message, final Throwable cause) {
-        super(message, cause);
-        this.errorCode = -1;
-    }
-
-    public int getErrorCode() {
-        return errorCode;
+public class DeleteResponseParser implements ResponseParser<Boolean> {
+    @Override
+    public Boolean parseResponse(final String responseStr) throws IOException {
+        return (responseStr == null || responseStr.isEmpty());
     }
 }

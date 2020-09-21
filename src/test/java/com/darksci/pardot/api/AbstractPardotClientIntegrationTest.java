@@ -82,6 +82,7 @@ import com.darksci.pardot.api.request.visitor.VisitorQueryRequest;
 import com.darksci.pardot.api.request.visitor.VisitorReadRequest;
 import com.darksci.pardot.api.request.visitoractivity.VisitorActivityQueryRequest;
 import com.darksci.pardot.api.request.visitoractivity.VisitorActivityReadRequest;
+import com.darksci.pardot.api.response.Result;
 import com.darksci.pardot.api.response.account.Account;
 import com.darksci.pardot.api.response.campaign.Campaign;
 import com.darksci.pardot.api.response.campaign.CampaignQueryResponse;
@@ -201,7 +202,6 @@ abstract class AbstractPardotClientIntegrationTest {
     /**
      * Attempt to retrieve current user's cookie.
      */
-    
     public void userCookieTest() {
         final Cookie response = client.userCookie(new UserCookieRequest());
         assertNotNull("Should not be null", response);
@@ -211,7 +211,6 @@ abstract class AbstractPardotClientIntegrationTest {
     /**
      * Attempt to retrieve a user.
      */
-    
     public void userReadTest() {
         UserReadRequest readRequest = new UserReadRequest()
             .selectById(1L);
@@ -267,7 +266,7 @@ abstract class AbstractPardotClientIntegrationTest {
         final UserDeleteRequest deleteRequest = new UserDeleteRequest()
             .deleteByEmail(email);
 
-        final boolean result = client.userDelete(deleteRequest);
+        final boolean result = client.userDelete(deleteRequest).isSuccess();
         assertTrue("Response should be true", result);
     }
 
@@ -294,7 +293,7 @@ abstract class AbstractPardotClientIntegrationTest {
         final UserDeleteRequest deleteRequest = new UserDeleteRequest()
             .deleteById(response.getId());
 
-        final boolean result = client.userDelete(deleteRequest);
+        final boolean result = client.userDelete(deleteRequest).isSuccess();
         assertTrue("Response should be true", result);
     }
 
@@ -499,7 +498,7 @@ abstract class AbstractPardotClientIntegrationTest {
             .withCustomFieldId(customFieldId);
 
         // Send Request
-        final Boolean response = client.customFieldDelete(request);
+        final Boolean response = client.customFieldDelete(request).isSuccess();
         assertNotNull("Should not be null", response);
         assertTrue("Is true", response);
         logger.info("Response: {}", response);
@@ -714,7 +713,7 @@ abstract class AbstractPardotClientIntegrationTest {
         final FormDeleteRequest request = new FormDeleteRequest()
             .withFormId(formId);
 
-        final boolean response = client.formDelete(request);
+        final boolean response = client.formDelete(request).isSuccess();
         assertTrue("Should be true", response);
     }
 
@@ -1154,9 +1153,8 @@ abstract class AbstractPardotClientIntegrationTest {
     }
 
     /**
-     * Test creating prospect.
+     * Test deleting prospect.
      */
-    
     public void prospectDeleteTest() {
         final long prospectId = 59138429L;
 
@@ -1164,8 +1162,38 @@ abstract class AbstractPardotClientIntegrationTest {
             .withProspectId(prospectId);
 
         // Issue request
-        final boolean response = client.prospectDelete(request);
+        final Result<Boolean> response = client.prospectDelete(request);
         logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test creating and then deleting a prospect.
+     */
+    public void prospectCreateAndDeleteTest() {
+        final Prospect prospect = new Prospect();
+        prospect.setEmail("random-email" + System.currentTimeMillis() + "@example.com");
+        prospect.setFirstName("Test");
+        prospect.setLastName("User");
+        prospect.setCity("Some City");
+
+        final ProspectCreateRequest createRequest = new ProspectCreateRequest()
+            .withProspect(prospect);
+
+        // Issue request
+        final Prospect createdProspect = client.prospectCreate(createRequest);
+
+        assertNotNull("Should not be null", createdProspect);
+        logger.info("Response: {}", createdProspect);
+
+        final ProspectDeleteRequest deleteRequest = new ProspectDeleteRequest()
+            .withProspectId(createdProspect.getId());
+
+        // Issue request
+        final boolean result = client
+            .prospectDelete(deleteRequest)
+            .isSuccess();
+
+        assertTrue(result);
     }
 
     /**

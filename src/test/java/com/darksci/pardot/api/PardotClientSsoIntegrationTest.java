@@ -449,6 +449,12 @@ public class PardotClientSsoIntegrationTest extends AbstractPardotClientIntegrat
 
     @Test
     @Override
+    public void prospectCreateAndDeleteTest() {
+        super.prospectCreateAndDeleteTest();
+    }
+
+    @Test
+    @Override
     public void prospectAssignTest() {
         super.prospectAssignTest();
     }

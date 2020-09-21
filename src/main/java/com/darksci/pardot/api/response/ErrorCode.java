@@ -30,13 +30,17 @@ public enum ErrorCode {
     INVALID_PROSPECT_ID(3),
     INVALID_PROSPECT_EMAIL_ADDRESS(4),
     INVALID_USER_ID(10),
-    INVALID_ID(11),
+    INVALID_USER_EMAIL(11),
+    INVALID_ID(16),
     // Returned if authentication credentials are invalid.
     LOGIN_FAILED(15),
+    INVALID_VISITOR_ID(24),
+    INVALID_OPPORTUNITY_ID(35),
     INVALID_CAMPAIGN_ID(38),
     EMAIL_ADDRESS_IS_ALREADY_IN_USE(54),
     INVALID_LIST_ID(55),
     INVALID_EMAIL_FORMAT(65),
+    INVALID_EMAIL_TEMPLATE(68),
     // Returned if requested with API Version 3, but required to use Version 4.
     WRONG_API_VERSION(88),
     MISSING_REQUIRED_HEADER(181),
