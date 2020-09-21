@@ -20,8 +20,10 @@ package com.darksci.pardot.api;
 import com.darksci.pardot.api.config.Configuration;
 import com.darksci.pardot.api.request.login.SsoLoginRequest;
 import com.darksci.pardot.api.request.tag.TagReadRequest;
+import com.darksci.pardot.api.request.user.UserReadRequest;
 import com.darksci.pardot.api.response.login.SsoLoginResponse;
 import com.darksci.pardot.api.response.tag.Tag;
+import com.darksci.pardot.api.response.user.User;
 import com.darksci.pardot.api.rest.RestClient;
 import com.darksci.pardot.api.rest.RestResponse;
 import org.junit.Before;
@@ -29,11 +31,14 @@ import org.junit.Test;
 import util.TestHelper;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -133,10 +138,13 @@ public class PardotClient_SsoAuthTest {
             .thenReturn(createRestResponseFromFile("tagRead.xml", 200));
 
         // Call method under test
-        final Tag response = pardotClient.tagRead(tagReadRequest);
+        final Optional<Tag> responseOptional = pardotClient.tagRead(tagReadRequest);
 
         // Validate response for tag
-        assertNotNull(response);
+        assertNotNull(responseOptional);
+        assertTrue(responseOptional.isPresent());
+
+        final Tag response = responseOptional.get();
         assertEquals(1L, (long) response.getId());
         assertEquals("Standard Tag", response.getName());
 
@@ -186,10 +194,13 @@ public class PardotClient_SsoAuthTest {
             );
 
         // Call method under test
-        final Tag response = pardotClient.tagRead(tagReadRequest);
+        final Optional<Tag> responseOptional = pardotClient.tagRead(tagReadRequest);
 
         // Validate response for tag
-        assertNotNull(response);
+        assertNotNull(responseOptional);
+        assertTrue(responseOptional.isPresent());
+
+        final Tag response = responseOptional.get();
         assertEquals(1L, (long) response.getId());
         assertEquals("Standard Tag", response.getName());
 
@@ -245,6 +256,54 @@ public class PardotClient_SsoAuthTest {
         });
     }
 
+    /**
+     * Verify behavior when attempting to retrieve a user by id, but the API returns an 'invalid user id' error.
+     * The result should be an empty optional.
+     */
+    @Test
+    public void userRead_invalidUserId_returnsEmptyOptional() {
+        // All login to succeed.
+        mockSuccessfulLogin();
+
+        // Mock responses from RestClient/Api Server.
+        // When we request for a user read, we should get a does not exist API error.
+        // This should force an empty optional to be returned.
+        when(mockRestClient.submitRequest(isA(UserReadRequest.class)))
+            .thenReturn(
+                // First call should return an invalid API key response.
+                createRestResponseFromFile("userRead_invalidUserId.xml", 200)
+            );
+
+        final Optional<User> response = pardotClient.userRead(new UserReadRequest());
+
+        assertNotNull("Should not be null", response);
+        assertFalse("Should not be present", response.isPresent());
+    }
+
+    /**
+     * Verify behavior when attempting to retrieve a user by id, but the API returns an 'invalid user id' error.
+     * The result should be an empty optional.
+     */
+    @Test
+    public void userRead_validUserId_returnsPopulatedOptional() {
+        // All login to succeed.
+        mockSuccessfulLogin();
+
+        // Mock responses from RestClient/Api Server.
+        // When we request for a user read, we should get a does not exist API error.
+        // This should force an empty optional to be returned.
+        when(mockRestClient.submitRequest(isA(UserReadRequest.class)))
+            .thenReturn(
+                // First call should return a valid user response.
+                createRestResponseFromFile("userRead.xml", 200)
+            );
+
+        final Optional<User> response = pardotClient.userRead(new UserReadRequest());
+
+        assertNotNull("Should not be null", response);
+        assertTrue("Should be present", response.isPresent());
+    }
+
     private RestResponse createRestResponseFromFile(final String filename, int httpCode) {
         try {
             return new RestResponse(
@@ -260,5 +319,11 @@ public class PardotClient_SsoAuthTest {
         verify(mockRestClient, times(1))
             .init(apiConfig);
         verifyNoMoreInteractions(mockRestClient);
+    }
+
+    private void mockSuccessfulLogin() {
+        // Mock successful login response from RestClient/Api Server.
+        when(mockRestClient.submitRequest(isA(SsoLoginRequest.class)))
+            .thenReturn(createRestResponseFromFile("ssoLoginSuccess.json", 200));
     }
 }

@@ -82,6 +82,7 @@ import com.darksci.pardot.api.request.visitor.VisitorQueryRequest;
 import com.darksci.pardot.api.request.visitor.VisitorReadRequest;
 import com.darksci.pardot.api.request.visitoractivity.VisitorActivityQueryRequest;
 import com.darksci.pardot.api.request.visitoractivity.VisitorActivityReadRequest;
+import com.darksci.pardot.api.response.Result;
 import com.darksci.pardot.api.response.account.Account;
 import com.darksci.pardot.api.response.campaign.Campaign;
 import com.darksci.pardot.api.response.campaign.CampaignQueryResponse;
@@ -129,6 +130,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -200,7 +202,6 @@ abstract class AbstractPardotClientIntegrationTest {
     /**
      * Attempt to retrieve current user's cookie.
      */
-    
     public void userCookieTest() {
         final Cookie response = client.userCookie(new UserCookieRequest());
         assertNotNull("Should not be null", response);
@@ -210,12 +211,11 @@ abstract class AbstractPardotClientIntegrationTest {
     /**
      * Attempt to retrieve a user.
      */
-    
     public void userReadTest() {
         UserReadRequest readRequest = new UserReadRequest()
             .selectById(1L);
 
-        final User response = client.userRead(readRequest);
+        final Optional<User> response = client.userRead(readRequest);
         assertNotNull("Should not be null", response);
         logger.info("Response: {}", response);
     }
@@ -266,7 +266,7 @@ abstract class AbstractPardotClientIntegrationTest {
         final UserDeleteRequest deleteRequest = new UserDeleteRequest()
             .deleteByEmail(email);
 
-        final boolean result = client.userDelete(deleteRequest);
+        final boolean result = client.userDelete(deleteRequest).isSuccess();
         assertTrue("Response should be true", result);
     }
 
@@ -293,7 +293,7 @@ abstract class AbstractPardotClientIntegrationTest {
         final UserDeleteRequest deleteRequest = new UserDeleteRequest()
             .deleteById(response.getId());
 
-        final boolean result = client.userDelete(deleteRequest);
+        final boolean result = client.userDelete(deleteRequest).isSuccess();
         assertTrue("Response should be true", result);
     }
 
@@ -356,7 +356,7 @@ abstract class AbstractPardotClientIntegrationTest {
         CampaignReadRequest request = new CampaignReadRequest()
             .selectById(14885L);
 
-        final Campaign response = client.campaignRead(request);
+        final Optional<Campaign> response = client.campaignRead(request);
         assertNotNull("Should not be null", response);
         logger.info("Response: {}", response);
     }
@@ -431,7 +431,7 @@ abstract class AbstractPardotClientIntegrationTest {
         CustomFieldReadRequest request = new CustomFieldReadRequest()
             .selectById(customFieldId);
 
-        final CustomField response = client.customFieldRead(request);
+        final Optional<CustomField> response = client.customFieldRead(request);
         assertNotNull("Should not be null", response);
         logger.info("Response: {}", response);
     }
@@ -498,7 +498,7 @@ abstract class AbstractPardotClientIntegrationTest {
             .withCustomFieldId(customFieldId);
 
         // Send Request
-        final Boolean response = client.customFieldDelete(request);
+        final Boolean response = client.customFieldDelete(request).isSuccess();
         assertNotNull("Should not be null", response);
         assertTrue("Is true", response);
         logger.info("Response: {}", response);
@@ -525,7 +525,7 @@ abstract class AbstractPardotClientIntegrationTest {
         CustomRedirectReadRequest request = new CustomRedirectReadRequest()
             .selectById(customRedirectId);
 
-        final CustomRedirect response = client.customRedirectRead(request);
+        final Optional<CustomRedirect> response = client.customRedirectRead(request);
         assertNotNull("Should not be null", response);
         logger.info("Response: {}", response);
     }
@@ -551,7 +551,7 @@ abstract class AbstractPardotClientIntegrationTest {
         DynamicContentReadRequest request = new DynamicContentReadRequest()
             .selectById(id);
 
-        final DynamicContent response = client.dynamicContentRead(request);
+        final Optional<DynamicContent> response = client.dynamicContentRead(request);
         assertNotNull("Should not be null", response);
         logger.info("Response: {}", response);
     }
@@ -566,7 +566,7 @@ abstract class AbstractPardotClientIntegrationTest {
         EmailReadRequest request = new EmailReadRequest()
             .selectById(emailId);
 
-        final Email response = client.emailRead(request);
+        final Optional<Email> response = client.emailRead(request);
         assertNotNull("Should not be null", response);
         logger.info("Response: {}", response);
     }
@@ -581,7 +581,7 @@ abstract class AbstractPardotClientIntegrationTest {
         EmailStatsRequest request = new EmailStatsRequest()
             .selectByListEmailId(listEmailId);
 
-        final EmailStatsResponse.Stats response = client.emailStats(request);
+        final Optional<EmailStatsResponse.Stats> response = client.emailStats(request);
         assertNotNull("Should not be null", response);
         logger.info("Response: {}", response);
     }
@@ -661,7 +661,7 @@ abstract class AbstractPardotClientIntegrationTest {
         final EmailTemplateReadRequest request = new EmailTemplateReadRequest()
             .selectById(emailTemplateId);
 
-        final EmailTemplate response = client.emailTemplateRead(request);
+        final Optional<EmailTemplate> response = client.emailTemplateRead(request);
         assertNotNull("Should not be null", response);
         logger.info("Response: {}", response);
     }
@@ -713,7 +713,7 @@ abstract class AbstractPardotClientIntegrationTest {
         final FormDeleteRequest request = new FormDeleteRequest()
             .withFormId(formId);
 
-        final boolean response = client.formDelete(request);
+        final boolean response = client.formDelete(request).isSuccess();
         assertTrue("Should be true", response);
     }
 
@@ -737,7 +737,7 @@ abstract class AbstractPardotClientIntegrationTest {
         final FormReadRequest request = new FormReadRequest()
             .selectById(1L);
 
-        final Form response = client.formRead(request);
+        final Optional<Form> response = client.formRead(request);
         assertNotNull("Should not be null", response);
         logger.info("Response: {}", response);
     }
@@ -791,7 +791,7 @@ abstract class AbstractPardotClientIntegrationTest {
         final ListReadRequest request = new ListReadRequest()
             .selectById(33173L);
 
-        final List response = client.listRead(request);
+        final Optional<List> response = client.listRead(request);
         assertNotNull("Should not be null", response);
         logger.info("Response: {}", response);
     }
@@ -862,7 +862,7 @@ abstract class AbstractPardotClientIntegrationTest {
         final ListMembershipReadRequest request = new ListMembershipReadRequest()
             .selectByListIdAndProspectId(33173L, 59156811L);
 
-        final ListMembership response = client.listMembershipRead(request);
+        final Optional<ListMembership> response = client.listMembershipRead(request);
         assertNotNull("Should not be null", response);
         logger.info("Response: {}", response);
     }
@@ -875,7 +875,7 @@ abstract class AbstractPardotClientIntegrationTest {
         final ListMembershipReadRequest request = new ListMembershipReadRequest()
             .selectById(170293539L);
 
-        final ListMembership response = client.listMembershipRead(request);
+        final Optional<ListMembership> response = client.listMembershipRead(request);
         assertNotNull("Should not be null", response);
         logger.info("Response: {}", response);
     }
@@ -934,7 +934,7 @@ abstract class AbstractPardotClientIntegrationTest {
     public void opportunityReadTest() {
         final long opportunityId = 1;
 
-        final Opportunity response = client.opportunityRead(new OpportunityReadRequest()
+        final Optional<Opportunity> response = client.opportunityRead(new OpportunityReadRequest()
             .selectById(opportunityId)
         );
         assertNotNull("Should not be null", response);
@@ -1013,7 +1013,7 @@ abstract class AbstractPardotClientIntegrationTest {
     public void prospectReadTest() {
         final long prospectId = 59164595L;
 
-        final Prospect response = client.prospectRead(new ProspectReadRequest()
+        final Optional<Prospect> response = client.prospectRead(new ProspectReadRequest()
             .selectById(prospectId)
         );
         assertNotNull("Should not be null", response);
@@ -1153,9 +1153,8 @@ abstract class AbstractPardotClientIntegrationTest {
     }
 
     /**
-     * Test creating prospect.
+     * Test deleting prospect.
      */
-    
     public void prospectDeleteTest() {
         final long prospectId = 59138429L;
 
@@ -1163,8 +1162,38 @@ abstract class AbstractPardotClientIntegrationTest {
             .withProspectId(prospectId);
 
         // Issue request
-        final boolean response = client.prospectDelete(request);
+        final Result<Boolean> response = client.prospectDelete(request);
         logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test creating and then deleting a prospect.
+     */
+    public void prospectCreateAndDeleteTest() {
+        final Prospect prospect = new Prospect();
+        prospect.setEmail("random-email" + System.currentTimeMillis() + "@example.com");
+        prospect.setFirstName("Test");
+        prospect.setLastName("User");
+        prospect.setCity("Some City");
+
+        final ProspectCreateRequest createRequest = new ProspectCreateRequest()
+            .withProspect(prospect);
+
+        // Issue request
+        final Prospect createdProspect = client.prospectCreate(createRequest);
+
+        assertNotNull("Should not be null", createdProspect);
+        logger.info("Response: {}", createdProspect);
+
+        final ProspectDeleteRequest deleteRequest = new ProspectDeleteRequest()
+            .withProspectId(createdProspect.getId());
+
+        // Issue request
+        final boolean result = client
+            .prospectDelete(deleteRequest)
+            .isSuccess();
+
+        assertTrue(result);
     }
 
     /**
@@ -1245,14 +1274,14 @@ abstract class AbstractPardotClientIntegrationTest {
         final TagReadRequest request = new TagReadRequest()
             .selectById(tagId);
 
-        final Tag response = client.tagRead(request);
+        final Optional<Tag> response = client.tagRead(request);
         logger.info("Response: {}", response);
 
         assertNotNull("Should not be null", response);
-        assertNotNull("Should have a name", response.getName());
-        assertNotNull("Should have an id", response.getId());
-        assertNotNull("Should have a create at", response.getCreatedAt());
-        assertNotNull("Should have an updated at", response.getUpdatedAt());
+        assertNotNull("Should have a name", response.get().getName());
+        assertNotNull("Should have an id", response.get().getId());
+        assertNotNull("Should have a create at", response.get().getCreatedAt());
+        assertNotNull("Should have an updated at", response.get().getUpdatedAt());
     }
 
     /**
@@ -1287,10 +1316,10 @@ abstract class AbstractPardotClientIntegrationTest {
         final TagObjectReadRequest request = new TagObjectReadRequest()
             .selectById(tagObjectId);
 
-        final TagObject response = client.tagObjectRead(request);
+        final Optional<TagObject> response = client.tagObjectRead(request);
         assertNotNull("Should not be null", response);
-        assertNotNull(response.getType());
-        assertNotNull(response.getTypeName());
+        assertNotNull(response.get().getType());
+        assertNotNull(response.get().getTypeName());
         logger.info("Response: {}", response);
     }
 
@@ -1314,7 +1343,7 @@ abstract class AbstractPardotClientIntegrationTest {
         final VisitorReadRequest request = new VisitorReadRequest()
             .selectById(visitorId);
 
-        final Visitor response = client.visitorRead(request);
+        final Optional<Visitor> response = client.visitorRead(request);
         assertNotNull("Should not be null", response);
         logger.info("Response: {}", response);
     }
@@ -1354,7 +1383,7 @@ abstract class AbstractPardotClientIntegrationTest {
         final VisitorActivityReadRequest request = new VisitorActivityReadRequest()
             .selectById(visitorActivityId);
 
-        final VisitorActivity response = client.visitorActivityRead(request);
+        final Optional<VisitorActivity> response = client.visitorActivityRead(request);
         assertNotNull("Should not be null", response);
         logger.info("Response: {}", response);
     }
