@@ -10,6 +10,8 @@ This release has several breaking changes. See [3.0.0 Migration Notes](3_0_0_mig
 - [ISSUE-58](https://github.com/Crim/pardot-java-client/issues/58) Add support for Salesforce SSO authentication.
 - [PR-60](https://github.com/Crim/pardot-java-client/pull/60) Alters return values from `PardotClient.readXYZ()` and `PardotClient.deleteXYZ()` to allow for better error handling.
 
+#### Internal Dependency Updates
+- Upgraded Jackson from version 2.11.1 to 2.11.2.
 
 ## 2.1.0 (07/30/2020)
 - [ISSUE-56](https://github.com/Crim/pardot-java-client/issues/56) Adds support for Dynamic Content.
