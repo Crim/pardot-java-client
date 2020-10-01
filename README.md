@@ -1,6 +1,8 @@
 # Pardot Java API Client
 
+[![Maven](https://img.shields.io/maven-central/v/com.darksci/pardot-api-client.svg)](https://repo.maven.apache.org/maven2/com/darksci/pardot-api-client/)
 [![Build Status](https://travis-ci.org/Crim/pardot-java-client.svg?branch=master)](https://travis-ci.org/Crim/pardot-java-client)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## What is it? 
 
