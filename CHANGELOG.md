@@ -2,7 +2,10 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 3.0.0 (UNRELEASED)
+## 3.1.0 (10/23/2020)
+- [ISSUE-65](https://github.com/Crim/pardot-java-client/issues/65) Adds missing Query options to `ProspectQuerytRequest` for `withUpdatedAfter()` and `withUpdatedBefore()`.
+
+## 3.0.0 (09/21/2020)
 
 ### Breaking Changes
 This release has several breaking changes. See [3.0.0 Migration Notes](3_0_0_migration_notes.MD) for details on breaking changes and how to upgrade.

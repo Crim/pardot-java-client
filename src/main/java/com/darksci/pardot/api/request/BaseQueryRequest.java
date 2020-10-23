@@ -63,6 +63,7 @@ public abstract class BaseQueryRequest<T> extends BaseRequest<T> {
 
     /**
      * Add constraint where UpdatedAt field is after than the specified time value.
+     * Note: marked as protected because not supported by all entities.
      * @param updatedAfter date constraint.
      * @return BaseQueryRequest
      */
@@ -72,6 +73,7 @@ public abstract class BaseQueryRequest<T> extends BaseRequest<T> {
 
     /**
      * Add constraint where UpdatedAt field is before than the specified time value.
+     * Note: marked as protected because not supported by all entities.
      * @param updatedBefore date constraint.
      * @return BaseQueryRequest
      */
