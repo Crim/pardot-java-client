@@ -43,7 +43,7 @@ public class ProspectQueryRequest extends BaseQueryRequest<ProspectQueryRequest>
      * @param fields Collection of fields to be selected by the request.
      * @return RequestBuilder
      */
-    public ProspectQueryRequest withFields(Collection<String> fields) {
+    public ProspectQueryRequest withFields(final Collection<String> fields) {
         final String fieldsStr = fields.stream().collect(Collectors.joining( "," ));
         final String currentValue = getParam("fields");
         if (currentValue == null) {
@@ -127,6 +127,16 @@ public class ProspectQueryRequest extends BaseQueryRequest<ProspectQueryRequest>
     }
 
     /**
+     * Retrieve only archived/non-archived prospects.
+     * @param onlyReturnArchived True to only get returned archived entries.
+     * @return BaseQueryRequest
+     */
+    @Override
+    public ProspectQueryRequest withArchivedOnly(final boolean onlyReturnArchived) {
+        return super.withArchivedOnly(onlyReturnArchived);
+    }
+
+    /**
      * Only select prospects who have a grade equal to the specified grade.
      * @param grade Grade in format of "A", "A+", "B", "C-"
      * @return RequestBuilder
@@ -174,8 +184,28 @@ public class ProspectQueryRequest extends BaseQueryRequest<ProspectQueryRequest>
      * @param lastActivityAfter The date to filter.
      * @return RequestBuilder
      */
-    public ProspectQueryRequest withLastActivityAfter(DateParameter lastActivityAfter) {
+    public ProspectQueryRequest withLastActivityAfter(final DateParameter lastActivityAfter) {
         return setParam("last_activity_after", lastActivityAfter);
+    }
+
+    /**
+     * Add constraint where UpdatedAt field is after than the specified time value.
+     * @param updatedAfter date constraint.
+     * @return BaseQueryRequest
+     */
+    @Override
+    public ProspectQueryRequest withUpdatedAfter(final DateParameter updatedAfter) {
+        return super.withUpdatedAfter(updatedAfter);
+    }
+
+    /**
+     * Add constraint where UpdatedAt field is before than the specified time value.
+     * @param updatedBefore date constraint.
+     * @return BaseQueryRequest
+     */
+    @Override
+    public ProspectQueryRequest withUpdatedBefore(final DateParameter updatedBefore) {
+        return super.withUpdatedBefore(updatedBefore);
     }
 
     /**
@@ -279,5 +309,4 @@ public class ProspectQueryRequest extends BaseQueryRequest<ProspectQueryRequest>
     public ProspectQueryRequest withSortById() {
         return super.withSortById();
     }
-
 }
