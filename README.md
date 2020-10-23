@@ -271,7 +271,7 @@ Steps for performing a release:
 2. Validate and then commit version: `mvn versions:commit`
 3. Update CHANGELOG and README files.
 4. Merge to master.
-5. Deploy to Maven Central: mvn clean deploy -P release
+5. Deploy to Maven Central: `mvn clean deploy -P release`
 7. Create release on Github project, uploading JAR artifacts.
 
 ## Changelog

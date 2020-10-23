@@ -111,6 +111,16 @@ public class ProspectQueryRequest extends BaseQueryRequest<ProspectQueryRequest>
     }
 
     /**
+     * Retrieve only archived/non-archived prospects.
+     * @param onlyReturnArchived True to only get returned archived entries.
+     * @return BaseQueryRequest
+     */
+    @Override
+    public ProspectQueryRequest withArchivedOnly(final boolean onlyReturnArchived) {
+        return super.withArchivedOnly(onlyReturnArchived);
+    }
+
+    /**
      * Only select prospects who are archived.
      * @return RequestBuilder
      */
@@ -124,16 +134,6 @@ public class ProspectQueryRequest extends BaseQueryRequest<ProspectQueryRequest>
      */
     public ProspectQueryRequest withNotArchivedOnly() {
         return super.withArchivedOnly(false);
-    }
-
-    /**
-     * Retrieve only archived/non-archived prospects.
-     * @param onlyReturnArchived True to only get returned archived entries.
-     * @return BaseQueryRequest
-     */
-    @Override
-    public ProspectQueryRequest withArchivedOnly(final boolean onlyReturnArchived) {
-        return super.withArchivedOnly(onlyReturnArchived);
     }
 
     /**
