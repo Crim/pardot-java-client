@@ -20,8 +20,12 @@ package com.darksci.pardot.api;
 import categories.IntegrationTest;
 import com.darksci.pardot.api.config.Configuration;
 import com.darksci.pardot.api.request.login.LoginRequest;
+import com.darksci.pardot.api.request.prospect.ProspectReadRequest;
+import com.darksci.pardot.api.request.prospectaccount.ProspectAccountQueryRequest;
 import com.darksci.pardot.api.request.tag.TagQueryRequest;
 import com.darksci.pardot.api.response.login.LoginResponse;
+import com.darksci.pardot.api.response.prospect.Prospect;
+import com.darksci.pardot.api.response.prospectaccount.ProspectAccountQueryResponse;
 import com.darksci.pardot.api.response.tag.TagQueryResponse;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -30,6 +34,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Optional;
 import java.util.Properties;
 
 import static org.junit.Assert.assertNotNull;
@@ -409,6 +414,12 @@ public class PardotClientIntegrationTest extends AbstractPardotClientIntegration
     @Override
     public void opportunityUndeleteTest() {
         super.opportunityUndeleteTest();
+    }
+
+    @Test
+    @Override
+    public void prospectAccountQueryTest() {
+        super.prospectAccountQueryTest();
     }
 
     @Test

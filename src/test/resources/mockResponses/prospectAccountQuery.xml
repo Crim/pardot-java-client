@@ -1,0 +1,104 @@
+<rsp stat="ok" version="1.0">
+    <result>
+        <total_results>1</total_results>
+        <prospectAccount>
+            <id>5007463</id>
+            <created_at>2020-11-18 02:13:31</created_at>
+            <updated_at>2020-11-18 02:13:31</updated_at>
+            <assigned_to>
+                <user>
+                    <id>3793281</id>
+                    <email>stephen.powis@gmail.com</email>
+                    <first_name>Stephen</first_name>
+                    <last_name>Powis</last_name>
+                    <job_title/>
+                    <role>Administrator</role>
+                    <account>139321</account>
+                    <created_at>2016-01-04 10:39:29</created_at>
+                    <updated_at>2020-02-18 04:32:39</updated_at>
+                </user>
+            </assigned_to>
+            <annual_revenue>
+                <value>1</value>
+            </annual_revenue>
+            <billing_address_one>
+                <value>ADDR1</value>
+            </billing_address_one>
+            <billing_address_two>
+                <value>ADDR2</value>
+            </billing_address_two>
+            <billing_city>
+                <value>BILL CITY</value>
+            </billing_city>
+            <billing_country>
+                <value>BILL COUNTRY</value>
+            </billing_country>
+            <billing_state>
+                <value>BILL STATE</value>
+            </billing_state>
+            <billing_zip>
+                <value>BILL ZIP</value>
+            </billing_zip>
+            <description>
+                <value>Description here</value>
+            </description>
+            <employees>
+                <value>42</value>
+            </employees>
+            <fax>
+                <value>312-321-3214</value>
+            </fax>
+            <industry>
+                <value>Apparel</value>
+            </industry>
+            <name>
+                <value>Test Prospect ACcounnt</value>
+            </name>
+            <number>
+                <value>123</value>
+            </number>
+            <ownership>
+                <value>Private</value>
+            </ownership>
+            <phone>
+                <value>123-123-1234</value>
+            </phone>
+            <rating>
+                <value>Warm</value>
+            </rating>
+            <shipping_address_one>
+                <value>SHIP ADDR1</value>
+            </shipping_address_one>
+            <shipping_address_two>
+                <value>SHIP ADDR2</value>
+            </shipping_address_two>
+            <shipping_city>
+                <value>SHIP CITY</value>
+            </shipping_city>
+            <shipping_country>
+                <value>SHIP COUNTRY</value>
+            </shipping_country>
+            <shipping_state>
+                <value>SHIP STATE</value>
+            </shipping_state>
+            <shipping_zip>
+                <value>SHIP ZIP</value>
+            </shipping_zip>
+            <sic>
+                <value>123Code</value>
+            </sic>
+            <site>
+                <value>www.google.com</value>
+            </site>
+            <ticker_symbol>
+                <value>CRM</value>
+            </ticker_symbol>
+            <type>
+                <value>Customer - Direct</value>
+            </type>
+            <website>
+                <value>www.google.com</value>
+            </website>
+        </prospectAccount>
+    </result>
+</rsp>

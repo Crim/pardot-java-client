@@ -413,6 +413,12 @@ public class PardotClientSsoIntegrationTest extends AbstractPardotClientIntegrat
 
     @Test
     @Override
+    public void prospectAccountQueryTest() {
+        super.prospectAccountQueryTest();
+    }
+
+    @Test
+    @Override
     public void prospectReadTest() {
         super.prospectReadTest();
     }

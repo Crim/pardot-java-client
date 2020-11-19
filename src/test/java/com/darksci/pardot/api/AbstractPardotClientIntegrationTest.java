@@ -65,6 +65,7 @@ import com.darksci.pardot.api.request.prospect.ProspectReadRequest;
 import com.darksci.pardot.api.request.prospect.ProspectUnassignRequest;
 import com.darksci.pardot.api.request.prospect.ProspectUpdateRequest;
 import com.darksci.pardot.api.request.prospect.ProspectUpsertRequest;
+import com.darksci.pardot.api.request.prospectaccount.ProspectAccountQueryRequest;
 import com.darksci.pardot.api.request.tag.TagQueryRequest;
 import com.darksci.pardot.api.request.tag.TagReadRequest;
 import com.darksci.pardot.api.request.tagobject.TagObjectQueryRequest;
@@ -108,6 +109,7 @@ import com.darksci.pardot.api.response.opportunity.Opportunity;
 import com.darksci.pardot.api.response.opportunity.OpportunityQueryResponse;
 import com.darksci.pardot.api.response.prospect.Prospect;
 import com.darksci.pardot.api.response.prospect.ProspectQueryResponse;
+import com.darksci.pardot.api.response.prospectaccount.ProspectAccountQueryResponse;
 import com.darksci.pardot.api.response.tag.Tag;
 import com.darksci.pardot.api.response.tag.TagQueryResponse;
 import com.darksci.pardot.api.response.tagobject.TagObject;
@@ -998,12 +1000,23 @@ abstract class AbstractPardotClientIntegrationTest {
     /**
      * Test undeleting an opportunity.
      */
-    
     public void opportunityUndeleteTest() {
         final OpportunityUndeleteRequest request = new OpportunityUndeleteRequest()
             .withOpportunityId(194L);
 
         client.opportunityUndelete(request);
+    }
+
+    /**
+     * Test prospect account query.
+     */
+    public void prospectAccountQueryTest() {
+        final String prospectAccountName = "Test Prospect Account";
+
+        final ProspectAccountQueryResponse.Result response = client.prospectAccountQuery(new ProspectAccountQueryRequest()
+        );
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
     }
 
     /**

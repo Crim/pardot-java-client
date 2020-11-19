@@ -30,7 +30,7 @@ public class ProspectAccountQueryResponse {
 	             *
 	             * @return Immutable list of Prospects returned by the API.
 	             */
-	            public List<ProspectAccount> getProspectAccount() {
+	            public List<ProspectAccount> getProspectAccounts() {
 	                if (prospectAccounts == null) {
 	                    prospectAccounts = Collections.emptyList();
 	                }
