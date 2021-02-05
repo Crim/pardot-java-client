@@ -28,10 +28,11 @@ import java.util.Objects;
 
 /**
  * Handles refreshing/renewing sessions using Pardot's Username and Password authentication scheme.
+ * @deprecated This method of authentication to be removed by Pardot.  To be replaced with
+ *             Salesforce SSO authentication {@link SsoSessionRefreshHandler}.
  */
 public class PasswordSessionRefreshHandler implements SessionRefreshHandler {
     private final PasswordLoginCredentials credentials;
-
     private String apiToken = null;
 
     /**
@@ -75,7 +76,7 @@ public class PasswordSessionRefreshHandler implements SessionRefreshHandler {
             // If we have an API key.
             if (response.getApiKey() != null) {
                 // Set it.
-                this.apiToken = response.getApiKey();
+                setApiToken(response.getApiKey());
                 return true;
             }
         } catch (final InvalidRequestException exception) {
@@ -88,7 +89,7 @@ public class PasswordSessionRefreshHandler implements SessionRefreshHandler {
     @Override
     public AuthParameter[] getAuthorizationHeaders() {
         if (!isValid()) {
-            return new AuthParameter[0];
+            return AuthParameter.EMPTY;
         }
 
         final String value = "Pardot user_key=" + credentials.getUserKey() + ", api_key=" + apiToken;
@@ -102,5 +103,13 @@ public class PasswordSessionRefreshHandler implements SessionRefreshHandler {
         return new AuthParameter[] {
             new AuthParameter("user_key", credentials.getUserKey())
         };
+    }
+
+    /**
+     * Used to set ApiToken value.
+     * @param apiToken value to set.
+     */
+    public void setApiToken(final String apiToken) {
+        this.apiToken = apiToken;
     }
 }

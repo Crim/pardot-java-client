@@ -17,6 +17,8 @@
 
 package com.darksci.pardot.api;
 
+import com.darksci.pardot.api.auth.AuthParameter;
+import com.darksci.pardot.api.auth.SsoSessionRefreshHandler;
 import com.darksci.pardot.api.config.Configuration;
 import com.darksci.pardot.api.request.login.SsoLoginRequest;
 import com.darksci.pardot.api.request.tag.TagReadRequest;
@@ -33,6 +35,7 @@ import util.TestHelper;
 import java.io.IOException;
 import java.util.Optional;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -123,8 +126,16 @@ public class PardotClient_SsoAuthTest {
     @Test
     public void testIndirectLogin() {
         // Sanity test
-        // TODO how to validate?
-        //assertNull("AccessToken should start as null prior to login", apiConfig.getSsoLoginCredentials().getAccessToken());
+        assertArrayEquals(
+            "AuthorizationRequestParameters should always be an empty array",
+            AuthParameter.EMPTY,
+            apiConfig.getSessionRefreshHandler().getAuthorizationRequestParameters()
+        );
+        assertArrayEquals(
+            "AuthorizationHeaders should always start empty",
+            AuthParameter.EMPTY,
+            apiConfig.getSessionRefreshHandler().getAuthorizationHeaders()
+        );
 
         // Construct request to query a tag
         // This exact request isn't really relevant. Just that it will trigger
@@ -149,11 +160,41 @@ public class PardotClient_SsoAuthTest {
         assertEquals(1L, (long) response.getId());
         assertEquals("Standard Tag", response.getName());
 
-        // Validate we updated our ApiConfig based on the login.
+        // Validate we updated our Authorization Parameters based on the login.
+        assertArrayEquals(
+            "AuthorizationRequestParameters should always be an empty array",
+            AuthParameter.EMPTY,
+            apiConfig.getSessionRefreshHandler().getAuthorizationRequestParameters()
+        );
+        assertEquals(
+            "Should have 2 authorization headers after authenticating",
+            2,
+            apiConfig.getSessionRefreshHandler().getAuthorizationHeaders().length
+        );
 
-        // TODO validate this
-        //assertNotNull("AccessToken should no longer be null", apiConfig.getSsoLoginCredentials().getAccessToken());
-        //assertEquals("ACCESS_TOKEN_HERE", apiConfig.getSsoLoginCredentials().getAccessToken());
+        // Check Authorization Header
+        assertEquals(
+            "Should contain appropriate Authorization Header Name",
+            "Authorization",
+            apiConfig.getSessionRefreshHandler().getAuthorizationHeaders()[0].getName()
+        );
+        assertEquals(
+            "Should contain appropriate Authorization Header value",
+            "Bearer ACCESS_TOKEN_HERE",
+            apiConfig.getSessionRefreshHandler().getAuthorizationHeaders()[0].getValue()
+        );
+
+        // Check Pardot Business Unit Id Header
+        assertEquals(
+            "Should contain appropriate Business Unit Header Name",
+            "Pardot-Business-Unit-Id",
+            apiConfig.getSessionRefreshHandler().getAuthorizationHeaders()[1].getName()
+        );
+        assertEquals(
+            "Should contain appropriate Business Unit Header value",
+            "ABC-123-DEF",
+            apiConfig.getSessionRefreshHandler().getAuthorizationHeaders()[1].getValue()
+        );
 
         // Verify mock interactions
         verify(mockRestClient, times(1))
@@ -175,8 +216,7 @@ public class PardotClient_SsoAuthTest {
     @Test
     public void testReAuthenticationOnSessionTimeout() {
         // Lets set a dummy Authentication Key to simulate already having a valid session
-        // TODO VALIDATE THIS.
-        //apiConfig.getSsoLoginCredentials().setAccessToken("OriginalDummyKey");
+        ((SsoSessionRefreshHandler)(apiConfig.getSessionRefreshHandler())).setApiToken("OriginalDummyKey");
 
         // Construct request to query a tag
         // This exact request isn't really relevant. Just that it will trigger
@@ -209,9 +249,41 @@ public class PardotClient_SsoAuthTest {
         assertEquals("Standard Tag", response.getName());
 
         // Validate we updated our ApiConfig based on the login.
-        // TODO VALIDATE THIS
-//        assertNotNull("ApiKey should no longer be null", apiConfig.getSsoLoginCredentials().getAccessToken());
-//        assertEquals("ACCESS_TOKEN_HERE", apiConfig.getSsoLoginCredentials().getAccessToken());
+        // Validate we updated our Authorization Parameters based on the login.
+        assertArrayEquals(
+            "AuthorizationRequestParameters should always be an empty array",
+            AuthParameter.EMPTY,
+            apiConfig.getSessionRefreshHandler().getAuthorizationRequestParameters()
+        );
+        assertEquals(
+            "Should have 2 authorization headers after authenticating",
+            2,
+            apiConfig.getSessionRefreshHandler().getAuthorizationHeaders().length
+        );
+
+        // Check Authorization Header
+        assertEquals(
+            "Should contain appropriate Authorization Header Name",
+            "Authorization",
+            apiConfig.getSessionRefreshHandler().getAuthorizationHeaders()[0].getName()
+        );
+        assertEquals(
+            "Should contain appropriate Authorization Header value",
+            "Bearer ACCESS_TOKEN_HERE",
+            apiConfig.getSessionRefreshHandler().getAuthorizationHeaders()[0].getValue()
+        );
+
+        // Check Pardot Business Unit Id Header
+        assertEquals(
+            "Should contain appropriate Business Unit Header Name",
+            "Pardot-Business-Unit-Id",
+            apiConfig.getSessionRefreshHandler().getAuthorizationHeaders()[1].getName()
+        );
+        assertEquals(
+            "Should contain appropriate Business Unit Header value",
+            "ABC-123-DEF",
+            apiConfig.getSessionRefreshHandler().getAuthorizationHeaders()[1].getValue()
+        );
 
         // Verify mock interactions
         verify(mockRestClient, times(1))
@@ -235,8 +307,7 @@ public class PardotClient_SsoAuthTest {
     @Test
     public void testReAuthenticationOnSessionTimeout_triggersInvalidCredentials() {
         // Lets set a dummy Authentication Key to simulate already having a valid session
-        // TODO VALIDATE THIS
-        //apiConfig.getSsoLoginCredentials().setAccessToken("OriginalDummyKey");
+        ((SsoSessionRefreshHandler)(apiConfig.getSessionRefreshHandler())).setApiToken("OriginalDummyKey");
 
         // Construct request to query a tag
         // This exact request isn't really relevant. Just that it will trigger

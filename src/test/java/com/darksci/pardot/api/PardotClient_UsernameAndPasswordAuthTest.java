@@ -17,6 +17,7 @@
 
 package com.darksci.pardot.api;
 
+import com.darksci.pardot.api.auth.AuthParameter;
 import com.darksci.pardot.api.config.Configuration;
 import com.darksci.pardot.api.request.login.LoginRequest;
 import com.darksci.pardot.api.request.tag.TagReadRequest;
@@ -33,6 +34,7 @@ import util.TestHelper;
 import java.io.IOException;
 import java.util.Optional;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -103,52 +105,110 @@ public class PardotClient_UsernameAndPasswordAuthTest {
         verifyNoMoreRestClientInteractions();
     }
 
-//    /**
-//     * Verifies the behavior of PardotClient when the library has not yet authenticated to Pardot's API.
-//     *
-//     * Expected behavior is the library internally detects that no valid session exists
-//     * and attempts to authenticate automatically, and then makes the original request.
-//     *
-//     * We will execute a request to retrieve a tag by id.  This should trigger the library
-//     * to first attempt to authenticate.  After that is successful, it should execute our original request.
-//     */
-//    @Test
-//    public void testIndirectLogin() {
-//        // Sanity test
-//        assertNull("ApiKey should start as null prior to login", apiConfig.getPasswordLoginCredentials().getApiKey());
-//
-//        // Construct request to query a tag
-//        // This exact request isn't really relevant. Just that it will trigger
-//        // the library to authenticate automatically.
-//        final TagReadRequest tagReadRequest = new TagReadRequest()
-//            .selectById(1L);
-//
-//        // Mock responses from RestClient/Api Server.
-//        when(mockRestClient.submitRequest(isA(LoginRequest.class)))
-//            .thenReturn(createRestResponseFromFile("login.xml", 200));
-//        when(mockRestClient.submitRequest(isA(TagReadRequest.class)))
-//            .thenReturn(createRestResponseFromFile("tagRead.xml", 200));
-//
-//        // Call method under test
-//        final Optional<Tag> response = pardotClient.tagRead(tagReadRequest);
-//
-//        // Validate response for tag
-//        assertNotNull(response);
-//        assertTrue(response.isPresent());
-//        assertEquals(1L, (long) response.get().getId());
-//        assertEquals("Standard Tag", response.get().getName());
-//
-//        // Validate we updated our ApiConfig based on the login.
-//        assertNotNull("ApiKey should no longer be null", apiConfig.getPasswordLoginCredentials().getApiKey());
-//        assertEquals("DontWorryIDidNotCheckInARealHash", apiConfig.getPasswordLoginCredentials().getApiKey());
-//
-//        // Verify mock interactions
-//        verify(mockRestClient, times(1))
-//            .submitRequest(isA(LoginRequest.class));
-//        verify(mockRestClient, times(1))
-//            .submitRequest(isA(TagReadRequest.class));
-//        verifyNoMoreRestClientInteractions();
-//    }
+    /**
+     * Verifies the behavior of PardotClient when the library has not yet authenticated to Pardot's API.
+     *
+     * Expected behavior is the library internally detects that no valid session exists
+     * and attempts to authenticate automatically, and then makes the original request.
+     *
+     * We will execute a request to retrieve a tag by id.  This should trigger the library
+     * to first attempt to authenticate.  After that is successful, it should execute our original request.
+     */
+    @Test
+    public void testIndirectLogin() {
+        // Sanity test
+        validateUserKeyAuthorizationRequestParameter(
+            apiConfig.getSessionRefreshHandler().getAuthorizationRequestParameters(),
+            userKey
+        );
+        assertArrayEquals(
+            "AuthorizationHeaders should always start empty",
+            AuthParameter.EMPTY,
+            apiConfig.getSessionRefreshHandler().getAuthorizationHeaders()
+        );
+
+        // Construct request to query a tag
+        // This exact request isn't really relevant. Just that it will trigger
+        // the library to authenticate automatically.
+        final TagReadRequest tagReadRequest = new TagReadRequest()
+            .selectById(1L);
+
+        // Mock responses from RestClient/Api Server.
+        when(mockRestClient.submitRequest(isA(LoginRequest.class)))
+            .thenReturn(createRestResponseFromFile("login.xml", 200));
+        when(mockRestClient.submitRequest(isA(TagReadRequest.class)))
+            .thenReturn(createRestResponseFromFile("tagRead.xml", 200));
+
+        // Call method under test
+        final Optional<Tag> response = pardotClient.tagRead(tagReadRequest);
+
+        // Validate response for tag
+        assertNotNull(response);
+        assertTrue(response.isPresent());
+        assertEquals(1L, (long) response.get().getId());
+        assertEquals("Standard Tag", response.get().getName());
+
+        // Validate we updated our ApiConfig based on the login.
+        // Validate we updated our Authorization Parameters based on the login.
+        validateUserKeyAuthorizationRequestParameter(
+            apiConfig.getSessionRefreshHandler().getAuthorizationRequestParameters(),
+            userKey
+        );
+        validateApiTokenAuthorizationParameter(
+            apiConfig.getSessionRefreshHandler().getAuthorizationHeaders(),
+            userKey,
+            "DontWorryIDidNotCheckInARealHash"
+        );
+
+        // Verify mock interactions
+        verify(mockRestClient, times(1))
+            .submitRequest(isA(LoginRequest.class));
+        verify(mockRestClient, times(1))
+            .submitRequest(isA(TagReadRequest.class));
+        verifyNoMoreRestClientInteractions();
+    }
+
+    private void validateApiTokenAuthorizationParameter(
+        final AuthParameter[] parameters,
+        final String expectedUserKey,
+        final String expectedToken) {
+        assertEquals(
+            "AuthorizationRequestParameters should always contain api-token",
+            1,
+            parameters.length
+        );
+        assertEquals(
+            "AuthorizationRequestParameters should always contain user_key",
+            "Authorization",
+            parameters[0].getName()
+        );
+        assertEquals(
+            "AuthorizationRequestParameters should always contain user_key",
+            "Pardot user_key=" + expectedUserKey + ", api_key=" + expectedToken,
+            parameters[0].getValue()
+        );
+    }
+
+    /**
+     * Helper method to validate expected UserKey request parameter.
+     */
+    private void validateUserKeyAuthorizationRequestParameter(final AuthParameter[] parameters, final String expectedUserKey) {
+        assertEquals(
+            "AuthorizationRequestParameters should always contain user_key",
+            1,
+            parameters.length
+        );
+        assertEquals(
+            "AuthorizationRequestParameters should always contain user_key",
+            "user_key",
+            parameters[0].getName()
+        );
+        assertEquals(
+            "AuthorizationRequestParameters should always contain user_key",
+            expectedUserKey,
+            parameters[0].getValue()
+        );
+    }
 //
 //    /**
 //     * Verifies the behavior of PardotClient when the login session times out.

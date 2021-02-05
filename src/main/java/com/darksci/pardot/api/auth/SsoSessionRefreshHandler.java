@@ -58,7 +58,7 @@ public class SsoSessionRefreshHandler implements SessionRefreshHandler {
         // If we have an API key.
         if (response.getAccessToken() != null) {
             // Set it.
-            this.apiToken = response.getAccessToken();
+            setApiToken(response.getAccessToken());
             return true;
         }
 
@@ -68,7 +68,7 @@ public class SsoSessionRefreshHandler implements SessionRefreshHandler {
     @Override
     public AuthParameter[] getAuthorizationHeaders() {
         if (!isValid()) {
-            return new AuthParameter[0];
+            return AuthParameter.EMPTY;
         }
 
         final String value = "Bearer " + apiToken;
@@ -80,7 +80,14 @@ public class SsoSessionRefreshHandler implements SessionRefreshHandler {
 
     @Override
     public AuthParameter[] getAuthorizationRequestParameters() {
-        return new AuthParameter[0];
+        return AuthParameter.EMPTY;
+    }
 
+    /**
+     * Used to set ApiToken value.
+     * @param apiToken value to set.
+     */
+    public void setApiToken(final String apiToken) {
+        this.apiToken = apiToken;
     }
 }
