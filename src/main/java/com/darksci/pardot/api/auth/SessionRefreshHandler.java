@@ -21,7 +21,8 @@ import com.darksci.pardot.api.LoginFailedException;
 import com.darksci.pardot.api.PardotClient;
 
 /**
- * Interface for handling renewing session authentication tokens.
+ * Interface for handling renewing session authentication tokens and defining how authentication tokens
+ * are passed to requests against the Pardot API.
  */
 public interface SessionRefreshHandler {
     /**
@@ -37,15 +38,23 @@ public interface SessionRefreshHandler {
 
     /**
      * Refresh/Renew authentication token.
+     *
+     * @param client Reference to the PardotClient instance if you want to use it to make requests.
      * @return True on success, false on failure to renew.  Although, it is preferred to throw a LoginFailedException if the
      *         implementation fails to refresh the token, including relevant details about the error.
-     *
      * @throws LoginFailedException if a specific and actionable error occurs while refreshing the token.
      */
     boolean refreshCredentials(final PardotClient client);
 
+    /**
+     * Define zero or more headers that will be passed along to authenticate API requests.
+     * @return Array of zero or more headers.
+     */
     AuthParameter[] getAuthorizationHeaders();
 
+    /**
+     * Define zero or more request parameters that will be passed along to authenticate API requests.
+     * @return Array of zero or more request parameters.
+     */
     AuthParameter[] getAuthorizationRequestParameters();
-
 }

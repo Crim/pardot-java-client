@@ -28,12 +28,6 @@ import java.util.Objects;
  * Use {@link ConfigurationBuilder} to create instances of these.
  */
 public class Configuration {
-    // Login Details.
-//    // To remove
-//    private final LoginType loginType;
-//    private final SsoLoginCredentials ssoLoginCredentials;
-//    private final PasswordLoginCredentials passwordLoginCredentials;
-
     // Session Refresh Handler
     private final SessionRefreshHandler sessionRefreshHandler;
 
@@ -68,6 +62,7 @@ public class Configuration {
      * Constructor.
      * Note: Use {@link ConfigurationBuilder} to create instances instead of calling this constructor.
      *
+     * @param sessionRefreshHandler Defines how authentication tokens are generated and passed with requests.
      * @param proxyConfiguration Defines Proxy Configuration.
      * @param pardotApiHost Defines Pardot API Host.
      * @param pardotApiVersion Defines Pardot API version.
