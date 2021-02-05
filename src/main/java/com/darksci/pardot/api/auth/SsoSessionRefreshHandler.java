@@ -21,7 +21,6 @@ import com.darksci.pardot.api.PardotClient;
 import com.darksci.pardot.api.config.SsoLoginCredentials;
 import com.darksci.pardot.api.request.login.SsoLoginRequest;
 import com.darksci.pardot.api.response.login.SsoLoginResponse;
-import com.darksci.pardot.api.rest.RestClient;
 
 import java.util.Objects;
 

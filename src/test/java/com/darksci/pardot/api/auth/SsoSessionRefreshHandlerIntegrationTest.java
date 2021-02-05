@@ -19,7 +19,6 @@ package com.darksci.pardot.api.auth;
 
 import categories.IntegrationTest;
 import com.darksci.pardot.api.ConfigurationBuilder;
-import com.darksci.pardot.api.LoginFailedException;
 import com.darksci.pardot.api.PardotClient;
 import com.darksci.pardot.api.config.Configuration;
 import com.darksci.pardot.api.rest.HttpClientRestClient;
@@ -32,9 +31,6 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 @Category(IntegrationTest.class)

@@ -17,9 +17,7 @@
 
 package com.darksci.pardot.api;
 
-import com.darksci.pardot.api.auth.PasswordSessionRefreshHandler;
 import com.darksci.pardot.api.auth.SessionRefreshHandler;
-import com.darksci.pardot.api.auth.SsoSessionRefreshHandler;
 import com.darksci.pardot.api.config.Configuration;
 import com.darksci.pardot.api.parser.DeleteResponseParser;
 import com.darksci.pardot.api.parser.ErrorResponseParser;
