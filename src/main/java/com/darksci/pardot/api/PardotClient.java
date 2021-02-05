@@ -246,14 +246,7 @@ public class PardotClient implements AutoCloseable {
     PardotClient(final Configuration configuration, final RestClient restClient) {
         this.configuration = Objects.requireNonNull(configuration);
         this.restClient = Objects.requireNonNull(restClient);
-
-        if (configuration.isUsingPasswordAuthentication()) {
-            sessionRefreshHandler = new PasswordSessionRefreshHandler(configuration.getPasswordLoginCredentials(), this);
-        } else if (configuration.isUsingSsoAuthentication()) {
-            sessionRefreshHandler = new SsoSessionRefreshHandler(configuration.getSsoLoginCredentials(), this);
-        } else {
-            throw new IllegalStateException("Unhandled Authentication Type!");
-        }
+        this.sessionRefreshHandler = Objects.requireNonNull(configuration.getSessionRefreshHandler());
     }
 
     private <T> Result<T> submitRequest(final Request request, final ResponseParser<T> responseParser) {
@@ -381,7 +374,15 @@ public class PardotClient implements AutoCloseable {
         if (sessionRefreshHandler.isValid()) {
             return;
         }
-        sessionRefreshHandler.refreshCredentials();
+
+        // refreshCredentials() method should return true if refresh was successful,
+        // If it returns false, throw LoginFailedException
+        if (!sessionRefreshHandler.refreshCredentials(this)) {
+            throw new LoginFailedException(
+                "SessionRefreshHandler " + sessionRefreshHandler.getClass().getSimpleName() + " failed to refresh authentication token",
+                0
+            );
+        };
     }
 
     /**

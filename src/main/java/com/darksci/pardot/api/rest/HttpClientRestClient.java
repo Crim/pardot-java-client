@@ -57,6 +57,7 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -265,18 +266,13 @@ public class HttpClientRestClient implements RestClient {
             // Define required auth params
             final List<NameValuePair> params = new ArrayList<>();
 
-            // If using Username and Password auth.
-            if (configuration.isUsingPasswordAuthentication()) {
-                params.add(
-                    new BasicNameValuePair("user_key", configuration.getPasswordLoginCredentials().getUserKey())
-                );
+            // Add authorization headers
+            Arrays.stream(configuration.getSessionRefreshHandler().getAuthorizationHeaders())
+                .forEach((authHeader) -> post.addHeader(authHeader.getName(), authHeader.getValue()));
 
-                if (configuration.getPasswordLoginCredentials().hasApiKey()) {
-                    params.add(
-                        new BasicNameValuePair("api_key", configuration.getPasswordLoginCredentials().getApiKey())
-                    );
-                }
-            }
+            // Add authorization request parameters
+            Arrays.stream(configuration.getSessionRefreshHandler().getAuthorizationRequestParameters())
+                .forEach((authParam) -> params.add(new BasicNameValuePair(authParam.getName(), authParam.getValue())));
 
             // Attach submitRequest params
             for (final Map.Entry<String, String> entry : postParams.entrySet()) {
@@ -288,12 +284,6 @@ public class HttpClientRestClient implements RestClient {
             final Map<String, String> headers = new HashMap<>();
             requestInterceptor.modifyHeaders(headers);
             headers.forEach(post::addHeader);
-
-            // If doing SSO Authentication, append authentication header
-            if (configuration.isUsingSsoAuthentication()) {
-                post.addHeader("Authorization", "Bearer " + configuration.getSsoLoginCredentials().getAccessToken());
-                post.addHeader("Pardot-Business-Unit-Id", configuration.getSsoLoginCredentials().getBusinessUnitId());
-            }
 
             // Debug logging
             logger.info("Executing request {} with {}", post.getRequestLine(), filterSensitiveParams(params));

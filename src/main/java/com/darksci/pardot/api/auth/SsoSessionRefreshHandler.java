@@ -21,6 +21,7 @@ import com.darksci.pardot.api.PardotClient;
 import com.darksci.pardot.api.config.SsoLoginCredentials;
 import com.darksci.pardot.api.request.login.SsoLoginRequest;
 import com.darksci.pardot.api.response.login.SsoLoginResponse;
+import com.darksci.pardot.api.rest.RestClient;
 
 import java.util.Objects;
 
@@ -29,25 +30,24 @@ import java.util.Objects;
  */
 public class SsoSessionRefreshHandler implements SessionRefreshHandler {
     private final SsoLoginCredentials credentials;
-    private final PardotClient client;
+    private String apiToken = null;
 
-    public SsoSessionRefreshHandler(final SsoLoginCredentials credentials, final PardotClient client) {
+    public SsoSessionRefreshHandler(final SsoLoginCredentials credentials) {
         this.credentials = Objects.requireNonNull(credentials);
-        this.client = Objects.requireNonNull(client);
     }
 
     @Override
     public boolean isValid() {
-        return credentials.hasAccessToken();
+        return apiToken != null;
     }
 
     @Override
     public void clearToken() {
-        credentials.clearAccessToken();
+        this.apiToken = null;
     }
 
     @Override
-    public boolean refreshCredentials() {
+    public boolean refreshCredentials(final PardotClient client) {
         final SsoLoginResponse response = client.login(new SsoLoginRequest()
             .withClientId(credentials.getClientId())
             .withClientSecret(credentials.getClientSecret())
@@ -58,10 +58,29 @@ public class SsoSessionRefreshHandler implements SessionRefreshHandler {
         // If we have an API key.
         if (response.getAccessToken() != null) {
             // Set it.
-            credentials.setAccessToken(response.getAccessToken());
+            this.apiToken = response.getAccessToken();
             return true;
         }
 
         return false;
+    }
+
+    @Override
+    public AuthParameter[] getAuthorizationHeaders() {
+        if (!isValid()) {
+            return new AuthParameter[0];
+        }
+
+        final String value = "Bearer " + apiToken;
+        return new AuthParameter[] {
+            new AuthParameter("Authorization", value),
+            new AuthParameter("Pardot-Business-Unit-Id", credentials.getBusinessUnitId())
+        };
+    }
+
+    @Override
+    public AuthParameter[] getAuthorizationRequestParameters() {
+        return new AuthParameter[0];
+
     }
 }

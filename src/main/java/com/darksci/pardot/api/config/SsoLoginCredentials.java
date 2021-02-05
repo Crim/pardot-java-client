@@ -30,9 +30,6 @@ public class SsoLoginCredentials {
     private final String clientSecret;
     private final String businessUnitId;
 
-    // Updated after authentication.
-    private String accessToken = null;
-
     /**
      * Constructor.
      * @param username Salesforce username.
@@ -71,43 +68,18 @@ public class SsoLoginCredentials {
         return clientSecret;
     }
 
-    public boolean hasAccessToken() {
-        return accessToken != null;
-    }
-
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    public void setAccessToken(final String accessToken) {
-        this.accessToken = accessToken;
-    }
-
-    public void clearAccessToken() {
-        setAccessToken(null);
-    }
-
     public String getBusinessUnitId() {
         return businessUnitId;
     }
 
     @Override
     public String toString() {
-        // Mask accessToken.
-        final String accessTokenValue;
-        if (hasAccessToken()) {
-            accessTokenValue = "VALUE-SET";
-        } else {
-            accessTokenValue = "NO-VALUE-SET";
-        }
-
         return "SsoLoginCredentials{"
             + "username='" + username + '\''
             + ", password='XXXXXXXXXX'"
             + ", clientId='" + clientId + '\''
             + ", clientSecret='XXXXXXXXXX'"
             + ", businessUnitId='" + businessUnitId + '\''
-            + ", accessToken='" + accessTokenValue + '\''
             + '}';
     }
 }

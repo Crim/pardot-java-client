@@ -17,8 +17,10 @@
 
 package com.darksci.pardot.api;
 
+import com.darksci.pardot.api.auth.PasswordSessionRefreshHandler;
+import com.darksci.pardot.api.auth.SessionRefreshHandler;
+import com.darksci.pardot.api.auth.SsoSessionRefreshHandler;
 import com.darksci.pardot.api.config.Configuration;
-import com.darksci.pardot.api.config.LoginType;
 import com.darksci.pardot.api.config.PasswordLoginCredentials;
 import com.darksci.pardot.api.config.ProxyConfiguration;
 import com.darksci.pardot.api.config.SsoLoginCredentials;
@@ -27,25 +29,13 @@ import com.darksci.pardot.api.rest.interceptor.RequestInterceptor;
 
 import java.util.Objects;
 
-import static com.darksci.pardot.api.config.LoginType.SSO;
-import static com.darksci.pardot.api.config.LoginType.USERNAME_PASSWORD;
-
 /**
  * Pardot API Client Configuration Builder.
  * Used to construct {@link Configuration} instances.
  */
 public class ConfigurationBuilder {
-    private LoginType loginType;
-
-    // Configuration properties for username password login
-    private String email;
-    private String password;
-    private String userKey;
-
-    // Configuration properties for SSO login.
-    private String ssoClientId;
-    private String ssoClientSecret;
-    private String businessUnitId;
+    // Authentication handler
+    private SessionRefreshHandler sessionRefreshHandler = null;
 
     // Optional Proxy Configuration
     private String proxyHost = null;
@@ -77,12 +67,9 @@ public class ConfigurationBuilder {
      *             Salesforce SSO Authentication: {@link ConfigurationBuilder#withSsoLogin}
      */
     public ConfigurationBuilder withUsernameAndPasswordLogin(final String username, final String password, final String userKey) {
-        this.loginType = USERNAME_PASSWORD;
-        this.email = Objects.requireNonNull(username);
-        this.password = Objects.requireNonNull(password);
-        this.userKey = Objects.requireNonNull(userKey);
-
-        return this;
+        return withCustomAuthenticationHandler(new PasswordSessionRefreshHandler(
+            new PasswordLoginCredentials(Objects.requireNonNull(username), Objects.requireNonNull(password), Objects.requireNonNull(userKey))
+        ));
     }
 
     /**
@@ -96,12 +83,22 @@ public class ConfigurationBuilder {
      * @return Builder instance.
      */
     public ConfigurationBuilder withSsoLogin(final String username, final String password, final String clientId, final String clientSecret, final String businessUnitId) {
-        this.loginType = SSO;
-        this.email = Objects.requireNonNull(username);
-        this.password = Objects.requireNonNull(password);
-        this.ssoClientId = Objects.requireNonNull(clientId);
-        this.ssoClientSecret = Objects.requireNonNull(clientSecret);
-        this.businessUnitId = Objects.requireNonNull(businessUnitId);
+        return withCustomAuthenticationHandler(new SsoSessionRefreshHandler(new SsoLoginCredentials(
+            Objects.requireNonNull(username),
+            Objects.requireNonNull(password),
+            Objects.requireNonNull(clientId),
+            Objects.requireNonNull(clientSecret),
+            Objects.requireNonNull(businessUnitId)
+        )));
+    }
+
+    /**
+     * Allows for injecting a custom {@link SessionRefreshHandler} implementation.
+     * @param sessionRefreshHandler Interface for handling authentication to Pardot API.
+     * @return Builder instance.
+     */
+    public ConfigurationBuilder withCustomAuthenticationHandler(final SessionRefreshHandler sessionRefreshHandler) {
+        this.sessionRefreshHandler = Objects.requireNonNull(sessionRefreshHandler);
         return this;
     }
 
@@ -266,25 +263,10 @@ public class ConfigurationBuilder {
                 proxyPassword
             );
         }
-        PasswordLoginCredentials passwordLoginCredentials = null;
-        SsoLoginCredentials ssoLoginCredentials = null;
-
-        switch (loginType) {
-            case SSO:
-                ssoLoginCredentials = new SsoLoginCredentials(email, password, ssoClientId, ssoClientSecret, businessUnitId);
-                break;
-            case USERNAME_PASSWORD:
-                passwordLoginCredentials = new PasswordLoginCredentials(email, password, userKey);
-                break;
-            default:
-                throw new IllegalStateException("Undefined Login type!");
-        }
 
         // Create instance.
         return new Configuration(
-            loginType,
-            ssoLoginCredentials,
-            passwordLoginCredentials,
+            sessionRefreshHandler,
             proxyConfiguration,
             pardotApiHost,
             pardotApiVersion,

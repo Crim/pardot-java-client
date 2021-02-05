@@ -17,6 +17,9 @@
 
 package com.darksci.pardot.api.auth;
 
+import com.darksci.pardot.api.LoginFailedException;
+import com.darksci.pardot.api.PardotClient;
+
 /**
  * Interface for handling renewing session authentication tokens.
  */
@@ -34,7 +37,15 @@ public interface SessionRefreshHandler {
 
     /**
      * Refresh/Renew authentication token.
-     * @return True on success, false on failure to renew.
+     * @return True on success, false on failure to renew.  Although, it is preferred to throw a LoginFailedException if the
+     *         implementation fails to refresh the token, including relevant details about the error.
+     *
+     * @throws LoginFailedException if a specific and actionable error occurs while refreshing the token.
      */
-    boolean refreshCredentials();
+    boolean refreshCredentials(final PardotClient client);
+
+    AuthParameter[] getAuthorizationHeaders();
+
+    AuthParameter[] getAuthorizationRequestParameters();
+
 }

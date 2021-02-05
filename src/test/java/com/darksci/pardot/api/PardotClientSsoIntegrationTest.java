@@ -74,48 +74,48 @@ public class PardotClientSsoIntegrationTest extends AbstractPardotClientIntegrat
     /**
      * Attempt to login.
      */
-    @Test
-    public void loginTest() {
-        final SsoLoginResponse response = client.login(new SsoLoginRequest()
-            .withUsername(testConfig.getSsoLoginCredentials().getUsername())
-            .withPassword(testConfig.getSsoLoginCredentials().getPassword())
-            .withClientId(testConfig.getSsoLoginCredentials().getClientId())
-            .withClientSecret(testConfig.getSsoLoginCredentials().getClientSecret())
-        );
-
-        logger.info("Response: {}", response);
-        assertNotNull("Should not be null", response);
-        assertNotNull("Should have non-null property", response.getAccessToken());
-    }
-
-    /**
-     * Attempt to login with bad credentials.
-     */
-    @Test
-    public void loginErrorTest() {
-        final SsoLoginRequest request = new SsoLoginRequest()
-            .withUsername(testConfig.getSsoLoginCredentials().getUsername())
-            .withPassword(testConfig.getSsoLoginCredentials().getPassword())
-            .withClientId("bad-id")
-            .withClientSecret("bad-secret");
-
-        assertThrows(LoginFailedException.class, () -> client.login(request));
-    }
-
-    /**
-     * Inject a bad access_token, forcing the library to renew the session.
-     */
-    @Test
-    public void sessionRenewTest_injectBadAccessTokenToForceSessionRenew() {
-        // Inject a bad access token
-        testConfig.getSsoLoginCredentials().setAccessToken("BAD-VALUE");
-
-        // Execute query, this should force a bad auth response from pardot,
-        // which then triggers renewing the SSO token, and then re-playing the tag query request.
-        final TagQueryRequest request = new TagQueryRequest();
-        final TagQueryResponse.Result result = client.tagQuery(request);
-        logger.info("Result: {}", result);
-    }
+//    @Test
+//    public void loginTest() {
+//        final SsoLoginResponse response = client.login(new SsoLoginRequest()
+//            .withUsername(testConfig.getSsoLoginCredentials().getUsername())
+//            .withPassword(testConfig.getSsoLoginCredentials().getPassword())
+//            .withClientId(testConfig.getSsoLoginCredentials().getClientId())
+//            .withClientSecret(testConfig.getSsoLoginCredentials().getClientSecret())
+//        );
+//
+//        logger.info("Response: {}", response);
+//        assertNotNull("Should not be null", response);
+//        assertNotNull("Should have non-null property", response.getAccessToken());
+//    }
+//
+//    /**
+//     * Attempt to login with bad credentials.
+//     */
+//    @Test
+//    public void loginErrorTest() {
+//        final SsoLoginRequest request = new SsoLoginRequest()
+//            .withUsername(testConfig.getSsoLoginCredentials().getUsername())
+//            .withPassword(testConfig.getSsoLoginCredentials().getPassword())
+//            .withClientId("bad-id")
+//            .withClientSecret("bad-secret");
+//
+//        assertThrows(LoginFailedException.class, () -> client.login(request));
+//    }
+//
+//    /**
+//     * Inject a bad access_token, forcing the library to renew the session.
+//     */
+//    @Test
+//    public void sessionRenewTest_injectBadAccessTokenToForceSessionRenew() {
+//        // Inject a bad access token
+//        testConfig.getSsoLoginCredentials().setAccessToken("BAD-VALUE");
+//
+//        // Execute query, this should force a bad auth response from pardot,
+//        // which then triggers renewing the SSO token, and then re-playing the tag query request.
+//        final TagQueryRequest request = new TagQueryRequest();
+//        final TagQueryResponse.Result result = client.tagQuery(request);
+//        logger.info("Result: {}", result);
+//    }
 
     @Test
     @Override

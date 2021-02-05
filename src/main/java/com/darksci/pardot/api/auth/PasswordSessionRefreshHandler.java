@@ -31,16 +31,15 @@ import java.util.Objects;
  */
 public class PasswordSessionRefreshHandler implements SessionRefreshHandler {
     private final PasswordLoginCredentials credentials;
-    private final PardotClient client;
+
+    private String apiToken = null;
 
     /**
      * Constructor.
      * @param credentials Configured credentials to use for renewing a session.
-     * @param client Underlying PardotClient to make requests using.
      */
-    public PasswordSessionRefreshHandler(final PasswordLoginCredentials credentials, final PardotClient client) {
+    public PasswordSessionRefreshHandler(final PasswordLoginCredentials credentials) {
         this.credentials = Objects.requireNonNull(credentials);
-        this.client = Objects.requireNonNull(client);
     }
 
     /**
@@ -49,7 +48,7 @@ public class PasswordSessionRefreshHandler implements SessionRefreshHandler {
      */
     @Override
     public boolean isValid() {
-        return credentials.hasApiKey();
+        return apiToken != null;
     }
 
     /**
@@ -57,7 +56,7 @@ public class PasswordSessionRefreshHandler implements SessionRefreshHandler {
      */
     @Override
     public void clearToken() {
-        credentials.clearApiKey();
+        apiToken = null;
     }
 
     /**
@@ -65,7 +64,7 @@ public class PasswordSessionRefreshHandler implements SessionRefreshHandler {
      * @return true on success, false on error.
      */
     @Override
-    public boolean refreshCredentials() {
+    public boolean refreshCredentials(final PardotClient client) {
         // Otherwise attempt to authenticate.
         try {
             final LoginResponse response = client.login(new LoginRequest()
@@ -76,7 +75,7 @@ public class PasswordSessionRefreshHandler implements SessionRefreshHandler {
             // If we have an API key.
             if (response.getApiKey() != null) {
                 // Set it.
-                credentials.setApiKey(response.getApiKey());
+                this.apiToken = response.getApiKey();
                 return true;
             }
         } catch (final InvalidRequestException exception) {
@@ -84,5 +83,24 @@ public class PasswordSessionRefreshHandler implements SessionRefreshHandler {
             throw new LoginFailedException(exception.getMessage(), exception.getErrorCode(), exception);
         }
         return false;
+    }
+
+    @Override
+    public AuthParameter[] getAuthorizationHeaders() {
+        if (!isValid()) {
+            return new AuthParameter[0];
+        }
+
+        final String value = "Pardot user_key=" + credentials.getUserKey() + ", api_key=" + apiToken;
+        return new AuthParameter[] {
+            new AuthParameter("Authorization", value)
+        };
+    }
+
+    @Override
+    public AuthParameter[] getAuthorizationRequestParameters() {
+        return new AuthParameter[] {
+            new AuthParameter("user_key", credentials.getUserKey())
+        };
     }
 }
