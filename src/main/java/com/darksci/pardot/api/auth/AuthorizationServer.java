@@ -22,7 +22,7 @@ import java.util.Objects;
 /**
  * Used for defining an alternative Authorization Server hostname or end point for SSO OAuth2 authentication.
  *
- * Standard Salesforce default is defined {@link AuthorizationServer.DEFAULT_SALESFORCE}
+ * Standard Salesforce default is defined {@see AuthorizationServer.DEFAULT_SALESFORCE}
  */
 public class AuthorizationServer {
     /**
