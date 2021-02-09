@@ -101,6 +101,7 @@ import com.darksci.pardot.api.request.listmembership.ListMembershipUpdateRequest
 import com.darksci.pardot.api.request.login.LoginRequest;
 import com.darksci.pardot.api.request.login.LoginRequestMarker;
 import com.darksci.pardot.api.request.login.SsoLoginRequest;
+import com.darksci.pardot.api.request.login.SsoRefreshTokenRequest;
 import com.darksci.pardot.api.request.opportunity.OpportunityCreateRequest;
 import com.darksci.pardot.api.request.opportunity.OpportunityDeleteRequest;
 import com.darksci.pardot.api.request.opportunity.OpportunityQueryRequest;
@@ -426,6 +427,26 @@ public class PardotClient implements AutoCloseable {
      * @throws LoginFailedException if credentials are invalid.
      */
     public SsoLoginResponse login(final SsoLoginRequest request) {
+        try {
+            return submitRequest(request, new SsoLoginResponseParser()).get();
+        } catch (final InvalidRequestException exception) {
+            // Rethrow login failed exceptions as-is.
+            if (exception instanceof LoginFailedException) {
+                throw exception;
+            }
+            // Otherwise throw a more specific exception
+            throw new LoginFailedException(exception.getMessage(), exception.getErrorCode(), exception);
+        }
+    }
+
+    /**
+     * Execute login request using Salesforce SSO authentication.
+     *
+     * @param request Login request definition.
+     * @return SsoLoginResponse returned from server.
+     * @throws LoginFailedException if credentials are invalid.
+     */
+    public SsoLoginResponse login(final SsoRefreshTokenRequest request) {
         try {
             return submitRequest(request, new SsoLoginResponseParser()).get();
         } catch (final InvalidRequestException exception) {

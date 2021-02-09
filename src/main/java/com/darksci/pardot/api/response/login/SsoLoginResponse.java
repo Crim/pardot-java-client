@@ -18,11 +18,13 @@
 package com.darksci.pardot.api.response.login;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Represents a success response from Authenticating via Salesforce SSO.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SsoLoginResponse {
     private final String accessToken;
     private final String instanceUrl;

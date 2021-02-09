@@ -19,9 +19,8 @@ package com.darksci.pardot.api;
 
 import com.darksci.pardot.api.auth.AuthParameter;
 import com.darksci.pardot.api.auth.AuthorizationServer;
-import com.darksci.pardot.api.auth.SsoSessionRefreshHandler;
+import com.darksci.pardot.api.auth.SsoRefreshTokenSessionRefreshHandler;
 import com.darksci.pardot.api.config.Configuration;
-import com.darksci.pardot.api.request.login.SsoLoginRequest;
 import com.darksci.pardot.api.request.login.SsoRefreshTokenRequest;
 import com.darksci.pardot.api.request.tag.TagReadRequest;
 import com.darksci.pardot.api.request.user.UserReadRequest;
@@ -53,7 +52,7 @@ import static org.mockito.Mockito.when;
 /**
  * Unit testing over PardotClient using Sso Authentication Scheme.
  */
-public class PardotClient_SsoAuthTest {
+public class PardotClient_SsoRefreshTokenAuthTest {
     // Dependencies
     private Configuration apiConfig;
     private RestClient mockRestClient;
@@ -62,8 +61,7 @@ public class PardotClient_SsoAuthTest {
     private PardotClient pardotClient;
 
     // Create configuration
-    private final String userEmail = "user@example.com";
-    private final String userPassword = "NotARealPassword";
+    private final String refreshToken = "NotARealRefreshToken";
     private final String clientId = "NotARealClientId";
     private final String clientSecret = "NotARealClientSecret";
     private final String businessId = "ABC-123-DEF";
@@ -71,7 +69,7 @@ public class PardotClient_SsoAuthTest {
     @Before
     public void before() {
         final ConfigurationBuilder builder = Configuration.newBuilder()
-            .withSsoLogin(userEmail, userPassword, clientId, clientSecret, businessId);
+            .withSsoRefreshTokenLogin(refreshToken, clientId, clientSecret, businessId);
         apiConfig = builder.build();
 
         // Create mock RestClient
@@ -87,9 +85,8 @@ public class PardotClient_SsoAuthTest {
     @Test
     public void smokeTestDirectLoginRequest() {
         // Construct request.
-        final SsoLoginRequest loginRequest = new SsoLoginRequest()
-            .withUsername(userEmail)
-            .withPassword(userPassword)
+        final SsoRefreshTokenRequest loginRequest = new SsoRefreshTokenRequest()
+            .withRefreshToken(refreshToken)
             .withClientId(clientId)
             .withClientSecret(clientId);
 
@@ -121,9 +118,8 @@ public class PardotClient_SsoAuthTest {
     @Test
     public void smokeTestDirectLoginRequest_alternativeAuthServer() {
         // Construct request.
-        final SsoLoginRequest loginRequest = new SsoLoginRequest()
-            .withUsername(userEmail)
-            .withPassword(userPassword)
+        final SsoRefreshTokenRequest loginRequest = new SsoRefreshTokenRequest()
+            .withRefreshToken(refreshToken)
             .withClientId(clientId)
             .withClientSecret(clientId)
             .withAuthorizationServer(new AuthorizationServer("http://test.server", "/end/point"));
@@ -138,9 +134,8 @@ public class PardotClient_SsoAuthTest {
     @Test
     public void smokeTestDirectLoginRequest_defaultAuthServer() {
         // Construct request.
-        final SsoLoginRequest loginRequest = new SsoLoginRequest()
-            .withUsername(userEmail)
-            .withPassword(userPassword)
+        final SsoRefreshTokenRequest loginRequest = new SsoRefreshTokenRequest()
+            .withRefreshToken(refreshToken)
             .withClientId(clientId)
             .withClientSecret(clientId);
 
@@ -178,7 +173,7 @@ public class PardotClient_SsoAuthTest {
             .selectById(1L);
 
         // Mock responses from RestClient/Api Server.
-        when(mockRestClient.submitRequest(isA(SsoLoginRequest.class)))
+        when(mockRestClient.submitRequest(isA(SsoRefreshTokenRequest.class)))
             .thenReturn(createRestResponseFromFile("ssoLoginSuccess.json", 200));
         when(mockRestClient.submitRequest(isA(TagReadRequest.class)))
             .thenReturn(createRestResponseFromFile("tagRead.xml", 200));
@@ -232,7 +227,7 @@ public class PardotClient_SsoAuthTest {
 
         // Verify mock interactions
         verify(mockRestClient, times(1))
-            .submitRequest(isA(SsoLoginRequest.class));
+            .submitRequest(isA(SsoRefreshTokenRequest.class));
         verify(mockRestClient, times(1))
             .submitRequest(isA(TagReadRequest.class));
         verifyNoMoreRestClientInteractions();
@@ -250,7 +245,7 @@ public class PardotClient_SsoAuthTest {
     @Test
     public void testReAuthenticationOnSessionTimeout() {
         // Lets set a dummy Authentication Key to simulate already having a valid session
-        ((SsoSessionRefreshHandler)(apiConfig.getSessionRefreshHandler())).setApiToken("OriginalDummyKey");
+        ((SsoRefreshTokenSessionRefreshHandler)(apiConfig.getSessionRefreshHandler())).setApiToken("OriginalDummyKey");
 
         // Construct request to query a tag
         // This exact request isn't really relevant. Just that it will trigger
@@ -259,7 +254,7 @@ public class PardotClient_SsoAuthTest {
             .selectById(1L);
 
         // Mock responses from RestClient/Api Server.
-        when(mockRestClient.submitRequest(isA(SsoLoginRequest.class)))
+        when(mockRestClient.submitRequest(isA(SsoRefreshTokenRequest.class)))
             .thenReturn(createRestResponseFromFile("ssoLoginSuccess.json", 200));
 
         when(mockRestClient.submitRequest(isA(TagReadRequest.class)))
@@ -321,7 +316,7 @@ public class PardotClient_SsoAuthTest {
 
         // Verify mock interactions
         verify(mockRestClient, times(1))
-            .submitRequest(isA(SsoLoginRequest.class));
+            .submitRequest(isA(SsoRefreshTokenRequest.class));
         verify(mockRestClient, times(2))
             .submitRequest(isA(TagReadRequest.class));
         verifyNoMoreRestClientInteractions();
@@ -341,7 +336,7 @@ public class PardotClient_SsoAuthTest {
     @Test
     public void testReAuthenticationOnSessionTimeout_triggersInvalidCredentials() {
         // Lets set a dummy Authentication Key to simulate already having a valid session
-        ((SsoSessionRefreshHandler)(apiConfig.getSessionRefreshHandler())).setApiToken("OriginalDummyKey");
+        ((SsoRefreshTokenSessionRefreshHandler)(apiConfig.getSessionRefreshHandler())).setApiToken("OriginalDummyKey");
 
         // Construct request to query a tag
         // This exact request isn't really relevant. Just that it will trigger
@@ -358,7 +353,7 @@ public class PardotClient_SsoAuthTest {
             );
 
         // When it attempts to renew the session, we should get an invalid credentials response.
-        when(mockRestClient.submitRequest(isA(SsoLoginRequest.class)))
+        when(mockRestClient.submitRequest(isA(SsoRefreshTokenRequest.class)))
             .thenReturn(createRestResponseFromFile("ssoLoginFailed.json", 400));
 
         // Call method under test, this should throw an exception
@@ -434,7 +429,7 @@ public class PardotClient_SsoAuthTest {
 
     private void mockSuccessfulLogin() {
         // Mock successful login response from RestClient/Api Server.
-        when(mockRestClient.submitRequest(isA(SsoLoginRequest.class)))
+        when(mockRestClient.submitRequest(isA(SsoRefreshTokenRequest.class)))
             .thenReturn(createRestResponseFromFile("ssoLoginSuccess.json", 200));
     }
 }

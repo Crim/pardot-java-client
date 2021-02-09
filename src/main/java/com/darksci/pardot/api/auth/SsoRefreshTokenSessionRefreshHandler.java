@@ -18,8 +18,8 @@
 package com.darksci.pardot.api.auth;
 
 import com.darksci.pardot.api.PardotClient;
-import com.darksci.pardot.api.config.SsoLoginCredentials;
-import com.darksci.pardot.api.request.login.SsoLoginRequest;
+import com.darksci.pardot.api.config.SsoRefreshTokenCredentials;
+import com.darksci.pardot.api.request.login.SsoRefreshTokenRequest;
 import com.darksci.pardot.api.response.login.SsoLoginResponse;
 
 import java.util.Objects;
@@ -27,13 +27,13 @@ import java.util.Objects;
 /**
  * Handles refreshing credentials using SSO Login method.
  */
-public class SsoSessionRefreshHandler implements SessionRefreshHandler {
-    private final SsoLoginCredentials credentials;
+public class SsoRefreshTokenSessionRefreshHandler implements SessionRefreshHandler {
+    private final SsoRefreshTokenCredentials credentials;
     private final AuthorizationServer authorizationServer;
 
     private String apiToken = null;
 
-    public SsoSessionRefreshHandler(final SsoLoginCredentials credentials, final AuthorizationServer authorizationServer) {
+    public SsoRefreshTokenSessionRefreshHandler(final SsoRefreshTokenCredentials credentials, final AuthorizationServer authorizationServer) {
         this.credentials = Objects.requireNonNull(credentials);
         this.authorizationServer = Objects.requireNonNull(authorizationServer);
     }
@@ -50,14 +50,13 @@ public class SsoSessionRefreshHandler implements SessionRefreshHandler {
 
     @Override
     public boolean refreshCredentials(final PardotClient client) {
-        final SsoLoginResponse response = client.login(new SsoLoginRequest(authorizationServer)
+        final SsoLoginResponse response = client.login(new SsoRefreshTokenRequest(authorizationServer)
             .withClientId(credentials.getClientId())
             .withClientSecret(credentials.getClientSecret())
-            .withUsername(credentials.getUsername())
-            .withPassword(credentials.getPassword())
+            .withRefreshToken(credentials.getRefreshToken())
         );
 
-        // If we have an API key.
+        // If we have an AccessToken.
         if (response.getAccessToken() != null) {
             // Set it.
             setApiToken(response.getAccessToken());
