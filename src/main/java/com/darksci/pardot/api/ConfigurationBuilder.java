@@ -20,11 +20,13 @@ package com.darksci.pardot.api;
 import com.darksci.pardot.api.auth.AuthorizationServer;
 import com.darksci.pardot.api.auth.PasswordSessionRefreshHandler;
 import com.darksci.pardot.api.auth.SessionRefreshHandler;
+import com.darksci.pardot.api.auth.SsoAccessTokenSessionRefreshHandler;
 import com.darksci.pardot.api.auth.SsoRefreshTokenSessionRefreshHandler;
 import com.darksci.pardot.api.auth.SsoSessionRefreshHandler;
 import com.darksci.pardot.api.config.Configuration;
 import com.darksci.pardot.api.config.PasswordLoginCredentials;
 import com.darksci.pardot.api.config.ProxyConfiguration;
+import com.darksci.pardot.api.config.SsoAccessTokenCredentials;
 import com.darksci.pardot.api.config.SsoLoginCredentials;
 import com.darksci.pardot.api.config.SsoRefreshTokenCredentials;
 import com.darksci.pardot.api.rest.interceptor.NoopRequestInterceptor;
@@ -153,6 +155,28 @@ public class ConfigurationBuilder {
             Objects.requireNonNull(clientSecret),
             Objects.requireNonNull(businessUnitId)
         ), authorizationServer));
+    }
+
+    /**
+     * For configuring authenticating to the Pardot API using a previously acquired access_token acquired using
+     * the access_code OAuth2 authentication flow.
+     *
+     * Note this authentication scheme has no provisions for renewing expired sessions automatically.
+     * See withSsoRefreshTokenLogin() method using a refresh_token.
+     *
+     * @param accessToken Salesforce access_token.
+     * @param clientId Connected Application client or consumer Id.
+     * @param clientSecret Connected Application client or consumer secret.
+     * @param businessUnitId Id of the Pardot business unit to connect to.
+     * @return Builder instance.
+     */
+    public ConfigurationBuilder withSsoAccessTokenLogin(final String accessToken, final String clientId, final String clientSecret, final String businessUnitId) {
+        return withCustomAuthenticationHandler(new SsoAccessTokenSessionRefreshHandler(new SsoAccessTokenCredentials(
+            Objects.requireNonNull(accessToken),
+            Objects.requireNonNull(clientId),
+            Objects.requireNonNull(clientSecret),
+            Objects.requireNonNull(businessUnitId)
+        )));
     }
 
     /**

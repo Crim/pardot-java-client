@@ -170,13 +170,13 @@ public class Example {
          *  - AuthorizationServer.SANDBOX_SALESFORCE (Used to authenticate against Sandbox Instances)
          */
         configuration.withSsoLogin(
-                "YourSalesforceUsername",
-                "YourSalesforcePassword",
-                "YourConnectedAppClientId",
-                "YourConnectedAppClientSecret",
-                "YourPardotBusinessUnitId",
-                AuthorizationServer.SANDBOX_SALESFORCE
-            );
+            "YourSalesforceUsername",
+            "YourSalesforcePassword",
+            "YourConnectedAppClientId",
+            "YourConnectedAppClientSecret",
+            "YourPardotBusinessUnitId",
+            AuthorizationServer.SANDBOX_SALESFORCE
+        );
 
         // SSO RefreshToken Login.
         configuration.withSsoRefreshTokenLogin(
