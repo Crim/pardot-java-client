@@ -2,6 +2,10 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.2.0 (02/09/2021)
+- [ISSUE-68](https://github.com/Crim/pardot-java-client/issues/68) Add authentication method for grant_type=authorization_code using previously retrieved refresh_token.  See `ConfigurationBuilder.withSsoRefreshTokenLogin()`
+- [ISSUE-70](https://github.com/Crim/pardot-java-client/issues/70) Adds ability to override the OAuth authentication endpoint when doing SSO authentication.  See optional parameter `AuthorizationServer` on the `ConfigurationBuilder.withSsoRefreshTokenLogin()` and `ConfigurationBuilder.withSsoLogin()` methods.
+
 ## 3.1.0 (10/23/2020)
 - [ISSUE-65](https://github.com/Crim/pardot-java-client/issues/65) Adds missing Query options to `ProspectQuerytRequest` for `withUpdatedAfter()` and `withUpdatedBefore()`.
 

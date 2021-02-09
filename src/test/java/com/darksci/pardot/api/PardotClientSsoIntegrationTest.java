@@ -21,7 +21,6 @@ import categories.IntegrationTest;
 import com.darksci.pardot.api.auth.SsoSessionRefreshHandler;
 import com.darksci.pardot.api.config.Configuration;
 import com.darksci.pardot.api.request.login.SsoLoginRequest;
-import com.darksci.pardot.api.request.login.SsoRefreshTokenRequest;
 import com.darksci.pardot.api.request.tag.TagQueryRequest;
 import com.darksci.pardot.api.response.login.SsoLoginResponse;
 import com.darksci.pardot.api.response.tag.TagQueryResponse;
@@ -99,7 +98,7 @@ public class PardotClientSsoIntegrationTest extends AbstractPardotClientIntegrat
         assertNotNull("Should not be null", response);
         assertNotNull("Should have non-null property", response.getAccessToken());
     }
-    
+
     /**
      * Attempt to login with bad credentials.
      */

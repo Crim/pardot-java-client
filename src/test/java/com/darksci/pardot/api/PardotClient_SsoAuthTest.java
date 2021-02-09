@@ -22,7 +22,6 @@ import com.darksci.pardot.api.auth.AuthorizationServer;
 import com.darksci.pardot.api.auth.SsoSessionRefreshHandler;
 import com.darksci.pardot.api.config.Configuration;
 import com.darksci.pardot.api.request.login.SsoLoginRequest;
-import com.darksci.pardot.api.request.login.SsoRefreshTokenRequest;
 import com.darksci.pardot.api.request.tag.TagReadRequest;
 import com.darksci.pardot.api.request.user.UserReadRequest;
 import com.darksci.pardot.api.response.login.SsoLoginResponse;

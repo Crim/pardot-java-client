@@ -34,6 +34,14 @@ public class AuthorizationServer {
     );
 
     /**
+     * The default Authorization Server for test/sandbox instances.
+     */
+    public static final AuthorizationServer SANDBOX_SALESFORCE = new AuthorizationServer(
+        "https://test.salesforce.com",
+        "/services/oauth2/token"
+    );
+
+    /**
      * Hostname, including protocol, with no trailing /
      * Example: "https://login.salesforce.com"
      */
