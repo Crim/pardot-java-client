@@ -18,52 +18,46 @@
 package com.darksci.pardot.api.auth;
 
 import com.darksci.pardot.api.PardotClient;
-import com.darksci.pardot.api.config.SsoLoginCredentials;
-import com.darksci.pardot.api.request.login.SsoLoginRequest;
-import com.darksci.pardot.api.response.login.SsoLoginResponse;
+import com.darksci.pardot.api.config.SsoAccessTokenCredentials;
 
 import java.util.Objects;
 
 /**
- * Handles refreshing credentials using SSO Login method.
+ * Handles authenticating credentials using SSO with a previously acquired access_token.
+ *
+ * NOTE: This implementation does NOT support renewing sessions when they expire.
+ *       see {@link SsoRefreshTokenSessionRefreshHandler} for an implementation that can renew the session
+ *       automatically using a refresh_token.
  */
-public class SsoSessionRefreshHandler implements SessionRefreshHandler {
-    private final SsoLoginCredentials credentials;
-    private final AuthorizationServer authorizationServer;
+public class SsoAccessTokenSessionRefreshHandler implements SessionRefreshHandler {
+    private final SsoAccessTokenCredentials credentials;
 
-    private String apiToken = null;
-
-    public SsoSessionRefreshHandler(final SsoLoginCredentials credentials, final AuthorizationServer authorizationServer) {
+    /**
+     * Constructor.
+     * @param credentials Credentials required for authenticating.
+     */
+    public SsoAccessTokenSessionRefreshHandler(final SsoAccessTokenCredentials credentials) {
         this.credentials = Objects.requireNonNull(credentials);
-        this.authorizationServer = Objects.requireNonNull(authorizationServer);
     }
 
     @Override
     public boolean isValid() {
-        return apiToken != null;
+        return credentials.getAccessToken() != null;
     }
 
     @Override
     public void clearToken() {
-        this.apiToken = null;
+        // No-op, unable to clear.
     }
 
     @Override
     public boolean refreshCredentials(final PardotClient client) {
-        final SsoLoginResponse response = client.login(new SsoLoginRequest(authorizationServer)
-            .withClientId(credentials.getClientId())
-            .withClientSecret(credentials.getClientSecret())
-            .withUsername(credentials.getUsername())
-            .withPassword(credentials.getPassword())
-        );
-
-        // If we have an API key.
-        if (response.getAccessToken() != null) {
-            // Set it.
-            setApiToken(response.getAccessToken());
-            return true;
-        }
-
+        /*
+         * This authentication method does not support refreshing the access_token.
+         *
+         * see {@link SsoRefreshTokenSessionRefreshHandler} for an implementation that can renew the session
+         * automatically using a refresh_token.
+         */
         return false;
     }
 
@@ -73,7 +67,7 @@ public class SsoSessionRefreshHandler implements SessionRefreshHandler {
             return AuthParameter.EMPTY;
         }
 
-        final String value = "Bearer " + apiToken;
+        final String value = "Bearer " + credentials.getAccessToken();
         return new AuthParameter[] {
             new AuthParameter("Authorization", value),
             new AuthParameter("Pardot-Business-Unit-Id", credentials.getBusinessUnitId())
@@ -83,13 +77,5 @@ public class SsoSessionRefreshHandler implements SessionRefreshHandler {
     @Override
     public AuthParameter[] getAuthorizationRequestParameters() {
         return AuthParameter.EMPTY;
-    }
-
-    /**
-     * Used to set ApiToken value.
-     * @param apiToken value to set.
-     */
-    public void setApiToken(final String apiToken) {
-        this.apiToken = apiToken;
     }
 }

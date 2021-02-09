@@ -20,44 +20,38 @@ package com.darksci.pardot.api.config;
 import java.util.Objects;
 
 /**
- * Defines credentials for authenticating to Pardot API using Salesforce SSO.
+ * Defines credentials for authenticating to Pardot API using Salesforce SSO using a previously
+ * acquired refresh_token.
  */
-public class SsoLoginCredentials {
+public class SsoRefreshTokenCredentials {
     // Immutable values.
-    private final String username;
-    private final String password;
+    private final String refreshToken;
     private final String clientId;
     private final String clientSecret;
     private final String businessUnitId;
 
     /**
      * Constructor.
-     * @param username Salesforce username.
-     * @param password Salesforce password.
+     * @param refreshToken Previously acquired refresh_token from the access_key OAuth2 authentication flow.
      * @param clientId Connected App client or consumer Id.
      * @param clientSecret Connected App client or consumer secret.
      * @param businessUnitId Pardot Business Unit Id to connect to.
      */
-    public SsoLoginCredentials(
-        final String username,
-        final String password,
+    public SsoRefreshTokenCredentials(
+        final String refreshToken,
         final String clientId,
         final String clientSecret,
-        final String businessUnitId) {
+        final String businessUnitId
+    ) {
 
-        this.username = Objects.requireNonNull(username);
-        this.password = Objects.requireNonNull(password);
+        this.refreshToken = Objects.requireNonNull(refreshToken);
         this.clientId = Objects.requireNonNull(clientId);
         this.clientSecret = Objects.requireNonNull(clientSecret);
         this.businessUnitId = Objects.requireNonNull(businessUnitId);
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
+    public String getRefreshToken() {
+        return refreshToken;
     }
 
     public String getClientId() {
@@ -74,9 +68,8 @@ public class SsoLoginCredentials {
 
     @Override
     public String toString() {
-        return "SsoLoginCredentials{"
-            + "username='" + username + '\''
-            + ", password='XXXXXXXXXX'"
+        return "SsoRefreshTokenCredentials{"
+            + "refreshToken='XXXXXXXXXX'"
             + ", clientId='" + clientId + '\''
             + ", clientSecret='XXXXXXXXXX'"
             + ", businessUnitId='" + businessUnitId + '\''

@@ -28,9 +28,6 @@ public class PasswordLoginCredentials {
     private final String password;
     private final String userKey;
 
-    // Updated after authenticated.
-    private String apiKey = null;
-
     /**
      * Constructor.
      * @param username Pardot username or email address.
@@ -55,36 +52,12 @@ public class PasswordLoginCredentials {
         return userKey;
     }
 
-    public String getApiKey() {
-        return apiKey;
-    }
-
-    public boolean hasApiKey() {
-        return apiKey != null;
-    }
-
-    public void clearApiKey() {
-        this.setApiKey(null);
-    }
-
-    public void setApiKey(final String apiKey) {
-        this.apiKey = apiKey;
-    }
-
     @Override
     public String toString() {
-        final String apiKeyDisplay;
-        if (hasApiKey()) {
-            apiKeyDisplay = "-API-KEY-SET-";
-        } else {
-            apiKeyDisplay = "-NO-API-KEY-SET-";
-        }
-
         return "PasswordLoginCredentials{"
             + "username='" + username + '\''
             + ", password='XXXXXXXXX'"
             + ", userKey='XXXXXXXXX'"
-            + ", apiKey='" + apiKeyDisplay + "'"
             + '}';
     }
 }

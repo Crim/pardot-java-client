@@ -18,12 +18,13 @@
 package com.darksci.pardot.api;
 
 import com.darksci.pardot.api.auth.AuthParameter;
-import com.darksci.pardot.api.auth.PasswordSessionRefreshHandler;
+import com.darksci.pardot.api.auth.AuthorizationServer;
+import com.darksci.pardot.api.auth.SsoRefreshTokenSessionRefreshHandler;
 import com.darksci.pardot.api.config.Configuration;
-import com.darksci.pardot.api.request.login.LoginRequest;
+import com.darksci.pardot.api.request.login.SsoRefreshTokenRequest;
 import com.darksci.pardot.api.request.tag.TagReadRequest;
 import com.darksci.pardot.api.request.user.UserReadRequest;
-import com.darksci.pardot.api.response.login.LoginResponse;
+import com.darksci.pardot.api.response.login.SsoLoginResponse;
 import com.darksci.pardot.api.response.tag.Tag;
 import com.darksci.pardot.api.response.user.User;
 import com.darksci.pardot.api.rest.RestClient;
@@ -41,7 +42,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -50,9 +50,9 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 /**
- * Unit testing over PardotClient using Pardot Username and Password Authentication scheme.
+ * Unit testing over PardotClient using Sso Authentication Scheme.
  */
-public class PardotClient_UsernameAndPasswordAuthTest {
+public class PardotClient_SsoRefreshTokenAuthTest {
     // Dependencies
     private Configuration apiConfig;
     private RestClient mockRestClient;
@@ -61,14 +61,15 @@ public class PardotClient_UsernameAndPasswordAuthTest {
     private PardotClient pardotClient;
 
     // Create configuration
-    final String userEmail = "user@example.com";
-    final String userPassword = "NotARealPassword";
-    final String userKey = "NotARealUserKey";
+    private final String refreshToken = "NotARealRefreshToken";
+    private final String clientId = "NotARealClientId";
+    private final String clientSecret = "NotARealClientSecret";
+    private final String businessId = "ABC-123-DEF";
 
     @Before
     public void before() {
         final ConfigurationBuilder builder = Configuration.newBuilder()
-            .withUsernameAndPasswordLogin(userEmail, userPassword, userKey);
+            .withSsoRefreshTokenLogin(refreshToken, clientId, clientSecret, businessId);
         apiConfig = builder.build();
 
         // Create mock RestClient
@@ -84,25 +85,62 @@ public class PardotClient_UsernameAndPasswordAuthTest {
     @Test
     public void smokeTestDirectLoginRequest() {
         // Construct request.
-        final LoginRequest loginRequest = new LoginRequest()
-            .withEmail(userEmail)
-            .withPassword(userPassword);
+        final SsoRefreshTokenRequest loginRequest = new SsoRefreshTokenRequest()
+            .withRefreshToken(refreshToken)
+            .withClientId(clientId)
+            .withClientSecret(clientId);
 
         // Mock response
-        when(mockRestClient.submitRequest(isA(LoginRequest.class)))
-            .thenReturn(createRestResponseFromFile("login.xml", 200));
+        when(mockRestClient.submitRequest(loginRequest))
+            .thenReturn(createRestResponseFromFile("ssoLoginSuccess.json", 200));
 
         // Call method under test
-        final LoginResponse response = pardotClient.login(loginRequest);
+        final SsoLoginResponse response = pardotClient.login(loginRequest);
 
         // Validate
         assertNotNull(response);
-        assertEquals("DontWorryIDidNotCheckInARealHash", response.getApiKey());
+        assertEquals("Bearer", response.getTokenType());
+        assertEquals("ACCESS_TOKEN_HERE", response.getAccessToken());
+        assertEquals("https://test.my.salesforce.com", response.getInstanceUrl());
+        assertEquals("https://login.salesforce.com/id/00DD/005B00", response.getId());
+        assertEquals("1600482897925", response.getIssuedAt());
+        assertEquals("SIGNATURE-HERE", response.getSignature());
 
         // Verify mock interactions
         verify(mockRestClient, times(1))
-            .submitRequest(any(LoginRequest.class));
+            .submitRequest(loginRequest);
         verifyNoMoreRestClientInteractions();
+    }
+
+    /**
+     * Smoke test authorization server override.
+     */
+    @Test
+    public void smokeTestDirectLoginRequest_alternativeAuthServer() {
+        // Construct request.
+        final SsoRefreshTokenRequest loginRequest = new SsoRefreshTokenRequest()
+            .withRefreshToken(refreshToken)
+            .withClientId(clientId)
+            .withClientSecret(clientId)
+            .withAuthorizationServer(new AuthorizationServer("http://test.server", "/end/point"));
+
+        assertEquals("Invalid Api Hostname", "http://test.server", loginRequest.getApiHostname());
+        assertEquals("Invalid End point", "/end/point", loginRequest.getApiEndpoint());
+    }
+
+    /**
+     * Smoke test authorization server override.
+     */
+    @Test
+    public void smokeTestDirectLoginRequest_defaultAuthServer() {
+        // Construct request.
+        final SsoRefreshTokenRequest loginRequest = new SsoRefreshTokenRequest()
+            .withRefreshToken(refreshToken)
+            .withClientId(clientId)
+            .withClientSecret(clientId);
+
+        assertEquals("Invalid Api Hostname", "https://login.salesforce.com", loginRequest.getApiHostname());
+        assertEquals("Invalid End point", "/services/oauth2/token", loginRequest.getApiEndpoint());
     }
 
     /**
@@ -117,9 +155,10 @@ public class PardotClient_UsernameAndPasswordAuthTest {
     @Test
     public void testIndirectLogin() {
         // Sanity test
-        validateUserKeyAuthorizationRequestParameter(
-            apiConfig.getSessionRefreshHandler().getAuthorizationRequestParameters(),
-            userKey
+        assertArrayEquals(
+            "AuthorizationRequestParameters should always be an empty array",
+            AuthParameter.EMPTY,
+            apiConfig.getSessionRefreshHandler().getAuthorizationRequestParameters()
         );
         assertArrayEquals(
             "AuthorizationHeaders should always start empty",
@@ -134,34 +173,61 @@ public class PardotClient_UsernameAndPasswordAuthTest {
             .selectById(1L);
 
         // Mock responses from RestClient/Api Server.
-        when(mockRestClient.submitRequest(isA(LoginRequest.class)))
-            .thenReturn(createRestResponseFromFile("login.xml", 200));
+        when(mockRestClient.submitRequest(isA(SsoRefreshTokenRequest.class)))
+            .thenReturn(createRestResponseFromFile("ssoLoginSuccess.json", 200));
         when(mockRestClient.submitRequest(isA(TagReadRequest.class)))
             .thenReturn(createRestResponseFromFile("tagRead.xml", 200));
 
         // Call method under test
-        final Optional<Tag> response = pardotClient.tagRead(tagReadRequest);
+        final Optional<Tag> responseOptional = pardotClient.tagRead(tagReadRequest);
 
         // Validate response for tag
-        assertNotNull(response);
-        assertTrue(response.isPresent());
-        assertEquals(1L, (long) response.get().getId());
-        assertEquals("Standard Tag", response.get().getName());
+        assertNotNull(responseOptional);
+        assertTrue(responseOptional.isPresent());
+
+        final Tag response = responseOptional.get();
+        assertEquals(1L, (long) response.getId());
+        assertEquals("Standard Tag", response.getName());
 
         // Validate we updated our Authorization Parameters based on the login.
-        validateUserKeyAuthorizationRequestParameter(
-            apiConfig.getSessionRefreshHandler().getAuthorizationRequestParameters(),
-            userKey
+        assertArrayEquals(
+            "AuthorizationRequestParameters should always be an empty array",
+            AuthParameter.EMPTY,
+            apiConfig.getSessionRefreshHandler().getAuthorizationRequestParameters()
         );
-        validateApiTokenAuthorizationParameter(
-            apiConfig.getSessionRefreshHandler().getAuthorizationHeaders(),
-            userKey,
-            "DontWorryIDidNotCheckInARealHash"
+        assertEquals(
+            "Should have 2 authorization headers after authenticating",
+            2,
+            apiConfig.getSessionRefreshHandler().getAuthorizationHeaders().length
+        );
+
+        // Check Authorization Header
+        assertEquals(
+            "Should contain appropriate Authorization Header Name",
+            "Authorization",
+            apiConfig.getSessionRefreshHandler().getAuthorizationHeaders()[0].getName()
+        );
+        assertEquals(
+            "Should contain appropriate Authorization Header value",
+            "Bearer ACCESS_TOKEN_HERE",
+            apiConfig.getSessionRefreshHandler().getAuthorizationHeaders()[0].getValue()
+        );
+
+        // Check Pardot Business Unit Id Header
+        assertEquals(
+            "Should contain appropriate Business Unit Header Name",
+            "Pardot-Business-Unit-Id",
+            apiConfig.getSessionRefreshHandler().getAuthorizationHeaders()[1].getName()
+        );
+        assertEquals(
+            "Should contain appropriate Business Unit Header value",
+            "ABC-123-DEF",
+            apiConfig.getSessionRefreshHandler().getAuthorizationHeaders()[1].getValue()
         );
 
         // Verify mock interactions
         verify(mockRestClient, times(1))
-            .submitRequest(isA(LoginRequest.class));
+            .submitRequest(isA(SsoRefreshTokenRequest.class));
         verify(mockRestClient, times(1))
             .submitRequest(isA(TagReadRequest.class));
         verifyNoMoreRestClientInteractions();
@@ -179,7 +245,7 @@ public class PardotClient_UsernameAndPasswordAuthTest {
     @Test
     public void testReAuthenticationOnSessionTimeout() {
         // Lets set a dummy Authentication Key to simulate already having a valid session
-        ((PasswordSessionRefreshHandler)apiConfig.getSessionRefreshHandler()).setApiToken("OriginalDummyKey");
+        ((SsoRefreshTokenSessionRefreshHandler)(apiConfig.getSessionRefreshHandler())).setApiToken("OriginalDummyKey");
 
         // Construct request to query a tag
         // This exact request isn't really relevant. Just that it will trigger
@@ -188,41 +254,69 @@ public class PardotClient_UsernameAndPasswordAuthTest {
             .selectById(1L);
 
         // Mock responses from RestClient/Api Server.
-        when(mockRestClient.submitRequest(isA(LoginRequest.class)))
-            .thenReturn(createRestResponseFromFile("login.xml", 200));
+        when(mockRestClient.submitRequest(isA(SsoRefreshTokenRequest.class)))
+            .thenReturn(createRestResponseFromFile("ssoLoginSuccess.json", 200));
 
         when(mockRestClient.submitRequest(isA(TagReadRequest.class)))
             .thenReturn(
                 // First call should return an invalid API key response.
-                createRestResponseFromFile("errorInvalidApiKey.xml", 200),
+                createRestResponseFromFile("errorInvalidSsoAccessToken.xml", 400),
 
                 // Second call should return the real tag read response.
                 createRestResponseFromFile("tagRead.xml", 200)
             );
 
         // Call method under test
-        final Optional<Tag> response = pardotClient.tagRead(tagReadRequest);
+        final Optional<Tag> responseOptional = pardotClient.tagRead(tagReadRequest);
 
         // Validate response for tag
-        assertNotNull(response);
-        assertTrue(response.isPresent());
-        assertEquals(1L, (long) response.get().getId());
-        assertEquals("Standard Tag", response.get().getName());
+        assertNotNull(responseOptional);
+        assertTrue(responseOptional.isPresent());
 
+        final Tag response = responseOptional.get();
+        assertEquals(1L, (long) response.getId());
+        assertEquals("Standard Tag", response.getName());
+
+        // Validate we updated our ApiConfig based on the login.
         // Validate we updated our Authorization Parameters based on the login.
-        validateUserKeyAuthorizationRequestParameter(
-            apiConfig.getSessionRefreshHandler().getAuthorizationRequestParameters(),
-            userKey
+        assertArrayEquals(
+            "AuthorizationRequestParameters should always be an empty array",
+            AuthParameter.EMPTY,
+            apiConfig.getSessionRefreshHandler().getAuthorizationRequestParameters()
         );
-        validateApiTokenAuthorizationParameter(
-            apiConfig.getSessionRefreshHandler().getAuthorizationHeaders(),
-            userKey,
-            "DontWorryIDidNotCheckInARealHash"
+        assertEquals(
+            "Should have 2 authorization headers after authenticating",
+            2,
+            apiConfig.getSessionRefreshHandler().getAuthorizationHeaders().length
+        );
+
+        // Check Authorization Header
+        assertEquals(
+            "Should contain appropriate Authorization Header Name",
+            "Authorization",
+            apiConfig.getSessionRefreshHandler().getAuthorizationHeaders()[0].getName()
+        );
+        assertEquals(
+            "Should contain appropriate Authorization Header value",
+            "Bearer ACCESS_TOKEN_HERE",
+            apiConfig.getSessionRefreshHandler().getAuthorizationHeaders()[0].getValue()
+        );
+
+        // Check Pardot Business Unit Id Header
+        assertEquals(
+            "Should contain appropriate Business Unit Header Name",
+            "Pardot-Business-Unit-Id",
+            apiConfig.getSessionRefreshHandler().getAuthorizationHeaders()[1].getName()
+        );
+        assertEquals(
+            "Should contain appropriate Business Unit Header value",
+            "ABC-123-DEF",
+            apiConfig.getSessionRefreshHandler().getAuthorizationHeaders()[1].getValue()
         );
 
         // Verify mock interactions
         verify(mockRestClient, times(1))
-            .submitRequest(isA(LoginRequest.class));
+            .submitRequest(isA(SsoRefreshTokenRequest.class));
         verify(mockRestClient, times(2))
             .submitRequest(isA(TagReadRequest.class));
         verifyNoMoreRestClientInteractions();
@@ -242,7 +336,7 @@ public class PardotClient_UsernameAndPasswordAuthTest {
     @Test
     public void testReAuthenticationOnSessionTimeout_triggersInvalidCredentials() {
         // Lets set a dummy Authentication Key to simulate already having a valid session
-        ((PasswordSessionRefreshHandler)apiConfig.getSessionRefreshHandler()).setApiToken("OriginalDummyKey");
+        ((SsoRefreshTokenSessionRefreshHandler)(apiConfig.getSessionRefreshHandler())).setApiToken("OriginalDummyKey");
 
         // Construct request to query a tag
         // This exact request isn't really relevant. Just that it will trigger
@@ -255,12 +349,12 @@ public class PardotClient_UsernameAndPasswordAuthTest {
         when(mockRestClient.submitRequest(isA(TagReadRequest.class)))
             .thenReturn(
                 // First call should return an invalid API key response.
-                createRestResponseFromFile("errorInvalidApiKey.xml", 200)
+                createRestResponseFromFile("errorInvalidSsoAccessToken.xml", 400)
             );
 
         // When it attempts to renew the session, we should get an invalid credentials response.
-        when(mockRestClient.submitRequest(isA(LoginRequest.class)))
-            .thenReturn(createRestResponseFromFile("errorLoginFailed.xml", 200));
+        when(mockRestClient.submitRequest(isA(SsoRefreshTokenRequest.class)))
+            .thenReturn(createRestResponseFromFile("ssoLoginFailed.json", 400));
 
         // Call method under test, this should throw an exception
         assertThrows(LoginFailedException.class, () -> {
@@ -316,13 +410,7 @@ public class PardotClient_UsernameAndPasswordAuthTest {
         assertTrue("Should be present", response.isPresent());
     }
 
-    /**
-     * Helper method to generate a RestResponse as loaded from a mockResponse resource file.
-     * @param filename file containing the mock response.
-     * @param httpCode Http response code to mock.
-     * @return RestResponse instance.
-     */
-    private RestResponse createRestResponseFromFile(final String filename, final int httpCode) {
+    private RestResponse createRestResponseFromFile(final String filename, int httpCode) {
         try {
             return new RestResponse(
                 TestHelper.readFile("mockResponses/" + filename),
@@ -333,66 +421,15 @@ public class PardotClient_UsernameAndPasswordAuthTest {
         }
     }
 
-    /**
-     * Helper method to verify no further interactions occurred.
-     */
     private void verifyNoMoreRestClientInteractions() {
-        // init() should always be called.
         verify(mockRestClient, times(1))
             .init(apiConfig);
-
-        // Verify no others.
         verifyNoMoreInteractions(mockRestClient);
     }
 
     private void mockSuccessfulLogin() {
         // Mock successful login response from RestClient/Api Server.
-        when(mockRestClient.submitRequest(isA(LoginRequest.class)))
-            .thenReturn(createRestResponseFromFile("login.xml", 200));
-    }
-
-    /**
-     * Helper method to validate Api Token Authorization Headers.
-     */
-    private void validateApiTokenAuthorizationParameter(
-        final AuthParameter[] parameters,
-        final String expectedUserKey,
-        final String expectedToken) {
-        assertEquals(
-            "AuthorizationRequestParameters should always contain api-token",
-            1,
-            parameters.length
-        );
-        assertEquals(
-            "AuthorizationRequestParameters should always contain user_key",
-            "Authorization",
-            parameters[0].getName()
-        );
-        assertEquals(
-            "AuthorizationRequestParameters should always contain user_key",
-            "Pardot user_key=" + expectedUserKey + ", api_key=" + expectedToken,
-            parameters[0].getValue()
-        );
-    }
-
-    /**
-     * Helper method to validate expected UserKey request parameter.
-     */
-    private void validateUserKeyAuthorizationRequestParameter(final AuthParameter[] parameters, final String expectedUserKey) {
-        assertEquals(
-            "AuthorizationRequestParameters should always contain user_key",
-            1,
-            parameters.length
-        );
-        assertEquals(
-            "AuthorizationRequestParameters should always contain user_key",
-            "user_key",
-            parameters[0].getName()
-        );
-        assertEquals(
-            "AuthorizationRequestParameters should always contain user_key",
-            expectedUserKey,
-            parameters[0].getValue()
-        );
+        when(mockRestClient.submitRequest(isA(SsoRefreshTokenRequest.class)))
+            .thenReturn(createRestResponseFromFile("ssoLoginSuccess.json", 200));
     }
 }

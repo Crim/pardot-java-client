@@ -17,9 +17,7 @@
 
 package com.darksci.pardot.api;
 
-import com.darksci.pardot.api.auth.PasswordSessionRefreshHandler;
 import com.darksci.pardot.api.auth.SessionRefreshHandler;
-import com.darksci.pardot.api.auth.SsoSessionRefreshHandler;
 import com.darksci.pardot.api.config.Configuration;
 import com.darksci.pardot.api.parser.DeleteResponseParser;
 import com.darksci.pardot.api.parser.ErrorResponseParser;
@@ -103,6 +101,7 @@ import com.darksci.pardot.api.request.listmembership.ListMembershipUpdateRequest
 import com.darksci.pardot.api.request.login.LoginRequest;
 import com.darksci.pardot.api.request.login.LoginRequestMarker;
 import com.darksci.pardot.api.request.login.SsoLoginRequest;
+import com.darksci.pardot.api.request.login.SsoRefreshTokenRequest;
 import com.darksci.pardot.api.request.opportunity.OpportunityCreateRequest;
 import com.darksci.pardot.api.request.opportunity.OpportunityDeleteRequest;
 import com.darksci.pardot.api.request.opportunity.OpportunityQueryRequest;
@@ -246,14 +245,7 @@ public class PardotClient implements AutoCloseable {
     PardotClient(final Configuration configuration, final RestClient restClient) {
         this.configuration = Objects.requireNonNull(configuration);
         this.restClient = Objects.requireNonNull(restClient);
-
-        if (configuration.isUsingPasswordAuthentication()) {
-            sessionRefreshHandler = new PasswordSessionRefreshHandler(configuration.getPasswordLoginCredentials(), this);
-        } else if (configuration.isUsingSsoAuthentication()) {
-            sessionRefreshHandler = new SsoSessionRefreshHandler(configuration.getSsoLoginCredentials(), this);
-        } else {
-            throw new IllegalStateException("Unhandled Authentication Type!");
-        }
+        this.sessionRefreshHandler = Objects.requireNonNull(configuration.getSessionRefreshHandler());
     }
 
     private <T> Result<T> submitRequest(final Request request, final ResponseParser<T> responseParser) {
@@ -381,7 +373,15 @@ public class PardotClient implements AutoCloseable {
         if (sessionRefreshHandler.isValid()) {
             return;
         }
-        sessionRefreshHandler.refreshCredentials();
+
+        // refreshCredentials() method should return true if refresh was successful,
+        // If it returns false, throw LoginFailedException
+        if (!sessionRefreshHandler.refreshCredentials(this)) {
+            throw new LoginFailedException(
+                "SessionRefreshHandler " + sessionRefreshHandler.getClass().getSimpleName() + " failed to refresh authentication token",
+                0
+            );
+        };
     }
 
     /**
@@ -427,6 +427,26 @@ public class PardotClient implements AutoCloseable {
      * @throws LoginFailedException if credentials are invalid.
      */
     public SsoLoginResponse login(final SsoLoginRequest request) {
+        try {
+            return submitRequest(request, new SsoLoginResponseParser()).get();
+        } catch (final InvalidRequestException exception) {
+            // Rethrow login failed exceptions as-is.
+            if (exception instanceof LoginFailedException) {
+                throw exception;
+            }
+            // Otherwise throw a more specific exception
+            throw new LoginFailedException(exception.getMessage(), exception.getErrorCode(), exception);
+        }
+    }
+
+    /**
+     * Execute login request using Salesforce SSO authentication.
+     *
+     * @param request Login request definition.
+     * @return SsoLoginResponse returned from server.
+     * @throws LoginFailedException if credentials are invalid.
+     */
+    public SsoLoginResponse login(final SsoRefreshTokenRequest request) {
         try {
             return submitRequest(request, new SsoLoginResponseParser()).get();
         } catch (final InvalidRequestException exception) {

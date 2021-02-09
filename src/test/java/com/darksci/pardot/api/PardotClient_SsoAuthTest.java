@@ -17,6 +17,9 @@
 
 package com.darksci.pardot.api;
 
+import com.darksci.pardot.api.auth.AuthParameter;
+import com.darksci.pardot.api.auth.AuthorizationServer;
+import com.darksci.pardot.api.auth.SsoSessionRefreshHandler;
 import com.darksci.pardot.api.config.Configuration;
 import com.darksci.pardot.api.request.login.SsoLoginRequest;
 import com.darksci.pardot.api.request.tag.TagReadRequest;
@@ -33,10 +36,10 @@ import util.TestHelper;
 import java.io.IOException;
 import java.util.Optional;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.isA;
@@ -57,15 +60,15 @@ public class PardotClient_SsoAuthTest {
     // Instance under test
     private PardotClient pardotClient;
 
+    // Create configuration
+    private final String userEmail = "user@example.com";
+    private final String userPassword = "NotARealPassword";
+    private final String clientId = "NotARealClientId";
+    private final String clientSecret = "NotARealClientSecret";
+    private final String businessId = "ABC-123-DEF";
+
     @Before
     public void before() {
-        // Create configuration
-        final String userEmail = "user@example.com";
-        final String userPassword = "NotARealPassword";
-        final String clientId = "NotARealClientId";
-        final String clientSecret = "NotARealClientSecret";
-        final String businessId = "ABC-123-DEF";
-
         final ConfigurationBuilder builder = Configuration.newBuilder()
             .withSsoLogin(userEmail, userPassword, clientId, clientSecret, businessId);
         apiConfig = builder.build();
@@ -84,10 +87,10 @@ public class PardotClient_SsoAuthTest {
     public void smokeTestDirectLoginRequest() {
         // Construct request.
         final SsoLoginRequest loginRequest = new SsoLoginRequest()
-            .withUsername(apiConfig.getSsoLoginCredentials().getUsername())
-            .withPassword(apiConfig.getSsoLoginCredentials().getPassword())
-            .withClientId(apiConfig.getSsoLoginCredentials().getClientId())
-            .withClientSecret(apiConfig.getSsoLoginCredentials().getClientSecret());
+            .withUsername(userEmail)
+            .withPassword(userPassword)
+            .withClientId(clientId)
+            .withClientSecret(clientId);
 
         // Mock response
         when(mockRestClient.submitRequest(loginRequest))
@@ -112,6 +115,39 @@ public class PardotClient_SsoAuthTest {
     }
 
     /**
+     * Smoke test authorization server override.
+     */
+    @Test
+    public void smokeTestDirectLoginRequest_alternativeAuthServer() {
+        // Construct request.
+        final SsoLoginRequest loginRequest = new SsoLoginRequest()
+            .withUsername(userEmail)
+            .withPassword(userPassword)
+            .withClientId(clientId)
+            .withClientSecret(clientId)
+            .withAuthorizationServer(new AuthorizationServer("http://test.server", "/end/point"));
+
+        assertEquals("Invalid Api Hostname", "http://test.server", loginRequest.getApiHostname());
+        assertEquals("Invalid End point", "/end/point", loginRequest.getApiEndpoint());
+    }
+
+    /**
+     * Smoke test authorization server override.
+     */
+    @Test
+    public void smokeTestDirectLoginRequest_defaultAuthServer() {
+        // Construct request.
+        final SsoLoginRequest loginRequest = new SsoLoginRequest()
+            .withUsername(userEmail)
+            .withPassword(userPassword)
+            .withClientId(clientId)
+            .withClientSecret(clientId);
+
+        assertEquals("Invalid Api Hostname", "https://login.salesforce.com", loginRequest.getApiHostname());
+        assertEquals("Invalid End point", "/services/oauth2/token", loginRequest.getApiEndpoint());
+    }
+
+    /**
      * Verifies the behavior of PardotClient when the library has not yet authenticated to Pardot's API.
      *
      * Expected behavior is the library internally detects that no valid session exists
@@ -123,7 +159,16 @@ public class PardotClient_SsoAuthTest {
     @Test
     public void testIndirectLogin() {
         // Sanity test
-        assertNull("AccessToken should start as null prior to login", apiConfig.getSsoLoginCredentials().getAccessToken());
+        assertArrayEquals(
+            "AuthorizationRequestParameters should always be an empty array",
+            AuthParameter.EMPTY,
+            apiConfig.getSessionRefreshHandler().getAuthorizationRequestParameters()
+        );
+        assertArrayEquals(
+            "AuthorizationHeaders should always start empty",
+            AuthParameter.EMPTY,
+            apiConfig.getSessionRefreshHandler().getAuthorizationHeaders()
+        );
 
         // Construct request to query a tag
         // This exact request isn't really relevant. Just that it will trigger
@@ -148,9 +193,41 @@ public class PardotClient_SsoAuthTest {
         assertEquals(1L, (long) response.getId());
         assertEquals("Standard Tag", response.getName());
 
-        // Validate we updated our ApiConfig based on the login.
-        assertNotNull("AccessToken should no longer be null", apiConfig.getSsoLoginCredentials().getAccessToken());
-        assertEquals("ACCESS_TOKEN_HERE", apiConfig.getSsoLoginCredentials().getAccessToken());
+        // Validate we updated our Authorization Parameters based on the login.
+        assertArrayEquals(
+            "AuthorizationRequestParameters should always be an empty array",
+            AuthParameter.EMPTY,
+            apiConfig.getSessionRefreshHandler().getAuthorizationRequestParameters()
+        );
+        assertEquals(
+            "Should have 2 authorization headers after authenticating",
+            2,
+            apiConfig.getSessionRefreshHandler().getAuthorizationHeaders().length
+        );
+
+        // Check Authorization Header
+        assertEquals(
+            "Should contain appropriate Authorization Header Name",
+            "Authorization",
+            apiConfig.getSessionRefreshHandler().getAuthorizationHeaders()[0].getName()
+        );
+        assertEquals(
+            "Should contain appropriate Authorization Header value",
+            "Bearer ACCESS_TOKEN_HERE",
+            apiConfig.getSessionRefreshHandler().getAuthorizationHeaders()[0].getValue()
+        );
+
+        // Check Pardot Business Unit Id Header
+        assertEquals(
+            "Should contain appropriate Business Unit Header Name",
+            "Pardot-Business-Unit-Id",
+            apiConfig.getSessionRefreshHandler().getAuthorizationHeaders()[1].getName()
+        );
+        assertEquals(
+            "Should contain appropriate Business Unit Header value",
+            "ABC-123-DEF",
+            apiConfig.getSessionRefreshHandler().getAuthorizationHeaders()[1].getValue()
+        );
 
         // Verify mock interactions
         verify(mockRestClient, times(1))
@@ -172,7 +249,7 @@ public class PardotClient_SsoAuthTest {
     @Test
     public void testReAuthenticationOnSessionTimeout() {
         // Lets set a dummy Authentication Key to simulate already having a valid session
-        apiConfig.getSsoLoginCredentials().setAccessToken("OriginalDummyKey");
+        ((SsoSessionRefreshHandler)(apiConfig.getSessionRefreshHandler())).setApiToken("OriginalDummyKey");
 
         // Construct request to query a tag
         // This exact request isn't really relevant. Just that it will trigger
@@ -205,8 +282,41 @@ public class PardotClient_SsoAuthTest {
         assertEquals("Standard Tag", response.getName());
 
         // Validate we updated our ApiConfig based on the login.
-        assertNotNull("ApiKey should no longer be null", apiConfig.getSsoLoginCredentials().getAccessToken());
-        assertEquals("ACCESS_TOKEN_HERE", apiConfig.getSsoLoginCredentials().getAccessToken());
+        // Validate we updated our Authorization Parameters based on the login.
+        assertArrayEquals(
+            "AuthorizationRequestParameters should always be an empty array",
+            AuthParameter.EMPTY,
+            apiConfig.getSessionRefreshHandler().getAuthorizationRequestParameters()
+        );
+        assertEquals(
+            "Should have 2 authorization headers after authenticating",
+            2,
+            apiConfig.getSessionRefreshHandler().getAuthorizationHeaders().length
+        );
+
+        // Check Authorization Header
+        assertEquals(
+            "Should contain appropriate Authorization Header Name",
+            "Authorization",
+            apiConfig.getSessionRefreshHandler().getAuthorizationHeaders()[0].getName()
+        );
+        assertEquals(
+            "Should contain appropriate Authorization Header value",
+            "Bearer ACCESS_TOKEN_HERE",
+            apiConfig.getSessionRefreshHandler().getAuthorizationHeaders()[0].getValue()
+        );
+
+        // Check Pardot Business Unit Id Header
+        assertEquals(
+            "Should contain appropriate Business Unit Header Name",
+            "Pardot-Business-Unit-Id",
+            apiConfig.getSessionRefreshHandler().getAuthorizationHeaders()[1].getName()
+        );
+        assertEquals(
+            "Should contain appropriate Business Unit Header value",
+            "ABC-123-DEF",
+            apiConfig.getSessionRefreshHandler().getAuthorizationHeaders()[1].getValue()
+        );
 
         // Verify mock interactions
         verify(mockRestClient, times(1))
@@ -230,7 +340,7 @@ public class PardotClient_SsoAuthTest {
     @Test
     public void testReAuthenticationOnSessionTimeout_triggersInvalidCredentials() {
         // Lets set a dummy Authentication Key to simulate already having a valid session
-        apiConfig.getSsoLoginCredentials().setAccessToken("OriginalDummyKey");
+        ((SsoSessionRefreshHandler)(apiConfig.getSessionRefreshHandler())).setApiToken("OriginalDummyKey");
 
         // Construct request to query a tag
         // This exact request isn't really relevant. Just that it will trigger

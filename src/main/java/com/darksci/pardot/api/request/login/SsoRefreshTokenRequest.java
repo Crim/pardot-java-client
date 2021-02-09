@@ -25,7 +25,7 @@ import java.util.Objects;
 /**
  * Defines a request to Salesforce's SSO Authentication end points.
  */
-public class SsoLoginRequest extends BaseRequest<SsoLoginRequest> implements LoginRequestMarker {
+public class SsoRefreshTokenRequest extends BaseRequest<SsoRefreshTokenRequest> implements LoginRequestMarker {
     /**
      * Defines the Hostname and URI that we attempt to authenticate the OAuth2 request against.
      */
@@ -35,7 +35,7 @@ public class SsoLoginRequest extends BaseRequest<SsoLoginRequest> implements Log
      * Constructor.
      * This uses the Default Salesforce SSO Authorization server.
      */
-    public SsoLoginRequest() {
+    public SsoRefreshTokenRequest() {
         this(AuthorizationServer.DEFAULT_SALESFORCE);
     }
 
@@ -43,32 +43,28 @@ public class SsoLoginRequest extends BaseRequest<SsoLoginRequest> implements Log
      * Constructor.
      * @param authorizationServer Allows for overriding the default Authorization server.
      */
-    public SsoLoginRequest(final AuthorizationServer authorizationServer) {
+    public SsoRefreshTokenRequest(final AuthorizationServer authorizationServer) {
         this.authorizationServer = Objects.requireNonNull(authorizationServer);
-        withGrantType("password");
+        withGrantType("refresh_token");
     }
 
-    public SsoLoginRequest withClientId(final String clientId) {
+    public SsoRefreshTokenRequest withClientId(final String clientId) {
         return setParam("client_id", clientId);
     }
 
-    public SsoLoginRequest withClientSecret(final String clientSecret) {
+    public SsoRefreshTokenRequest withClientSecret(final String clientSecret) {
         return setParam("client_secret", clientSecret);
     }
 
-    public SsoLoginRequest withUsername(final String username) {
-        return setParam("username", username);
+    public SsoRefreshTokenRequest withRefreshToken(final String refreshToken) {
+        return setParam("refresh_token", refreshToken);
     }
 
-    public SsoLoginRequest withPassword(final String password) {
-        return setParam("password", password);
-    }
-
-    public SsoLoginRequest withGrantType(final String grantType) {
+    public SsoRefreshTokenRequest withGrantType(final String grantType) {
         return setParam("grant_type", grantType);
     }
 
-    public SsoLoginRequest withAuthorizationServer(final AuthorizationServer authorizationServer) {
+    public SsoRefreshTokenRequest withAuthorizationServer(final AuthorizationServer authorizationServer) {
         this.authorizationServer = Objects.requireNonNull(authorizationServer);
         return this;
     }

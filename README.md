@@ -30,7 +30,7 @@ This client library is released on Maven Central.  Add a new dependency to your 
 <dependency>
     <groupId>com.darksci</groupId>
     <artifactId>pardot-api-client</artifactId>
-    <version>3.1.0</version>
+    <version>3.2.0</version>
 </dependency>
 ```
 
@@ -43,6 +43,7 @@ Example Code using Salesforce SSO Authentication:
  * such as using an outbound proxy (authenticated or not).
  */
 final ConfigurationBuilder configuration = Configuration.newBuilder()
+    // This configures the client using the 'password' authentication flow.    
     .withSsoLogin(
         "YourSalesforceUsername",
         "YourSalesforcePassword",
@@ -50,6 +51,19 @@ final ConfigurationBuilder configuration = Configuration.newBuilder()
         "YourConnectedAppClientSecret",
         "YourPardotBusinessUnitId"
     );
+
+/*
+ * Alternatively, if you want to use the authorization_code authentication flow,
+ * you can configure the client using a previously acquired refresh_token:
+ */
+Configuration.newBuilder()
+    // This configures the client using the 'authorization_code' authentication flow.    
+    .withSsoRefreshTokenLogin(
+        "PreviousAcquiredRefreshTokenHere",
+        "YourConnectedAppClientId",
+        "YourConnectedAppClientSecret",
+        "YourPardotBusinessUnitId"
+    );  
 
 /*
  * Optionally you can explicitly select which API version to use. If none is explicitly selected
@@ -110,7 +124,9 @@ try (final PardotClient client = new PardotClient(configuration)) {
 Official Documentation: [Authentication](https://developer.pardot.com/kb/authentication/)
 
 - Authenticating with Pardot's API using your Salesforce SSO Username, Password, and Connected Application details. [See Example](src/main/java/com/darksci/pardot/api/Example.java#L37).
-- Legacy authentication using your Pardot Username, Password, and User Token. [See Example](src/main/java/com/darksci/pardot/api/Example.java#L98). 
+- Authenticating with Pardot's API using a Salesforce SSO refresh_token and Connected Application details. [See Example](src/main/java/com/darksci/pardot/api/Example.java#L103).
+- Authenticating with Pardot's API using Salesforce SSO against Test / Sandbox orgs. [See Example](src/main/java/com/darksci/pardot/api/Example.java#L155).
+- Legacy authentication using your Pardot Username, Password, and User Token. [See Example](src/main/java/com/darksci/pardot/api/Example.java#L196). 
 
 ### Accounts
 Official Documentation: [Accounts](http://developer.pardot.com/kb/api-version-3/accounts/)

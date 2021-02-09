@@ -18,6 +18,7 @@
 package com.darksci.pardot.api;
 
 import categories.IntegrationTest;
+import com.darksci.pardot.api.auth.PasswordSessionRefreshHandler;
 import com.darksci.pardot.api.config.Configuration;
 import com.darksci.pardot.api.request.login.LoginRequest;
 import com.darksci.pardot.api.request.tag.TagQueryRequest;
@@ -47,6 +48,10 @@ import static org.junit.Assert.assertThrows;
 public class PardotClientIntegrationTest extends AbstractPardotClientIntegrationTest {
     private static final Logger logger = LoggerFactory.getLogger(PardotClientIntegrationTest.class);
 
+    private String userName;
+    private String userPassword;
+    private String userKey;
+
     @Override
     ConfigurationBuilder createConfiguration() throws IOException {
         final InputStream inputStream = getClass().getClassLoader().getResourceAsStream("test_credentials.properties");
@@ -56,12 +61,17 @@ public class PardotClientIntegrationTest extends AbstractPardotClientIntegration
         properties.load(inputStream);
         inputStream.close();
 
+        // Store into class properties.
+        userName = properties.getProperty("username");
+        userPassword = properties.getProperty("password");
+        userKey = properties.getProperty("user_key");
+
         // Build new configuration
         final ConfigurationBuilder configBuilder = Configuration.newBuilder()
             .withUsernameAndPasswordLogin(
-                properties.getProperty("username"),
-                properties.getProperty("password"),
-                properties.getProperty("user_key")
+                userName,
+                userPassword,
+                userKey
             );
 
         if (properties.getProperty("api_host") != null) {
@@ -80,8 +90,8 @@ public class PardotClientIntegrationTest extends AbstractPardotClientIntegration
     @Test
     public void loginTest() {
         final LoginResponse response = client.login(new LoginRequest()
-            .withEmail(testConfig.getPasswordLoginCredentials().getUsername())
-            .withPassword(testConfig.getPasswordLoginCredentials().getPassword())
+            .withEmail(userName)
+            .withPassword(userPassword)
         );
 
         logger.info("Response: {}", response);
@@ -107,7 +117,7 @@ public class PardotClientIntegrationTest extends AbstractPardotClientIntegration
     @Test
     public void sessionRenewTest_injectBadApiKeynToForceSessionRenew() {
         // Inject a bad access token
-        testConfig.getPasswordLoginCredentials().setApiKey("BAD-VALUE");
+        ((PasswordSessionRefreshHandler)(testConfig.getSessionRefreshHandler())).setApiToken("BAD-VALUE");
 
         // Execute query, this should force a bad auth response from pardot,
         // which then triggers renewing the apiKey, and then re-playing the tag query request.
@@ -115,7 +125,6 @@ public class PardotClientIntegrationTest extends AbstractPardotClientIntegration
         final TagQueryResponse.Result result = client.tagQuery(request);
         logger.info("Result: {}", result);
     }
-
 
     @Test
     @Override

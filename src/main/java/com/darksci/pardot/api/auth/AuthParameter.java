@@ -15,9 +15,42 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.darksci.pardot.api.config;
+package com.darksci.pardot.api.auth;
 
-public enum LoginType {
-    USERNAME_PASSWORD,
-    SSO;
+import java.util.Objects;
+
+/**
+ * Used to define Login Authorization Parameters.
+ */
+public class AuthParameter {
+    public static final AuthParameter[] EMPTY = new AuthParameter[0];
+
+    private final String name;
+    private final String value;
+
+    /**
+     * Constructor.
+     * @param name Defines parameter name.
+     * @param value Defines parameter value.
+     */
+    public AuthParameter(final String name, final String value) {
+        this.name = Objects.requireNonNull(name);
+        this.value = Objects.requireNonNull(value);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    @Override
+    public String toString() {
+        return "AuthHeader{"
+            + "name='" + name + '\''
+            + ", value='XXXXXXX'"
+            + '}';
+    }
 }
