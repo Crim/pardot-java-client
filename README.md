@@ -259,6 +259,12 @@ Official Documentation: [VisitorActivities](http://developer.pardot.com/kb/api-v
 - Query
 - Read
 
+### Visits
+Official Documentation: [Visits](https://developer.pardot.com/kb/api-version-3/visits/)
+
+- Query
+- Read
+
 ## How to Contribute 
 
 Want to help implement the missing API end points?  Fork the repository, write some code, and 

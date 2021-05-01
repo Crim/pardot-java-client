@@ -77,6 +77,8 @@ import com.darksci.pardot.api.request.user.UserDeleteRequest;
 import com.darksci.pardot.api.request.user.UserQueryRequest;
 import com.darksci.pardot.api.request.user.UserReadRequest;
 import com.darksci.pardot.api.request.user.UserUpdateRoleRequest;
+import com.darksci.pardot.api.request.visit.VisitQueryRequest;
+import com.darksci.pardot.api.request.visit.VisitReadRequest;
 import com.darksci.pardot.api.request.visitor.VisitorAssignRequest;
 import com.darksci.pardot.api.request.visitor.VisitorQueryRequest;
 import com.darksci.pardot.api.request.visitor.VisitorReadRequest;
@@ -116,6 +118,8 @@ import com.darksci.pardot.api.response.user.Cookie;
 import com.darksci.pardot.api.response.user.User;
 import com.darksci.pardot.api.response.user.UserAbilitiesResponse;
 import com.darksci.pardot.api.response.user.UserQueryResponse;
+import com.darksci.pardot.api.response.visit.Visit;
+import com.darksci.pardot.api.response.visit.VisitQueryResponse;
 import com.darksci.pardot.api.response.visitor.Visitor;
 import com.darksci.pardot.api.response.visitor.VisitorQueryResponse;
 import com.darksci.pardot.api.response.visitoractivity.VisitorActivity;
@@ -1384,6 +1388,30 @@ abstract class AbstractPardotClientIntegrationTest {
             .selectById(visitorActivityId);
 
         final Optional<VisitorActivity> response = client.visitorActivityRead(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test Querying visits.
+     */
+    public void visitQueryTest() {
+        final long visitId = 1L;
+        final VisitQueryRequest request = new VisitQueryRequest().withId(visitId);
+
+        final VisitQueryResponse.Result response = client.visitQuery(request);
+        assertNotNull("Should not be null", response);
+        logger.info("Response: {}", response);
+    }
+
+    /**
+     * Test Reading a visit.
+     */
+    public void visitReadTest() {
+        final long visitId = 1L;
+        final VisitReadRequest request = new VisitReadRequest().selectById(visitId);
+
+        final Optional<Visit> response = client.visitRead(request);
         assertNotNull("Should not be null", response);
         logger.info("Response: {}", response);
     }

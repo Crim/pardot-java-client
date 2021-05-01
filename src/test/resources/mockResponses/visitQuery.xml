@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rsp stat="ok" version="1.0">
+    <result>
+        <total_results>2</total_results>
+        <visit>
+            <id>37640</id>
+            <visitor_id>123</visitor_id>
+            <prospect_id>123</prospect_id>
+            <visitor_page_view_count>1024</visitor_page_view_count>
+            <first_visitor_page_view_at>2015-09-03 11:57:01</first_visitor_page_view_at>
+            <last_visitor_page_view_at>2015-09-03 11:57:24</last_visitor_page_view_at>
+            <duration_in_seconds>1024</duration_in_seconds>
+            <campaign_parameter>Campaign Parameter</campaign_parameter>
+            <medium_parameter>Medium Parameter</medium_parameter>
+            <source_parameter>Source Parameter</source_parameter>
+            <content_parameter>Content Parameter</content_parameter>
+            <term_parameter>Term Parameter</term_parameter>
+            <created_at>2015-09-03 11:57:01</created_at>
+            <updated_at>2015-09-03 11:57:24</updated_at>
+        </visit>
+        <visit>
+            <id>37641</id>
+            <visitor_id/>
+            <prospect_id/>
+            <visitor_page_view_count/>
+            <first_visitor_page_view_at/>
+            <last_visitor_page_view_at/>
+            <duration_in_seconds/>
+            <campaign_parameter/>
+            <medium_parameter/>
+            <source_parameter/>
+            <content_parameter/>
+            <term_parameter/>
+            <created_at>2015-10-03 11:57:01</created_at>
+            <updated_at>2015-10-03 11:57:24</updated_at>
+        </visit>
+    </result>
+</rsp>

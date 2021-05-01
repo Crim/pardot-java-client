@@ -58,6 +58,8 @@ import com.darksci.pardot.api.parser.user.UserCookieParser;
 import com.darksci.pardot.api.parser.user.UserCreateResponseParser;
 import com.darksci.pardot.api.parser.user.UserQueryResponseParser;
 import com.darksci.pardot.api.parser.user.UserReadResponseParser;
+import com.darksci.pardot.api.parser.visit.VisitQueryResponseParser;
+import com.darksci.pardot.api.parser.visit.VisitReadResponseParser;
 import com.darksci.pardot.api.parser.visitor.VisitorQueryResponseParser;
 import com.darksci.pardot.api.parser.visitor.VisitorReadResponseParser;
 import com.darksci.pardot.api.parser.visitoractivity.VisitorActivityQueryResponseParser;
@@ -127,6 +129,8 @@ import com.darksci.pardot.api.request.user.UserDeleteRequest;
 import com.darksci.pardot.api.request.user.UserQueryRequest;
 import com.darksci.pardot.api.request.user.UserReadRequest;
 import com.darksci.pardot.api.request.user.UserUpdateRoleRequest;
+import com.darksci.pardot.api.request.visit.VisitQueryRequest;
+import com.darksci.pardot.api.request.visit.VisitReadRequest;
 import com.darksci.pardot.api.request.visitor.VisitorAssignRequest;
 import com.darksci.pardot.api.request.visitor.VisitorQueryRequest;
 import com.darksci.pardot.api.request.visitor.VisitorReadRequest;
@@ -170,6 +174,8 @@ import com.darksci.pardot.api.response.user.Cookie;
 import com.darksci.pardot.api.response.user.User;
 import com.darksci.pardot.api.response.user.UserAbilitiesResponse;
 import com.darksci.pardot.api.response.user.UserQueryResponse;
+import com.darksci.pardot.api.response.visit.Visit;
+import com.darksci.pardot.api.response.visit.VisitQueryResponse;
 import com.darksci.pardot.api.response.visitor.Visitor;
 import com.darksci.pardot.api.response.visitor.VisitorQueryResponse;
 import com.darksci.pardot.api.response.visitoractivity.VisitorActivity;
@@ -1124,6 +1130,28 @@ public class PardotClient implements AutoCloseable {
         return optionalUnlessErrorCode(
             submitRequest(request, new VisitorActivityReadResponseParser()),
             ErrorCode.INVALID_ID
+        );
+    }
+
+    /**
+     * Make API request to query visits.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public VisitQueryResponse.Result visitQuery(final VisitQueryRequest request) {
+        return submitRequest(request, new VisitQueryResponseParser())
+                .orElseThrowInvalidRequestException();
+    }
+
+    /**
+     * Make API request to read a visit.
+     * @param request Request definition.
+     * @return Parsed api response
+     */
+    public Optional<Visit> visitRead(final VisitReadRequest request) {
+        return optionalUnlessErrorCode(
+                submitRequest(request, new VisitReadResponseParser()),
+                ErrorCode.INVALID_ID, ErrorCode.INVALID_VISIT_ID
         );
     }
 
