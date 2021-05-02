@@ -24,5 +24,7 @@ public class VisitReadResponse {
 
     private Visit visit;
 
-    public Visit getVisit() { return visit; }
+    public Visit getVisit() {
+        return visit;
+    }
 }

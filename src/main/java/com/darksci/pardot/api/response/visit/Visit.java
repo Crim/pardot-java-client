@@ -50,33 +50,61 @@ public class Visit {
     @JacksonXmlElementWrapper(localName = "visitor_page_views")
     private List<VisitorPageView> visitorPageViews;
 
-    public Long getId() { return id; }
+    public Long getId() {
+        return id;
+    }
 
-    public Long getVisitorId() { return visitorId; }
+    public Long getVisitorId() {
+        return visitorId;
+    }
 
-    public Long getProspectId() { return prospectId; }
+    public Long getProspectId() {
+        return prospectId;
+    }
 
-    public Integer getVisitorPageViewCount() { return visitorPageViewCount; }
+    public Integer getVisitorPageViewCount() {
+        return visitorPageViewCount;
+    }
 
-    public LocalDateTime getFirstVisitorPageViewAt() { return firstVisitorPageViewAt; }
+    public LocalDateTime getFirstVisitorPageViewAt() {
+        return firstVisitorPageViewAt;
+    }
 
-    public LocalDateTime getLastVisitorPageViewAt() { return lastVisitorPageViewAt; }
+    public LocalDateTime getLastVisitorPageViewAt() {
+        return lastVisitorPageViewAt;
+    }
 
-    public Integer getDurationInSeconds() { return durationInSeconds; }
+    public Integer getDurationInSeconds() {
+        return durationInSeconds;
+    }
 
-    public String getCampaignParameter() { return campaignParameter; }
+    public String getCampaignParameter() {
+        return campaignParameter;
+    }
 
-    public String getMediumParameter() { return mediumParameter; }
+    public String getMediumParameter() {
+        return mediumParameter;
+    }
 
-    public String getSourceParameter() { return sourceParameter; }
+    public String getSourceParameter() {
+        return sourceParameter;
+    }
 
-    public String getContentParameter() { return contentParameter; }
+    public String getContentParameter() {
+        return contentParameter;
+    }
 
-    public String getTermParameter() { return termParameter; }
+    public String getTermParameter() {
+        return termParameter;
+    }
 
-    public LocalDateTime getCreatedAt() { return createdAt; }
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 
-    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
 
     /**
      * Visitor Page Views associated to the visit, or empty list if none.

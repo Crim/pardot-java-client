@@ -30,7 +30,7 @@ This client library is released on Maven Central.  Add a new dependency to your 
 <dependency>
     <groupId>com.darksci</groupId>
     <artifactId>pardot-api-client</artifactId>
-    <version>3.2.0</version>
+    <version>3.3.0</version>
 </dependency>
 ```
 
@@ -285,6 +285,7 @@ user friendly Plain Old Java Objects (POJOs).
 ## Contributors
 [Crim](https://github.com/crim)
 [LoRez](https://github.com/lorez)
+[dai-00](https://github.com/dai-00)
 
 ## Releasing
 Steps for performing a release:

@@ -2,6 +2,13 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.3.0 (05/02/2021)
+- [PR-75](https://github.com/Crim/pardot-java-client/pull/75) Added support for querying and reading Visits.  Thanks [@dai-00](https://github.com/dai-00)!
+
+#### Internal Dependency Updates
+- Upgraded Jackson from version 2.11.2 to 2.11.4.
+
+
 ## 3.2.0 (02/09/2021)
 - [ISSUE-68](https://github.com/Crim/pardot-java-client/issues/68) Add authentication method for grant_type=authorization_code using previously retrieved refresh_token.  See `ConfigurationBuilder.withSsoRefreshTokenLogin()`
 - [ISSUE-70](https://github.com/Crim/pardot-java-client/issues/70) Adds ability to override the OAuth authentication endpoint when doing SSO authentication.  See optional parameter `AuthorizationServer` on the `ConfigurationBuilder.withSsoRefreshTokenLogin()` and `ConfigurationBuilder.withSsoLogin()` methods.
