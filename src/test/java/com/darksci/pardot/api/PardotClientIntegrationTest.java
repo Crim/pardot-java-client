@@ -539,4 +539,16 @@ public class PardotClientIntegrationTest extends AbstractPardotClientIntegration
     public void visitorActivityReadTest() {
         super.visitorActivityReadTest();
     }
+
+    @Test
+    @Override
+    public void visitQueryTest() {
+        super.visitQueryTest();
+    }
+
+    @Test
+    @Override
+    public void visitReadTest() {
+        super.visitReadTest();
+    }
 }
