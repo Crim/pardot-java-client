@@ -30,7 +30,7 @@ This client library is released on Maven Central.  Add a new dependency to your 
 <dependency>
     <groupId>com.darksci</groupId>
     <artifactId>pardot-api-client</artifactId>
-    <version>3.3.0</version>
+    <version>4.0.0</version>
 </dependency>
 ```
 

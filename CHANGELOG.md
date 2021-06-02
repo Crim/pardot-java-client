@@ -2,6 +2,15 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 4.0.0 (06/03/2021)
+
+### NOTE: Breaking Change
+Out of an abundance of caution, denoting this release as being a breaking change.
+The `zip` field on [Account](https://github.com/Crim/pardot-java-client/commit/6f90634a81b733bc525f61218e228cadba1368ae#diff-218cecafc85bc0dfa03c626e9d9036657ddef6acb4f4f66362267f8a727eb9b6) was changed from an `Integer` type to a `String` type.  If you have
+code that references this field, you will need to update your code to reflect this change.
+
+- [PR-78](https://github.com/Crim/pardot-java-client/pull/78) Account 'zip' property changed from being an `Integer` type to a `String` to support worldwide zipcodes.
+
 ## 3.3.0 (05/02/2021)
 - [PR-75](https://github.com/Crim/pardot-java-client/pull/75) Added support for querying and reading Visits.  Thanks [@dai-00](https://github.com/dai-00)!
 
