@@ -39,7 +39,7 @@ public class Account {
     private String city;
     private String state;
     private String territory;
-    private Integer zip;
+    private String zip;
     private String country;
     private String phone;
     private String fax;
@@ -96,7 +96,7 @@ public class Account {
         return territory;
     }
 
-    public Integer getZip() {
+    public String getZip() {
         return zip;
     }
 

@@ -53,7 +53,7 @@ public class AccountReadResponseParserTest extends BaseResponseParserTest {
         assertEquals("Has correct city", "Atlanta", account.getCity());
         assertEquals("Has correct state", "GA", account.getState());
         assertEquals("Has correct territory", "Test Territory", account.getTerritory());
-        assertEquals("Has correct zipcode", 30064, (int) account.getZip());
+        assertEquals("Has correct zipcode", "30064", account.getZip());
         assertEquals("Has correct country", "United States", account.getCountry());
         assertEquals("Has correct phone", "123-456-4789", account.getPhone());
         assertEquals("Has correct createdAt", "2016-01-04T10:39:26.000Z", account.getCreatedAt().toString());
