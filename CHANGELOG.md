@@ -2,6 +2,11 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 4.0.1 (UNRELEASED)
+#### Internal Dependency Updates
+- Upgraded Jackson from version 2.11.4 to 2.13.1.
+
+
 ## 4.0.0 (06/03/2021)
 
 ### NOTE: Breaking Change

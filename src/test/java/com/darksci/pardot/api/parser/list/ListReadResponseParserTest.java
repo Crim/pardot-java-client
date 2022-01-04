@@ -46,8 +46,10 @@ public class ListReadResponseParserTest extends BaseResponseParserTest {
         assertEquals("Has correct name", "Stevie Only List", list.getName());
         assertEquals("Has correct isPublic", false, list.getIsPublic());
         assertEquals("Has correct isDynamic", false, list.getIsDynamic());
+        // tags like <title/> should be null
         assertNull("Has correct title", list.getTitle());
-        assertNull("Has correct description", list.getDescription());
+        // tags like <description></description> should be empty string
+        assertEquals("Has correct description", "", list.getDescription());
         assertEquals("Has correct isCrmVisible", false, list.getIsCrmVisible());
         assertEquals("Has correct createdAt", "2017-08-11T22:03:22.000", list.getCreatedAt().toString());
         assertEquals("Has correct updatedAt", "2017-08-11T22:03:22.000", list.getUpdatedAt().toString());

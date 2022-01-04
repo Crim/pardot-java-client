@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 
 import java.text.SimpleDateFormat;
@@ -66,6 +67,8 @@ public class JacksonFactory {
         module.addDeserializer(ProspectCustomFieldValue.class, new ProspectCustomFieldDeserializer());
 
         final XmlMapper mapper = new XmlMapper(module);
+        // Coerce fields marked as <fieldName/> into NULL to maintain backwards compatibility.
+        mapper.enable(FromXmlParser.Feature.EMPTY_ELEMENT_AS_NULL);
 
         // Configure it
         mapper
