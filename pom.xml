@@ -6,7 +6,7 @@
 
     <groupId>com.darksci</groupId>
     <artifactId>pardot-api-client</artifactId>
-    <version>4.0.0</version>
+    <version>4.0.1</version>
     <packaging>jar</packaging>
 
     <!-- Require Maven 3.5.0 -->
@@ -47,7 +47,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!-- Jackson version -->
-        <jackson.version>2.11.4</jackson.version>
+        <jackson.version>2.13.1</jackson.version>
 
         <!-- Define which version of junit you'll be running -->
         <junit.version>4.13.2</junit.version>
@@ -237,18 +237,9 @@
                 <version>3.0</version>
                 <configuration>
                     <header>LICENSE.txt</header>
-                    <excludes>
-                        <exclude>**/.md</exclude>
-                        <exclude>**.MD</exclude>
-                        <exclude>**/.bak</exclude>
-                        <exclude>**.yml</exclude>
-                        <exclude>**.yaml</exclude>
-                        <exclude>**.xml</exclude>
-                        <exclude>build/**</exclude>
-                        <exclude>src/test/resources/**</exclude>
-                        <exclude>src/main/resources/**</exclude>
-                        <exclude>LICENSE.txt</exclude>
-                    </excludes>
+                    <includes>
+                        <include>**/**.java</include>
+                    </includes>
                 </configuration>
                 <executions>
                     <execution>

@@ -1,7 +1,5 @@
 # Pardot Java API Client
 
-[![Build Status](https://travis-ci.org/Crim/pardot-java-client.svg?branch=master)](https://travis-ci.org/Crim/pardot-java-client)
-
 ## What is it? 
 
 This library is a fluent style API client for Pardot's API (version 3 and 4).
