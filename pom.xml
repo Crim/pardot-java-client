@@ -237,18 +237,9 @@
                 <version>3.0</version>
                 <configuration>
                     <header>LICENSE.txt</header>
-                    <excludes>
-                        <exclude>**/.md</exclude>
-                        <exclude>**.MD</exclude>
-                        <exclude>**/.bak</exclude>
-                        <exclude>**.yml</exclude>
-                        <exclude>**.yaml</exclude>
-                        <exclude>**.xml</exclude>
-                        <exclude>build/**</exclude>
-                        <exclude>src/test/resources/**</exclude>
-                        <exclude>src/main/resources/**</exclude>
-                        <exclude>LICENSE.txt</exclude>
-                    </excludes>
+                    <includes>
+                        <include>**/**.java</include>
+                    </includes>
                 </configuration>
                 <executions>
                     <execution>
