@@ -4,7 +4,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 4.0.1 (UNRELEASED)
 #### Internal Dependency Updates
-- Upgraded Jackson from version 2.11.4 to 2.13.1.
+- Upgraded Jackson from version 2.11.4 to 2.13.2.
+- Upgraded slf4j from version 1.7.30 to 1.7.36.
 
 
 ## 4.0.0 (06/03/2021)
