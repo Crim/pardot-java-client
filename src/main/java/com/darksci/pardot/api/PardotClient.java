@@ -49,6 +49,7 @@ import com.darksci.pardot.api.parser.opportunity.OpportunityQueryResponseParser;
 import com.darksci.pardot.api.parser.opportunity.OpportunityReadResponseParser;
 import com.darksci.pardot.api.parser.prospect.ProspectQueryResponseParser;
 import com.darksci.pardot.api.parser.prospect.ProspectReadResponseParser;
+import com.darksci.pardot.api.parser.prospectaccount.ProspectAccountQueryResponseParser;
 import com.darksci.pardot.api.parser.tag.TagQueryResponseParser;
 import com.darksci.pardot.api.parser.tag.TagReadResponseParser;
 import com.darksci.pardot.api.parser.tagobject.TagObjectQueryResponseParser;
@@ -118,6 +119,7 @@ import com.darksci.pardot.api.request.prospect.ProspectReadRequest;
 import com.darksci.pardot.api.request.prospect.ProspectUnassignRequest;
 import com.darksci.pardot.api.request.prospect.ProspectUpdateRequest;
 import com.darksci.pardot.api.request.prospect.ProspectUpsertRequest;
+import com.darksci.pardot.api.request.prospectaccount.ProspectAccountQueryRequest;
 import com.darksci.pardot.api.request.tag.TagQueryRequest;
 import com.darksci.pardot.api.request.tag.TagReadRequest;
 import com.darksci.pardot.api.request.tagobject.TagObjectQueryRequest;
@@ -166,6 +168,7 @@ import com.darksci.pardot.api.response.opportunity.Opportunity;
 import com.darksci.pardot.api.response.opportunity.OpportunityQueryResponse;
 import com.darksci.pardot.api.response.prospect.Prospect;
 import com.darksci.pardot.api.response.prospect.ProspectQueryResponse;
+import com.darksci.pardot.api.response.prospectaccount.ProspectAccountQueryResponse;
 import com.darksci.pardot.api.response.tag.Tag;
 import com.darksci.pardot.api.response.tag.TagQueryResponse;
 import com.darksci.pardot.api.response.tagobject.TagObject;
@@ -1121,6 +1124,18 @@ public class PardotClient implements AutoCloseable {
             .orElseThrowInvalidRequestException();
     }
 
+    
+    /**
+     * Make API request to query prospectAccounts.
+     * @param request Request definition.
+     * @return Parsed api response.
+     */
+    public ProspectAccountQueryResponse.Result prospectAccountQuery(final ProspectAccountQueryRequest request) {
+		return submitRequest (request, new ProspectAccountQueryResponseParser())
+				 .orElseThrowInvalidRequestException();
+	}
+    
+    
     /**
      * Make API request to read a visitor activity.
      * @param request Request definition.
@@ -1194,4 +1209,6 @@ public class PardotClient implements AutoCloseable {
             })
         );
     }
+
+	
 }
