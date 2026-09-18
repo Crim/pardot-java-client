@@ -23,12 +23,29 @@ import java.util.Objects;
  * Defines credentials for authenticating to Pardot API using Salesforce SSO.
  */
 public class SsoLoginCredentials {
+    // Potentially null if using client_credentials auth
+    private String username;
+    private String password;
     // Immutable values.
-    private final String username;
-    private final String password;
     private final String clientId;
     private final String clientSecret;
     private final String businessUnitId;
+
+    /**
+     * Constructor.
+     * @param clientId Connected App client or consumer Id.
+     * @param clientSecret Connected App client or consumer secret.
+     * @param businessUnitId Pardot Business Unit Id to connect to.
+     */
+    public SsoLoginCredentials(
+        final String clientId,
+        final String clientSecret,
+        final String businessUnitId) {
+
+        this.clientId = Objects.requireNonNull(clientId);
+        this.clientSecret = Objects.requireNonNull(clientSecret);
+        this.businessUnitId = Objects.requireNonNull(businessUnitId);
+    }
 
     /**
      * Constructor.
@@ -45,11 +62,9 @@ public class SsoLoginCredentials {
         final String clientSecret,
         final String businessUnitId) {
 
+        this(clientId, clientSecret, businessUnitId);
         this.username = Objects.requireNonNull(username);
         this.password = Objects.requireNonNull(password);
-        this.clientId = Objects.requireNonNull(clientId);
-        this.clientSecret = Objects.requireNonNull(clientSecret);
-        this.businessUnitId = Objects.requireNonNull(businessUnitId);
     }
 
     public String getUsername() {

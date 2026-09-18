@@ -119,6 +119,39 @@ public class ConfigurationBuilder {
     }
 
     /**
+     * For configuring authenticating to the Pardot API using the client_credentials OAuth2 authentication flow.
+     *
+     * @param clientId Connected Application client or consumer Id.
+     * @param clientSecret Connected Application client or consumer secret.
+     * @param businessUnitId Id of the Pardot business unit to connect to.
+     * @return Builder instance.
+     */
+    public ConfigurationBuilder withSsoLogin(final String clientId, final String clientSecret, final String businessUnitId) {
+        return withCustomAuthenticationHandler(new SsoSessionRefreshHandler(new SsoLoginCredentials(
+            Objects.requireNonNull(clientId),
+            Objects.requireNonNull(clientSecret),
+            Objects.requireNonNull(businessUnitId)
+        ), AuthorizationServer.DEFAULT_SALESFORCE));
+    }
+
+    /**
+     * For configuring authenticating to the Pardot API using the client_credentials OAuth2 authentication flow.
+     *
+     * @param clientId Connected Application client or consumer Id.
+     * @param clientSecret Connected Application client or consumer secret.
+     * @param businessUnitId Id of the Pardot business unit to connect to.
+     * @param authorizationServer Override the authorization server address.
+     * @return Builder instance.
+     */
+    public ConfigurationBuilder withSsoLogin(final String clientId, final String clientSecret, final String businessUnitId, final AuthorizationServer authorizationServer) {
+        return withCustomAuthenticationHandler(new SsoSessionRefreshHandler(new SsoLoginCredentials(
+            Objects.requireNonNull(clientId),
+            Objects.requireNonNull(clientSecret),
+            Objects.requireNonNull(businessUnitId)
+        ), authorizationServer));
+    }
+
+    /**
      * For configuring authenticating to the Pardot API using a previously acquired refresh_token acquired using
      * the access_code OAuth2 authentication flow.
      *

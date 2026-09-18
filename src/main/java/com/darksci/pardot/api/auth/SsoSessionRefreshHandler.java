@@ -50,12 +50,21 @@ public class SsoSessionRefreshHandler implements SessionRefreshHandler {
 
     @Override
     public boolean refreshCredentials(final PardotClient client) {
-        final SsoLoginResponse response = client.login(new SsoLoginRequest(authorizationServer)
-            .withClientId(credentials.getClientId())
-            .withClientSecret(credentials.getClientSecret())
-            .withUsername(credentials.getUsername())
-            .withPassword(credentials.getPassword())
-        );
+        final SsoLoginResponse response;
+        if (credentials.getUsername() != null && credentials.getPassword() != null) {
+            response = client.login(new SsoLoginRequest(authorizationServer)
+                .withClientId(credentials.getClientId())
+                .withClientSecret(credentials.getClientSecret())
+                .withUsername(credentials.getUsername())
+                .withPassword(credentials.getPassword())
+            );
+        } else {
+            response = client.login(new SsoLoginRequest(authorizationServer)
+                .withClientId(credentials.getClientId())
+                .withClientSecret(credentials.getClientSecret())
+                .withGrantType("client_credentials")
+            );
+        }
 
         // If we have an API key.
         if (response.getAccessToken() != null) {
