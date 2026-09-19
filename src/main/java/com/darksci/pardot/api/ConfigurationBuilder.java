@@ -17,22 +17,24 @@
 
 package com.darksci.pardot.api;
 
+import java.util.Objects;
+
 import com.darksci.pardot.api.auth.AuthorizationServer;
 import com.darksci.pardot.api.auth.PasswordSessionRefreshHandler;
 import com.darksci.pardot.api.auth.SessionRefreshHandler;
 import com.darksci.pardot.api.auth.SsoAccessTokenSessionRefreshHandler;
+import com.darksci.pardot.api.auth.SsoClientCredentialsRefreshHandler;
 import com.darksci.pardot.api.auth.SsoRefreshTokenSessionRefreshHandler;
 import com.darksci.pardot.api.auth.SsoSessionRefreshHandler;
 import com.darksci.pardot.api.config.Configuration;
 import com.darksci.pardot.api.config.PasswordLoginCredentials;
 import com.darksci.pardot.api.config.ProxyConfiguration;
 import com.darksci.pardot.api.config.SsoAccessTokenCredentials;
+import com.darksci.pardot.api.config.SsoClientCredentials;
 import com.darksci.pardot.api.config.SsoLoginCredentials;
 import com.darksci.pardot.api.config.SsoRefreshTokenCredentials;
 import com.darksci.pardot.api.rest.interceptor.NoopRequestInterceptor;
 import com.darksci.pardot.api.rest.interceptor.RequestInterceptor;
-
-import java.util.Objects;
 
 /**
  * Pardot API Client Configuration Builder.
@@ -127,7 +129,7 @@ public class ConfigurationBuilder {
      * @return Builder instance.
      */
     public ConfigurationBuilder withSsoLogin(final String clientId, final String clientSecret, final String businessUnitId) {
-        return withCustomAuthenticationHandler(new SsoSessionRefreshHandler(new SsoLoginCredentials(
+        return withCustomAuthenticationHandler(new SsoClientCredentialsRefreshHandler(new SsoClientCredentials(
             Objects.requireNonNull(clientId),
             Objects.requireNonNull(clientSecret),
             Objects.requireNonNull(businessUnitId)
@@ -144,7 +146,7 @@ public class ConfigurationBuilder {
      * @return Builder instance.
      */
     public ConfigurationBuilder withSsoLogin(final String clientId, final String clientSecret, final String businessUnitId, final AuthorizationServer authorizationServer) {
-        return withCustomAuthenticationHandler(new SsoSessionRefreshHandler(new SsoLoginCredentials(
+        return withCustomAuthenticationHandler(new SsoClientCredentialsRefreshHandler(new SsoClientCredentials(
             Objects.requireNonNull(clientId),
             Objects.requireNonNull(clientSecret),
             Objects.requireNonNull(businessUnitId)

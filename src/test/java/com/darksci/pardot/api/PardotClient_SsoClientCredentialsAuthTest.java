@@ -17,25 +17,6 @@
 
 package com.darksci.pardot.api;
 
-import com.darksci.pardot.api.auth.AuthParameter;
-import com.darksci.pardot.api.auth.AuthorizationServer;
-import com.darksci.pardot.api.auth.SsoSessionRefreshHandler;
-import com.darksci.pardot.api.config.Configuration;
-import com.darksci.pardot.api.request.login.SsoLoginRequest;
-import com.darksci.pardot.api.request.tag.TagReadRequest;
-import com.darksci.pardot.api.request.user.UserReadRequest;
-import com.darksci.pardot.api.response.login.SsoLoginResponse;
-import com.darksci.pardot.api.response.tag.Tag;
-import com.darksci.pardot.api.response.user.User;
-import com.darksci.pardot.api.rest.RestClient;
-import com.darksci.pardot.api.rest.RestResponse;
-import org.junit.Before;
-import org.junit.Test;
-import util.TestHelper;
-
-import java.io.IOException;
-import java.util.Optional;
-
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -49,8 +30,29 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
+import java.io.IOException;
+import java.util.Optional;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import com.darksci.pardot.api.auth.AuthParameter;
+import com.darksci.pardot.api.auth.AuthorizationServer;
+import com.darksci.pardot.api.auth.SsoClientCredentialsRefreshHandler;
+import com.darksci.pardot.api.config.Configuration;
+import com.darksci.pardot.api.request.login.SsoLoginRequest;
+import com.darksci.pardot.api.request.tag.TagReadRequest;
+import com.darksci.pardot.api.request.user.UserReadRequest;
+import com.darksci.pardot.api.response.login.SsoLoginResponse;
+import com.darksci.pardot.api.response.tag.Tag;
+import com.darksci.pardot.api.response.user.User;
+import com.darksci.pardot.api.rest.RestClient;
+import com.darksci.pardot.api.rest.RestResponse;
+
+import util.TestHelper;
+
 /**
- * Unit testing over PardotClient using Sso Authentication Scheme.
+ * Unit testing over PardotClient using Sso Authentication Scheme with Client Credentials.
  */
 public class PardotClient_SsoClientCredentialsAuthTest {
     // Dependencies
@@ -86,7 +88,8 @@ public class PardotClient_SsoClientCredentialsAuthTest {
         // Construct request.
         final SsoLoginRequest loginRequest = new SsoLoginRequest()
             .withClientId(clientId)
-            .withClientSecret(clientId);
+            .withClientSecret(clientId)
+            .withGrantType("client_credentials");
 
         // Mock response
         when(mockRestClient.submitRequest(loginRequest))
@@ -119,6 +122,7 @@ public class PardotClient_SsoClientCredentialsAuthTest {
         final SsoLoginRequest loginRequest = new SsoLoginRequest()
             .withClientId(clientId)
             .withClientSecret(clientId)
+            .withGrantType("client_credentials")
             .withAuthorizationServer(new AuthorizationServer("http://test.server", "/end/point"));
 
         assertEquals("Invalid Api Hostname", "http://test.server", loginRequest.getApiHostname());
@@ -133,7 +137,8 @@ public class PardotClient_SsoClientCredentialsAuthTest {
         // Construct request.
         final SsoLoginRequest loginRequest = new SsoLoginRequest()
             .withClientId(clientId)
-            .withClientSecret(clientId);
+            .withClientSecret(clientId)
+            .withGrantType("client_credentials");
 
         assertEquals("Invalid Api Hostname", "https://login.salesforce.com", loginRequest.getApiHostname());
         assertEquals("Invalid End point", "/services/oauth2/token", loginRequest.getApiEndpoint());
@@ -241,7 +246,7 @@ public class PardotClient_SsoClientCredentialsAuthTest {
     @Test
     public void testReAuthenticationOnSessionTimeout() {
         // Lets set a dummy Authentication Key to simulate already having a valid session
-        ((SsoSessionRefreshHandler)(apiConfig.getSessionRefreshHandler())).setApiToken("OriginalDummyKey");
+        ((SsoClientCredentialsRefreshHandler)(apiConfig.getSessionRefreshHandler())).setApiToken("OriginalDummyKey");
 
         // Construct request to query a tag
         // This exact request isn't really relevant. Just that it will trigger
@@ -332,7 +337,7 @@ public class PardotClient_SsoClientCredentialsAuthTest {
     @Test
     public void testReAuthenticationOnSessionTimeout_triggersInvalidCredentials() {
         // Lets set a dummy Authentication Key to simulate already having a valid session
-        ((SsoSessionRefreshHandler)(apiConfig.getSessionRefreshHandler())).setApiToken("OriginalDummyKey");
+        ((SsoClientCredentialsRefreshHandler)(apiConfig.getSessionRefreshHandler())).setApiToken("OriginalDummyKey");
 
         // Construct request to query a tag
         // This exact request isn't really relevant. Just that it will trigger

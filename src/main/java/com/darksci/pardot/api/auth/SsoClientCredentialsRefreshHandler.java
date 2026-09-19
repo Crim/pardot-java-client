@@ -18,7 +18,7 @@
 package com.darksci.pardot.api.auth;
 
 import com.darksci.pardot.api.PardotClient;
-import com.darksci.pardot.api.config.SsoLoginCredentials;
+import com.darksci.pardot.api.config.SsoClientCredentials;
 import com.darksci.pardot.api.request.login.SsoLoginRequest;
 import com.darksci.pardot.api.response.login.SsoLoginResponse;
 
@@ -27,13 +27,13 @@ import java.util.Objects;
 /**
  * Handles refreshing credentials using SSO Login method.
  */
-public class SsoSessionRefreshHandler implements SessionRefreshHandler {
-    private final SsoLoginCredentials credentials;
+public class SsoClientCredentialsRefreshHandler implements SessionRefreshHandler {
+    private final SsoClientCredentials credentials;
     private final AuthorizationServer authorizationServer;
 
     private String apiToken = null;
 
-    public SsoSessionRefreshHandler(final SsoLoginCredentials credentials, final AuthorizationServer authorizationServer) {
+    public SsoClientCredentialsRefreshHandler(final SsoClientCredentials credentials, final AuthorizationServer authorizationServer) {
         this.credentials = Objects.requireNonNull(credentials);
         this.authorizationServer = Objects.requireNonNull(authorizationServer);
     }
@@ -53,8 +53,7 @@ public class SsoSessionRefreshHandler implements SessionRefreshHandler {
         final SsoLoginResponse response = client.login(new SsoLoginRequest(authorizationServer)
             .withClientId(credentials.getClientId())
             .withClientSecret(credentials.getClientSecret())
-            .withUsername(credentials.getUsername())
-            .withPassword(credentials.getPassword())
+            .withGrantType("client_credentials")
         );
 
         // If we have an API key.
