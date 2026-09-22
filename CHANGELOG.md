@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Upgraded slf4j from version 1.7.30 to 1.7.36.
 - Upgraded log4j2 from version 2.17.2 to 2.26.1 (used by tests only).
 
+
 ## 4.0.0 (06/03/2021)
 
 ### NOTE: Breaking Change
