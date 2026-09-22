@@ -295,6 +295,7 @@ user friendly Plain Old Java Objects (POJOs).
 [Crim](https://github.com/crim)
 [LoRez](https://github.com/lorez)
 [dai-00](https://github.com/dai-00)
+[FlipWarthog](https://github.com/FlipWarthog)
 
 ## Releasing
 Steps for performing a release:
