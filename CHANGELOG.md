@@ -2,7 +2,10 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 4.0.1 (UNRELEASED)
+## 4.1.0 (09/23/2026)
+#### Feature Changes
+- [https://github.com/Crim/pardot-java-client/issues/108](Issue-108) Salesforce SSO: Add support for Client Credentials Flow, Thanks for the contribution [FlipWarthog](https://github.com/FlipWarthog)!
+
 #### Internal Dependency Updates
 - Upgraded Jackson from version 2.11.4 to 2.13.2.
 - Upgraded slf4j from version 1.7.30 to 1.7.36.
