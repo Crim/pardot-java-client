@@ -7,9 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - [https://github.com/Crim/pardot-java-client/issues/108](Issue-108) Salesforce SSO: Add support for Client Credentials Flow, Thanks for the contribution [FlipWarthog](https://github.com/FlipWarthog)!
 
 #### Internal Dependency Updates
-- Upgraded Jackson from version 2.11.4 to 2.13.2.
+- Upgraded Jackson from version 2.11.4 to 2.22.2.
 - Upgraded slf4j from version 1.7.30 to 1.7.36.
-
+- Upgraded log4j2 from version 2.17.2 to 2.26.1 (used by tests only).
 
 ## 4.0.0 (06/03/2021)
 
