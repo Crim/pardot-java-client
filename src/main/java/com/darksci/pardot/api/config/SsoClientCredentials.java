@@ -20,44 +20,28 @@ package com.darksci.pardot.api.config;
 import java.util.Objects;
 
 /**
- * Defines credentials for authenticating to Pardot API using Salesforce SSO Username-Password Flow.
+ * Defines credentials for authenticating to Pardot API using Salesforce SSO Client Credentials flow.
  */
-public class SsoLoginCredentials {
+public class SsoClientCredentials {
     // Immutable values.
-    private final String username;
-    private final String password;
     private final String clientId;
     private final String clientSecret;
     private final String businessUnitId;
 
     /**
      * Constructor.
-     * @param username Salesforce username.
-     * @param password Salesforce password.
      * @param clientId Connected App client or consumer Id.
      * @param clientSecret Connected App client or consumer secret.
      * @param businessUnitId Pardot Business Unit Id to connect to.
      */
-    public SsoLoginCredentials(
-        final String username,
-        final String password,
+    public SsoClientCredentials(
         final String clientId,
         final String clientSecret,
         final String businessUnitId) {
 
-        this.username = Objects.requireNonNull(username);
-        this.password = Objects.requireNonNull(password);
         this.clientId = Objects.requireNonNull(clientId);
         this.clientSecret = Objects.requireNonNull(clientSecret);
         this.businessUnitId = Objects.requireNonNull(businessUnitId);
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public String getClientId() {
@@ -74,10 +58,8 @@ public class SsoLoginCredentials {
 
     @Override
     public String toString() {
-        return "SsoLoginCredentials{"
-            + "username='" + username + '\''
-            + ", password='XXXXXXXXXX'"
-            + ", clientId='" + clientId + '\''
+        return "SsoClientCredentials{"
+            + "clientId='" + clientId + '\''
             + ", clientSecret='XXXXXXXXXX'"
             + ", businessUnitId='" + businessUnitId + '\''
             + '}';
