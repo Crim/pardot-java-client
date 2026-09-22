@@ -20,7 +20,7 @@ package com.darksci.pardot.api.parser;
 import com.darksci.pardot.api.parser.prospect.ProspectCustomFieldDeserializer;
 import com.darksci.pardot.api.response.customfield.ProspectCustomFieldValue;
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
@@ -73,7 +73,7 @@ public class JacksonFactory {
         // Configure it
         mapper
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-            .setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE)
+            .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
             .registerModule(new JodaModule())
             .setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
 

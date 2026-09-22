@@ -28,7 +28,7 @@ This client library is released on Maven Central.  Add a new dependency to your 
 <dependency>
     <groupId>com.darksci</groupId>
     <artifactId>pardot-api-client</artifactId>
-    <version>4.0.0</version>
+    <version>4.1.0</version>
 </dependency>
 ```
 
@@ -45,6 +45,17 @@ final ConfigurationBuilder configuration = Configuration.newBuilder()
     .withSsoLogin(
         "YourSalesforceUsername",
         "YourSalesforcePassword",
+        "YourConnectedAppClientId",
+        "YourConnectedAppClientSecret",
+        "YourPardotBusinessUnitId"
+    );
+
+/*
+ * If you want to use the client_credentials authentication flow:
+ */
+Configuration.newBuilder()
+    // This configures the client using the 'Client Credentials' authentication flow.    
+    .withSsoLogin(
         "YourConnectedAppClientId",
         "YourConnectedAppClientSecret",
         "YourPardotBusinessUnitId"
@@ -284,6 +295,7 @@ user friendly Plain Old Java Objects (POJOs).
 [Crim](https://github.com/crim)
 [LoRez](https://github.com/lorez)
 [dai-00](https://github.com/dai-00)
+[FlipWarthog](https://github.com/FlipWarthog)
 
 ## Releasing
 Steps for performing a release:
